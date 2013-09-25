@@ -1,0 +1,6 @@
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataWebService.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataWebService.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.csprojResolveAssemblyReference.cache
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Oracle.DataAccess.dll
