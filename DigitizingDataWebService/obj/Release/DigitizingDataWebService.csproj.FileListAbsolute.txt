@@ -4,3 +4,4 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Oracle.Data
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\DigitizingDataWebService.csprojResolveAssemblyReference.cache
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\DigitizingDataWebService.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\DigitizingDataWebService.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Newtonsoft.Json.dll

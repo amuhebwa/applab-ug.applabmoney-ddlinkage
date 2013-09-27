@@ -4,3 +4,4 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\Digit
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.pdb
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Oracle.DataAccess.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Newtonsoft.Json.dll
