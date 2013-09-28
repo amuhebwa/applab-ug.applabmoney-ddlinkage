@@ -70,6 +70,8 @@ public class DeliverVslaKitRequest
     [DataMember]
     public string VslaPhoneImei { get; set; }
     [DataMember]
+    public string VslaPhoneMsisdn { get; set; }
+    [DataMember]
     public string PhoneSerialNumber { get; set; }
     [DataMember]
     public string PhoneManufacturer { get; set; }
@@ -78,7 +80,9 @@ public class DeliverVslaKitRequest
     [DataMember]
     public string AdminUserName { get; set; }
     [DataMember]
-    public string SecurityToken { get; set; }    
+    public string SecurityToken { get; set; }
+    [DataMember]
+    public string PhoneImei { get; set; }
     [DataMember]
     public string ReceivedBy { get; set; }
     [DataMember]
@@ -92,4 +96,26 @@ public class DeliverVslaKitResponse
 {
     [DataMember]
     public int DeliveryStatus { get; set; }
+}
+
+[DataContract]
+public class CaptureGpsLocationRequest
+{
+    [DataMember]
+    public string VslaCode { get; set; }    
+    [DataMember]
+    public string AdminUserName { get; set; }
+    [DataMember]
+    public string SecurityToken { get; set; }
+    [DataMember]
+    public string PhoneImei { get; set; }
+    [DataMember]
+    public string GpsLocation { get; set; }    
+}
+
+[DataContract]
+public class CaptureGpsLocationResponse
+{
+    [DataMember]
+    public int StatusCode { get; set; }
 }

@@ -33,6 +33,10 @@ namespace DigitizingDataWebService
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "admin/deliverkit")]
         DeliverVslaKitResponse DeliverVslaKit(Stream jsonRequest);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "admin/capturegps")]
+        CaptureGpsLocationResponse CaptureGpsLocation(Stream jsonRequest);
         
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "admin/activate/{username}/{securityToken}")]

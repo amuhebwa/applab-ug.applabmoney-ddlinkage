@@ -52,7 +52,7 @@ namespace DigitizingDataWebService
                 request = JsonConvert.DeserializeObject<ActivateVslaForDdRequest>(jsonString);
                 if (null != request)
                 {
-                    response.VslaName = request.VslaCode + " " + request.NetworkOperatorName;
+                    response.VslaName = request.VslaCode + "- ACTIVATED";
                     response.PassKey = request.PhoneImei.Substring(0,5);
                     response.IsActivated = true;
                 }
@@ -140,9 +140,36 @@ namespace DigitizingDataWebService
                 reader = new StreamReader(jsonRequest);
                 jsonString = reader.ReadToEnd();
                 request = JsonConvert.DeserializeObject<DeliverVslaKitRequest>(jsonString);
-                if (null != request && request.VslaPhoneImei.Trim().Length > 0)
-                {                    
-                    response.DeliveryStatus = Convert.ToInt32(request.VslaPhoneImei.Substring(0,3));
+                if (null != request && request.VslaPhoneImei.Trim().Length > 0 && request.PhoneImei.Trim().Length > 0)
+                {
+                    response.DeliveryStatus = Convert.ToInt32(request.VslaPhoneImei.Substring(0, 3) + request.PhoneImei.Substring(0, 3));
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return response;
+        }
+
+        public CaptureGpsLocationResponse CaptureGpsLocation(Stream jsonRequest)
+        {
+
+            CaptureGpsLocationResponse response = new CaptureGpsLocationResponse();
+            CaptureGpsLocationRequest request = null;
+            StreamReader reader = null;
+            string jsonString = string.Empty;
+            response.StatusCode = -1;
+
+            try
+            {
+                reader = new StreamReader(jsonRequest);
+                jsonString = reader.ReadToEnd();
+                request = JsonConvert.DeserializeObject<CaptureGpsLocationRequest>(jsonString);
+                if (null != request && request.GpsLocation.Trim().Length > 0 && request.PhoneImei.Trim().Length > 0)
+                {
+                    response.StatusCode = 0;
                 }
 
             }
