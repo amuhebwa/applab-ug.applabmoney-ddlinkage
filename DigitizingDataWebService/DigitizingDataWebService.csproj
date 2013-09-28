@@ -78,6 +78,7 @@
       <DependentUpon>DigitizingDataRestfulService.svc</DependentUpon>
     </Compile>
     <Compile Include="IDigitizingDataRestfulService.cs" />
+    <Compile Include="MssqlDatabaseHelper.cs" />
     <Compile Include="OracleDatabaseHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VslaUtils.cs" />

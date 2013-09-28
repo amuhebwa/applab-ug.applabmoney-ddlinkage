@@ -11,10 +11,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/DigitizingDataWebService.dll">
-      <publishTime>09/27/2013 05:05:32</publishTime>
+      <publishTime>09/28/2013 06:15:52</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>06/06/2013 13:33:36</publishTime>
+      <publishTime>09/27/2013 23:03:12</publishTime>
     </File>
     <File Include="bin/Oracle.DataAccess.dll">
       <publishTime>07/12/2006 01:43:56</publishTime>
@@ -23,7 +23,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2013 15:26:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/27/2013 05:05:36</publishTime>
+      <publishTime>09/28/2013 06:15:54</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 [DataContract]
 public class ActivateVslaForDdRequest
@@ -37,4 +38,58 @@ public class VslaInfo
     public string VslaCode { get; set; }
     [DataMember]
     public string VslaName { get; set; }    
+}
+
+[DataContract]
+public class ActivateAdminUserResponse
+{
+    [DataMember]
+    public int ActivationStatus { get; set; }
+    [DataMember]
+    public List<VslaInfo> VslaList { get; set; }
+}
+
+[DataContract]
+public class ActivateAdminUserRequest
+{
+    [DataMember]
+    public string PhoneImei { get; set; }
+    [DataMember]
+    public string AdminUserName { get; set; }
+    [DataMember] 
+    public string SecurityToken { get; set; }
+    [DataMember]
+    public string AdminPassword { get; set; }    
+}
+
+[DataContract]
+public class DeliverVslaKitRequest
+{
+    [DataMember]
+    public string VslaCode { get; set; }
+    [DataMember]
+    public string VslaPhoneImei { get; set; }
+    [DataMember]
+    public string PhoneSerialNumber { get; set; }
+    [DataMember]
+    public string PhoneManufacturer { get; set; }
+    [DataMember]
+    public string PhoneModel { get; set; }
+    [DataMember]
+    public string AdminUserName { get; set; }
+    [DataMember]
+    public string SecurityToken { get; set; }    
+    [DataMember]
+    public string ReceivedBy { get; set; }
+    [DataMember]
+    public string RecipientRole { get; set; }
+    [DataMember]
+    public string DeliveryDate { get; set; }
+}
+
+[DataContract]
+public class DeliverVslaKitResponse
+{
+    [DataMember]
+    public int DeliveryStatus { get; set; }
 }

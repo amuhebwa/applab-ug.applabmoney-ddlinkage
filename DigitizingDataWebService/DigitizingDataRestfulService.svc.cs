@@ -62,9 +62,43 @@ namespace DigitizingDataWebService
             {
                 
             }
+            return response;
+        }
 
-            
+        public ActivateAdminUserResponse ActivateAdminUser(Stream jsonRequest)
+        {
+            ActivateAdminUserResponse response = new ActivateAdminUserResponse();
+            ActivateAdminUserRequest request = null;
+            StreamReader reader = null;
+            string jsonString = string.Empty;
+            response.ActivationStatus = -1;
 
+            try
+            {
+                List<VslaInfo> vslas = new List<VslaInfo>{
+                new VslaInfo { VslaCode = "V001", VslaId = 13, VslaName ="ABAKISA BAKHONYANA"},
+                new VslaInfo { VslaCode = "V002", VslaId = 21, VslaName ="IGANGA FARMERS"},
+                new VslaInfo { VslaCode = "V003", VslaId = 24, VslaName ="BUGIRI DAIRY FARMERS ASSOCIATION"},
+                new VslaInfo { VslaCode = "V004", VslaId = 35, VslaName ="AMEN A"},
+                new VslaInfo { VslaCode = "V007", VslaId = 39, VslaName ="CARE UGANDA STAFF"},
+                new VslaInfo { VslaCode = "V008", VslaId = 13, VslaName ="GRAMEEN STAFF"}
+            };
+
+                reader = new StreamReader(jsonRequest);
+                jsonString = reader.ReadToEnd();
+                request = JsonConvert.DeserializeObject<ActivateAdminUserRequest>(jsonString);
+                if (null != request)
+                {
+
+                    response.VslaList = vslas;
+                    response.ActivationStatus = 0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
             return response;
         }
 
@@ -91,5 +125,33 @@ namespace DigitizingDataWebService
 
             return vslas;
         }
+
+        public DeliverVslaKitResponse DeliverVslaKit(Stream jsonRequest)
+        {
+
+            DeliverVslaKitResponse response = new DeliverVslaKitResponse();
+            DeliverVslaKitRequest request = null;
+            StreamReader reader = null;
+            string jsonString = string.Empty;
+            response.DeliveryStatus = -1;
+
+            try
+            {
+                reader = new StreamReader(jsonRequest);
+                jsonString = reader.ReadToEnd();
+                request = JsonConvert.DeserializeObject<DeliverVslaKitRequest>(jsonString);
+                if (null != request && request.VslaPhoneImei.Trim().Length > 0)
+                {                    
+                    response.DeliveryStatus = Convert.ToInt32(request.VslaPhoneImei.Substring(0,3));
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return response;
+        }
+
     }
 }

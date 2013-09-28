@@ -27,13 +27,17 @@ namespace DigitizingDataWebService
         ActivateVslaForDdResponse ActivateVslaPhone(Stream jsonRequest);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "login")]
-        string ActivateAdminUser(string username, string securityToken);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "admin/activate")]
+        ActivateAdminUserResponse ActivateAdminUser(Stream jsonRequest);
 
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "admin/deliverkit")]
+        DeliverVslaKitResponse DeliverVslaKit(Stream jsonRequest);
+        
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "admin/activate/{username}/{securityToken}")]
         string ActivateAdminUserGet(string username, string securityToken);
-
+        
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "admin/getvslas/{regionId}")]
         List<VslaInfo> GetVslas(string regionId);
