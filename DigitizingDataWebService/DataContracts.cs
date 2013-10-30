@@ -7,6 +7,8 @@ public class ActivateVslaForDdRequest
     [DataMember]
     public string VslaCode { get; set; }
     [DataMember]
+    public string PassKey { get; set; }
+    [DataMember]
     public string PhoneImei { get; set; }
     [DataMember]
     public string SimImsi { get; set; }
@@ -118,4 +120,12 @@ public class CaptureGpsLocationResponse
 {
     [DataMember]
     public int StatusCode { get; set; }
+}
+
+
+[DataContract]
+public class SubmitVslaDataResponse
+{
+    [DataMember]
+    public int StatusCode { get; set; }    
 }

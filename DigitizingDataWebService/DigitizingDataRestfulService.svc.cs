@@ -7,35 +7,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using DigitizingDataBizLayer.Repositories;
+using DigitizingDataDomain.Model;
 
 namespace DigitizingDataWebService
-{
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "DigitizingDataRestfulService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select DigitizingDataRestfulService.svc or DigitizingDataRestfulService.svc.cs at the Solution Explorer and start debugging.
+{   
     public class DigitizingDataRestfulService : IDigitizingDataRestfulService
-    {
-        public string ActivateVslaForDigData(string vslaCode, string sourceImei)
-        {
-            return VslaUtils.ActivateVslaForDigitizingData(vslaCode, sourceImei);
-        }
-
-        public ActivateVslaForDdResponse ActivateVslaForDigitizingData(ActivateVslaForDdRequest request)
-        {
-            ActivateVslaForDdResponse response = new ActivateVslaForDdResponse();
-            if (request.PhoneImei.Length > 5)
-            {
-                response.PassKey = request.PhoneImei.Substring(0, 5);
-            }
-            else
-            {
-                response.PassKey = "12345";
-            }
-            response.IsActivated = true;
-            response.VslaName = request.VslaCode + "-" + request.NetworkOperatorName;
-
-            return response;
-        }
-
+    {        
         public ActivateVslaForDdResponse ActivateVslaPhone(Stream jsonRequest)
         {
             
@@ -52,11 +31,19 @@ namespace DigitizingDataWebService
                 request = JsonConvert.DeserializeObject<ActivateVslaForDdRequest>(jsonString);
                 if (null != request)
                 {
-                    response.VslaName = request.VslaCode + "- ACTIVATED";
-                    response.PassKey = request.PhoneImei.Substring(0,5);
+                    response.VslaName = request.VslaCode + "-ACTIVATED";
+                    response.PassKey = request.PassKey.Trim();
                     response.IsActivated = true;
-                }
-                
+
+                    VslaRepo vslaRepo = new VslaRepo();
+                    var vsla = vslaRepo.FindVslaByCode(request.VslaCode);
+                    if(vsla != null)
+                    {                        
+                        response.VslaName = vsla.VslaName;
+                        response.PassKey = request.PassKey.Trim();
+                        response.IsActivated = true;
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -75,7 +62,7 @@ namespace DigitizingDataWebService
 
             try
             {
-                List<VslaInfo> vslas = new List<VslaInfo>{
+                List<VslaInfo> vslas = new List<VslaInfo> {
                 new VslaInfo { VslaCode = "V001", VslaId = 13, VslaName ="ABAKISA BAKHONYANA"},
                 new VslaInfo { VslaCode = "V002", VslaId = 21, VslaName ="IGANGA FARMERS"},
                 new VslaInfo { VslaCode = "V003", VslaId = 24, VslaName ="BUGIRI DAIRY FARMERS ASSOCIATION"},
@@ -177,6 +164,53 @@ namespace DigitizingDataWebService
             {
 
             }
+            return response;
+        }
+
+        public SubmitVslaDataResponse SubmitVslaData(Stream jsonRequest)
+        {
+            SubmitVslaDataResponse response = new SubmitVslaDataResponse();
+            StreamReader reader = null;
+            string jsonString = string.Empty;
+            response.StatusCode = -1;
+            DataSubmission dataSubmission = null;
+            DataSubmissionRepo repo = null;
+
+            try
+            {
+                reader = new StreamReader(jsonRequest);
+                jsonString = reader.ReadToEnd();
+                dynamic obj = JObject.Parse(jsonString);
+                var headerInfo = obj.HeaderInfo;                
+
+                if (null != headerInfo)
+                {
+                    dataSubmission = new DataSubmission();
+                    dataSubmission.SourceVslaCode = headerInfo.VslaCode;
+                    dataSubmission.SourcePhoneImei = headerInfo.PhoneImei;
+                    dataSubmission.SourceNetworkOperator = headerInfo.SourceNetworkOperator;
+                    dataSubmission.SourceNetworkType = headerInfo.SourceNetworkType;
+                    dataSubmission.SubmissionTimestamp = DateTime.Now;
+                    dataSubmission.Data = jsonString;
+                }
+
+                if(dataSubmission != null)
+                {
+                    repo = new DataSubmissionRepo();
+                    //repo.FindAll();
+
+                    bool retVal = repo.Insert(dataSubmission);
+                    if(retVal)
+                    {
+                        response.StatusCode = 0;
+                    }
+                }
+            }
+            catch
+            {
+                response.StatusCode = -99;
+            }
+
             return response;
         }
 

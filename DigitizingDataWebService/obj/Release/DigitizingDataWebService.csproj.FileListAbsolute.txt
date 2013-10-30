@@ -5,3 +5,14 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\Dig
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\DigitizingDataWebService.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Release\DigitizingDataWebService.pdb
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Newtonsoft.Json.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataBizLayer.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataDomain.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\NHibernate.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\FluentNHibernate.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\HibernatingRhinos.Profiler.Appender.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Iesi.Collections.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataBizLayer.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataDomain.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\NHibernate.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\FluentNHibernate.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Iesi.Collections.xml
