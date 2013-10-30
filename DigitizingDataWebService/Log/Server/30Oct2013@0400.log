@@ -1,0 +1,114 @@
+[040412.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[040915.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[040944.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041043.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041247.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041400.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041420.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041420.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041506.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041540.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[041746.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[042348.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[042752.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__1(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 41
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 38
+[043222.AM] ~Object reference not set to an instance of an object.
+   at FluentNHibernate.Cfg.Db.ConnectionStringBuilder.FromConnectionStringWithKey(String connectionStringKey)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.<InitializeSessionFactory>b__0(MsSqlConnectionStringBuilder c) in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 54
+   at FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ConnectionString(Action`1 connectionStringExpression)
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
+[043721.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 64
+[044339.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 88
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
+[045043.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 108
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
+[045247.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 108
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
+[045654.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 108
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
