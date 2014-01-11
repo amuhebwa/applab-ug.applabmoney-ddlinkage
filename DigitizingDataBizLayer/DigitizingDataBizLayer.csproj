@@ -63,8 +63,16 @@
     <Compile Include="Data\OracleDatabaseHelper.cs" />
     <Compile Include="Helpers\AppGlobals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AttendanceRepo.cs" />
     <Compile Include="Repositories\DataSubmissionRepo.cs" />
+    <Compile Include="Repositories\LoanIssueRepo.cs" />
+    <Compile Include="Repositories\LoanRepaymentRepo.cs" />
+    <Compile Include="Repositories\MeetingRepo.cs" />
+    <Compile Include="Repositories\MemberRepo.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\SavingRepo.cs" />
+    <Compile Include="Repositories\VslaCycleRepo.cs" />
+    <Compile Include="Repositories\VslaDdActivationRepo.cs" />
     <Compile Include="Repositories\VslaRegionRepo.cs" />
     <Compile Include="Repositories\VslaRepo.cs" />
   </ItemGroup>

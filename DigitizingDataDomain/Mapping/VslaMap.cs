@@ -25,6 +25,30 @@ namespace DigitizingDataDomain.Mapping
                 .Column("RegionId")
                 .Nullable()
                 .ForeignKey("FK_Vsla_Region");
+
+            //Vsla is Referenced by VslaDdActivation
+            HasMany<VslaDdActivation>(r => r.VslaDdActivationList)
+                .KeyColumn("VslaId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
+
+            //Vsla is Referenced by Member
+            HasMany<Member>(r => r.MemberList)
+                .KeyColumn("VslaId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
+
+            //Vsla is Referenced by VslaCycle
+            HasMany<VslaCycle>(r => r.VslaCycleList)
+                .KeyColumn("VslaId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
         }
     }
 }

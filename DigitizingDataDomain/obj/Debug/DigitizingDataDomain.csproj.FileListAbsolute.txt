@@ -14,3 +14,4 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernat
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernate.Linq.xml
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.csprojResolveAssemblyReference.cache

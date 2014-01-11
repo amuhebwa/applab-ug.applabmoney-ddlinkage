@@ -15,7 +15,7 @@ namespace DigitizingDataBizLayer.Repositories
         {
             var vsla = (from v in SessionProxy.Query<Vsla>()
                            where v.VslaCode.ToUpper() == vslaCode.ToUpper()
-                           select v).FirstOrDefault();
+                           select v).FirstOrDefault();            
             return vsla;
         }
     }

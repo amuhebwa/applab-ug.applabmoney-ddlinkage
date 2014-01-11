@@ -1,4 +1,3 @@
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\obj\Debug\DigitizingDataBizLayer.csprojResolveAssemblyReference.cache
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\DigitizingDataBizLayer.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\DigitizingDataBizLayer.pdb
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\DigitizingDataDomain.dll
@@ -14,5 +13,6 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\Iesi.Co
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\NHibernate.xml
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\NHibernate.Linq.xml
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\bin\Debug\FluentNHibernate.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\obj\Debug\DigitizingDataBizLayer.csprojResolveAssemblyReference.cache
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\obj\Debug\DigitizingDataBizLayer.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataBizLayer\obj\Debug\DigitizingDataBizLayer.pdb

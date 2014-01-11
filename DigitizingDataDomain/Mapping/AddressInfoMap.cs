@@ -12,15 +12,15 @@ namespace DigitizingDataDomain.Mapping
     {
         public AddressInfoMap()
         {
-            Map(x => x.EMailAddress);
-            Map(x => x.FaxNo);
-            Map(x => x.PostalAddress);
-            Map(x => x.PostalCode);
-            Map(x => x.MobilePhoneNo1);
-            Map(x => x.MobilePhoneNo2);
-            Map(x => x.TelephoneNo1);
-            Map(x => x.TelephoneNo2);
-            Map(x => x.Town);
+            Map(x => x.EMailAddress).Length(50);
+            Map(x => x.FaxNo).Length(50);
+            Map(x => x.PostalAddress).Length(50);
+            Map(x => x.PostalCode).Length(50);
+            Map(x => x.MobilePhoneNo1).Length(50);
+            Map(x => x.MobilePhoneNo2).Length(50);
+            Map(x => x.TelephoneNo1).Length(50);
+            Map(x => x.TelephoneNo2).Length(50);
+            Map(x => x.Town).Length(50);
 
         }
     }

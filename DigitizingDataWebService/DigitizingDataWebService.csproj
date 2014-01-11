@@ -46,7 +46,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>.\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -72,6 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContracts.cs" />
+    <Compile Include="DataProcessingEngine.cs" />
+    <Compile Include="DataProcessingResult.cs" />
     <Compile Include="DigitizingDataRestfulService.svc.cs">
       <DependentUpon>DigitizingDataRestfulService.svc</DependentUpon>
     </Compile>
@@ -115,7 +116,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>34187</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:1126/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

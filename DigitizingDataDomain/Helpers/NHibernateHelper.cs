@@ -40,7 +40,7 @@ namespace DigitizingDataDomain.Helpers
                                   .ConnectionString(c=>c.FromConnectionStringWithKey("MSSQL2012"))
                                     .Dialect<MsSql2012Dialect>()
                     );
-
+                
                 cfg.Mappings(m => m
                     .FluentMappings
                         .AddFromAssemblyOf<NHibernateHelper>()

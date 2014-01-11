@@ -41,8 +41,8 @@ namespace DigitizingDataBizLayer.Repositories
         {
             try
             {
-                //ISession session = DigitizingDataDomain.Helpers.NHibernateHelper.OpenSessionForDdl();
-                //session = null;
+                ISession session = DigitizingDataDomain.Helpers.NHibernateHelper.OpenSessionForDdl();
+                session = null;
                 
                 var query =
                     from u in SessionProxy.Query<T>()
