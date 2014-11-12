@@ -46,7 +46,6 @@ namespace DigitizingDataWebService
                     //response.IsActivated = true;
 
                     VslaRepo vslaRepo = new VslaRepo();
-                    vslaRepo.FindAll();
                     var vsla = vslaRepo.FindVslaByCode(request.VslaCode);
                     if(vsla != null)
                     {          
@@ -64,10 +63,41 @@ namespace DigitizingDataWebService
                         ddActivation.ActivationDate = DateTime.Now;
 
                         VslaDdActivationRepo activationRepo = new VslaDdActivationRepo();
-                        if (activationRepo.Insert(ddActivation))
+
+                        //Search for the IMEI to see whether it is already activated
+                        //TODO: come back and refine this IMEI and Phone Identity problem
+                        var existingActivation = activationRepo.FindActivationByImei(ddActivation.PhoneImei01);
+                        if (null == existingActivation)
                         {
-                            response.IsActivated = true;
+                            if (activationRepo.Insert(ddActivation))
+                            {
+                                response.IsActivated = true;
+                            }
                         }
+                        else
+                        {
+                            //Just Declare that it is Activated
+                            if (null == existingActivation.Vsla)
+                            {
+                                //Try to Update: first setup the ActivationId to activate
+                                ddActivation.ActivationId = existingActivation.ActivationId;
+                                if(activationRepo.Update(ddActivation))
+                                {
+                                    response.IsActivated = true;
+                                }
+                            }
+                            //Otherwise deny the activation if the VslaId is for a different VSLA
+                            else if(null != existingActivation.Vsla && existingActivation.Vsla.VslaId == vsla.VslaId)
+                            {
+                                response.IsActivated = true;                                
+                            }
+                            else
+                            {
+                                //If the VslaId of the existing Activation by this IMEI is different from the new VslaId derived from the submitting VSLACODE
+                                response.IsActivated = false;
+                            }
+                        }
+                        
                     }
                 }                
             }
@@ -217,6 +247,7 @@ namespace DigitizingDataWebService
                 //Data Item: this will be an Enum
                 string dataItem = string.Empty;
 
+                //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE","DataItem":"cycleInfo"}
                 if (null != headerInfo)
                 {
                     dataSubmission = new DataSubmission();
@@ -293,6 +324,26 @@ namespace DigitizingDataWebService
 
                             //Pass the dynamic obj retrieved from the JSON string representing a LoanIssues array
                             retValDataProcessed = ProcessLoanIssuesCollection(loanIssuesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                        }
+                        else if (dataItem.ToUpper() == "REPAYMENTS")
+                        {
+                            //Retrieve the Information about the REPAYMENTS and populate it into the database
+                            var loanRepaymentsObj = obj.Repayments;
+                            var recordCount = Convert.ToInt32(obj.MembersCount);
+                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                            //Pass the dynamic obj retrieved from the JSON string representing a LoanRepayments array
+                            retValDataProcessed = ProcessLoanRepaymentsCollection(loanRepaymentsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                        }
+                        else if(dataItem.ToUpper() == "FINES")
+                        {
+                            //Retrieve the Information about the FINES and populate it into the database
+                            var finesObj = obj.Fines;
+                            var recordCount = Convert.ToInt32(obj.MembersCount);
+                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                            //Pass the dynamic obj retrieved from the JSON string representing a Fines array
+                            retValDataProcessed = ProcessFinesCollection(finesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
                         }
 
                         //return the response code
@@ -485,6 +536,9 @@ namespace DigitizingDataWebService
                 member.OtherNames = Convert.ToString(memberObj.OtherNames);
                 member.PhoneNo = Convert.ToString(memberObj.PhoneNo);
                 member.Surname = Convert.ToString(memberObj.Surname);
+
+                //TODO: Add Mid-Cycle Data to the Members Object
+                //Total Savings, Outstanding Loan, Outstanding Fine
 
                 //Save the changes 
                 bool retValSave = false;
@@ -1016,7 +1070,542 @@ namespace DigitizingDataWebService
                 return -99;
             }
         }
+
+        private int ProcessLoanRepaymentsCollection(dynamic loanRepaymentsObj, int recordCount, string vslaCode, int meetingIdEx)
+        {
+            //"MeetingId":9,"MembersCount":10,"Repayments":[{"RepaymentId":23,"MemberId":6,"LoanId":39,"Amount":22000,"BalanceBefore":187000,"BalanceAfter":165000,"InterestAmount":16500,"RolloverAmount":181500,"Comments":"","LastDateDue":"2014-01-23","NextDateDue":"2014-02-06"},
+            if (loanRepaymentsObj == null)
+            {
+                return -1;
+            }
+
+            VslaRepo vslaRepo = null;
+            MeetingRepo meetingRepo = null;
+
+            int processedCount = 0;
+
+            try
+            {
+                //Otherwise, continue
+                vslaRepo = new VslaRepo();
+                meetingRepo = new MeetingRepo();
+
+                //Retrieve the Target VSLA
+                Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
+                if (targetVsla == null)
+                {
+                    return -2; //Target VSLA Does not exist
+                }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
+                }
+
+                foreach (var loanRepaymentObj in loanRepaymentsObj)
+                {
+                    var retVal = ProcessLoanRepaymentData(loanRepaymentObj, targetMeeting, targetVsla);
+                    if (retVal == 0)
+                    {
+                        processedCount++;
+                    }
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return -99;
+            }
+        }
+
+        private int ProcessLoanRepaymentData(dynamic loanRepaymentObj, Meeting targetMeeting, Vsla targetVsla)
+        {
+            //"MeetingId":9,"MembersCount":10,"Repayments":[{"RepaymentId":23,"MemberId":6,"LoanId":39,"Amount":22000,"BalanceBefore":187000,"BalanceAfter":165000,"InterestAmount":16500,"RolloverAmount":181500,"Comments":"","LastDateDue":"2014-01-23","NextDateDue":"2014-02-06"},
+            LoanIssueRepo loanIssueRepo = null;
+            LoanRepaymentRepo loanRepaymentRepo = null;
+            MemberRepo memberRepo = null;
+            Member targetMember = null;
+            LoanIssue targetLoanIssue = null;
+
+            try
+            {
+                if (loanRepaymentObj == null)
+                {
+                    return -1;
+                }
+
+                if (null == targetMeeting || null == targetVsla)
+                {
+                    return -2; //Target Meeting or VSLA is missing
+                }
+
+                //Get the target member
+                memberRepo = new MemberRepo();
+                targetMember = memberRepo.FindMemberByIdEx(targetVsla.VslaId, Convert.ToInt32(loanRepaymentObj.MemberId));
+                if (null == targetMember)
+                {
+                    return -3; //Target Member not Found
+                }
+
+                //Get the target Loan: By the way here with the LoanId, the Member, Cycle & VSLA details can be found on the Loan Object                
+                loanIssueRepo = new LoanIssueRepo();
+                targetLoanIssue = loanIssueRepo.FindLoanIssueByMemberAndLoadIdEx(targetMember.MemberId, Convert.ToInt32(loanRepaymentObj.LoanId));
+                if (null == targetLoanIssue)
+                {
+                    return -4; //Target Loan not Found
+                }
+
+                //Check whether this record exists
+                loanRepaymentRepo = new LoanRepaymentRepo();
+                LoanRepayment loanRepayment = null;
+
+                var targetLoanRepayment = loanRepaymentRepo.FindLoanRepaymentByIdEx(targetMeeting.MeetingId, Convert.ToInt32(loanRepaymentObj.RepaymentId));
+                if (targetLoanRepayment == null)
+                {
+                    loanRepayment = new LoanRepayment();
+                }
+                else
+                {
+                    loanRepayment = targetLoanRepayment;
+                }
+                loanRepayment.Meeting = targetMeeting;
+                loanRepayment.Member = targetMember;
+                loanRepayment.LoanIssue = targetLoanIssue;
+                loanRepayment.RepaymentIdEx = Convert.ToInt32(loanRepaymentObj.RepaymentId);
+                loanRepayment.Amount = Convert.ToDouble(loanRepaymentObj.Amount);
+                loanRepayment.BalanceBefore = Convert.ToDouble(loanRepaymentObj.BalanceBefore);
+                loanRepayment.BalanceAfter = Convert.ToDouble(loanRepaymentObj.BalanceAfter);
+                loanRepayment.InterestAmount = Convert.ToDouble(loanRepaymentObj.InterestAmount);
+                loanRepayment.RolloverAmount = Convert.ToDouble(loanRepaymentObj.RolloverAmount);
+                DateTime theDate = DateTime.Now;
+                var strLastDateDue = Convert.ToString(loanRepaymentObj.LastDateDue);
+                if (DateTime.TryParse(strLastDateDue, out theDate))
+                {
+                    loanRepayment.LastDateDue = theDate;
+                }
+
+                theDate = DateTime.Now;
+                var strNextDateDue = Convert.ToString(loanRepaymentObj.NextDateDue);
+                if (DateTime.TryParse(strNextDateDue, out theDate))
+                {
+                    loanRepayment.NextDateDue = theDate;
+                }
+                
+                loanRepayment.Comments = Convert.ToString(loanRepaymentObj.Comments);
+                
+                //Save the changes 
+                bool retValSave = false;
+                if (loanRepayment.RepaymentId > 0)
+                {
+                    retValSave = loanRepaymentRepo.Update(loanRepayment);
+                }
+                else
+                {
+                    retValSave = loanRepaymentRepo.Insert(loanRepayment);
+                }
+
+                if (retValSave)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                return -99;
+            }
+        }
+
+
+        private int ProcessFinesCollection(dynamic finesObj, int recordCount, string vslaCode, int meetingIdEx)
+        {
+            
+            if (finesObj == null)
+            {
+                return -1;
+            }
+
+            VslaRepo vslaRepo = null;
+            MeetingRepo meetingRepo = null;
+
+            int processedCount = 0;
+
+            try
+            {
+                //Otherwise, continue
+                vslaRepo = new VslaRepo();
+                meetingRepo = new MeetingRepo();
+
+                //Retrieve the Target VSLA
+                Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
+                if (targetVsla == null)
+                {
+                    return -2; //Target VSLA Does not exist
+                }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
+                }
+
+                foreach (var fineObj in finesObj)
+                {
+                    var retVal = ProcessFineData(finesObj, targetMeeting, targetVsla);
+                    if (retVal == 0)
+                    {
+                        processedCount++;
+                    }
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return -99;
+            }
+        }
+
+        private int ProcessFineData(dynamic fineObj, Meeting targetMeeting, Vsla targetVsla)
+        {
+            
+            FineRepo fineRepo = null;
+            MemberRepo memberRepo = null;
+            Member targetMember = null;
+            MeetingRepo meetingRepo = null;
+
+            try
+            {
+                meetingRepo = new MeetingRepo();
+
+                if (fineObj == null)
+                {
+                    return -1;
+                }
+
+                if (null == targetMeeting || null == targetVsla)
+                {
+                    return -2; //Target Meeting or VSLA is missing
+                }
+
+                //Get the target member
+                memberRepo = new MemberRepo();
+                targetMember = memberRepo.FindMemberByIdEx(targetVsla.VslaId, Convert.ToInt32(fineObj.MemberId));
+                if (null == targetMember)
+                {
+                    return -3; //Target Member not Found
+                }
+
+                //Otherwise, continue                
+                fineRepo = new FineRepo();
+                Fine fine = null;
+
+
+                //Check whether this record exists: Use the IssuedInMeetingId
+                //var targetFine = fineRepo.FindFineByIdEx(targetMeeting.MeetingId, Convert.ToInt32(fineObj.FineId));
+                var targetFine = fineRepo.FindFineByIdEx(Convert.ToInt32(fineObj.IssuedInMeetingId), Convert.ToInt32(fineObj.FineId));
+                if (targetFine == null)
+                {
+                    fine = new Fine();
+                }
+                else
+                {
+                    fine = targetFine;
+                }
+                fine.IssuedInMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(fineObj.IssuedInMeetingId));
+                fine.PaidInMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(fineObj.PaidInMeetingId));
+                fine.Member = targetMember;
+                fine.FineIdEx = Convert.ToInt32(fineObj.FineId);
+                fine.Amount = Convert.ToDouble(fineObj.Amount);
+                DateTime theDate = DateTime.Now;
+                var strExpectedDate = Convert.ToString(fineObj.ExpectedDate);
+                if (DateTime.TryParse(strExpectedDate, out theDate))
+                {
+                    fine.ExpectedDate = theDate;
+                }
+
+                theDate = DateTime.Now;
+                var strDateCleared = Convert.ToString(fineObj.DateCleared);
+                if (DateTime.TryParse(strDateCleared, out theDate))
+                {
+                    fine.DateCleared = theDate;
+                }
+                //fine.FineTypeName = Convert.ToString(fineObj.FineTypeName);
+
+                //Ensure that 1 is interpreted as TRUE
+                int isClearedFlg = Convert.ToInt32(fineObj.IsCleared);
+                fine.IsCleared = (isClearedFlg == 1) ? true : false;
+
+
+                //Save the changes 
+                bool retValSave = false;
+                if (fine.FineId > 0)
+                {
+                    retValSave = fineRepo.Update(fine);
+                }
+                else
+                {
+                    retValSave = fineRepo.Insert(fine);
+                }
+
+                if (retValSave)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                return -99;
+            }
+        }
+
+
+        //This is an internal procedure that will be used to reprocess data submissions within the database
+        //From the logs
+        public SubmitVslaDataResponse ReProcessSubmissions(string username, string securityToken)
+        {
+            SubmitVslaDataResponse response = new SubmitVslaDataResponse();            
+            string jsonString = string.Empty;
+            response.StatusCode = -1;
+            DataSubmission dataSubmission = null;
+            DataSubmissionRepo repo = null;
+
+            try
+            {
+                //Authentication
+                string computedToken = DateTime.Today.ToString("yyMM");
+                if(username != "SYSTEM" || securityToken != computedToken)
+                {
+                    response.StatusCode = -11;                    
+                    return response;
+                }
+                //Retrieve the Data Submissions existing in the database
+                //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Retrieving Data from Database...");
+                repo = new DataSubmissionRepo();
+                List<DataSubmission> dataSubmissions = null;
+                dataSubmissions = repo.RetrieveSubmissions();
+
+                //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Looping through the returned data...");
+                int failedResubmissions = 0;
+                foreach( var submission in dataSubmissions)
+                {
+                    try
+                    {
+                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Processing submission: retrieving JSON string...");
+                        jsonString = submission.Data;   //Get the raw Submission JSON request
+                        dynamic obj = JObject.Parse(jsonString);
+
+                        if (obj == null)
+                        {
+                            failedResubmissions++;
+                            continue;
+                        }
+                        var headerInfo = obj.HeaderInfo;
+
+                        //Data Item: this will be an Enum
+                        string dataItem = string.Empty;
+
+                        //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE","DataItem":"cycleInfo"}
+                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Processing the HeaderInfo...");
+                        if (null != headerInfo)
+                        {
+                            dataSubmission = new DataSubmission();
+                            dataSubmission.SourceVslaCode = Convert.ToString(headerInfo.VslaCode);
+                            dataSubmission.SourcePhoneImei = Convert.ToString(headerInfo.PhoneImei);
+                            dataSubmission.SourceNetworkOperator = Convert.ToString(headerInfo.NetworkOperator);
+                            dataSubmission.SourceNetworkType = Convert.ToString(headerInfo.NetworkType);
+                            dataSubmission.SubmissionTimestamp = DateTime.Now;
+                            dataSubmission.Data = jsonString;
+                            dataItem = Convert.ToString(headerInfo.DataItem);
+                        }
+
+                        //If DataItem is null then skip
+                        if(string.IsNullOrWhiteSpace(dataItem))
+                        {
+                            //Skip this Resubmission
+                            continue;
+                        }
+                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "JSON String: " + Environment.NewLine + jsonString);
+
+                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Doing the Reprocessing...");
+                        if (dataSubmission != null)
+                        {
+                            //Dont save the raw data again, since this is a resubmission
+                            //Process the data
+                            int retValDataProcessed = -1;
+
+                            //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "About to process Data Item: [" + dataItem + "...");
+                            if (dataItem.ToUpper() == "CYCLEINFO")
+                            {
+                                //Retrieve the Information about the VSLA CYCLE and populate it into the database
+                                var vslaCycleData = obj.VslaCycle;
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                retValDataProcessed = ProcessVslaCycleData(vslaCycleData, dataSubmission.SourceVslaCode);
+                            }
+                            else if (dataItem.ToUpper() == "MEETINGDETAILS")
+                            {
+                                //Retrieve the Information about the MEETING and populate it into the database
+                                var meetingData = obj.Meeting;
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                retValDataProcessed = ProcessMeetingData(meetingData, dataSubmission.SourceVslaCode);
+                            }
+                            else if (dataItem.ToUpper() == "MEMBERS")
+                            {
+                                //Retrieve the Information about the MEETING and populate it into the database
+                                var membersObj = obj.Members;
+                                var recordCount = Convert.ToInt32(obj.MemberCount);
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                retValDataProcessed = ProcessMembersCollection(membersObj, recordCount, dataSubmission.SourceVslaCode);
+                            }
+                            else if (dataItem.ToUpper() == "ATTENDANCE")
+                            {
+                                //Retrieve the Information about the MEETING and populate it into the database
+                                var attendancesObj = obj.Attendances;
+                                var recordCount = Convert.ToInt32(obj.MembersCount);
+                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                retValDataProcessed = ProcessAttendancesCollection(attendancesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                            }
+                            else if (dataItem.ToUpper() == "SAVINGS")
+                            {
+                                //Retrieve the Information about the SAVINGS and populate it into the database
+                                var savingsObj = obj.Savings;
+                                var recordCount = Convert.ToInt32(obj.MembersCount);
+                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                retValDataProcessed = ProcessSavingsCollection(savingsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                            }
+                            else if (dataItem.ToUpper() == "LOANS")
+                            {
+                                //Retrieve the Information about the LOANS and populate it into the database
+                                var loanIssuesObj = obj.Loans;
+                                var recordCount = Convert.ToInt32(obj.MembersCount);
+                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a LoanIssues array
+                                retValDataProcessed = ProcessLoanIssuesCollection(loanIssuesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                            }
+                            else if (dataItem.ToUpper() == "REPAYMENTS")
+                            {
+                                //Retrieve the Information about the REPAYMENTS and populate it into the database
+                                var loanRepaymentsObj = obj.Repayments;
+                                var recordCount = Convert.ToInt32(obj.MembersCount);
+                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a LoanRepayments array
+                                retValDataProcessed = ProcessLoanRepaymentsCollection(loanRepaymentsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                            }
+
+                            //return the response code
+                            response.StatusCode = retValDataProcessed;
+                        }
+                    }
+                    catch(Exception exReprocess)
+                    {
+                        DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("Errors", exReprocess.Message + Environment.NewLine + exReprocess.StackTrace);
+                        failedResubmissions++;
+                    }
+                }                
+            }
+            catch(Exception ex)
+            {
+                DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("Errors", ex.Message + Environment.NewLine + ex.StackTrace);
+                response.StatusCode = -99;
+            }
+
+            return response;
+        }
+
+        public HealthStatsResponse GetHealthStats(string username, string securityToken)
+        {
+            HealthStatsResponse response = new HealthStatsResponse();
+            VslaDdActivationRepo ddActivationRepo = null;
+            VslaRepo vslaRepo = null;
+            VslaActivationStats vslaActivationStats = null;
+            VslaDataSubmissionStats vslaDataSubmissionStats = null;
+            DataSubmissionRepo dataSubmissionRepo = null;
+            DataSubmission dataSubmission = null;
+
+            string jsonString = string.Empty;
+            response.StatusCode = -1;
+
+            //Authentication
+            string computedToken = DateTime.Today.ToString("yyMM");
+            if (username != "SYSTEM" || securityToken != computedToken)
+            {
+                //Failed Authentication
+                response.StatusCode = -11;
+                return response;
+            }
+
+            try
+            {
+                //VSLA Activations Stats
+                vslaActivationStats = new VslaActivationStats();
+                vslaRepo = new VslaRepo();
+                var registeredVslas = vslaRepo.FindAll();
+                vslaActivationStats.CountOfRegisteredVslas = registeredVslas.Count();
+
+                ddActivationRepo = new VslaDdActivationRepo();
+                var activatedVslas = ddActivationRepo.FindAll();
+                vslaActivationStats.CountOfActivatedVslas = activatedVslas.Count();
+
+                //Get the Most Recent Activation
+                if (activatedVslas.Count() > 0)
+                {
+                    var orderedActivations = activatedVslas.OrderByDescending(a => a.ActivationId);
+                    var recentDdVslaActivation = orderedActivations.ElementAt(0);
+
+                    if(recentDdVslaActivation != null && recentDdVslaActivation.Vsla != null)
+                    {
+                        var theVsla = vslaRepo.FindVslaById(recentDdVslaActivation.Vsla.VslaId);
+                        vslaActivationStats.LastActivatedVsla = theVsla.VslaCodeAndName;
+                        vslaActivationStats.LastActivationTimestamp = recentDdVslaActivation.ActivationDate.GetValueOrDefault();
+                    }
+                }
+
+
+                //Data Submission Stats
+                vslaDataSubmissionStats = new VslaDataSubmissionStats();
+                dataSubmissionRepo = new DataSubmissionRepo();
+                //TODO: Change this to Server Side Query instead of pulling all the records to the client
+                vslaDataSubmissionStats.CountOfSubmittedMeetings = dataSubmissionRepo.RetrieveSubmissions().Count();
+                var mostRecentSubmission = dataSubmissionRepo.GetMostRecentDataSubmission();
+                if(null != mostRecentSubmission)
+                {
+                    vslaDataSubmissionStats.LastSubmissionTimestamp = mostRecentSubmission.SubmissionTimestamp.GetValueOrDefault();
+                    vslaDataSubmissionStats.LastSubmittedVsla = mostRecentSubmission.SourceVslaCode;
+                }
+
+                response.VslaDataSubmissionStats = vslaDataSubmissionStats;
+                response.VslaActivationStats = vslaActivationStats;
+
+                //Return final status code
+                response.StatusCode = 0;
+            }
+            catch
+            {
+                //System Error
+                response.StatusCode = -99;
+            }
+
+            return response;
+        }
     }
 }
-
-//{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE","DataItem":"loans"},"MeetingId":9,"MembersCount":1,"Loans":[{"MemberId":15,"LoanId":28,"LoanNo":112,"PrincipalAmount":30000,"InterestAmount":3000,"TotalRepaid":0,"LoanBalance":33000,"DateDue":"2014-01-02","Comments":null,"DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]}"

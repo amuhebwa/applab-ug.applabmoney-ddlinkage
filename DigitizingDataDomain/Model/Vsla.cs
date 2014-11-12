@@ -48,5 +48,11 @@ namespace DigitizingDataDomain.Model
                 return new AggregationBindingList<VslaCycle>(VslaCycleList);
             }
         }
+
+        //Display both the VSLA Code and VSLA Name
+        public virtual string VslaCodeAndName
+        {
+            get { return VslaCode + ": " + VslaName; }
+        }
     }
 }

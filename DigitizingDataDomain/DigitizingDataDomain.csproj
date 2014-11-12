@@ -71,6 +71,7 @@
     <Compile Include="Mapping\AdminUserMap.cs" />
     <Compile Include="Mapping\AttendanceMap.cs" />
     <Compile Include="Mapping\DataSubmissionMap.cs" />
+    <Compile Include="Mapping\FineMap.cs" />
     <Compile Include="Mapping\LoanIssueMap.cs" />
     <Compile Include="Mapping\LoanRepaymentMap.cs" />
     <Compile Include="Mapping\MeetingMap.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Model\AdminUser.cs" />
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\DataSubmission.cs" />
+    <Compile Include="Model\Fine.cs" />
     <Compile Include="Model\LoanIssue.cs" />
     <Compile Include="Model\LoanRepayment.cs" />
     <Compile Include="Model\Meeting.cs" />

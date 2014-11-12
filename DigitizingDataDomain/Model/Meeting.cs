@@ -70,6 +70,26 @@ namespace DigitizingDataDomain.Model
             }
         }
 
+        //Fines Issued
+        public virtual IList<Fine> FineIssuedList { get; set; }
+        public virtual AggregationBindingList<Fine> FinesIssued
+        {
+            get
+            {
+                return new AggregationBindingList<Fine>(FineIssuedList);
+            }
+        }
+
+        //Fines Paid
+        public virtual IList<Fine> FinePaidList { get; set; }
+        public virtual AggregationBindingList<Fine> FinesPaid
+        {
+            get
+            {
+                return new AggregationBindingList<Fine>(FinePaidList);
+            }
+        }
+
     }
 }
 

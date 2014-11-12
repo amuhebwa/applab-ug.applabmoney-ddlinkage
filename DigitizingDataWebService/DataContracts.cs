@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System;
 
 [DataContract]
 public class ActivateVslaForDdRequest
@@ -128,4 +129,44 @@ public class SubmitVslaDataResponse
 {
     [DataMember]
     public int StatusCode { get; set; }    
+}
+
+[DataContract]
+public class VslaActivationStats
+{
+    [DataMember]
+    public int CountOfRegisteredVslas { get; set; }
+    [DataMember]
+    public int CountOfActivatedVslas { get; set; }
+    [DataMember]
+    public string LastActivatedVsla { get; set; }
+    [DataMember]
+    public DateTime LastActivationTimestamp { get; set; }
+}
+
+[DataContract]
+public class VslaDataSubmissionStats
+{
+    [DataMember]
+    public int CountOfSubmittedMeetings { get; set; }
+    [DataMember]
+    public string LastSubmittedVsla { get; set; }
+    [DataMember]
+    public DateTime LastSubmissionTimestamp { get; set; }
+}
+
+[DataContract]
+public class HealthStatsResponse
+{
+    [DataMember]
+    public int StatusCode { get; set; } 
+    
+    //VSLA Activations Stats
+    [DataMember]
+    public VslaActivationStats VslaActivationStats { get; set; }
+
+
+    //Submissions Stats
+    [DataMember]
+    public VslaDataSubmissionStats VslaDataSubmissionStats { get; set; }
 }

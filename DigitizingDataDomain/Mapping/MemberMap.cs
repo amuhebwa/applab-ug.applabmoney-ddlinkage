@@ -63,6 +63,14 @@ namespace DigitizingDataDomain.Mapping
                 .Cascade.SaveUpdate()
                 .LazyLoad();
 
+            //Referenced by FineIssues
+            HasMany<Fine>(r => r.FineList)
+                .KeyColumn("MemberId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
+
         }
     }
 }

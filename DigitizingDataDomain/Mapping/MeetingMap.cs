@@ -67,6 +67,22 @@ namespace DigitizingDataDomain.Mapping
                 .AsBag()    //Use Bag instead of List to avoid index updating issues                
                 .Cascade.SaveUpdate()
                 .LazyLoad();
+
+            //Referenced by FinesIssued
+            HasMany<Fine>(r => r.FineIssuedList)
+                .KeyColumn("MeetingId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
+
+            //Referenced by FinesPaid
+            HasMany<Fine>(r => r.FinePaidList)
+                .KeyColumn("MeetingId")
+                .Inverse()
+                .AsBag()    //Use Bag instead of List to avoid index updating issues                
+                .Cascade.SaveUpdate()
+                .LazyLoad();
         }
     }
 }

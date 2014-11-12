@@ -1,0 +1,7 @@
+[144409.PM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->The following types may not be used as proxies:
+DigitizingDataDomain.Model.Vsla: method get_VslaCodeAndName should be 'public/protected virtual' or 'protected internal virtual'
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 49

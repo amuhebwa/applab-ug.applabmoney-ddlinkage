@@ -18,7 +18,8 @@ namespace DigitizingDataDomain.Mapping
             Map(a => a.BalanceAfter).CustomSqlType("decimal(18,2)");
             Map(a => a.BalanceBefore).CustomSqlType("decimal(18,2)");
             Map(a => a.Comments).Length(50);
-            Map(a => a.DateDue);
+            Map(a => a.LastDateDue);
+            Map(a => a.NextDateDue);
             Map(a => a.InterestAmount).CustomSqlType("decimal(18,2)");
             Map(a => a.RolloverAmount).CustomSqlType("decimal(18,2)");
 

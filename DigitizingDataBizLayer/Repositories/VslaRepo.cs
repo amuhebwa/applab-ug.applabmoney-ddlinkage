@@ -18,5 +18,13 @@ namespace DigitizingDataBizLayer.Repositories
                            select v).FirstOrDefault();            
             return vsla;
         }
+
+        public Vsla FindVslaById(int vslaId)
+        {
+            var vsla = (from v in SessionProxy.Query<Vsla>()
+                        where v.VslaId == vslaId
+                        select v).FirstOrDefault();
+            return vsla;
+        }
     }
 }

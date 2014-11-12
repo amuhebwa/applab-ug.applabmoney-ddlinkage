@@ -11,5 +11,20 @@ namespace DigitizingDataBizLayer.Repositories
 {
     public class DataSubmissionRepo : RepositoryBase<DataSubmission>
     {
+        public List<DataSubmission> RetrieveSubmissions()
+        {
+            var submissions = (from s in SessionProxy.Query<DataSubmission>()
+                               orderby s.SubmissionId ascending
+                               select s).ToList();
+            return submissions;
+        }
+
+        public DataSubmission GetMostRecentDataSubmission()
+        {
+            var dataSubmission = (from s in SessionProxy.Query<DataSubmission>()
+                              orderby s.SubmissionId descending
+                              select s).First();            
+            return dataSubmission;
+        }        
     }
 }

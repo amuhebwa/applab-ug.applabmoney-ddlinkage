@@ -18,7 +18,8 @@ namespace DigitizingDataDomain.Model
         public virtual double BalanceAfter { get; set; }
         public virtual double InterestAmount { get; set; }
         public virtual double RolloverAmount { get; set; }
-        public virtual DateTime? DateDue { get; set; }
+        public virtual DateTime? LastDateDue { get; set; }
+        public virtual DateTime? NextDateDue { get; set; }
         public virtual string Comments { get; set; }
     }
 }

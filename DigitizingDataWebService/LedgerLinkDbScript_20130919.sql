@@ -7,6 +7,22 @@ alter table [Attendance]  drop constraint FK_Attendance_Meeting
 alter table [Attendance]  drop constraint FK_Attendance_Member
 
 
+    if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FK_Fine_Meeting_Issued]') AND parent_object_id = OBJECT_ID('[Fine]'))
+alter table [Fine]  drop constraint FK_Fine_Meeting_Issued
+
+
+    if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FK_Fine_Meeting_Paid]') AND parent_object_id = OBJECT_ID('[Fine]'))
+alter table [Fine]  drop constraint FK_Fine_Meeting_Paid
+
+
+    if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FK_Fine_Member]') AND parent_object_id = OBJECT_ID('[Fine]'))
+alter table [Fine]  drop constraint FK_Fine_Member
+
+
+    if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FKA66C912E75B3F070]') AND parent_object_id = OBJECT_ID('[Fine]'))
+alter table [Fine]  drop constraint FKA66C912E75B3F070
+
+
     if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FK_LoanIssue_Meeting]') AND parent_object_id = OBJECT_ID('[LoanIssue]'))
 alter table [LoanIssue]  drop constraint FK_LoanIssue_Meeting
 
@@ -60,6 +76,8 @@ alter table [Vsla]  drop constraint FK_Vsla_Region
     if exists (select * from dbo.sysobjects where id = object_id(N'[Attendance]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) drop table [Attendance]
 
     if exists (select * from dbo.sysobjects where id = object_id(N'[DataSubmission]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) drop table [DataSubmission]
+
+    if exists (select * from dbo.sysobjects where id = object_id(N'[Fine]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) drop table [Fine]
 
     if exists (select * from dbo.sysobjects where id = object_id(N'[LoanIssue]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) drop table [LoanIssue]
 
@@ -123,20 +141,34 @@ alter table [Vsla]  drop constraint FK_Vsla_Region
        primary key (SubmissionId)
     )
 
+    create table [Fine] (
+        FineId INT IDENTITY NOT NULL,
+       FineIdEx INT null,
+       Amount decimal(18,2) null,
+       ExpectedDate DATETIME null,
+       IsCleared BIT null,
+       DateCleared DATETIME null,
+       IssuedInMeetingId INT null,
+       PaidInMeetingId INT null,
+       MemberId INT null,
+       MeetingId INT null,
+       primary key (FineId)
+    )
+
     create table [LoanIssue] (
         LoanId INT IDENTITY NOT NULL,
        LoanIdEx INT null,
        LoanNo INT null,
        PrincipalAmount decimal(18,2) null,
-	   InterestAmount decimal(18,2) null,
+       InterestAmount decimal(18,2) null,
        Balance decimal(18,2) null,
        Comments NVARCHAR(50) null,
        DateCleared DATETIME null,
        DateDue DATETIME null,
        IsCleared BIT null,
        IsDefaulted BIT null,
-	   IsWrittenOff BIT null,
        TotalRepaid decimal(18,2) null,
+       IsWrittenOff BIT null,
        MeetingId INT null,
        MemberId INT null,
        primary key (LoanId)
@@ -149,7 +181,8 @@ alter table [Vsla]  drop constraint FK_Vsla_Region
        BalanceAfter decimal(18,2) null,
        BalanceBefore decimal(18,2) null,
        Comments NVARCHAR(50) null,
-       DateDue DATETIME null,
+       LastDateDue DATETIME null,
+       NextDateDue DATETIME null,
        InterestAmount decimal(18,2) null,
        RolloverAmount decimal(18,2) null,
        MeetingId INT null,
@@ -172,10 +205,10 @@ alter table [Vsla]  drop constraint FK_Vsla_Region
        IsCurrent BIT null,
        IsDataSent BIT null,
        MeetingDate DATETIME null,
-	   SumOfSavings decimal(18,2) null,
-	   SumOfLoanIssues decimal(18,2) null,
-	   SumOfLoanRepayments decimal(18,2) null,
-	   CountOfMembersPresent int null,
+       CountOfMembersPresent INT null,
+       SumOfSavings decimal(18,2) null,
+       SumOfLoanIssues decimal(18,2) null,
+       SumOfLoanRepayments decimal(18,2) null,
        CycleId INT null,
        primary key (MeetingId)
     )
@@ -274,6 +307,26 @@ alter table [Vsla]  drop constraint FK_Vsla_Region
         add constraint FK_Attendance_Member 
         foreign key (MemberId) 
         references [Member]
+
+    alter table [Fine] 
+        add constraint FK_Fine_Meeting_Issued 
+        foreign key (IssuedInMeetingId) 
+        references [Meeting]
+
+    alter table [Fine] 
+        add constraint FK_Fine_Meeting_Paid 
+        foreign key (PaidInMeetingId) 
+        references [Meeting]
+
+    alter table [Fine] 
+        add constraint FK_Fine_Member 
+        foreign key (MemberId) 
+        references [Member]
+
+    alter table [Fine] 
+        add constraint FKA66C912E75B3F070 
+        foreign key (MeetingId) 
+        references [Meeting]
 
     alter table [LoanIssue] 
         add constraint FK_LoanIssue_Meeting 

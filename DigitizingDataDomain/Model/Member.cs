@@ -63,6 +63,16 @@ namespace DigitizingDataDomain.Model
                 return new AggregationBindingList<Saving>(SavingList);
             }
         }
+
+        //Fines
+        public virtual IList<Fine> FineList { get; set; }
+        public virtual AggregationBindingList<Fine> Fines
+        {
+            get
+            {
+                return new AggregationBindingList<Fine>(FineList);
+            }
+        }
     }
 }
 

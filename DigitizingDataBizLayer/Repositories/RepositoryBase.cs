@@ -41,8 +41,10 @@ namespace DigitizingDataBizLayer.Repositories
         {
             try
             {
-                ISession session = DigitizingDataDomain.Helpers.NHibernateHelper.OpenSessionForDdl();
-                session = null;
+                //OMM: I use this dirty hack to generate DDL statement then comment out the two lines of code
+                //Risky Affair: If you forget to comment them out you will overwrite the database.
+                //ISession session = DigitizingDataDomain.Helpers.NHibernateHelper.OpenSessionForDdl();
+                //session = null;
                 
                 var query =
                     from u in SessionProxy.Query<T>()
@@ -79,6 +81,27 @@ namespace DigitizingDataBizLayer.Repositories
                 string errorMessage = BuildErrorMessage(ex);
                 AppGlobals.LogToFileServer(AppGlobals.LOG_FOLDER_SERVER, errorMessage + Environment.NewLine + ex.StackTrace);
                 return null;
+            }
+        }
+
+        //TODO: I think these Repository methods should be static
+        public virtual int CountOfElements()
+        {
+            try
+            {
+                var count =
+                    (from u in SessionProxy.Query<T>()
+                    select u).Count();
+
+                return count;
+
+            }
+            catch (Exception ex)
+            {
+                DiscardCurrentSession();
+                string errorMessage = BuildErrorMessage(ex);
+                AppGlobals.LogToFileServer(AppGlobals.LOG_FOLDER_SERVER, errorMessage + Environment.NewLine + ex.StackTrace);
+                return -1;
             }
         }
 

@@ -19,6 +19,16 @@ namespace DigitizingDataBizLayer.Repositories
             return loanIssue;
         }
 
+        public LoanIssue FindLoanIssueByMemberAndLoadIdEx(int memberId, int loanIdEx)
+        {
+            //TODO: I am not sure whether to bring in the CycleId to ensure I grab the right Loan
+            //I could pass the CycleId as a parameter but is it really necessary?
+            var loanIssue = (from m in SessionProxy.Query<LoanIssue>()
+                             where m.LoanIdEx == loanIdEx && m.Member.MemberId == memberId
+                             select m).FirstOrDefault();
+            return loanIssue;
+        }
+
         public List<LoanIssue> FindMeetingLoanIssues(int meetingId)
         {
             var loanIssues = (from m in SessionProxy.Query<LoanIssue>()
