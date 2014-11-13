@@ -247,7 +247,7 @@ namespace DigitizingDataWebService
                 //Data Item: this will be an Enum
                 string dataItem = string.Empty;
 
-                //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE","DataItem":"cycleInfo"}
+                //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE"}
                 if (null != headerInfo)
                 {
                     dataSubmission = new DataSubmission();
@@ -257,97 +257,144 @@ namespace DigitizingDataWebService
                     dataSubmission.SourceNetworkType = Convert.ToString(headerInfo.NetworkType);
                     dataSubmission.SubmissionTimestamp = DateTime.Now;
                     dataSubmission.Data = jsonString;
-                    dataItem = Convert.ToString(headerInfo.DataItem);
                 }
 
                 if(dataSubmission != null)
                 {
                     repo = new DataSubmissionRepo();
-                    //repo.FindAll();
+                    //OMM: DDL repo.FindAll();
 
                     bool retVal = repo.Insert(dataSubmission);
-                    int retValDataProcessed = -1;
                     if(retVal)
                     {
                         //Process the data
-                        if(dataItem.ToUpper() == "CYCLEINFO")
-                        {
-                            //Retrieve the Information about the VSLA CYCLE and populate it into the database
-                            var vslaCycleData = obj.VslaCycle;
-                            
-                            //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                            retValDataProcessed = ProcessVslaCycleData(vslaCycleData, dataSubmission.SourceVslaCode);
-                        }
-                        else if (dataItem.ToUpper() == "MEETINGDETAILS")
-                        {
-                            //Retrieve the Information about the MEETING and populate it into the database
-                            var meetingData = obj.Meeting;
 
-                            //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                            retValDataProcessed = ProcessMeetingData(meetingData, dataSubmission.SourceVslaCode);
-                        }
-                        else if (dataItem.ToUpper() == "MEMBERS")
-                        {
-                            //Retrieve the Information about the MEETING and populate it into the database
-                            var membersObj = obj.Members;
-                            var recordCount = Convert.ToInt32(obj.MemberCount);
+                        //Retrieve the Vsla Cycle Information
+                        //"VslaCycleInfo":{"CycleId":1,"StartDate":"2014-03-04","EndDate":"2015-03-03","SharePrice":5000,"MaxShareQty":5,"MaxStartShare":100000,"InterestRate":10,"MigratedInterest":0,"MigratedFines":0},
+                        var vslaCycleData = obj.VslaCycleInfo;
 
-                            //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                            retValDataProcessed = ProcessMembersCollection(membersObj, recordCount, dataSubmission.SourceVslaCode);
-                        }
-                        else if (dataItem.ToUpper() == "ATTENDANCE")
-                        {
-                            //Retrieve the Information about the MEETING and populate it into the database
-                            var attendancesObj = obj.Attendances;
-                            var recordCount = Convert.ToInt32(obj.MembersCount);
-                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+                        //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                        response.StatusCode = ProcessVslaCycleData(vslaCycleData, dataSubmission.SourceVslaCode);
 
-                            //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                            retValDataProcessed = ProcessAttendancesCollection(attendancesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                        }
-                        else if (dataItem.ToUpper() == "SAVINGS")
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
                         {
-                            //Retrieve the Information about the SAVINGS and populate it into the database
-                            var savingsObj = obj.Savings;
-                            var recordCount = Convert.ToInt32(obj.MembersCount);
-                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
-
-                            //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                            retValDataProcessed = ProcessSavingsCollection(savingsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                        }
-                        else if (dataItem.ToUpper() == "LOANS")
-                        {
-                            //Retrieve the Information about the LOANS and populate it into the database
-                            var loanIssuesObj = obj.Loans;
-                            var recordCount = Convert.ToInt32(obj.MembersCount);
-                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
-
-                            //Pass the dynamic obj retrieved from the JSON string representing a LoanIssues array
-                            retValDataProcessed = ProcessLoanIssuesCollection(loanIssuesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                        }
-                        else if (dataItem.ToUpper() == "REPAYMENTS")
-                        {
-                            //Retrieve the Information about the REPAYMENTS and populate it into the database
-                            var loanRepaymentsObj = obj.Repayments;
-                            var recordCount = Convert.ToInt32(obj.MembersCount);
-                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
-
-                            //Pass the dynamic obj retrieved from the JSON string representing a LoanRepayments array
-                            retValDataProcessed = ProcessLoanRepaymentsCollection(loanRepaymentsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                        }
-                        else if(dataItem.ToUpper() == "FINES")
-                        {
-                            //Retrieve the Information about the FINES and populate it into the database
-                            var finesObj = obj.Fines;
-                            var recordCount = Convert.ToInt32(obj.MembersCount);
-                            var meetingIdEx = Convert.ToInt32(obj.MeetingId);
-
-                            //Pass the dynamic obj retrieved from the JSON string representing a Fines array
-                            retValDataProcessed = ProcessFinesCollection(finesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                            return response; 
                         }
 
-                        //return the response code
-                        response.StatusCode = retValDataProcessed;
+
+                        //Process Members Details
+                        //"MembersInfo":[{"MemberId":1,"MemberNo":1,"Surname":"Bwire","OtherNames":"Justine","Gender":"Male","DateOfBirth":"1981-11-11","Occupation":"Farmer","PhoneNumber":null,"CyclesCompleted":0,"IsActive":false,"IsArchived":false}]
+                        //Retrieve the Information about the Members and populate it into the database
+                        var membersObj = obj.MembersInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                        response.StatusCode = ProcessMembersCollection(membersObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+
+                        //Process Meeting Details
+                        //"MeetingInfo":{"CycleId":1,"MeetingId":5,"MeetingDate":"2014-10-14","OpeningBalanceBox":0,"OpeningBalanceBank":0,"Fines":4000,"MembersPresent":25,"Savings":250000,"LoansRepaid":40000,"LoansIssued":160000,"ClosingBalanceBox":0,"ClosingBalanceBank":0,"IsCashBookBalanced":false,"IsDataSent":false},
+                        //Retrieve the Information about the MEETING and populate it into the database
+                        var meetingData = obj.MeetingInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                        response.StatusCode = ProcessMeetingData(meetingData, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+                        
+
+                        //Process ATTENDANCE
+                        //"AttendanceInfo":[{"AttendanceId":76,"MemberId":1,"MeetingId":5,"IsPresentFlg":1,"Comments":null},{"AttendanceId":77,"MemberId":2,"MeetingId":5,"IsPresentFlg":1,"Comments":null}]
+                        //Retrieve the Information about the MEETING and populate it into the database
+                        var attendancesObj = obj.AttendanceInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                        response.StatusCode = ProcessAttendancesCollection(attendancesObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+
+                        //Process SAVINGS
+                        //"SavingsInfo":[{"SavingId":65,"MeetingId":5,"MemberId":1,"Amount":5000},{"SavingId":66,"MeetingId":5,"MemberId":2,"Amount":10000}]
+                        //Retrieve the Information about the SAVINGS and populate it into the database
+                        var savingsObj = obj.SavingsInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                        response.StatusCode = ProcessSavingsCollection(savingsObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+
+
+                        //Process LOANS
+                        //"LoansInfo":[{"MemberId":3,"MeetingId":5,"LoanId":9,"LoanNo":8,"PrincipalAmount":70000,"InterestAmount":7000,"TotalRepaid":0,"LoanBalance":77000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false},{"MemberId":9,"MeetingId":5,"LoanId":10,"LoanNo":9,"PrincipalAmount":90000,"InterestAmount":9000,"TotalRepaid":0,"LoanBalance":99000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]
+                        //Retrieve the Information about the LOANS and populate it into the database
+                        var loanIssuesObj = obj.LoansInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a LoanIssues array
+                        response.StatusCode = ProcessLoanIssuesCollection(loanIssuesObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+
+
+                        //Process: REPAYMENTS
+                        //"RepaymentsInfo":[{"RepaymentId":5,"MeetingId":5,"MemberId":5,"LoanId":5,"Amount":10000,"BalanceBefore":11000,"BalanceAfter":1000,"InterestAmount":100,"RolloverAmount":1100,"Comments":"ROLLOVER","LastDateDue":"2014-10-14","NextDateDue":"2014-11-11"}]
+                        //Retrieve the Information about the REPAYMENTS and populate it into the database
+                        var loanRepaymentsObj = obj.RepaymentsInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a LoanRepayments array
+                        response.StatusCode = ProcessLoanRepaymentsCollection(loanRepaymentsObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+
+                        
+                        //Process: FINES
+                        //"FinesInfo":[{"FineId":7,"MemberId":6,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3},{"FineId":8,"MemberId":12,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3}]
+                        //Retrieve the Information about the FINES and populate it into the database
+                        var finesObj = obj.FinesInfo;
+
+                        //Pass the dynamic obj retrieved from the JSON string representing a Fines array
+                        response.StatusCode = ProcessFinesCollection(finesObj, dataSubmission.SourceVslaCode);
+
+                        //If the processing has failed then exit
+                        if (response.StatusCode != 0)
+                        {
+                            return response;
+                        }
+
+                        //By this time the Response.StatusCode ==> 0 meaning success
+
+                        //Mark the Data submission as processed
+                        dataSubmission.ProcessedFlag = true;
+                        bool retValProccessed = repo.Update(dataSubmission);
                     }
                 }
             }
@@ -355,14 +402,14 @@ namespace DigitizingDataWebService
             {
                 response.StatusCode = -99;
             }
-
+            
             return response;
         }
 
         private int ProcessVslaCycleData(dynamic vslaCycleObj, string vslaCode)
         {
-            //"VslaCycle": {"CycleId": 1,"StartDate": "2013-06-03","EndDate": "2014-06-02","SharePrice": 500,"MaxShareQty": 5,"MaxStartShare": 0,"InterestRate": 10}
-            
+            //"VslaCycleInfo":{"CycleId":1,"StartDate":"2014-03-04","EndDate":"2015-03-03","SharePrice":5000,"MaxShareQty":5,"MaxStartShare":100000,"InterestRate":10,"MigratedInterest":0,"MigratedFines":0},
+                        
             VslaCycleRepo vslaCycleRepo = null;
             VslaRepo vslaRepo = null;
 
@@ -370,7 +417,7 @@ namespace DigitizingDataWebService
             {
                 if (vslaCycleObj == null)
                 {
-                    return -1;
+                    return -1; //Invalid Input Data
                 }
 
                 //Otherwise, continue
@@ -413,6 +460,8 @@ namespace DigitizingDataWebService
                 vslaCycle.MaxShareQuantity = Convert.ToInt32(vslaCycleObj.MaxShareQty);
                 vslaCycle.MaxStartShare = Convert.ToDouble(vslaCycleObj.MaxStartShare);
                 vslaCycle.InterestRate = Convert.ToDouble(vslaCycleObj.InterestRate);
+                vslaCycle.MigratedInterest = Convert.ToDouble(vslaCycleObj.MigratedInterest);
+                vslaCycle.MigratedFines = Convert.ToDouble(vslaCycleObj.MigratedFines);
 
                 //Save the changes 
                 bool retValSave = false;
@@ -440,17 +489,16 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessMembersCollection(dynamic membersObj, int recordCount, string vslaCode)
+        private int ProcessMembersCollection(dynamic membersObj, string vslaCode)
         {
-            //"MemberCount":30,"Members":[{"MemberId":1,"MemberNo":1,"Surname":"Kotoyi","OtherNames":"Everlyn","Gender":"Female","DateOfBirth":"1971-11-12","Occupation":"Farmer","PhoneNumber":"771450619","CyclesCompleted":4,"IsActive":false,"IsArchived":false},{"MemberId":2,"MemberNo":2,"Surname":"Musamali","OtherNames":"Joseph","Gender":"Female","DateOfBirth":"1988-11-12","Occupation":"Farmer","PhoneNumber":"785327102","CyclesCompleted":4,"IsActive":false,"IsArchived":false}]}
+            //"MembersInfo":[{"MemberId":1,"MemberNo":1,"Surname":"Bwire","OtherNames":"Justine","Gender":"Male","DateOfBirth":"1981-11-11","Occupation":"Farmer","PhoneNumber":null,"CyclesCompleted":0,"IsActive":false,"IsArchived":false}]
             if (membersObj == null)
             {
-                return -1;
+                return -1; //Invalid Input Data
             }
 
             VslaRepo vslaRepo = null;
-            int processedCount = 0;
-
+            
             try
             {
                 //Otherwise, continue
@@ -464,33 +512,26 @@ namespace DigitizingDataWebService
                 foreach (var membObj in membersObj)
                 {
                     var retVal = ProcessMemberData(membObj, targetVsla);
-                    if(retVal == 0)
-                    {
-                        processedCount++;
-                    }
-                }
 
-                //if (processedCount < recordCount)
-                //{
-                //    return -1;
-                //}
-                //else
-                //{
-                //    return 0;
-                //}
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single member's record
+                    if(retVal != 0)
+                    {
+                        return -3; //Failed to Insert Record
+                    }
+                }                
 
                 return 0;
             }
             catch(Exception ex)
             {
-                return -99;
+                return -99; //System Error
             }
 
         }
 
         private int ProcessMemberData(dynamic memberObj, Vsla targetVsla)
         {
-            //"MemberCount":30,"Members":[{"MemberId":1,"MemberNo":1,"Surname":"Kotoyi","OtherNames":"Everlyn","Gender":"Female","DateOfBirth":"1971-11-12","Occupation":"Farmer","PhoneNumber":"771450619","CyclesCompleted":4,"IsActive":false,"IsArchived":false},{"MemberId":2,"MemberNo":2,"Surname":"Musamali","OtherNames":"Joseph","Gender":"Female","DateOfBirth":"1988-11-12","Occupation":"Farmer","PhoneNumber":"785327102","CyclesCompleted":4,"IsActive":false,"IsArchived":false}]}
+            //"MembersInfo":[{"MemberId":1,"MemberNo":1,"Surname":"Bwire","OtherNames":"Justine","Gender":"Male","DateOfBirth":"1981-11-11","Occupation":"Farmer","PhoneNumber":null,"CyclesCompleted":0,"IsActive":false,"IsArchived":false}]
             MemberRepo memberRepo = null;            
 
             try
@@ -535,10 +576,7 @@ namespace DigitizingDataWebService
                 member.Occupation = Convert.ToString(memberObj.Occupation);
                 member.OtherNames = Convert.ToString(memberObj.OtherNames);
                 member.PhoneNo = Convert.ToString(memberObj.PhoneNo);
-                member.Surname = Convert.ToString(memberObj.Surname);
-
-                //TODO: Add Mid-Cycle Data to the Members Object
-                //Total Savings, Outstanding Loan, Outstanding Fine
+                member.Surname = Convert.ToString(memberObj.Surname);                
 
                 //Save the changes 
                 bool retValSave = false;
@@ -569,7 +607,7 @@ namespace DigitizingDataWebService
         private int ProcessMeetingData(dynamic meetingObj, string vslaCode)
         {
             //The VSLA Code will help in knowing which VSLA Cycle to consider because the CycleId from phone is not unique across VSLAs
-            //"Meeting":{"CycleId":1,"MeetingId":9,"MeetingDate":"2014-01-06","OpeningBalanceBox":0,"OpeningBalanceBank":0,"Fines":0,"MembersPresent":19,"Savings":70000,"LoansRepaid":306116,"LoansIssued":0,"ClosingBalanceBox":0,"ClosingBalanceBank":0,"IsCashBookBalanced":false,"IsDataSent":false}}
+            //"MeetingInfo":{"CycleId":1,"MeetingId":5,"MeetingDate":"2014-10-14","OpeningBalanceBox":0,"OpeningBalanceBank":0,"Fines":4000,"MembersPresent":25,"Savings":250000,"LoansRepaid":40000,"LoansIssued":160000,"ClosingBalanceBox":0,"ClosingBalanceBank":0,"IsCashBookBalanced":false,"IsDataSent":false},
             MeetingRepo meetingRepo = null;
             VslaRepo vslaRepo = null;
             VslaCycleRepo vslaCycleRepo = null;
@@ -666,46 +704,36 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessAttendancesCollection(dynamic attendancesObj, int recordCount, string vslaCode, int meetingIdEx)
+        private int ProcessAttendancesCollection(dynamic attendancesObj, string vslaCode)
         {
             //I may consider passing the VSLACycleID to reduce on the depth of subqueries
-            //"MeetingId":9,"MembersCount":30,"Attendances":[{"AttendanceId":211,"MemberId":1,"IsPresentFlg":0,"Comments":null},{"AttendanceId":212,"MemberId":2,"IsPresentFlg":1,"Comments":null},{"AttendanceId":213,"MemberId":3,"IsPresentFlg":1,"Comments":null},{"AttendanceId":214,"MemberId":4,"IsPresentFlg":0,"Comments":null},{"AttendanceId":215,"MemberId":5,"IsPresentFlg":1,"Comments":null},{"AttendanceId":216,"MemberId":6,"IsPresentFlg":1,"Comments":null},{"AttendanceId":217,"MemberId":7,"IsPresentFlg":1,"Comments":null},{"AttendanceId":218,"MemberId":8,"IsPresentFlg":1,"Comments":null},{"AttendanceId":219,"MemberId":9,"IsPresentFlg":1,"Comments":null},{"AttendanceId":220,"MemberId":10,"IsPresentFlg":0,"Comments":null},{"AttendanceId":221,"MemberId":11,"IsPresentFlg":0,"Comments":null},{"AttendanceId":222,"MemberId":12,"IsPresentFlg":1,"Comments":null},{"AttendanceId":223,"MemberId":13,"IsPresentFlg":1,"Comments":null},{"AttendanceId":224,"MemberId":14,"IsPresentFlg":1,"Comments":null},{"AttendanceId":225,"MemberId":15,"IsPresentFlg":1,"Comments":null},{"AttendanceId":226,"MemberId":16,"IsPresentFlg":1,"Comments":null},{"AttendanceId":227,"MemberId":17,"IsPresentFlg":0,"Comments":null},{"AttendanceId":228,"MemberId":18,"IsPresentFlg":0,"Comments":null},{"AttendanceId":229,"MemberId":19,"IsPresentFlg":0,"Comments":null},{"AttendanceId":230,"MemberId":20,"IsPresentFlg":1,"Comments":null},{"AttendanceId":231,"MemberId":21,"IsPresentFlg":1,"Comments":null},{"AttendanceId":232,"MemberId":22,"IsPresentFlg":0,"Comments":null},{"AttendanceId":233,"MemberId":23,"IsPresentFlg":1,"Comments":null},{"AttendanceId":234,"MemberId":24,"IsPresentFlg":0,"Comments":null},{"AttendanceId":235,"MemberId":25,"IsPresentFlg":1,"Comments":null},{"AttendanceId":236,"MemberId":26,"IsPresentFlg":1,"Comments":null},{"AttendanceId":237,"MemberId":27,"IsPresentFlg":0,"Comments":null},{"AttendanceId":238,"MemberId":28,"IsPresentFlg":1,"Comments":null},{"AttendanceId":239,"MemberId":29,"IsPresentFlg":1,"Comments":null},{"AttendanceId":240,"MemberId":30,"IsPresentFlg":0,"Comments":null}]}
+            //"AttendanceInfo":[{"AttendanceId":76,"MemberId":1,"MeetingId":5,"IsPresentFlg":1,"Comments":null},{"AttendanceId":77,"MemberId":2,"MeetingId":5,"IsPresentFlg":1,"Comments":null}]
             if (attendancesObj == null)
             {
                 return -1;
             }
 
             VslaRepo vslaRepo = null;
-            MeetingRepo meetingRepo = null;
-
-            int processedCount = 0;
 
             try
             {
                 //Otherwise, continue
                 vslaRepo = new VslaRepo();
-                meetingRepo = new MeetingRepo();
 
                 //Retrieve the Target VSLA
                 Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
                 if (targetVsla == null)
                 {
                     return -2; //Target VSLA Does not exist
-                }
-
-                //Retrieve the target Meeting
-                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
-                if (targetMeeting == null)
-                {
-                    return -3; //Target Meeting does not exist
-                }
+                }                
 
                 foreach (var attendanceObj in attendancesObj)
                 {
-                    var retVal = ProcessAttendanceData(attendanceObj, targetMeeting, targetVsla);
-                    if (retVal == 0)
+                    var retVal = ProcessAttendanceData(attendanceObj, targetVsla);
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single record
+                    if (retVal != 0)
                     {
-                        processedCount++;
+                        return -3; //Failed to Insert Record
                     }
                 }
 
@@ -718,12 +746,13 @@ namespace DigitizingDataWebService
 
         }
 
-        private int ProcessAttendanceData(dynamic attendanceObj, Meeting targetMeeting, Vsla targetVsla)
+        private int ProcessAttendanceData(dynamic attendanceObj, Vsla targetVsla)
         {
-            //"MeetingId":9,"MembersCount":30,"Attendances":[{"AttendanceId":211,"MemberId":1,"IsPresentFlg":0,"Comments":null},{"AttendanceId":212,"MemberId":2,"IsPresentFlg":1,"Comments":null}]}
+            //"AttendanceInfo":[{"AttendanceId":76,"MemberId":1,"MeetingId":5,"IsPresentFlg":1,"Comments":null},{"AttendanceId":77,"MemberId":2,"MeetingId":5,"IsPresentFlg":1,"Comments":null}]
             AttendanceRepo attendanceRepo = null;
             MemberRepo memberRepo = null;
             Member targetMember = null;
+            MeetingRepo meetingRepo = null;
 
             try
             {
@@ -732,10 +761,20 @@ namespace DigitizingDataWebService
                     return -1;
                 }
 
-                if (null == targetMeeting || null == targetVsla)
+                meetingRepo = new MeetingRepo();
+
+                //Confirm the targetVsla exists
+                if (null == targetVsla)
                 {
-                    return -2; //Target Meeting or VSLA is missing
+                    return -2; //Target VSLA is missing
                 }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(attendanceObj.MeetingId));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
+                }                
 
                 //Get the target member
                 memberRepo = new MemberRepo();
@@ -795,24 +834,20 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessSavingsCollection(dynamic savingsObj, int recordCount, string vslaCode, int meetingIdEx)
+        private int ProcessSavingsCollection(dynamic savingsObj, string vslaCode)
         {
-            //"MeetingId":9,"MembersCount":30,"Savings":[{"SavingId":213,"MemberId":1,"Amount":2500},{"SavingId":214,"MemberId":2,"Amount":2500},{"SavingId":215,"MemberId":3,"Amount":2500},{"SavingId":216,"MemberId":4,"Amount":1000},{"SavingId":217,"MemberId":5,"Amount":2500},{"SavingId":218,"MemberId":6,"Amount":2500},{"SavingId":219,"MemberId":7,"Amount":2500},{"SavingId":220,"MemberId":8,"Amount":2500},{"SavingId":221,"MemberId":9,"Amount":2500},{"SavingId":222,"MemberId":10,"Amount":2500},{"SavingId":223,"MemberId":11,"Amount":2000},{"SavingId":224,"MemberId":12,"Amount":2000},{"SavingId":225,"MemberId":13,"Amount":2000},{"SavingId":226,"MemberId":14,"Amount":2500},{"SavingId":227,"MemberId":15,"Amount":2500},{"SavingId":228,"MemberId":16,"Amount":2500},{"SavingId":229,"MemberId":17,"Amount":2500},{"SavingId":230,"MemberId":18,"Amount":2500},{"SavingId":231,"MemberId":19,"Amount":1000},{"SavingId":232,"MemberId":20,"Amount":2500},{"SavingId":233,"MemberId":21,"Amount":2500},{"SavingId":234,"MemberId":22,"Amount":2500},{"SavingId":235,"MemberId":23,"Amount":2000},{"SavingId":236,"MemberId":24,"Amount":2500},{"SavingId":237,"MemberId":25,"Amount":2500},{"SavingId":238,"MemberId":26,"Amount":2500},{"SavingId":239,"MemberId":27,"Amount":2500},{"SavingId":240,"MemberId":28,"Amount":2500},{"SavingId":241,"MemberId":29,"Amount":2500},{"SavingId":242,"MemberId":30,"Amount":2500}]}
+            //"SavingsInfo":[{"SavingId":65,"MeetingId":5,"MemberId":1,"Amount":5000},{"SavingId":66,"MeetingId":5,"MemberId":2,"Amount":10000}]
             if (savingsObj == null)
             {
                 return -1;
             }
 
-            VslaRepo vslaRepo = null;
-            MeetingRepo meetingRepo = null;
-
-            int processedCount = 0;
+            VslaRepo vslaRepo = null;            
 
             try
             {
                 //Otherwise, continue
                 vslaRepo = new VslaRepo();
-                meetingRepo = new MeetingRepo();
 
                 //Retrieve the Target VSLA
                 Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
@@ -821,19 +856,14 @@ namespace DigitizingDataWebService
                     return -2; //Target VSLA Does not exist
                 }
 
-                //Retrieve the target Meeting
-                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
-                if (targetMeeting == null)
-                {
-                    return -3; //Target Meeting does not exist
-                }
-
                 foreach (var savingObj in savingsObj)
                 {
-                    var retVal = ProcessSavingData(savingObj, targetMeeting, targetVsla);
-                    if (retVal == 0)
+                    var retVal = ProcessSavingData(savingObj, targetVsla);
+
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single record
+                    if (retVal != 0)
                     {
-                        processedCount++;
+                        return -3; //Failed to Insert Record
                     }
                 }
 
@@ -845,12 +875,13 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessSavingData(dynamic savingObj, Meeting targetMeeting, Vsla targetVsla)
+        private int ProcessSavingData(dynamic savingObj, Vsla targetVsla)
         {
-            //"MeetingId":9,"MembersCount":30,"Savings":[{"SavingId":213,"MemberId":1,"Amount":2500},{"SavingId":214,"MemberId":2,"Amount":2500},{"SavingId":215,"MemberId":3,"Amount":2500},{"SavingId":216,"MemberId":4,"Amount":1000},{"SavingId":217,"MemberId":5,"Amount":2500},{"SavingId":218,"MemberId":6,"Amount":2500},{"SavingId":219,"MemberId":7,"Amount":2500},{"SavingId":220,"MemberId":8,"Amount":2500},{"SavingId":221,"MemberId":9,"Amount":2500},{"SavingId":222,"MemberId":10,"Amount":2500},{"SavingId":223,"MemberId":11,"Amount":2000},{"SavingId":224,"MemberId":12,"Amount":2000},{"SavingId":225,"MemberId":13,"Amount":2000},{"SavingId":226,"MemberId":14,"Amount":2500},{"SavingId":227,"MemberId":15,"Amount":2500},{"SavingId":228,"MemberId":16,"Amount":2500},{"SavingId":229,"MemberId":17,"Amount":2500},{"SavingId":230,"MemberId":18,"Amount":2500},{"SavingId":231,"MemberId":19,"Amount":1000},{"SavingId":232,"MemberId":20,"Amount":2500},{"SavingId":233,"MemberId":21,"Amount":2500},{"SavingId":234,"MemberId":22,"Amount":2500},{"SavingId":235,"MemberId":23,"Amount":2000},{"SavingId":236,"MemberId":24,"Amount":2500},{"SavingId":237,"MemberId":25,"Amount":2500},{"SavingId":238,"MemberId":26,"Amount":2500},{"SavingId":239,"MemberId":27,"Amount":2500},{"SavingId":240,"MemberId":28,"Amount":2500},{"SavingId":241,"MemberId":29,"Amount":2500},{"SavingId":242,"MemberId":30,"Amount":2500}]}
+            //"SavingsInfo":[{"SavingId":65,"MeetingId":5,"MemberId":1,"Amount":5000},{"SavingId":66,"MeetingId":5,"MemberId":2,"Amount":10000}]
             SavingRepo savingRepo = null;
             MemberRepo memberRepo = null;
             Member targetMember = null;
+            MeetingRepo meetingRepo = null;
 
             try
             {
@@ -859,10 +890,20 @@ namespace DigitizingDataWebService
                     return -1;
                 }
 
-                if (null == targetMeeting || null == targetVsla)
+                meetingRepo = new MeetingRepo();
+
+                //Confirm the targetVsla exists
+                if (null == targetVsla)
                 {
-                    return -2; //Target Meeting or VSLA is missing
+                    return -2; //Target VSLA is missing
                 }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(savingObj.MeetingId));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
+                } 
 
                 //Get the target member
                 memberRepo = new MemberRepo();
@@ -918,24 +959,20 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessLoanIssuesCollection(dynamic loanIssuesObj, int recordCount, string vslaCode, int meetingIdEx)
+        private int ProcessLoanIssuesCollection(dynamic loanIssuesObj, string vslaCode)
         {
-            //"MeetingId":9,"MembersCount":1,"Loans":[{"MemberId":15,"LoanId":28,"LoanNo":112,"PrincipalAmount":30000,"InterestAmount":3000,"TotalRepaid":0,"LoanBalance":33000,"DateDue":"2014-01-02","Comments":null,"DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]}"
+            //"LoansInfo":[{"MemberId":3,"MeetingId":5,"LoanId":9,"LoanNo":8,"PrincipalAmount":70000,"InterestAmount":7000,"TotalRepaid":0,"LoanBalance":77000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false},{"MemberId":9,"MeetingId":5,"LoanId":10,"LoanNo":9,"PrincipalAmount":90000,"InterestAmount":9000,"TotalRepaid":0,"LoanBalance":99000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]
             if (loanIssuesObj == null)
             {
                 return -1;
             }
 
             VslaRepo vslaRepo = null;
-            MeetingRepo meetingRepo = null;
-
-            int processedCount = 0;
 
             try
             {
                 //Otherwise, continue
                 vslaRepo = new VslaRepo();
-                meetingRepo = new MeetingRepo();
 
                 //Retrieve the Target VSLA
                 Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
@@ -943,20 +980,17 @@ namespace DigitizingDataWebService
                 {
                     return -2; //Target VSLA Does not exist
                 }
-
-                //Retrieve the target Meeting
-                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
-                if (targetMeeting == null)
-                {
-                    return -3; //Target Meeting does not exist
-                }
-
+                                
                 foreach (var loanIssueObj in loanIssuesObj)
                 {
-                    var retVal = ProcessLoanIssueData(loanIssueObj, targetMeeting, targetVsla);
-                    if (retVal == 0)
+                    var retVal = ProcessLoanIssueData(loanIssueObj, targetVsla);
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single record
+                    if (retVal != 0)
                     {
-                        processedCount++;
+                        //Although rare, this case may occur when trying to update a loan that was inserted in a previous meeting
+                        //This means it has failed to update
+                        //For now I will cause it to be skipped since it is an update.
+                        //return -3; //Failed to Insert Record
                     }
                 }
 
@@ -968,12 +1002,13 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessLoanIssueData(dynamic loanIssueObj, Meeting targetMeeting, Vsla targetVsla)
+        private int ProcessLoanIssueData(dynamic loanIssueObj, Vsla targetVsla)
         {
-            //"MeetingId":9,"MembersCount":1,"Loans":[{"MemberId":15,"LoanId":28,"LoanNo":112,"PrincipalAmount":30000,"InterestAmount":3000,"TotalRepaid":0,"LoanBalance":33000,"DateDue":"2014-01-02","Comments":null,"DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]}"
+            //"LoansInfo":[{"MemberId":3,"MeetingId":5,"LoanId":9,"LoanNo":8,"PrincipalAmount":70000,"InterestAmount":7000,"TotalRepaid":0,"LoanBalance":77000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false},{"MemberId":9,"MeetingId":5,"LoanId":10,"LoanNo":9,"PrincipalAmount":90000,"InterestAmount":9000,"TotalRepaid":0,"LoanBalance":99000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]
             LoanIssueRepo loanIssueRepo = null;
             MemberRepo memberRepo = null;
             Member targetMember = null;
+            MeetingRepo meetingRepo = null;
 
             try
             {
@@ -982,10 +1017,21 @@ namespace DigitizingDataWebService
                     return -1;
                 }
 
-                if (null == targetMeeting || null == targetVsla)
+                meetingRepo = new MeetingRepo();
+
+                //Confirm the targetVsla exists
+                if (null == targetVsla)
                 {
-                    return -2; //Target Meeting or VSLA is missing
+                    return -2; //Target VSLA is missing
                 }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(loanIssueObj.MeetingId));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
+                } 
+
 
                 //Get the target member
                 memberRepo = new MemberRepo();
@@ -1071,24 +1117,20 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessLoanRepaymentsCollection(dynamic loanRepaymentsObj, int recordCount, string vslaCode, int meetingIdEx)
+        private int ProcessLoanRepaymentsCollection(dynamic loanRepaymentsObj, string vslaCode)
         {
-            //"MeetingId":9,"MembersCount":10,"Repayments":[{"RepaymentId":23,"MemberId":6,"LoanId":39,"Amount":22000,"BalanceBefore":187000,"BalanceAfter":165000,"InterestAmount":16500,"RolloverAmount":181500,"Comments":"","LastDateDue":"2014-01-23","NextDateDue":"2014-02-06"},
+            //"RepaymentsInfo":[{"RepaymentId":5,"MeetingId":5,"MemberId":5,"LoanId":5,"Amount":10000,"BalanceBefore":11000,"BalanceAfter":1000,"InterestAmount":100,"RolloverAmount":1100,"Comments":"ROLLOVER","LastDateDue":"2014-10-14","NextDateDue":"2014-11-11"}]
             if (loanRepaymentsObj == null)
             {
                 return -1;
             }
 
             VslaRepo vslaRepo = null;
-            MeetingRepo meetingRepo = null;
-
-            int processedCount = 0;
 
             try
             {
                 //Otherwise, continue
                 vslaRepo = new VslaRepo();
-                meetingRepo = new MeetingRepo();
 
                 //Retrieve the Target VSLA
                 Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
@@ -1097,19 +1139,13 @@ namespace DigitizingDataWebService
                     return -2; //Target VSLA Does not exist
                 }
 
-                //Retrieve the target Meeting
-                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
-                if (targetMeeting == null)
-                {
-                    return -3; //Target Meeting does not exist
-                }
-
                 foreach (var loanRepaymentObj in loanRepaymentsObj)
                 {
-                    var retVal = ProcessLoanRepaymentData(loanRepaymentObj, targetMeeting, targetVsla);
-                    if (retVal == 0)
+                    var retVal = ProcessLoanRepaymentData(loanRepaymentObj, targetVsla);
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single record
+                    if (retVal != 0)
                     {
-                        processedCount++;
+                        return -3; //Failed to Insert Record
                     }
                 }
 
@@ -1121,14 +1157,15 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessLoanRepaymentData(dynamic loanRepaymentObj, Meeting targetMeeting, Vsla targetVsla)
+        private int ProcessLoanRepaymentData(dynamic loanRepaymentObj, Vsla targetVsla)
         {
-            //"MeetingId":9,"MembersCount":10,"Repayments":[{"RepaymentId":23,"MemberId":6,"LoanId":39,"Amount":22000,"BalanceBefore":187000,"BalanceAfter":165000,"InterestAmount":16500,"RolloverAmount":181500,"Comments":"","LastDateDue":"2014-01-23","NextDateDue":"2014-02-06"},
+            //"RepaymentsInfo":[{"RepaymentId":5,"MeetingId":5,"MemberId":5,"LoanId":5,"Amount":10000,"BalanceBefore":11000,"BalanceAfter":1000,"InterestAmount":100,"RolloverAmount":1100,"Comments":"ROLLOVER","LastDateDue":"2014-10-14","NextDateDue":"2014-11-11"}]
             LoanIssueRepo loanIssueRepo = null;
             LoanRepaymentRepo loanRepaymentRepo = null;
             MemberRepo memberRepo = null;
             Member targetMember = null;
             LoanIssue targetLoanIssue = null;
+            MeetingRepo meetingRepo = null;
 
             try
             {
@@ -1137,9 +1174,19 @@ namespace DigitizingDataWebService
                     return -1;
                 }
 
-                if (null == targetMeeting || null == targetVsla)
+                meetingRepo = new MeetingRepo();
+
+                //Confirm the targetVsla exists
+                if (null == targetVsla)
                 {
-                    return -2; //Target Meeting or VSLA is missing
+                    return -2; //Target VSLA is missing
+                }
+
+                //Retrieve the target Meeting
+                var targetMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(loanRepaymentObj.MeetingId));
+                if (targetMeeting == null)
+                {
+                    return -3; //Target Meeting does not exist
                 }
 
                 //Get the target member
@@ -1223,24 +1270,20 @@ namespace DigitizingDataWebService
         }
 
 
-        private int ProcessFinesCollection(dynamic finesObj, int recordCount, string vslaCode, int meetingIdEx)
+        private int ProcessFinesCollection(dynamic finesObj, string vslaCode)
         {
-            
+            //"FinesInfo":[{"FineId":7,"MemberId":6,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3},{"FineId":8,"MemberId":12,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3}]
             if (finesObj == null)
             {
                 return -1;
             }
 
             VslaRepo vslaRepo = null;
-            MeetingRepo meetingRepo = null;
-
-            int processedCount = 0;
 
             try
             {
                 //Otherwise, continue
                 vslaRepo = new VslaRepo();
-                meetingRepo = new MeetingRepo();
 
                 //Retrieve the Target VSLA
                 Vsla targetVsla = vslaRepo.FindVslaByCode(vslaCode);
@@ -1249,19 +1292,15 @@ namespace DigitizingDataWebService
                     return -2; //Target VSLA Does not exist
                 }
 
-                //Retrieve the target Meeting
-                var targetMeeting = meetingRepo.FindMeetingByIdEx(vslaCode, Convert.ToInt32(meetingIdEx));
-                if (targetMeeting == null)
-                {
-                    return -3; //Target Meeting does not exist
-                }
-
                 foreach (var fineObj in finesObj)
                 {
-                    var retVal = ProcessFineData(finesObj, targetMeeting, targetVsla);
-                    if (retVal == 0)
+                    var retVal = ProcessFineData(fineObj, targetVsla);
+
+                    //OMM: Very Tricky. Can Cause the whole Send Data to faile due to a single record
+                    if (retVal != 0)
                     {
-                        processedCount++;
+                        //Very rarely, it may fail when trying to update a fine record that was issued in a previous meeting
+                        //return -3; //Failed to Insert Record
                     }
                 }
 
@@ -1273,9 +1312,9 @@ namespace DigitizingDataWebService
             }
         }
 
-        private int ProcessFineData(dynamic fineObj, Meeting targetMeeting, Vsla targetVsla)
+        private int ProcessFineData(dynamic fineObj, Vsla targetVsla)
         {
-            
+            //"FinesInfo":[{"FineId":7,"MemberId":6,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3},{"FineId":8,"MemberId":12,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3}]
             FineRepo fineRepo = null;
             MemberRepo memberRepo = null;
             Member targetMember = null;
@@ -1285,14 +1324,37 @@ namespace DigitizingDataWebService
             {
                 meetingRepo = new MeetingRepo();
 
-                if (fineObj == null)
+                //Confirm the targetVsla exists
+                if (null == targetVsla)
                 {
-                    return -1;
+                    return -2; //Target VSLA is missing
                 }
 
-                if (null == targetMeeting || null == targetVsla)
+                //Retrieve the target Meeting where the fine was issued
+                int issuedInMeetingId = Convert.ToInt32(fineObj.IssuedInMeetingId);
+                var targetMeetingIssued = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, issuedInMeetingId);
+                if (targetMeetingIssued == null)
                 {
-                    return -2; //Target Meeting or VSLA is missing
+                    return -3; //Target Meeting does not exist
+                }
+
+                //Retrieve the target Meeting where the fine was Paid in case they are different
+                int paidInMeetingId = Convert.ToInt32(fineObj.PaidInMeetingId);
+                Meeting targetMeetingPaid = null;
+
+                //Check whether the fine was issued and paid in the same meeting
+                if(paidInMeetingId == issuedInMeetingId) 
+                {
+                    targetMeetingPaid = targetMeetingIssued;
+                }
+                else
+                {
+                    targetMeetingPaid = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, paidInMeetingId);
+                }                
+                
+                if (targetMeetingPaid == null)
+                {
+                    return -3; //Target Meeting does not exist
                 }
 
                 //Get the target member
@@ -1310,7 +1372,7 @@ namespace DigitizingDataWebService
 
                 //Check whether this record exists: Use the IssuedInMeetingId
                 //var targetFine = fineRepo.FindFineByIdEx(targetMeeting.MeetingId, Convert.ToInt32(fineObj.FineId));
-                var targetFine = fineRepo.FindFineByIdEx(Convert.ToInt32(fineObj.IssuedInMeetingId), Convert.ToInt32(fineObj.FineId));
+                var targetFine = fineRepo.FindFineByIdEx(targetMeetingIssued.MeetingId, Convert.ToInt32(fineObj.FineId));
                 if (targetFine == null)
                 {
                     fine = new Fine();
@@ -1319,8 +1381,8 @@ namespace DigitizingDataWebService
                 {
                     fine = targetFine;
                 }
-                fine.IssuedInMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(fineObj.IssuedInMeetingId));
-                fine.PaidInMeeting = meetingRepo.FindMeetingByIdEx(targetVsla.VslaCode, Convert.ToInt32(fineObj.PaidInMeetingId));
+                fine.IssuedInMeeting = targetMeetingIssued;
+                fine.PaidInMeeting = targetMeetingPaid;
                 fine.Member = targetMember;
                 fine.FineIdEx = Convert.ToInt32(fineObj.FineId);
                 fine.Amount = Convert.ToDouble(fineObj.Amount);
@@ -1371,6 +1433,8 @@ namespace DigitizingDataWebService
         }
 
 
+
+
         //This is an internal procedure that will be used to reprocess data submissions within the database
         //From the logs
         public SubmitVslaDataResponse ReProcessSubmissions(string username, string securityToken)
@@ -1390,15 +1454,16 @@ namespace DigitizingDataWebService
                     response.StatusCode = -11;                    
                     return response;
                 }
+
                 //Retrieve the Data Submissions existing in the database
                 //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Retrieving Data from Database...");
                 repo = new DataSubmissionRepo();
                 List<DataSubmission> dataSubmissions = null;
-                dataSubmissions = repo.RetrieveSubmissions();
+                dataSubmissions = repo.RetrieveUnProcessedSubmissions();
 
                 //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Looping through the returned data...");
                 int failedResubmissions = 0;
-                foreach( var submission in dataSubmissions)
+                foreach (var submission in dataSubmissions)
                 {
                     try
                     {
@@ -1416,8 +1481,7 @@ namespace DigitizingDataWebService
                         //Data Item: this will be an Enum
                         string dataItem = string.Empty;
 
-                        //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE","DataItem":"cycleInfo"}
-                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Processing the HeaderInfo...");
+                        //{"HeaderInfo":{"VslaCode":"V1004","PhoneImei":"356422050612411","NetworkOperator":"MTN-UGANDA","NetworkType":"EDGE"}
                         if (null != headerInfo)
                         {
                             dataSubmission = new DataSubmission();
@@ -1427,109 +1491,174 @@ namespace DigitizingDataWebService
                             dataSubmission.SourceNetworkType = Convert.ToString(headerInfo.NetworkType);
                             dataSubmission.SubmissionTimestamp = DateTime.Now;
                             dataSubmission.Data = jsonString;
-                            dataItem = Convert.ToString(headerInfo.DataItem);
                         }
 
-                        //If DataItem is null then skip
-                        if(string.IsNullOrWhiteSpace(dataItem))
-                        {
-                            //Skip this Resubmission
-                            continue;
-                        }
-                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "JSON String: " + Environment.NewLine + jsonString);
-
-                        //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "Doing the Reprocessing...");
                         if (dataSubmission != null)
                         {
-                            //Dont save the raw data again, since this is a resubmission
-                            //Process the data
-                            int retValDataProcessed = -1;
+                            repo = new DataSubmissionRepo();
+                            //repo.FindAll();
 
-                            //DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("INFO", "About to process Data Item: [" + dataItem + "...");
-                            if (dataItem.ToUpper() == "CYCLEINFO")
+                            //DO NOT INSERT AGAIN. Just mark as Inserted to reuse code
+                            //bool retVal = repo.Insert(dataSubmission);
+
+                            bool retVal = true;
+                            if (retVal)
                             {
-                                //Retrieve the Information about the VSLA CYCLE and populate it into the database
-                                var vslaCycleData = obj.VslaCycle;
+                                //Process the data                               
+
+                                //Retrieve the Vsla Cycle Information
+                                //"VslaCycleInfo":{"CycleId":1,"StartDate":"2014-03-04","EndDate":"2015-03-03","SharePrice":5000,"MaxShareQty":5,"MaxStartShare":100000,"InterestRate":10,"MigratedInterest":0,"MigratedFines":0},
+                                var vslaCycleData = obj.VslaCycleInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                                retValDataProcessed = ProcessVslaCycleData(vslaCycleData, dataSubmission.SourceVslaCode);
-                            }
-                            else if (dataItem.ToUpper() == "MEETINGDETAILS")
-                            {
+                                response.StatusCode = ProcessVslaCycleData(vslaCycleData, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit the iteration for this submission
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+                                //Process Members Details
+                                //"MembersInfo":[{"MemberId":1,"MemberNo":1,"Surname":"Bwire","OtherNames":"Justine","Gender":"Male","DateOfBirth":"1981-11-11","Occupation":"Farmer","PhoneNumber":null,"CyclesCompleted":0,"IsActive":false,"IsArchived":false}]
+                                //Retrieve the Information about the Members and populate it into the database
+                                var membersObj = obj.MembersInfo;
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
+                                response.StatusCode = ProcessMembersCollection(membersObj, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+                                //Process Meeting Details
+                                //"MeetingInfo":{"CycleId":1,"MeetingId":5,"MeetingDate":"2014-10-14","OpeningBalanceBox":0,"OpeningBalanceBank":0,"Fines":4000,"MembersPresent":25,"Savings":250000,"LoansRepaid":40000,"LoansIssued":160000,"ClosingBalanceBox":0,"ClosingBalanceBank":0,"IsCashBookBalanced":false,"IsDataSent":false},
                                 //Retrieve the Information about the MEETING and populate it into the database
-                                var meetingData = obj.Meeting;
+                                var meetingData = obj.MeetingInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                                retValDataProcessed = ProcessMeetingData(meetingData, dataSubmission.SourceVslaCode);
-                            }
-                            else if (dataItem.ToUpper() == "MEMBERS")
-                            {
+                                response.StatusCode = ProcessMeetingData(meetingData, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+                                //Process ATTENDANCE
+                                //"AttendanceInfo":[{"AttendanceId":76,"MemberId":1,"MeetingId":5,"IsPresentFlg":1,"Comments":null},{"AttendanceId":77,"MemberId":2,"MeetingId":5,"IsPresentFlg":1,"Comments":null}]
                                 //Retrieve the Information about the MEETING and populate it into the database
-                                var membersObj = obj.Members;
-                                var recordCount = Convert.ToInt32(obj.MemberCount);
+                                var attendancesObj = obj.AttendanceInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                                retValDataProcessed = ProcessMembersCollection(membersObj, recordCount, dataSubmission.SourceVslaCode);
-                            }
-                            else if (dataItem.ToUpper() == "ATTENDANCE")
-                            {
-                                //Retrieve the Information about the MEETING and populate it into the database
-                                var attendancesObj = obj.Attendances;
-                                var recordCount = Convert.ToInt32(obj.MembersCount);
-                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+                                response.StatusCode = ProcessAttendancesCollection(attendancesObj, dataSubmission.SourceVslaCode);
 
-                                //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                                retValDataProcessed = ProcessAttendancesCollection(attendancesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                            }
-                            else if (dataItem.ToUpper() == "SAVINGS")
-                            {
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+                                //Process SAVINGS
+                                //"SavingsInfo":[{"SavingId":65,"MeetingId":5,"MemberId":1,"Amount":5000},{"SavingId":66,"MeetingId":5,"MemberId":2,"Amount":10000}]
                                 //Retrieve the Information about the SAVINGS and populate it into the database
-                                var savingsObj = obj.Savings;
-                                var recordCount = Convert.ToInt32(obj.MembersCount);
-                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+                                var savingsObj = obj.SavingsInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a VslaCycle
-                                retValDataProcessed = ProcessSavingsCollection(savingsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                            }
-                            else if (dataItem.ToUpper() == "LOANS")
-                            {
+                                response.StatusCode = ProcessSavingsCollection(savingsObj, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+
+                                //Process LOANS
+                                //"LoansInfo":[{"MemberId":3,"MeetingId":5,"LoanId":9,"LoanNo":8,"PrincipalAmount":70000,"InterestAmount":7000,"TotalRepaid":0,"LoanBalance":77000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false},{"MemberId":9,"MeetingId":5,"LoanId":10,"LoanNo":9,"PrincipalAmount":90000,"InterestAmount":9000,"TotalRepaid":0,"LoanBalance":99000,"DateDue":"2014-11-11","Comments":"","DateCleared":null,"IsCleared":false,"IsDefaulted":false,"IsWrittenOff":false}]
                                 //Retrieve the Information about the LOANS and populate it into the database
-                                var loanIssuesObj = obj.Loans;
-                                var recordCount = Convert.ToInt32(obj.MembersCount);
-                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+                                var loanIssuesObj = obj.LoansInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a LoanIssues array
-                                retValDataProcessed = ProcessLoanIssuesCollection(loanIssuesObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
-                            }
-                            else if (dataItem.ToUpper() == "REPAYMENTS")
-                            {
+                                response.StatusCode = ProcessLoanIssuesCollection(loanIssuesObj, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+
+                                //Process: REPAYMENTS
+                                //"RepaymentsInfo":[{"RepaymentId":5,"MeetingId":5,"MemberId":5,"LoanId":5,"Amount":10000,"BalanceBefore":11000,"BalanceAfter":1000,"InterestAmount":100,"RolloverAmount":1100,"Comments":"ROLLOVER","LastDateDue":"2014-10-14","NextDateDue":"2014-11-11"}]
                                 //Retrieve the Information about the REPAYMENTS and populate it into the database
-                                var loanRepaymentsObj = obj.Repayments;
-                                var recordCount = Convert.ToInt32(obj.MembersCount);
-                                var meetingIdEx = Convert.ToInt32(obj.MeetingId);
+                                var loanRepaymentsObj = obj.RepaymentsInfo;
 
                                 //Pass the dynamic obj retrieved from the JSON string representing a LoanRepayments array
-                                retValDataProcessed = ProcessLoanRepaymentsCollection(loanRepaymentsObj, recordCount, dataSubmission.SourceVslaCode, meetingIdEx);
+                                response.StatusCode = ProcessLoanRepaymentsCollection(loanRepaymentsObj, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+
+
+                                //Process: FINES
+                                //"FinesInfo":[{"FineId":7,"MemberId":6,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3},{"FineId":8,"MemberId":12,"Amount":1000,"IssuedInMeetingId":5,"PaidInMeetingId":5,"IsCleared":true,"ExpectedDate":null,"DateCleared":"2014-11-11","FineTypeId":3}]
+                                //Retrieve the Information about the FINES and populate it into the database
+                                var finesObj = obj.FinesInfo;
+
+                                //Pass the dynamic obj retrieved from the JSON string representing a Fines array
+                                response.StatusCode = ProcessFinesCollection(finesObj, dataSubmission.SourceVslaCode);
+
+                                //If the processing has failed then exit
+                                if (response.StatusCode != 0)
+                                {
+                                    failedResubmissions++;
+                                    continue;
+                                }
+
+                                //All is well for that meeting submission
+
+                                //Mark it as Processed
+                                dataSubmission.ProcessedFlag = true;
+                                bool retValProcessed = repo.Update(dataSubmission);
+
                             }
-
-                            //return the response code
-                            response.StatusCode = retValDataProcessed;
                         }
+                        
                     }
-                    catch(Exception exReprocess)
+                    catch
                     {
-                        DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("Errors", exReprocess.Message + Environment.NewLine + exReprocess.StackTrace);
                         failedResubmissions++;
+                        continue;
                     }
-                }                
-            }
-            catch(Exception ex)
-            {
-                DigitizingDataBizLayer.Helpers.AppGlobals.LogToFileServer("Errors", ex.Message + Environment.NewLine + ex.StackTrace);
-                response.StatusCode = -99;
-            }
+                }
 
-            return response;
+                return response;               
+            }
+            catch
+            {
+                response.StatusCode = -99;
+                return response;
+            }
         }
 
         public HealthStatsResponse GetHealthStats(string username, string securityToken)

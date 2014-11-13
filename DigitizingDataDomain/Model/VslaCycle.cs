@@ -22,6 +22,8 @@ namespace DigitizingDataDomain.Model
         public virtual bool IsEnded { get; set; }
         public virtual DateTime? DateEnded { get; set; }
         public virtual double SharedAmount { get; set; }
+        public virtual double MigratedInterest { get; set; }
+        public virtual double MigratedFines { get; set; }
 
         //Meetings
         public virtual IList<Meeting> MeetingList { get; set; }
@@ -49,4 +51,6 @@ namespace DigitizingDataDomain.Model
     IS_ENDED BIT DEFAULT 0,
     DATE_ENDED DATETIME,
     SHARED_AMOUNT DECIMAL(18,2) DEFAULT 0,
+    FINES_AT_SETUP DECIMAL(18,2) DEFAULT 0
+ * INTEREST_AT_SETUP DECIMAL(18,2) DEFAULT 0
  * */

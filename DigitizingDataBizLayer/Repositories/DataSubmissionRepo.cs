@@ -19,6 +19,15 @@ namespace DigitizingDataBizLayer.Repositories
             return submissions;
         }
 
+        public List<DataSubmission> RetrieveUnProcessedSubmissions()
+        {
+            var submissions = (from s in SessionProxy.Query<DataSubmission>()
+                               where s.ProcessedFlag != true
+                               orderby s.SubmissionId ascending
+                               select s).ToList();
+            return submissions;
+        }
+
         public DataSubmission GetMostRecentDataSubmission()
         {
             var dataSubmission = (from s in SessionProxy.Query<DataSubmission>()

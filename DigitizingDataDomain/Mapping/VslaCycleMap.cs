@@ -17,13 +17,15 @@ namespace DigitizingDataDomain.Mapping
             Map(c => c.DateEnded);
             Map(c => c.EndDate);
             Map(c => c.CycleCode).Length(20);
-            Map(c => c.InterestRate);
+            Map(c => c.InterestRate).CustomSqlType("decimal(18,2)");
             Map(c => c.IsEnded);
             Map(c => c.MaxShareQuantity);
-            Map(c => c.MaxStartShare);
-            Map(c => c.SharedAmount);
-            Map(c => c.SharePrice);
+            Map(c => c.MaxStartShare).CustomSqlType("decimal(18,2)");
+            Map(c => c.SharedAmount).CustomSqlType("decimal(18,2)"); 
+            Map(c => c.SharePrice).CustomSqlType("decimal(18,2)"); 
             Map(c => c.StartDate);
+            Map(c => c.MigratedInterest).CustomSqlType("decimal(18,2)"); 
+            Map(c => c.MigratedFines).CustomSqlType("decimal(18,2)"); 
 
             //Has Foreign Key Columns
             References(c => c.Vsla)
