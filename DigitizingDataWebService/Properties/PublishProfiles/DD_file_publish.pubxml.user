@@ -11,28 +11,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/DigitizingDataBizLayer.dll">
-      <publishTime>10/30/2013 06:23:54</publishTime>
+      <publishTime>11/12/2014 16:02:32</publishTime>
     </File>
     <File Include="bin/DigitizingDataDomain.dll">
-      <publishTime>10/30/2013 06:23:52</publishTime>
+      <publishTime>11/12/2014 15:56:50</publishTime>
     </File>
     <File Include="bin/DigitizingDataWebService.dll">
-      <publishTime>10/30/2013 06:23:55</publishTime>
+      <publishTime>11/12/2014 16:04:06</publishTime>
     </File>
     <File Include="bin/FluentNHibernate.dll">
-      <publishTime>10/29/2013 16:27:14</publishTime>
+      <publishTime>11/12/2014 11:21:00</publishTime>
     </File>
     <File Include="bin/HibernatingRhinos.Profiler.Appender.dll">
-      <publishTime>10/29/2013 16:33:08</publishTime>
+      <publishTime>11/12/2014 11:21:00</publishTime>
     </File>
     <File Include="bin/Iesi.Collections.dll">
-      <publishTime>10/29/2013 16:26:47</publishTime>
+      <publishTime>11/12/2014 11:21:00</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>09/27/2013 23:03:12</publishTime>
     </File>
     <File Include="bin/NHibernate.dll">
-      <publishTime>10/29/2013 16:26:47</publishTime>
+      <publishTime>11/12/2014 11:21:00</publishTime>
     </File>
     <File Include="bin/Oracle.DataAccess.dll">
       <publishTime>07/12/2006 01:43:56</publishTime>
@@ -41,7 +41,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2013 15:26:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/30/2013 06:23:57</publishTime>
+      <publishTime>11/12/2014 16:08:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

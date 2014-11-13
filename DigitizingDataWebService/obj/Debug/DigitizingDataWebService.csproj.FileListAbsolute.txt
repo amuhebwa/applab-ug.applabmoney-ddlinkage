@@ -1,12 +1,9 @@
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.csprojResolveAssemblyReference.cache
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataWebService.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataWebService.pdb
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Newtonsoft.Json.dll
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Oracle.DataAccess.dll
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.dll
-D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.pdb
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataBizLayer.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingDataDomain.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Newtonsoft.Json.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Oracle.DataAccess.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\NHibernate.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\FluentNHibernate.dll
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\HibernatingRhinos.Profiler.Appender.dll
@@ -16,3 +13,6 @@ D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\DigitizingD
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\NHibernate.xml
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\FluentNHibernate.xml
 D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\bin\Iesi.Collections.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.csprojResolveAssemblyReference.cache
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataWebService\obj\Debug\DigitizingDataWebService.pdb

@@ -1,0 +1,22 @@
+[050801.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->The following types may not be used as proxies:
+DigitizingDataDomain.Model.VslaRegion: method get_RegionId should be 'public/protected virtual' or 'protected internal virtual'
+DigitizingDataDomain.Model.VslaRegion: method set_RegionId should be 'public/protected virtual' or 'protected internal virtual'
+DigitizingDataDomain.Model.VslaRegion: method get_RegionCode should be 'public/protected virtual' or 'protected internal virtual'
+DigitizingDataDomain.Model.VslaRegion: method set_RegionCode should be 'public/protected virtual' or 'protected internal virtual'
+DigitizingDataDomain.Model.VslaRegion: method get_RegionName should be 'public/protected virtual' or 'protected internal virtual'
+DigitizingDataDomain.Model.VslaRegion: method set_RegionName should be 'public/protected virtual' or 'protected internal virtual'
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 108
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
+[051253.AM] ~An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+ Inner Exception->An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at DigitizingDataDomain.Helpers.NHibernateHelper.CreateSessionFactoryForDdl() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 108
+   at DigitizingDataDomain.Helpers.NHibernateHelper.InitializeSessionFactory() in d:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\Helpers\NHibernateHelper.cs:line 51
