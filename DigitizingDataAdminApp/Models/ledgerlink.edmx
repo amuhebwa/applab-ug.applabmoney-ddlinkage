@@ -1,0 +1,1492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ledgerlinkModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ledgerlinkModelStoreContainer">
+          <EntitySet Name="Attendance" EntityType="ledgerlinkModel.Store.Attendance" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Audit_Log" EntityType="ledgerlinkModel.Store.Audit_Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Cbt_info" EntityType="ledgerlinkModel.Store.Cbt_info" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DataSubmission" EntityType="ledgerlinkModel.Store.DataSubmission" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DataSubmission_20140113" EntityType="ledgerlinkModel.Store.DataSubmission_20140113" store:Type="Tables" store:Schema="dbo" store:Name="DataSubmission_20140113">
+            <DefiningQuery>SELECT 
+      [DataSubmission_20140113].[SubmissionId] AS [SubmissionId], 
+      [DataSubmission_20140113].[SourceVslaCode] AS [SourceVslaCode], 
+      [DataSubmission_20140113].[SourcePhoneImei] AS [SourcePhoneImei], 
+      [DataSubmission_20140113].[SourceNetworkOperator] AS [SourceNetworkOperator], 
+      [DataSubmission_20140113].[SourceNetworkType] AS [SourceNetworkType], 
+      [DataSubmission_20140113].[SubmissionTimestamp] AS [SubmissionTimestamp], 
+      [DataSubmission_20140113].[Data] AS [Data], 
+      [DataSubmission_20140113].[ProcessedFlag] AS [ProcessedFlag]
+      FROM [dbo].[DataSubmission_20140113] AS [DataSubmission_20140113]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DataSubmission_20140113_2" EntityType="ledgerlinkModel.Store.DataSubmission_20140113_2" store:Type="Tables" store:Schema="dbo" store:Name="DataSubmission_20140113_2">
+            <DefiningQuery>SELECT 
+      [DataSubmission_20140113_2].[SubmissionId] AS [SubmissionId], 
+      [DataSubmission_20140113_2].[SourceVslaCode] AS [SourceVslaCode], 
+      [DataSubmission_20140113_2].[SourcePhoneImei] AS [SourcePhoneImei], 
+      [DataSubmission_20140113_2].[SourceNetworkOperator] AS [SourceNetworkOperator], 
+      [DataSubmission_20140113_2].[SourceNetworkType] AS [SourceNetworkType], 
+      [DataSubmission_20140113_2].[SubmissionTimestamp] AS [SubmissionTimestamp], 
+      [DataSubmission_20140113_2].[Data] AS [Data], 
+      [DataSubmission_20140113_2].[ProcessedFlag] AS [ProcessedFlag]
+      FROM [dbo].[DataSubmission_20140113_2] AS [DataSubmission_20140113_2]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Fine" EntityType="ledgerlinkModel.Store.Fine" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LoanIssue" EntityType="ledgerlinkModel.Store.LoanIssue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LoanRepayment" EntityType="ledgerlinkModel.Store.LoanRepayment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Member" EntityType="ledgerlinkModel.Store.Member" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="ledgerlinkModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Vsla" EntityType="ledgerlinkModel.Store.Vsla" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="VslaCycle" EntityType="ledgerlinkModel.Store.VslaCycle" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="VslaDdActivation" EntityType="ledgerlinkModel.Store.VslaDdActivation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="VslaRegion" EntityType="ledgerlinkModel.Store.VslaRegion" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Attendance_Meeting" Association="ledgerlinkModel.Store.FK_Attendance_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Member" Association="ledgerlinkModel.Store.FK_Attendance_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DdActivation_Vsla" Association="ledgerlinkModel.Store.FK_DdActivation_Vsla">
+            <End Role="Vsla" EntitySet="Vsla" />
+            <End Role="VslaDdActivation" EntitySet="VslaDdActivation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Meeting_Issued" Association="ledgerlinkModel.Store.FK_Fine_Meeting_Issued">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="Fine" EntitySet="Fine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Meeting_Paid" Association="ledgerlinkModel.Store.FK_Fine_Meeting_Paid">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="Fine" EntitySet="Fine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Member" Association="ledgerlinkModel.Store.FK_Fine_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Fine" EntitySet="Fine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanIssue_Meeting" Association="ledgerlinkModel.Store.FK_LoanIssue_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="LoanIssue" EntitySet="LoanIssue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanIssue_Member" Association="ledgerlinkModel.Store.FK_LoanIssue_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="LoanIssue" EntitySet="LoanIssue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_LoanIssue" Association="ledgerlinkModel.Store.FK_LoanRepayment_LoanIssue">
+            <End Role="LoanIssue" EntitySet="LoanIssue" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_Meeting" Association="ledgerlinkModel.Store.FK_LoanRepayment_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_Member" Association="ledgerlinkModel.Store.FK_LoanRepayment_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_VslaCycle" Association="ledgerlinkModel.Store.FK_Meeting_VslaCycle">
+            <End Role="VslaCycle" EntitySet="VslaCycle" />
+            <End Role="Meeting" EntitySet="Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Member_Vsla" Association="ledgerlinkModel.Store.FK_Member_Vsla">
+            <End Role="Vsla" EntitySet="Vsla" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saving_Meeting" Association="ledgerlinkModel.Store.FK_Saving_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="Saving" EntitySet="Saving" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saving_Member" Association="ledgerlinkModel.Store.FK_Saving_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Saving" EntitySet="Saving" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.Store.FK_Vsla_Region">
+            <End Role="VslaRegion" EntitySet="VslaRegion" />
+            <End Role="Vsla" EntitySet="Vsla" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
+            <End Role="Vsla" EntitySet="Vsla" />
+            <End Role="VslaCycle" EntitySet="VslaCycle" />
+          </AssociationSet>
+          <AssociationSet Name="FKA66C912E75B3F070" Association="ledgerlinkModel.Store.FKA66C912E75B3F070">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="Fine" EntitySet="Fine" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="AttendanceId" />
+          </Key>
+          <Property Name="AttendanceId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AttendanceIdEx" Type="int" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsPresent" Type="bit" />
+          <Property Name="MeetingId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+        </EntityType>
+        <EntityType Name="Audit_Log">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="LogDate" Type="datetime" Nullable="false" />
+          <Property Name="ActionPerformed" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cbt_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="Region" Type="int" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DataSubmission">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourcePhoneImei" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourceNetworkOperator" Type="nvarchar" MaxLength="50" />
+          <Property Name="SourceNetworkType" Type="nvarchar" MaxLength="20" />
+          <Property Name="SubmissionTimestamp" Type="datetime" />
+          <Property Name="Data" Type="nvarchar(max)" />
+          <Property Name="ProcessedFlag" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ledgerlink.dbo.DataSubmission_20140113' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="DataSubmission_20140113">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourcePhoneImei" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourceNetworkOperator" Type="nvarchar" MaxLength="50" />
+          <Property Name="SourceNetworkType" Type="nvarchar" MaxLength="20" />
+          <Property Name="SubmissionTimestamp" Type="datetime" />
+          <Property Name="Data" Type="nvarchar(max)" />
+          <Property Name="ProcessedFlag" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ledgerlink.dbo.DataSubmission_20140113_2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="DataSubmission_20140113_2">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourcePhoneImei" Type="nvarchar" MaxLength="20" />
+          <Property Name="SourceNetworkOperator" Type="nvarchar" MaxLength="50" />
+          <Property Name="SourceNetworkType" Type="nvarchar" MaxLength="20" />
+          <Property Name="SubmissionTimestamp" Type="datetime" />
+          <Property Name="Data" Type="nvarchar(max)" />
+          <Property Name="ProcessedFlag" Type="bit" />
+        </EntityType>
+        <EntityType Name="Fine">
+          <Key>
+            <PropertyRef Name="FineId" />
+          </Key>
+          <Property Name="FineId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FineIdEx" Type="int" />
+          <Property Name="Amount" Type="decimal" Scale="2" />
+          <Property Name="ExpectedDate" Type="datetime" />
+          <Property Name="IsCleared" Type="bit" />
+          <Property Name="DateCleared" Type="datetime" />
+          <Property Name="IssuedInMeetingId" Type="int" />
+          <Property Name="PaidInMeetingId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+          <Property Name="MeetingId" Type="int" />
+        </EntityType>
+        <EntityType Name="LoanIssue">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LoanIdEx" Type="int" />
+          <Property Name="LoanNo" Type="int" />
+          <Property Name="PrincipalAmount" Type="decimal" Scale="2" />
+          <Property Name="InterestAmount" Type="decimal" Scale="2" />
+          <Property Name="Balance" Type="decimal" Scale="2" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCleared" Type="datetime" />
+          <Property Name="DateDue" Type="datetime" />
+          <Property Name="IsCleared" Type="bit" />
+          <Property Name="IsDefaulted" Type="bit" />
+          <Property Name="TotalRepaid" Type="decimal" Scale="2" />
+          <Property Name="IsWrittenOff" Type="bit" />
+          <Property Name="MeetingId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+        </EntityType>
+        <EntityType Name="LoanRepayment">
+          <Key>
+            <PropertyRef Name="RepaymentId" />
+          </Key>
+          <Property Name="RepaymentId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RepaymentIdEx" Type="int" />
+          <Property Name="Amount" Type="decimal" Scale="2" />
+          <Property Name="BalanceAfter" Type="decimal" Scale="2" />
+          <Property Name="BalanceBefore" Type="decimal" Scale="2" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastDateDue" Type="datetime" />
+          <Property Name="NextDateDue" Type="datetime" />
+          <Property Name="InterestAmount" Type="decimal" Scale="2" />
+          <Property Name="RolloverAmount" Type="decimal" Scale="2" />
+          <Property Name="MeetingId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+          <Property Name="LoanId" Type="int" />
+        </EntityType>
+        <EntityType Name="Meeting">
+          <Key>
+            <PropertyRef Name="MeetingId" />
+          </Key>
+          <Property Name="MeetingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MeetingIdEx" Type="int" />
+          <Property Name="CashExpenses" Type="decimal" Scale="2" />
+          <Property Name="CashFines" Type="decimal" Scale="2" />
+          <Property Name="CashFromBank" Type="decimal" Scale="2" />
+          <Property Name="CashFromBox" Type="decimal" Scale="2" />
+          <Property Name="CashSavedBank" Type="decimal" Scale="2" />
+          <Property Name="CashSavedBox" Type="decimal" Scale="2" />
+          <Property Name="CashWelfare" Type="decimal" Scale="2" />
+          <Property Name="DateSent" Type="datetime" />
+          <Property Name="IsCurrent" Type="bit" />
+          <Property Name="IsDataSent" Type="bit" />
+          <Property Name="MeetingDate" Type="datetime" />
+          <Property Name="CountOfMembersPresent" Type="int" />
+          <Property Name="SumOfSavings" Type="decimal" Scale="2" />
+          <Property Name="SumOfLoanIssues" Type="decimal" Scale="2" />
+          <Property Name="SumOfLoanRepayments" Type="decimal" Scale="2" />
+          <Property Name="CycleId" Type="int" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MemberIdEx" Type="int" />
+          <Property Name="MemberNo" Type="int" />
+          <Property Name="CyclesCompleted" Type="int" />
+          <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="OtherNames" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="Occupation" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateArchived" Type="datetime" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsArchived" Type="bit" />
+          <Property Name="PhoneNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="VslaId" Type="int" />
+        </EntityType>
+        <EntityType Name="Saving">
+          <Key>
+            <PropertyRef Name="SavingId" />
+          </Key>
+          <Property Name="SavingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SavingIdEx" Type="int" />
+          <Property Name="Amount" Type="decimal" Scale="2" />
+          <Property Name="MeetingId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Fullname" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="Email" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="UserLevel" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Vsla">
+          <Key>
+            <PropertyRef Name="VslaId" />
+          </Key>
+          <Property Name="VslaId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="VslaCode" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="VslaName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="VslaPhoneMsisdn" Type="nvarchar" MaxLength="20" />
+          <Property Name="PhysicalAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="GpsLocation" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateRegistered" Type="datetime" />
+          <Property Name="DateLinked" Type="datetime" />
+          <Property Name="RegionId" Type="int" />
+          <Property Name="ContactPerson" Type="varchar" MaxLength="250" />
+          <Property Name="PositionInVsla" Type="varchar" MaxLength="100" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CBT" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="VslaCycle">
+          <Key>
+            <PropertyRef Name="CycleId" />
+          </Key>
+          <Property Name="CycleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CycleIdEx" Type="int" />
+          <Property Name="DateEnded" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="CycleCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="InterestRate" Type="float" />
+          <Property Name="IsEnded" Type="bit" />
+          <Property Name="MaxShareQuantity" Type="int" />
+          <Property Name="MaxStartShare" Type="float" />
+          <Property Name="SharedAmount" Type="float" />
+          <Property Name="SharePrice" Type="float" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="VslaId" Type="int" />
+          <Property Name="MigratedInterest" Type="decimal" Scale="2" />
+          <Property Name="MigratedFines" Type="decimal" Scale="2" />
+        </EntityType>
+        <EntityType Name="VslaDdActivation">
+          <Key>
+            <PropertyRef Name="ActivationId" />
+          </Key>
+          <Property Name="ActivationId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ActivationDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="PassKey" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhoneImei01" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhoneImei02" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimImsiNo01" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimImsiNo02" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimNetworkOperator01" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimNetworkOperator02" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimSerialNo01" Type="nvarchar" MaxLength="255" />
+          <Property Name="SimSerialNo02" Type="nvarchar" MaxLength="255" />
+          <Property Name="VslaId" Type="int" />
+        </EntityType>
+        <EntityType Name="VslaRegion">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RegionCode" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="RegionName" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_Attendance_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="Attendance" Type="ledgerlinkModel.Store.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Member">
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Attendance" Type="ledgerlinkModel.Store.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DdActivation_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="VslaDdActivation" Type="ledgerlinkModel.Store.VslaDdActivation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="VslaDdActivation">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Meeting_Issued">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="IssuedInMeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Meeting_Paid">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="PaidInMeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Member">
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanIssue_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="LoanIssue" Type="ledgerlinkModel.Store.LoanIssue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="LoanIssue">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanIssue_Member">
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="LoanIssue" Type="ledgerlinkModel.Store.LoanIssue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="LoanIssue">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_LoanIssue">
+          <End Role="LoanIssue" Type="ledgerlinkModel.Store.LoanIssue" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.Store.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanIssue">
+              <PropertyRef Name="LoanId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="LoanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.Store.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_Member">
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.Store.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meeting_VslaCycle">
+          <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="0..1" />
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaCycle">
+              <PropertyRef Name="CycleId" />
+            </Principal>
+            <Dependent Role="Meeting">
+              <PropertyRef Name="CycleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Member_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saving_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="Saving" Type="ledgerlinkModel.Store.Saving" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Saving">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saving_Member">
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Saving" Type="ledgerlinkModel.Store.Saving" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Saving">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vsla_Region">
+          <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaRegion">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Vsla">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VslaCycle_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="VslaCycle">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA66C912E75B3F070">
+          <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ledgerlinkModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ledgerlinkEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Attendances" EntityType="ledgerlinkModel.Attendance" />
+          <EntitySet Name="Audit_Log" EntityType="ledgerlinkModel.Audit_Log" />
+          <EntitySet Name="Cbt_info" EntityType="ledgerlinkModel.Cbt_info" />
+          <EntitySet Name="DataSubmissions" EntityType="ledgerlinkModel.DataSubmission" />
+          <EntitySet Name="DataSubmission_20140113" EntityType="ledgerlinkModel.DataSubmission_20140113" />
+          <EntitySet Name="DataSubmission_20140113_2" EntityType="ledgerlinkModel.DataSubmission_20140113_2" />
+          <EntitySet Name="Fines" EntityType="ledgerlinkModel.Fine" />
+          <EntitySet Name="LoanIssues" EntityType="ledgerlinkModel.LoanIssue" />
+          <EntitySet Name="LoanRepayments" EntityType="ledgerlinkModel.LoanRepayment" />
+          <EntitySet Name="Meetings" EntityType="ledgerlinkModel.Meeting" />
+          <EntitySet Name="Members" EntityType="ledgerlinkModel.Member" />
+          <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
+          <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
+          <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
+          <EntitySet Name="VslaCycles" EntityType="ledgerlinkModel.VslaCycle" />
+          <EntitySet Name="VslaDdActivations" EntityType="ledgerlinkModel.VslaDdActivation" />
+          <EntitySet Name="VslaRegions" EntityType="ledgerlinkModel.VslaRegion" />
+          <AssociationSet Name="FK_Attendance_Meeting" Association="ledgerlinkModel.FK_Attendance_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Member" Association="ledgerlinkModel.FK_Attendance_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Meeting_Issued" Association="ledgerlinkModel.FK_Fine_Meeting_Issued">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Fine" EntitySet="Fines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Meeting_Paid" Association="ledgerlinkModel.FK_Fine_Meeting_Paid">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Fine" EntitySet="Fines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fine_Member" Association="ledgerlinkModel.FK_Fine_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Fine" EntitySet="Fines" />
+          </AssociationSet>
+          <AssociationSet Name="FKA66C912E75B3F070" Association="ledgerlinkModel.FKA66C912E75B3F070">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Fine" EntitySet="Fines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanIssue_Meeting" Association="ledgerlinkModel.FK_LoanIssue_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="LoanIssue" EntitySet="LoanIssues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanIssue_Member" Association="ledgerlinkModel.FK_LoanIssue_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="LoanIssue" EntitySet="LoanIssues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_LoanIssue" Association="ledgerlinkModel.FK_LoanRepayment_LoanIssue">
+            <End Role="LoanIssue" EntitySet="LoanIssues" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_Meeting" Association="ledgerlinkModel.FK_LoanRepayment_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanRepayment_Member" Association="ledgerlinkModel.FK_LoanRepayment_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="LoanRepayment" EntitySet="LoanRepayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_VslaCycle" Association="ledgerlinkModel.FK_Meeting_VslaCycle">
+            <End Role="VslaCycle" EntitySet="VslaCycles" />
+            <End Role="Meeting" EntitySet="Meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saving_Meeting" Association="ledgerlinkModel.FK_Saving_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Saving" EntitySet="Savings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Member_Vsla" Association="ledgerlinkModel.FK_Member_Vsla">
+            <End Role="Vsla" EntitySet="Vslas" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saving_Member" Association="ledgerlinkModel.FK_Saving_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Saving" EntitySet="Savings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DdActivation_Vsla" Association="ledgerlinkModel.FK_DdActivation_Vsla">
+            <End Role="Vsla" EntitySet="Vslas" />
+            <End Role="VslaDdActivation" EntitySet="VslaDdActivations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.FK_Vsla_Region">
+            <End Role="VslaRegion" EntitySet="VslaRegions" />
+            <End Role="Vsla" EntitySet="Vslas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.FK_VslaCycle_Vsla">
+            <End Role="Vsla" EntitySet="Vslas" />
+            <End Role="VslaCycle" EntitySet="VslaCycles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="AttendanceId" />
+          </Key>
+          <Property Name="AttendanceId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="AttendanceIdEx" Type="Int32" />
+          <Property Name="Comments" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsPresent" Type="Boolean" />
+          <Property Name="MeetingId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
+          <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Attendance_Member" FromRole="Attendance" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Audit_Log">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActionPerformed" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Cbt_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="Region" Type="Int32" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="DataSubmission">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourcePhoneImei" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkOperator" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SubmissionTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ProcessedFlag" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="DataSubmission_20140113">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourcePhoneImei" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkOperator" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SubmissionTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ProcessedFlag" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="DataSubmission_20140113_2">
+          <Key>
+            <PropertyRef Name="SubmissionId" />
+          </Key>
+          <Property Name="SubmissionId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SourceVslaCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourcePhoneImei" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkOperator" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SourceNetworkType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="SubmissionTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ProcessedFlag" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Fine">
+          <Key>
+            <PropertyRef Name="FineId" />
+          </Key>
+          <Property Name="FineId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="FineIdEx" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ExpectedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsCleared" Type="Boolean" />
+          <Property Name="DateCleared" Type="DateTime" Precision="3" />
+          <Property Name="IssuedInMeetingId" Type="Int32" />
+          <Property Name="PaidInMeetingId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="MeetingId" Type="Int32" />
+          <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_Fine_Meeting_Issued" FromRole="Fine" ToRole="Meeting" />
+          <NavigationProperty Name="Meeting1" Relationship="ledgerlinkModel.FK_Fine_Meeting_Paid" FromRole="Fine" ToRole="Meeting" />
+          <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Fine_Member" FromRole="Fine" ToRole="Member" />
+          <NavigationProperty Name="Meeting2" Relationship="ledgerlinkModel.FKA66C912E75B3F070" FromRole="Fine" ToRole="Meeting" />
+        </EntityType>
+        <EntityType Name="LoanIssue">
+          <Key>
+            <PropertyRef Name="LoanId" />
+          </Key>
+          <Property Name="LoanId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="LoanIdEx" Type="Int32" />
+          <Property Name="LoanNo" Type="Int32" />
+          <Property Name="PrincipalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InterestAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Comments" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DateCleared" Type="DateTime" Precision="3" />
+          <Property Name="DateDue" Type="DateTime" Precision="3" />
+          <Property Name="IsCleared" Type="Boolean" />
+          <Property Name="IsDefaulted" Type="Boolean" />
+          <Property Name="TotalRepaid" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsWrittenOff" Type="Boolean" />
+          <Property Name="MeetingId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_LoanIssue_Meeting" FromRole="LoanIssue" ToRole="Meeting" />
+          <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_LoanIssue_Member" FromRole="LoanIssue" ToRole="Member" />
+          <NavigationProperty Name="LoanRepayments" Relationship="ledgerlinkModel.FK_LoanRepayment_LoanIssue" FromRole="LoanIssue" ToRole="LoanRepayment" />
+        </EntityType>
+        <EntityType Name="LoanRepayment">
+          <Key>
+            <PropertyRef Name="RepaymentId" />
+          </Key>
+          <Property Name="RepaymentId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RepaymentIdEx" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BalanceBefore" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Comments" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LastDateDue" Type="DateTime" Precision="3" />
+          <Property Name="NextDateDue" Type="DateTime" Precision="3" />
+          <Property Name="InterestAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RolloverAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MeetingId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="LoanId" Type="Int32" />
+          <NavigationProperty Name="LoanIssue" Relationship="ledgerlinkModel.FK_LoanRepayment_LoanIssue" FromRole="LoanRepayment" ToRole="LoanIssue" />
+          <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_LoanRepayment_Meeting" FromRole="LoanRepayment" ToRole="Meeting" />
+          <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_LoanRepayment_Member" FromRole="LoanRepayment" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Meeting">
+          <Key>
+            <PropertyRef Name="MeetingId" />
+          </Key>
+          <Property Name="MeetingId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="MeetingIdEx" Type="Int32" />
+          <Property Name="CashExpenses" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashFines" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashFromBank" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashFromBox" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashSavedBank" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashSavedBox" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashWelfare" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DateSent" Type="DateTime" Precision="3" />
+          <Property Name="IsCurrent" Type="Boolean" />
+          <Property Name="IsDataSent" Type="Boolean" />
+          <Property Name="MeetingDate" Type="DateTime" Precision="3" />
+          <Property Name="CountOfMembersPresent" Type="Int32" />
+          <Property Name="SumOfSavings" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SumOfLoanIssues" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SumOfLoanRepayments" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CycleId" Type="Int32" />
+          <NavigationProperty Name="Attendances" Relationship="ledgerlinkModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
+          <NavigationProperty Name="Fines" Relationship="ledgerlinkModel.FK_Fine_Meeting_Issued" FromRole="Meeting" ToRole="Fine" />
+          <NavigationProperty Name="Fines1" Relationship="ledgerlinkModel.FK_Fine_Meeting_Paid" FromRole="Meeting" ToRole="Fine" />
+          <NavigationProperty Name="Fines2" Relationship="ledgerlinkModel.FKA66C912E75B3F070" FromRole="Meeting" ToRole="Fine" />
+          <NavigationProperty Name="LoanIssues" Relationship="ledgerlinkModel.FK_LoanIssue_Meeting" FromRole="Meeting" ToRole="LoanIssue" />
+          <NavigationProperty Name="LoanRepayments" Relationship="ledgerlinkModel.FK_LoanRepayment_Meeting" FromRole="Meeting" ToRole="LoanRepayment" />
+          <NavigationProperty Name="VslaCycle" Relationship="ledgerlinkModel.FK_Meeting_VslaCycle" FromRole="Meeting" ToRole="VslaCycle" />
+          <NavigationProperty Name="Savings" Relationship="ledgerlinkModel.FK_Saving_Meeting" FromRole="Meeting" ToRole="Saving" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberIdEx" Type="Int32" />
+          <Property Name="MemberNo" Type="Int32" />
+          <Property Name="CyclesCompleted" Type="Int32" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="OtherNames" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Occupation" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DateArchived" Type="DateTime" Precision="3" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsArchived" Type="Boolean" />
+          <Property Name="PhoneNo" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="VslaId" Type="Int32" />
+          <NavigationProperty Name="Attendances" Relationship="ledgerlinkModel.FK_Attendance_Member" FromRole="Member" ToRole="Attendance" />
+          <NavigationProperty Name="Fines" Relationship="ledgerlinkModel.FK_Fine_Member" FromRole="Member" ToRole="Fine" />
+          <NavigationProperty Name="LoanIssues" Relationship="ledgerlinkModel.FK_LoanIssue_Member" FromRole="Member" ToRole="LoanIssue" />
+          <NavigationProperty Name="LoanRepayments" Relationship="ledgerlinkModel.FK_LoanRepayment_Member" FromRole="Member" ToRole="LoanRepayment" />
+          <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Member" ToRole="Vsla" />
+          <NavigationProperty Name="Savings" Relationship="ledgerlinkModel.FK_Saving_Member" FromRole="Member" ToRole="Saving" />
+        </EntityType>
+        <EntityType Name="Saving">
+          <Key>
+            <PropertyRef Name="SavingId" />
+          </Key>
+          <Property Name="SavingId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SavingIdEx" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MeetingId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_Saving_Meeting" FromRole="Saving" ToRole="Meeting" />
+          <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Saving_Member" FromRole="Saving" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Fullname" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="UserLevel" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Vsla">
+          <Key>
+            <PropertyRef Name="VslaId" />
+          </Key>
+          <Property Name="VslaId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="VslaCode" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="VslaName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="VslaPhoneMsisdn" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="PhysicalAddress" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="GpsLocation" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="DateRegistered" Type="DateTime" Precision="3" />
+          <Property Name="DateLinked" Type="DateTime" Precision="3" />
+          <Property Name="RegionId" Type="Int32" />
+          <Property Name="ContactPerson" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="PositionInVsla" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CBT" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
+          <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
+          <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="Vsla" ToRole="VslaRegion" />
+          <NavigationProperty Name="VslaCycles" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="Vsla" ToRole="VslaCycle" />
+        </EntityType>
+        <EntityType Name="VslaCycle">
+          <Key>
+            <PropertyRef Name="CycleId" />
+          </Key>
+          <Property Name="CycleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CycleIdEx" Type="Int32" />
+          <Property Name="DateEnded" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="CycleCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="InterestRate" Type="Double" />
+          <Property Name="IsEnded" Type="Boolean" />
+          <Property Name="MaxShareQuantity" Type="Int32" />
+          <Property Name="MaxStartShare" Type="Double" />
+          <Property Name="SharedAmount" Type="Double" />
+          <Property Name="SharePrice" Type="Double" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="VslaId" Type="Int32" />
+          <Property Name="MigratedInterest" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MigratedFines" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Meetings" Relationship="ledgerlinkModel.FK_Meeting_VslaCycle" FromRole="VslaCycle" ToRole="Meeting" />
+          <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="VslaCycle" ToRole="Vsla" />
+        </EntityType>
+        <EntityType Name="VslaDdActivation">
+          <Key>
+            <PropertyRef Name="ActivationId" />
+          </Key>
+          <Property Name="ActivationId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivationDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="PassKey" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="PhoneImei01" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="PhoneImei02" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimImsiNo01" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimImsiNo02" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimNetworkOperator01" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimNetworkOperator02" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimSerialNo01" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SimSerialNo02" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="VslaId" Type="Int32" />
+          <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="VslaDdActivation" ToRole="Vsla" />
+        </EntityType>
+        <EntityType Name="VslaRegion">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="RegionName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="VslaRegion" ToRole="Vsla" />
+        </EntityType>
+        <Association Name="FK_Attendance_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="Attendance" Type="ledgerlinkModel.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Member">
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Attendance" Type="ledgerlinkModel.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Meeting_Issued">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="IssuedInMeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Meeting_Paid">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="PaidInMeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fine_Member">
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA66C912E75B3F070">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="Fine" Type="ledgerlinkModel.Fine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Fine">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanIssue_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="LoanIssue" Type="ledgerlinkModel.LoanIssue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="LoanIssue">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanIssue_Member">
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="LoanIssue" Type="ledgerlinkModel.LoanIssue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="LoanIssue">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_LoanIssue">
+          <End Role="LoanIssue" Type="ledgerlinkModel.LoanIssue" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanIssue">
+              <PropertyRef Name="LoanId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="LoanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanRepayment_Member">
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="LoanRepayment" Type="ledgerlinkModel.LoanRepayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="LoanRepayment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meeting_VslaCycle">
+          <End Role="VslaCycle" Type="ledgerlinkModel.VslaCycle" Multiplicity="0..1" />
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaCycle">
+              <PropertyRef Name="CycleId" />
+            </Principal>
+            <Dependent Role="Meeting">
+              <PropertyRef Name="CycleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saving_Meeting">
+          <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
+          <End Role="Saving" Type="ledgerlinkModel.Saving" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Principal>
+            <Dependent Role="Saving">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Member_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saving_Member">
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Saving" Type="ledgerlinkModel.Saving" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Saving">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DdActivation_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="VslaDdActivation" Type="ledgerlinkModel.VslaDdActivation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="VslaDdActivation">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vsla_Region">
+          <End Role="VslaRegion" Type="ledgerlinkModel.VslaRegion" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaRegion">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Vsla">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VslaCycle_Vsla">
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="VslaCycle" Type="ledgerlinkModel.VslaCycle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vsla">
+              <PropertyRef Name="VslaId" />
+            </Principal>
+            <Dependent Role="VslaCycle">
+              <PropertyRef Name="VslaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ledgerlinkModelStoreContainer" CdmEntityContainer="ledgerlinkEntities">
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Attendance">
+              <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+                <ScalarProperty Name="AttendanceIdEx" ColumnName="AttendanceIdEx" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="IsPresent" ColumnName="IsPresent" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Audit_Log">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Audit_Log">
+              <MappingFragment StoreEntitySet="Audit_Log">
+                <ScalarProperty Name="LogId" ColumnName="LogId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="ActionPerformed" ColumnName="ActionPerformed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cbt_info">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Cbt_info">
+              <MappingFragment StoreEntitySet="Cbt_info">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataSubmissions">
+            <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission">
+              <MappingFragment StoreEntitySet="DataSubmission">
+                <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+                <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+                <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+                <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+                <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+                <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataSubmission_20140113">
+            <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission_20140113">
+              <MappingFragment StoreEntitySet="DataSubmission_20140113">
+                <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+                <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+                <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+                <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+                <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+                <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataSubmission_20140113_2">
+            <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission_20140113_2">
+              <MappingFragment StoreEntitySet="DataSubmission_20140113_2">
+                <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+                <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+                <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+                <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+                <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+                <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fines">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Fine">
+              <MappingFragment StoreEntitySet="Fine">
+                <ScalarProperty Name="FineId" ColumnName="FineId" />
+                <ScalarProperty Name="FineIdEx" ColumnName="FineIdEx" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+                <ScalarProperty Name="IsCleared" ColumnName="IsCleared" />
+                <ScalarProperty Name="DateCleared" ColumnName="DateCleared" />
+                <ScalarProperty Name="IssuedInMeetingId" ColumnName="IssuedInMeetingId" />
+                <ScalarProperty Name="PaidInMeetingId" ColumnName="PaidInMeetingId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanIssues">
+            <EntityTypeMapping TypeName="ledgerlinkModel.LoanIssue">
+              <MappingFragment StoreEntitySet="LoanIssue">
+                <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+                <ScalarProperty Name="LoanIdEx" ColumnName="LoanIdEx" />
+                <ScalarProperty Name="LoanNo" ColumnName="LoanNo" />
+                <ScalarProperty Name="PrincipalAmount" ColumnName="PrincipalAmount" />
+                <ScalarProperty Name="InterestAmount" ColumnName="InterestAmount" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="DateCleared" ColumnName="DateCleared" />
+                <ScalarProperty Name="DateDue" ColumnName="DateDue" />
+                <ScalarProperty Name="IsCleared" ColumnName="IsCleared" />
+                <ScalarProperty Name="IsDefaulted" ColumnName="IsDefaulted" />
+                <ScalarProperty Name="TotalRepaid" ColumnName="TotalRepaid" />
+                <ScalarProperty Name="IsWrittenOff" ColumnName="IsWrittenOff" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanRepayments">
+            <EntityTypeMapping TypeName="ledgerlinkModel.LoanRepayment">
+              <MappingFragment StoreEntitySet="LoanRepayment">
+                <ScalarProperty Name="RepaymentId" ColumnName="RepaymentId" />
+                <ScalarProperty Name="RepaymentIdEx" ColumnName="RepaymentIdEx" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BalanceAfter" ColumnName="BalanceAfter" />
+                <ScalarProperty Name="BalanceBefore" ColumnName="BalanceBefore" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="LastDateDue" ColumnName="LastDateDue" />
+                <ScalarProperty Name="NextDateDue" ColumnName="NextDateDue" />
+                <ScalarProperty Name="InterestAmount" ColumnName="InterestAmount" />
+                <ScalarProperty Name="RolloverAmount" ColumnName="RolloverAmount" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Meetings">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Meeting">
+              <MappingFragment StoreEntitySet="Meeting">
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="MeetingIdEx" ColumnName="MeetingIdEx" />
+                <ScalarProperty Name="CashExpenses" ColumnName="CashExpenses" />
+                <ScalarProperty Name="CashFines" ColumnName="CashFines" />
+                <ScalarProperty Name="CashFromBank" ColumnName="CashFromBank" />
+                <ScalarProperty Name="CashFromBox" ColumnName="CashFromBox" />
+                <ScalarProperty Name="CashSavedBank" ColumnName="CashSavedBank" />
+                <ScalarProperty Name="CashSavedBox" ColumnName="CashSavedBox" />
+                <ScalarProperty Name="CashWelfare" ColumnName="CashWelfare" />
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="IsDataSent" ColumnName="IsDataSent" />
+                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
+                <ScalarProperty Name="CountOfMembersPresent" ColumnName="CountOfMembersPresent" />
+                <ScalarProperty Name="SumOfSavings" ColumnName="SumOfSavings" />
+                <ScalarProperty Name="SumOfLoanIssues" ColumnName="SumOfLoanIssues" />
+                <ScalarProperty Name="SumOfLoanRepayments" ColumnName="SumOfLoanRepayments" />
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MemberIdEx" ColumnName="MemberIdEx" />
+                <ScalarProperty Name="MemberNo" ColumnName="MemberNo" />
+                <ScalarProperty Name="CyclesCompleted" ColumnName="CyclesCompleted" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="OtherNames" ColumnName="OtherNames" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="DateArchived" ColumnName="DateArchived" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Savings">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Saving">
+              <MappingFragment StoreEntitySet="Saving">
+                <ScalarProperty Name="SavingId" ColumnName="SavingId" />
+                <ScalarProperty Name="SavingIdEx" ColumnName="SavingIdEx" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ledgerlinkModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="UserLevel" ColumnName="UserLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vslas">
+            <EntityTypeMapping TypeName="ledgerlinkModel.Vsla">
+              <MappingFragment StoreEntitySet="Vsla">
+                <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+                <ScalarProperty Name="VslaCode" ColumnName="VslaCode" />
+                <ScalarProperty Name="VslaName" ColumnName="VslaName" />
+                <ScalarProperty Name="VslaPhoneMsisdn" ColumnName="VslaPhoneMsisdn" />
+                <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+                <ScalarProperty Name="GpsLocation" ColumnName="GpsLocation" />
+                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+                <ScalarProperty Name="DateLinked" ColumnName="DateLinked" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="PositionInVsla" ColumnName="PositionInVsla" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CBT" ColumnName="CBT" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VslaCycles">
+            <EntityTypeMapping TypeName="ledgerlinkModel.VslaCycle">
+              <MappingFragment StoreEntitySet="VslaCycle">
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+                <ScalarProperty Name="CycleIdEx" ColumnName="CycleIdEx" />
+                <ScalarProperty Name="DateEnded" ColumnName="DateEnded" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="CycleCode" ColumnName="CycleCode" />
+                <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+                <ScalarProperty Name="IsEnded" ColumnName="IsEnded" />
+                <ScalarProperty Name="MaxShareQuantity" ColumnName="MaxShareQuantity" />
+                <ScalarProperty Name="MaxStartShare" ColumnName="MaxStartShare" />
+                <ScalarProperty Name="SharedAmount" ColumnName="SharedAmount" />
+                <ScalarProperty Name="SharePrice" ColumnName="SharePrice" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+                <ScalarProperty Name="MigratedInterest" ColumnName="MigratedInterest" />
+                <ScalarProperty Name="MigratedFines" ColumnName="MigratedFines" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VslaDdActivations">
+            <EntityTypeMapping TypeName="ledgerlinkModel.VslaDdActivation">
+              <MappingFragment StoreEntitySet="VslaDdActivation">
+                <ScalarProperty Name="ActivationId" ColumnName="ActivationId" />
+                <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PassKey" ColumnName="PassKey" />
+                <ScalarProperty Name="PhoneImei01" ColumnName="PhoneImei01" />
+                <ScalarProperty Name="PhoneImei02" ColumnName="PhoneImei02" />
+                <ScalarProperty Name="SimImsiNo01" ColumnName="SimImsiNo01" />
+                <ScalarProperty Name="SimImsiNo02" ColumnName="SimImsiNo02" />
+                <ScalarProperty Name="SimNetworkOperator01" ColumnName="SimNetworkOperator01" />
+                <ScalarProperty Name="SimNetworkOperator02" ColumnName="SimNetworkOperator02" />
+                <ScalarProperty Name="SimSerialNo01" ColumnName="SimSerialNo01" />
+                <ScalarProperty Name="SimSerialNo02" ColumnName="SimSerialNo02" />
+                <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VslaRegions">
+            <EntityTypeMapping TypeName="ledgerlinkModel.VslaRegion">
+              <MappingFragment StoreEntitySet="VslaRegion">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+                <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

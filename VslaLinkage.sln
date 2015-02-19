@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitizingDataBizLayer", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitizingDataDomain", "DigitizingDataDomain\DigitizingDataDomain.csproj", "{D1E074DC-FE82-45FE-B8F3-E3D66E3AE91D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitizingDataAdminApp", "DigitizingDataAdminApp\DigitizingDataAdminApp.csproj", "{75724C19-D963-4AA3-B547-2FE96E9BBB28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{D1E074DC-FE82-45FE-B8F3-E3D66E3AE91D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E074DC-FE82-45FE-B8F3-E3D66E3AE91D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1E074DC-FE82-45FE-B8F3-E3D66E3AE91D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75724C19-D963-4AA3-B547-2FE96E9BBB28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75724C19-D963-4AA3-B547-2FE96E9BBB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75724C19-D963-4AA3-B547-2FE96E9BBB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75724C19-D963-4AA3-B547-2FE96E9BBB28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
