@@ -370,6 +370,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Home.cshtml" />
+    <Content Include="Views\Shared\_CustomLayout.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
