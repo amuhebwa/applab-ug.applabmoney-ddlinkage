@@ -27,7 +27,7 @@ namespace DigitizingDataAdminApp.Controllers
                     if (current_user != null) {
                         Session["UserId"] = current_user.Id.ToString();
                         Session["Username"] = current_user.Username;
-                        return RedirectToAction("Home");
+                        return RedirectToAction("Dashboard");
                     }
 
                 }
@@ -36,7 +36,7 @@ namespace DigitizingDataAdminApp.Controllers
             return View(user);
         }
         // This renders the landing page after logging in
-        public ActionResult Home() {
+        public ActionResult Dashboard() {
             return View();
         }
 
