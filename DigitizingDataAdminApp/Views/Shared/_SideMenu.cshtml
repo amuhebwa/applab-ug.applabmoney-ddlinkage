@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css" media="all">
+        ul.vertical-menu {
+            list-style:none;
+            text-decoration:none;
+            font-weight:bold;
+            min-height:450px;
+            margin-left:10px;
+            margin-right:10px;
+        }
+        ul.vertical-menu li {
+            padding:1px;
+            font-size:12px;
+            text-decoration:none;
+            
+        }
+        ul.vertical-menu li:visited {
+            background-color:#f60707;
+        }
+        ul.vertical-menu li:hover {
+
+        }
+
+    </style>
+</head>
+<body>
+    <ul class="vertical-menu">
+        <li>@Html.ActionLink("Home", "HomePage", "Index") </li>
+        <li>@Html.ActionLink("Vlsa", "Vlsa", "HomePage")</li>
+        <li>@Html.ActionLink("Cbt", "Cbt", "HomePage")</li>
+        <li>@Html.ActionLink("Users", "Users", "HomePage")</li>
+        <li>@Html.ActionLink("Audit", "Audit", "HomePage")</li>
+        <li>@Html.ActionLink("Logout", "Index", "Index")</li>
+    </ul>
+</body>
+</html>
