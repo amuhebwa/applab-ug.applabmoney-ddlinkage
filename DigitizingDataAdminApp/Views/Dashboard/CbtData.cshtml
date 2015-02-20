@@ -8,7 +8,7 @@
 <h2>CbtData</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New CBT", "AddCbt")
 </p>
 <table style="width:auto;">
    <thead>
@@ -45,8 +45,9 @@
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "EditCbt", new { id=item.Id }) |
+            @Html.ActionLink("Details", "CbtDetails", new {id=item.Id }) | 
+            @Html.ActionLink("Delete", "DeleteCbt", new { id=item.Id })
         </td>
     </tr>
 }

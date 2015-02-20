@@ -385,6 +385,14 @@
     <Content Include="Views\Dashboard\DeleteUser.cshtml" />
     <Content Include="Views\Dashboard\UserDetails.cshtml" />
     <Content Include="Views\Dashboard\AddUser.cshtml" />
+    <Content Include="Views\Dashboard\VslaDetails.cshtml" />
+    <Content Include="Views\Dashboard\EditVsla.cshtml" />
+    <Content Include="Views\Dashboard\AddVsla.cshtml" />
+    <Content Include="Views\Dashboard\DeleteVsla.cshtml" />
+    <Content Include="Views\Dashboard\AddCbt.cshtml" />
+    <Content Include="Views\Dashboard\CbtDetails.cshtml" />
+    <Content Include="Views\Dashboard\EditCbt.cshtml" />
+    <Content Include="Views\Dashboard\DeleteCbt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

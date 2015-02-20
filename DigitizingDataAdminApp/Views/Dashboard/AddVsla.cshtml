@@ -1,0 +1,140 @@
+﻿@model DigitizingDataAdminApp.Models.VslaInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "AddVsla";
+}
+
+<h2>AddVsla</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>VslaInformation</legend>
+
+       @* <div class="editor-label">
+            @Html.LabelFor(model => model.VslaId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VslaId)
+            @Html.ValidationMessageFor(model => model.VslaId)
+        </div>*@
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VslaCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VslaCode)
+            @Html.ValidationMessageFor(model => model.VslaCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VslaName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VslaName)
+            @Html.ValidationMessageFor(model => model.VslaName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RegionId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RegionId)
+            @Html.ValidationMessageFor(model => model.RegionId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateRegistered)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateRegistered)
+            @Html.ValidationMessageFor(model => model.DateRegistered)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateLinked)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateLinked)
+            @Html.ValidationMessageFor(model => model.DateLinked)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PhysicalAddress)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PhysicalAddress)
+            @Html.ValidationMessageFor(model => model.PhysicalAddress)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VslaPhoneMsisdn)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VslaPhoneMsisdn)
+            @Html.ValidationMessageFor(model => model.VslaPhoneMsisdn)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GpsLocation)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GpsLocation)
+            @Html.ValidationMessageFor(model => model.GpsLocation)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactPerson)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactPerson)
+            @Html.ValidationMessageFor(model => model.ContactPerson)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PositionInVsla)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PositionInVsla)
+            @Html.ValidationMessageFor(model => model.PositionInVsla)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PhoneNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PhoneNumber)
+            @Html.ValidationMessageFor(model => model.PhoneNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CBT)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CBT)
+            @Html.ValidationMessageFor(model => model.CBT)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

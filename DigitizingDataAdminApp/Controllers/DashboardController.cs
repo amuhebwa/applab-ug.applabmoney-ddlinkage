@@ -150,6 +150,223 @@ namespace DigitizingDataAdminApp.Controllers
             };
             return View(user_data);
         }
+        // Get the VSLA detailed information
+    public ActionResult VslaDetails(int id) {
+        ledgerlinkEntities database = new ledgerlinkEntities();
+        var vsla = database.Vslas.Find(id);
+        VslaInformation vsla_data = new VslaInformation {
+            VslaId = vsla.VslaId,
+            VslaCode = vsla.VslaCode ?? "--",
+            VslaName = vsla.VslaName ?? "--",
+            RegionId = vsla.RegionId.ToString(), // change this back to integer
+            DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Today,
+            DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Today,
+            PhysicalAddress = vsla.PhysicalAddress ?? "--",
+            VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
+            GpsLocation = vsla.GpsLocation ?? "--",
+            ContactPerson = vsla.ContactPerson ?? "--",
+            PositionInVsla = vsla.PositionInVsla ?? "--",
+            PhoneNumber = vsla.PhoneNumber ?? "--",
+            CBT = vsla.CBT.HasValue ? (int)vsla.CBT : 00,
+            Status = vsla.Status ?? "--"
+
+        };
+        return View(vsla_data);
+    }
+        // Edit VSLA
+        [HttpGet]
+    public ActionResult EditVsla(int id) {
+        ledgerlinkEntities database = new ledgerlinkEntities();
+        var vsla = database.Vslas.Find(id);
+        VslaInformation vsla_data = new VslaInformation
+        {
+            VslaCode = vsla.VslaCode ?? "--",
+            VslaName = vsla.VslaName ?? "--",
+            RegionId = vsla.RegionId.ToString(), // change this back to integer
+            DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Today,
+            DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Today,
+            PhysicalAddress = vsla.PhysicalAddress ?? "--",
+            VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
+            GpsLocation = vsla.GpsLocation ?? "--",
+            ContactPerson = vsla.ContactPerson ?? "--",
+            PositionInVsla = vsla.PositionInVsla ?? "--",
+            PhoneNumber = vsla.PhoneNumber ?? "--",
+            CBT = vsla.CBT.HasValue ? (int)vsla.CBT : 00,
+            Status = vsla.Status ?? "--"
+
+        };
+        return View(vsla_data);
+    }
+        [HttpPost]
+        public ActionResult EditVsla(VslaInformation vsla, int id) {
+            using (ledgerlinkEntities database = new ledgerlinkEntities())
+            {
+                var query = database.Vslas.Find(id);
+                query.VslaCode = vsla.VslaCode;
+                query.VslaName = vsla.VslaName;
+                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
+                query.GpsLocation = vsla.GpsLocation;
+                query.DateRegistered = vsla.DateRegistered;
+                query.DateLinked = vsla.DateLinked;
+                query.RegionId = int.Parse(vsla.RegionId);
+                query.ContactPerson = vsla.ContactPerson;
+                query.PositionInVsla = vsla.PositionInVsla;
+                query.PhoneNumber = vsla.PhoneNumber;
+                query.CBT = vsla.CBT;
+                query.Status = vsla.Status;
+
+                database.SaveChanges();
+                return RedirectToAction("VslaData");
+            }
+        }
+        // Method for adding a new vsla
+        public ActionResult AddVsla() {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddVsla(Vsla new_vsla)
+        {
+            if (ModelState.IsValid)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                database.Vslas.Add(new_vsla);
+                database.SaveChanges();
+                return RedirectToAction("VslaData");
+            }
+            return View(new_vsla);
+        }
+        // Delete a VSLA
+        [HttpGet]
+        public ActionResult DeleteVsla(int id) {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var vsla = database.Vslas.Find(id);
+            VslaInformation vsla_data = new VslaInformation
+            {
+                VslaId = vsla.VslaId,
+                VslaCode = vsla.VslaCode ?? "--",
+                VslaName = vsla.VslaName ?? "--",
+                RegionId = vsla.RegionId.ToString(), // change this back to integer
+                DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Today,
+                DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Today,
+                PhysicalAddress = vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vsla.GpsLocation ?? "--",
+                ContactPerson = vsla.ContactPerson ?? "--",
+                PositionInVsla = vsla.PositionInVsla ?? "--",
+                PhoneNumber = vsla.PhoneNumber ?? "--",
+                CBT = vsla.CBT.HasValue ? (int)vsla.CBT : 00,
+                Status = vsla.Status ?? "--"
+
+            };
+            return View(vsla_data);
+        }
+        [HttpPost]
+        public ActionResult DeleteVsla(Vsla vsla, int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            vsla.VslaId = id;
+            db.Vslas.Attach(vsla);
+            db.Vslas.Remove(vsla);
+            db.SaveChanges();
+            return RedirectToAction("VslaData");
+        }
+        // ---- CBT Methods
+        // Add a new CBT
+        public ActionResult AddCbt() {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddCbt(Cbt_info new_cbt) {
+            if (ModelState.IsValid)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                database.Cbt_info.Add(new_cbt);
+                database.SaveChanges();
+                return RedirectToAction("CbtData");
+            }
+            return View(new_cbt);
+        }
+        // View individual cbt information
+        public ActionResult CbtDetails(int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var cbt = db.Cbt_info.Find(id);
+            CbtInformation cbt_data = new CbtInformation
+            {
+                Id = cbt.Id,
+                Name = cbt.Name,
+                Region = cbt.Region,
+                PhoneNumber = cbt.PhoneNumber,
+                Email = cbt.Email,
+                Status = cbt.Status
+            };
+            return View(cbt_data);
+        }
+        // Edit CBT information
+        [HttpGet]
+        public ActionResult EditCbt(int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var cbt = db.Cbt_info.Find(id);
+            CbtInformation cbt_data = new CbtInformation
+            {
+                Id = cbt.Id,
+                Name = cbt.Name,
+                Region = cbt.Region,
+                PhoneNumber = cbt.PhoneNumber,
+                Email = cbt.Email,
+                Status = cbt.Status
+            };
+            return View(cbt_data);
+        }
+        [HttpPost]
+        public ActionResult EditCbt(Cbt_info cbt, int id) {
+            using (ledgerlinkEntities database = new ledgerlinkEntities()) {
+                var query = database.Cbt_info.Find(id);
+                query.Name = cbt.Name;
+                query.Region = cbt.Region;
+                query.PhoneNumber = cbt.PhoneNumber;
+                query.Email = cbt.Email;
+                query.Status = cbt.Status;
+                database.SaveChanges();
+                return RedirectToAction("CbtData");
+            }
+           
+        }
+       // Delete CBT information
+        [HttpGet]
+        public ActionResult DeleteCbt(int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var cbt = db.Cbt_info.Find(id);
+            CbtInformation cbt_data = new CbtInformation
+            {
+                Id = cbt.Id,
+                Name = cbt.Name,
+                Region = cbt.Region,
+                PhoneNumber = cbt.PhoneNumber,
+                Email = cbt.Email,
+                Status = cbt.Status
+            };
+            return View(cbt_data);
+        }
+        [HttpPost]
+        public ActionResult DeleteCbt(Cbt_info cbt, int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            cbt.Id = id;
+            db.Cbt_info.Attach(cbt);
+            db.Cbt_info.Remove(cbt);
+            db.SaveChanges();
+            return RedirectToAction("CbtData");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
