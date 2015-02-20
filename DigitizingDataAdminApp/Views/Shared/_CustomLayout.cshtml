@@ -29,14 +29,13 @@
             </div>
         </header>
         <div id="body">
-            @RenderSection("featured", required: false)
             
             <section class="content-wrapper main-content clear-fix">
-                <div id="left-column" style="width:250px; min-height:450px; float:left;">
+                <div id="left-column" style="width:auto; min-height:450px; float:left;">
                     @Html.Partial("_SideMenu")
                 </div>
-                <div id="right-column" style="width:auto; min-height:450px; float:left; min-width:600px; margin-left:20px;">
-                                    @RenderBody()
+                <div id="right-column" style="width:auto; min-height:450px; float:left; margin-left:10px;">
+                    @RenderBody()
                 </div>
 
             </section>

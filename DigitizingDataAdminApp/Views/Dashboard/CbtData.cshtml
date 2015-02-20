@@ -1,0 +1,54 @@
+﻿@model DigitizingDataAdminApp.Models.AllCbtInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "CbtData";
+}
+
+<h2>CbtData</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table style="width:auto;">
+   <thead>
+       <tr>
+           <td>Id</td>
+            <td>Name</td>
+            <td>Region</td>
+            <td>Phone Number</td>
+            <td>Email</td>
+           <td>Status</td>
+           <td></td>
+       </tr>
+   </thead>
+
+  @foreach (var item in Model.AllCbtList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Region)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+ 
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,50 @@
+﻿@model DigitizingDataAdminApp.Models.AllUsersInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "UsersData";
+}
+
+<h2>UsersData</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table style="width:auto;">
+   <thead>
+       <tr>
+           <td>Id</td>
+            <td>Username</td>
+            <td>Fullname</td>
+            <td>Email</td>
+            <td>UserLevel</td>
+           <td></td>
+       </tr>
+   </thead>
+
+  @foreach (var item in Model.AllUsersList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fullname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+ 
+        <td>
+            @Html.DisplayFor(modelItem => item.UserLevel)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

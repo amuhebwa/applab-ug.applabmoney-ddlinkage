@@ -8,8 +8,8 @@
             text-decoration:none;
             font-weight:bold;
             min-height:450px;
-            margin-left:10px;
-            margin-right:10px;
+            margin-left:auto;
+            margin-right:20px;
         }
         ul.vertical-menu li {
             padding:1px;
@@ -28,12 +28,12 @@
 </head>
 <body>
     <ul class="vertical-menu">
-        <li>@Html.ActionLink("Home", "Index", "Dashboard") </li>
-        <li>@Html.ActionLink("Vlsa", "Vlsa", "Dashboard")</li>
-        <li>@Html.ActionLink("Cbt", "Cbt", "Dashboard")</li>
-        <li>@Html.ActionLink("Users", "Users", "Dashboard")</li>
-        <li>@Html.ActionLink("Audit", "Audit", "Dashboard")</li>
-        <li>@Html.ActionLink("Logout", "Index", "Dashboard")</li>
+        <li>@Html.ActionLink("Home", "Dashboard", "Login") </li>
+        <li>@Html.ActionLink("Vlsa", "VslaData", "Dashboard")</li>
+        <li>@Html.ActionLink("Cbt", "CbtData", "Dashboard")</li>
+        <li>@Html.ActionLink("Users", "UsersData", "Dashboard")</li>
+        <li>@Html.ActionLink("Audit", "AuditLogs", "Dashboard")</li>
+        <li>@Html.ActionLink("Logout", "Index", "Login")</li>
     </ul>
 </body>
 </html>

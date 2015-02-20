@@ -178,6 +178,7 @@
     <Compile Include="Models\Audit_Log.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CbtInformation.cs" />
     <Compile Include="Models\Cbt_info.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -214,6 +215,7 @@
     <Compile Include="Models\LoanRepayment.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\Meeting.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
@@ -236,6 +238,7 @@
     <Compile Include="Models\VslaDdActivation.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VslaInformation.cs" />
     <Compile Include="Models\VslaRegion.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -315,9 +318,10 @@
       <DependentUpon>ledgerlink.edmx</DependentUpon>
       <LastGenOutput>ledgerlink.cs</LastGenOutput>
     </Content>
-    <None Include="Scripts\jquery-1.7.1.intellisense.js" />
-    <Content Include="Scripts\jquery-1.7.1.js" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
@@ -373,6 +377,10 @@
     <Content Include="Views\Shared\_CustomLayout.cshtml" />
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Login\Dashboard.cshtml" />
+    <Content Include="Views\Dashboard\UsersData.cshtml" />
+    <Content Include="Views\Dashboard\VslaData.cshtml" />
+    <Content Include="Views\Dashboard\CbtData.cshtml" />
+    <Content Include="Views\Dashboard\AuditLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

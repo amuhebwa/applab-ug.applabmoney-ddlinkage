@@ -1,0 +1,52 @@
+﻿@model DigitizingDataAdminApp.Models.AllVslaInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "VslaData";
+}
+
+<h2>VslaData</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table style="width:auto;">
+   <thead>
+       <tr>
+           <td>Id</td>
+           <td>VslaName</td>
+            <td>VslaCode</td>
+            <td>Region</td>
+            <td>DateRegistered</td>
+           <td></td>
+       </tr>
+   </thead>
+
+  @foreach (var item in Model.AllVslaList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.VslaId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VslaName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VslaCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRegistered)
+        </td>
+       
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.VslaId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.VslaId })
+        </td>
+    </tr>
+}
+
+</table>
+
