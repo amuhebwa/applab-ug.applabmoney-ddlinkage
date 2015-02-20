@@ -52,6 +52,29 @@ namespace DigitizingDataAdminApp.Controllers
             
             return View();
         }
+        // Function to add a new user to the system
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddUser(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                using (ledgerlinkEntities db = new ledgerlinkEntities())
+                {
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    ModelState.Clear();
+                    user = null;
+                    ViewBag.Message = "New User has been added";
+                }
+            }
+            //return View(user);
+            return RedirectToAction("UsersData");
+        }
         // Function to edit the user
         [HttpGet]
         public ActionResult EditUser(int id) {

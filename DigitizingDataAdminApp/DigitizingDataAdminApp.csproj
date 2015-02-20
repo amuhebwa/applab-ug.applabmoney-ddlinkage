@@ -384,6 +384,7 @@
     <Content Include="Views\Dashboard\EditUser.cshtml" />
     <Content Include="Views\Dashboard\DeleteUser.cshtml" />
     <Content Include="Views\Dashboard\UserDetails.cshtml" />
+    <Content Include="Views\Dashboard\AddUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,13 +11,12 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<table style="width:auto;">
+<table style="width:800px;">
    <thead>
        <tr>
            <td>Id</td>
            <td>VslaName</td>
             <td>VslaCode</td>
-            <td>Region</td>
             <td>DateRegistered</td>
            <td></td>
        </tr>
@@ -35,15 +34,13 @@
             @Html.DisplayFor(modelItem => item.VslaCode)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.RegionId)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.DateRegistered)
         </td>
        
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.VslaId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.VslaId })
+            @Html.ActionLink("Edit", "EditVsla", new { id=item.VslaId }) |
+            @Html.ActionLink("Details", "VslaDetails", new { id=item.VslaId }) |
+            @Html.ActionLink("Delete", "DeleteVsla", new { id=item.VslaId })
         </td>
     </tr>
 }
