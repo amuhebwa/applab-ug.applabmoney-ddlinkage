@@ -52,6 +52,84 @@ namespace DigitizingDataAdminApp.Controllers
             
             return View();
         }
+        // Function to edit the user
+        [HttpGet]
+        public ActionResult EditUser(int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var usr = db.Users.Find(id);
+            UserInformation user_data = new UserInformation
+            {
+                Id = usr.Id,
+                Username = usr.Username,
+                Password = usr.Password,
+                Fullname = usr.Fullname,
+                Email = usr.Email,
+                UserLevel = usr.UserLevel
+            };
+            return View(user_data);
+        
+        }
+        [HttpPost]
+        public ActionResult EditUser(UserInformation info, int id) {
+            using (ledgerlinkEntities database = new ledgerlinkEntities())
+            {
+                var query = database.Users.Find(id);
+                query.Username = info.Username;
+                query.Password = info.Password;
+                query.Fullname = info.Fullname;
+                query.Email = info.Email;
+                query.UserLevel = info.UserLevel;
+                database.SaveChanges();
+                return RedirectToAction("UsersData");
+            }
+        }
+        // Delete a user
+        [HttpGet]
+        public ActionResult DeleteUser(int id)
+        {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var usr = db.Users.Find(id);
+            UserInformation user_data = new UserInformation
+            {
+                Id = usr.Id,
+                Username = usr.Username,
+                Password = usr.Password,
+                Fullname = usr.Fullname,
+                Email = usr.Email,
+                UserLevel = usr.UserLevel
+            };
+            return View(user_data);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUser(User user, int id)
+        {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            user.Id = id;
+            db.Users.Attach(user);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("UsersData");
+        }
+
+        // Display all the user details
+        public ActionResult UserDetails(int id) {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var usr = db.Users.Find(id);
+            UserInformation user_data = new UserInformation
+            {
+                Id = usr.Id,
+                Username = usr.Username,
+                Password = usr.Password,
+                Fullname = usr.Fullname,
+                Email = usr.Email,
+                UserLevel = usr.UserLevel
+            };
+            return View(user_data);
+        }
+
+
+
 
         // ----HELPER METHODS-----
         // 1. Helper method to get information for all registered users

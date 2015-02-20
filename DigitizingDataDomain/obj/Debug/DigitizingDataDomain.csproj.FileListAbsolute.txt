@@ -30,3 +30,4 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\bin\Debug\NHibernate.Linq.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.pdb
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.csprojResolveAssemblyReference.cache

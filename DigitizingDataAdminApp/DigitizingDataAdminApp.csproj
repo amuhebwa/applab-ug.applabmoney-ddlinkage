@@ -381,6 +381,9 @@
     <Content Include="Views\Dashboard\VslaData.cshtml" />
     <Content Include="Views\Dashboard\CbtData.cshtml" />
     <Content Include="Views\Dashboard\AuditLogs.cshtml" />
+    <Content Include="Views\Dashboard\EditUser.cshtml" />
+    <Content Include="Views\Dashboard\DeleteUser.cshtml" />
+    <Content Include="Views\Dashboard\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

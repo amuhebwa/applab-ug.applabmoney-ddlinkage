@@ -1,0 +1,51 @@
+﻿@model DigitizingDataAdminApp.Models.UserInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "UserDetails";
+}
+
+<h2>UserDetails</h2>
+
+<fieldset>
+    <legend>UserInformation</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Username)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Fullname)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fullname)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Password)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Password)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserLevel)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserLevel)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "EditUser", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
