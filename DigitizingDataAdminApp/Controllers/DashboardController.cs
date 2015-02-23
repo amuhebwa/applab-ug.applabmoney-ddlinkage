@@ -288,31 +288,59 @@ namespace DigitizingDataAdminApp.Controllers
         // View individual cbt information
         public ActionResult CbtDetails(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var cbt = db.Cbt_info.Find(id);
-            CbtInformation cbt_data = new CbtInformation
-            {
-                Id = cbt.Id,
-                Name = cbt.Name,
-                Region = cbt.Region,
-                PhoneNumber = cbt.PhoneNumber,
-                Email = cbt.Email,
-                Status = cbt.Status
+            //var cbt = db.Cbt_info.Find(id);
+            //CbtInformation cbt_data = new CbtInformation
+            //{
+            //    Id = cbt.Id,
+            //    Name = cbt.Name,
+            //    Region = "place holder",
+            //    PhoneNumber = cbt.PhoneNumber,
+            //    Email = cbt.Email,
+            //    Status = cbt.Status
+            //};
+            var all_information = (from table_cbt in db.Cbt_info
+                                   join table_region
+                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId where table_cbt.Id == id
+                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+            CbtInformation cbt_data = new CbtInformation {
+                Id = all_information.dt_cbt.Id,
+                Name = all_information.dt_cbt.Name,
+                Region = all_information.db_region.RegionName,
+                PhoneNumber = all_information.dt_cbt.PhoneNumber,
+                Email = all_information.dt_cbt.Email,
+                Status = all_information.dt_cbt.Status
             };
+
+           // return View(cbt_data);
             return View(cbt_data);
         }
         // Edit CBT information
         [HttpGet]
         public ActionResult EditCbt(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var cbt = db.Cbt_info.Find(id);
+            //var cbt = db.Cbt_info.Find(id);
+            //CbtInformation cbt_data = new CbtInformation
+            //{
+            //    Id = cbt.Id,
+            //    Name = cbt.Name,
+            //    Region = "place holder",
+            //    PhoneNumber = cbt.PhoneNumber,
+            //    Email = cbt.Email,
+            //    Status = cbt.Status
+            //};
+            var all_information = (from table_cbt in db.Cbt_info
+                                   join table_region
+                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   where table_cbt.Id == id
+                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
             CbtInformation cbt_data = new CbtInformation
             {
-                Id = cbt.Id,
-                Name = cbt.Name,
-                Region = cbt.Region,
-                PhoneNumber = cbt.PhoneNumber,
-                Email = cbt.Email,
-                Status = cbt.Status
+                Id = all_information.dt_cbt.Id,
+                Name = all_information.dt_cbt.Name,
+                Region = all_information.db_region.RegionName,
+                PhoneNumber = all_information.dt_cbt.PhoneNumber,
+                Email = all_information.dt_cbt.Email,
+                Status = all_information.dt_cbt.Status
             };
             return View(cbt_data);
         }
@@ -339,7 +367,7 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 Id = cbt.Id,
                 Name = cbt.Name,
-                Region = cbt.Region,
+                Region = "place holder", // here, delete the foreign key, which is int. So, parse the string to integer
                 PhoneNumber = cbt.PhoneNumber,
                 Email = cbt.Email,
                 Status = cbt.Status
@@ -427,19 +455,38 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<CbtInformation> cbts = new List<CbtInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var cbt_details = (from data in db.Cbt_info select data);
-            foreach (var item in cbt_details)
-            {
-                cbts.Add(new CbtInformation
+
+            //var cbt_details = (from data in db.Cbt_info select data);
+            //foreach (var item in cbt_details)
+            //{
+            //    cbts.Add(new CbtInformation
+            //    {
+            //        Id = item.Id,
+            //        Name = item.Name,
+            //        Region = item.Region,
+            //        PhoneNumber = item.PhoneNumber,
+            //        Email = item.Email,
+            //        Status = item.Status
+            //    });
+            //}
+
+            // selecting from multiple tables
+            var all_information = (from table_cbt in db.Cbt_info
+                                   join table_region
+                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   select new { dt_cbt = table_cbt, db_region = table_region });
+            foreach (var item in all_information) {
+                cbts.Add(new CbtInformation 
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Region = item.Region,
-                    PhoneNumber = item.PhoneNumber,
-                    Email = item.Email,
-                    Status = item.Status
+                Id = item.dt_cbt.Id,
+                Name = item.dt_cbt.Name,
+                Region = item.db_region.RegionName,
+                PhoneNumber = item.dt_cbt.PhoneNumber,
+                Email = item.dt_cbt.Email,
+                Status = item.dt_cbt.Status
                 });
             }
+
             return cbts;
         }
     }
