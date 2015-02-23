@@ -7,7 +7,7 @@
       <Diagram DiagramId="1841891844ea4b40bc729322095882f8" Name="Diagram1">
         <EntityTypeShape EntityType="ledgerlinkModel.Attendance" Width="1.5" PointX="9.75" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Audit_Log" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="2.875" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113_2" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -40,6 +40,7 @@
         <AssociationConnector Association="ledgerlinkModel.FK_DdActivation_Vsla" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Region" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_VslaCycle_Vsla" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Cbt_info_VslaRegion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

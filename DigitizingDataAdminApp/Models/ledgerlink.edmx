@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ledgerlinkModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ledgerlinkModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ledgerlinkModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="ledgerlinkModel.Store.Attendance" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Audit_Log" EntityType="ledgerlinkModel.Store.Audit_Log" store:Type="Tables" Schema="dbo" />
@@ -52,6 +52,10 @@
           <AssociationSet Name="FK_Attendance_Member" Association="ledgerlinkModel.Store.FK_Attendance_Member">
             <End Role="Member" EntitySet="Member" />
             <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.Store.FK_Cbt_info_VslaRegion">
+            <End Role="VslaRegion" EntitySet="VslaRegion" />
+            <End Role="Cbt_info" EntitySet="Cbt_info" />
           </AssociationSet>
           <AssociationSet Name="FK_DdActivation_Vsla" Association="ledgerlinkModel.Store.FK_DdActivation_Vsla">
             <End Role="Vsla" EntitySet="Vsla" />
@@ -105,10 +109,6 @@
             <End Role="Member" EntitySet="Member" />
             <End Role="Saving" EntitySet="Saving" />
           </AssociationSet>
-          <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.Store.FK_Vsla_Region">
-            <End Role="VslaRegion" EntitySet="VslaRegion" />
-            <End Role="Vsla" EntitySet="Vsla" />
-          </AssociationSet>
           <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
             <End Role="Vsla" EntitySet="Vsla" />
             <End Role="VslaCycle" EntitySet="VslaCycle" />
@@ -146,8 +146,8 @@
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="250" />
           <Property Name="Region" Type="int" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Email" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="10" />
         </EntityType>
         <EntityType Name="DataSubmission">
           <Key>
@@ -400,6 +400,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cbt_info_VslaRegion">
+          <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="1" />
+          <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaRegion">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Cbt_info">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DdActivation_Vsla">
           <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
           <End Role="VslaDdActivation" Type="ledgerlinkModel.Store.VslaDdActivation" Multiplicity="*" />
@@ -556,18 +568,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Vsla_Region">
-          <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="0..1" />
-          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VslaRegion">
-              <PropertyRef Name="RegionId" />
-            </Principal>
-            <Dependent Role="Vsla">
-              <PropertyRef Name="RegionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_VslaCycle_Vsla">
           <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
           <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="*" />
@@ -592,8 +592,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ledgerlinkModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -687,6 +686,10 @@
             <End Role="Vsla" EntitySet="Vslas" />
             <End Role="VslaCycle" EntitySet="VslaCycles" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.FK_Cbt_info_VslaRegion">
+            <End Role="VslaRegion" EntitySet="VslaRegions" />
+            <End Role="Cbt_info" EntitySet="Cbt_info" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
@@ -718,8 +721,9 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
           <Property Name="Region" Type="Int32" Nullable="false" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
         </EntityType>
         <EntityType Name="DataSubmission">
           <Key>
@@ -975,6 +979,7 @@
           <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="RegionName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="VslaRegion" ToRole="Vsla" />
+          <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="VslaRegion" ToRole="Cbt_info" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
           <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
@@ -1192,6 +1197,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cbt_info_VslaRegion">
+          <End Type="ledgerlinkModel.VslaRegion" Role="VslaRegion" Multiplicity="1" />
+          <End Type="ledgerlinkModel.Cbt_info" Role="Cbt_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VslaRegion">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Cbt_info">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1223,9 +1240,9 @@
           <EntitySetMapping Name="Cbt_info">
             <EntityTypeMapping TypeName="ledgerlinkModel.Cbt_info">
               <MappingFragment StoreEntitySet="Cbt_info">
+                <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

@@ -48,6 +48,10 @@
       <End Role="Member" EntitySet="Member" />
       <End Role="Attendance" EntitySet="Attendance" />
     </AssociationSet>
+    <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.Store.FK_Cbt_info_VslaRegion">
+      <End Role="VslaRegion" EntitySet="VslaRegion" />
+      <End Role="Cbt_info" EntitySet="Cbt_info" />
+    </AssociationSet>
     <AssociationSet Name="FK_DdActivation_Vsla" Association="ledgerlinkModel.Store.FK_DdActivation_Vsla">
       <End Role="Vsla" EntitySet="Vsla" />
       <End Role="VslaDdActivation" EntitySet="VslaDdActivation" />
@@ -100,10 +104,6 @@
       <End Role="Member" EntitySet="Member" />
       <End Role="Saving" EntitySet="Saving" />
     </AssociationSet>
-    <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.Store.FK_Vsla_Region">
-      <End Role="VslaRegion" EntitySet="VslaRegion" />
-      <End Role="Vsla" EntitySet="Vsla" />
-    </AssociationSet>
     <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
       <End Role="Vsla" EntitySet="Vsla" />
       <End Role="VslaCycle" EntitySet="VslaCycle" />
@@ -141,8 +141,8 @@
     <Property Name="Name" Type="varchar" Nullable="false" MaxLength="250" />
     <Property Name="Region" Type="int" Nullable="false" />
     <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="10" />
   </EntityType>
   <EntityType Name="DataSubmission">
     <Key>
@@ -395,6 +395,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Cbt_info_VslaRegion">
+    <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="1" />
+    <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VslaRegion">
+        <PropertyRef Name="RegionId" />
+      </Principal>
+      <Dependent Role="Cbt_info">
+        <PropertyRef Name="Region" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DdActivation_Vsla">
     <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
     <End Role="VslaDdActivation" Type="ledgerlinkModel.Store.VslaDdActivation" Multiplicity="*" />
@@ -548,18 +560,6 @@
       </Principal>
       <Dependent Role="Saving">
         <PropertyRef Name="MemberId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Vsla_Region">
-    <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="0..1" />
-    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="VslaRegion">
-        <PropertyRef Name="RegionId" />
-      </Principal>
-      <Dependent Role="Vsla">
-        <PropertyRef Name="RegionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
