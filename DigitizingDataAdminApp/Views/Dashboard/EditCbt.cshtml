@@ -24,11 +24,14 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Region)
+            @Html.LabelFor(model => model.VslaRegionsModel)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Region)
-            @Html.ValidationMessageFor(model => model.Region)
+           @* @Html.EditorFor(model => model.Region)
+            @Html.ValidationMessageFor(model => model.Region)*@
+           @*@Html.DropDownList("RegionId", Model.VslaRegionsModel)*@
+            @Html.DropDownList("RegionId", Model.VslaRegionsModel,new { @style ="width:250px; height:30px;" })
+           
         </div>
 
         <div class="editor-label">

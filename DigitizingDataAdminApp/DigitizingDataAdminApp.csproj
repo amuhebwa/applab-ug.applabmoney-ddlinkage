@@ -167,6 +167,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SelectList.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -391,8 +392,8 @@
     <Content Include="Views\Dashboard\DeleteVsla.cshtml" />
     <Content Include="Views\Dashboard\AddCbt.cshtml" />
     <Content Include="Views\Dashboard\CbtDetails.cshtml" />
-    <Content Include="Views\Dashboard\EditCbt.cshtml" />
     <Content Include="Views\Dashboard\DeleteCbt.cshtml" />
+    <Content Include="Views\Dashboard\EditCbt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -419,7 +420,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>57504</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:59083/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

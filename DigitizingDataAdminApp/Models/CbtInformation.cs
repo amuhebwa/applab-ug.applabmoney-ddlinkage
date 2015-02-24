@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -19,5 +20,7 @@ namespace DigitizingDataAdminApp.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Status { get; set; }
+        public SelectList VslaRegionsModel { get; set; }
     }
+
 }

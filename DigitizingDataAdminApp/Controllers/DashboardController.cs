@@ -288,16 +288,7 @@ namespace DigitizingDataAdminApp.Controllers
         // View individual cbt information
         public ActionResult CbtDetails(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            //var cbt = db.Cbt_info.Find(id);
-            //CbtInformation cbt_data = new CbtInformation
-            //{
-            //    Id = cbt.Id,
-            //    Name = cbt.Name,
-            //    Region = "place holder",
-            //    PhoneNumber = cbt.PhoneNumber,
-            //    Email = cbt.Email,
-            //    Status = cbt.Status
-            //};
+
             var all_information = (from table_cbt in db.Cbt_info
                                    join table_region
                                        in db.VslaRegions on table_cbt.Region equals table_region.RegionId where table_cbt.Id == id
@@ -318,26 +309,24 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult EditCbt(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            //var cbt = db.Cbt_info.Find(id);
-            //CbtInformation cbt_data = new CbtInformation
-            //{
-            //    Id = cbt.Id,
-            //    Name = cbt.Name,
-            //    Region = "place holder",
-            //    PhoneNumber = cbt.PhoneNumber,
-            //    Email = cbt.Email,
-            //    Status = cbt.Status
-            //};
+
+            // select query for a particular cbt
             var all_information = (from table_cbt in db.Cbt_info
                                    join table_region
                                        in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+
+            // Get all cbt to populate in the dropdown list
+            List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName", all_information.db_region.RegionId);
+
+            // Create a cbt object
             CbtInformation cbt_data = new CbtInformation
             {
                 Id = all_information.dt_cbt.Id,
                 Name = all_information.dt_cbt.Name,
-                Region = all_information.db_region.RegionName,
+                VslaRegionsModel = regions_list,
                 PhoneNumber = all_information.dt_cbt.PhoneNumber,
                 Email = all_information.dt_cbt.Email,
                 Status = all_information.dt_cbt.Status
@@ -345,11 +334,12 @@ namespace DigitizingDataAdminApp.Controllers
             return View(cbt_data);
         }
         [HttpPost]
-        public ActionResult EditCbt(Cbt_info cbt, int id) {
+        public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId)
+        {
             using (ledgerlinkEntities database = new ledgerlinkEntities()) {
                 var query = database.Cbt_info.Find(id);
                 query.Name = cbt.Name;
-                query.Region = cbt.Region;
+                query.Region = RegionId;
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
                 query.Status = cbt.Status;
@@ -383,21 +373,6 @@ namespace DigitizingDataAdminApp.Controllers
             db.SaveChanges();
             return RedirectToAction("CbtData");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // ----HELPER METHODS-----
         // 1. Helper method to get information for all registered users
@@ -455,20 +430,6 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<CbtInformation> cbts = new List<CbtInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-
-            //var cbt_details = (from data in db.Cbt_info select data);
-            //foreach (var item in cbt_details)
-            //{
-            //    cbts.Add(new CbtInformation
-            //    {
-            //        Id = item.Id,
-            //        Name = item.Name,
-            //        Region = item.Region,
-            //        PhoneNumber = item.PhoneNumber,
-            //        Email = item.Email,
-            //        Status = item.Status
-            //    });
-            //}
 
             // selecting from multiple tables
             var all_information = (from table_cbt in db.Cbt_info
