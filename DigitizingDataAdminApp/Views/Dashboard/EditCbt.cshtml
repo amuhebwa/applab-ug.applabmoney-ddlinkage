@@ -24,12 +24,9 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.VslaRegionsModel)
+            @Html.LabelFor(model => model.Region)
         </div>
         <div class="editor-field">
-           @* @Html.EditorFor(model => model.Region)
-            @Html.ValidationMessageFor(model => model.Region)*@
-           @*@Html.DropDownList("RegionId", Model.VslaRegionsModel)*@
             @Html.DropDownList("RegionId", Model.VslaRegionsModel,new { @style ="width:250px; height:30px;" })
            
         </div>
@@ -65,7 +62,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "CbtData")
 </div>
 
 @section Scripts {

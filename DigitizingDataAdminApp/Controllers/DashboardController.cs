@@ -272,14 +272,29 @@ namespace DigitizingDataAdminApp.Controllers
         // ---- CBT Methods
         // Add a new CBT
         public ActionResult AddCbt() {
-            return View();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
+            CbtInformation regionsSelector = new CbtInformation {
+                VslaRegionsModel = regions_list
+            };
+            return View(regionsSelector);
         }
         [HttpPost]
-        public ActionResult AddCbt(Cbt_info new_cbt) {
+        public ActionResult AddCbt(Cbt_info new_cbt, int RegionId)
+        {
             if (ModelState.IsValid)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
-                database.Cbt_info.Add(new_cbt);
+                Cbt_info cbx = new Cbt_info {
+                    Name = new_cbt.Name,
+                    Region = RegionId,
+                    PhoneNumber = new_cbt.PhoneNumber,
+                    Email = new_cbt.Email,
+                    Status = new_cbt.Status
+  
+                };
+                database.Cbt_info.Add(cbx);
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
@@ -352,16 +367,23 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult DeleteCbt(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var cbt = db.Cbt_info.Find(id);
+
+            var all_information = (from table_cbt in db.Cbt_info
+                                   join table_region
+                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   where table_cbt.Id == id
+                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
             CbtInformation cbt_data = new CbtInformation
             {
-                Id = cbt.Id,
-                Name = cbt.Name,
-                Region = "place holder", // here, delete the foreign key, which is int. So, parse the string to integer
-                PhoneNumber = cbt.PhoneNumber,
-                Email = cbt.Email,
-                Status = cbt.Status
+                Id = all_information.dt_cbt.Id,
+                Name = all_information.dt_cbt.Name,
+                Region = all_information.db_region.RegionName,
+                PhoneNumber = all_information.dt_cbt.PhoneNumber,
+                Email = all_information.dt_cbt.Email,
+                Status = all_information.dt_cbt.Status
             };
+
+            // return View(cbt_data);
             return View(cbt_data);
         }
         [HttpPost]
