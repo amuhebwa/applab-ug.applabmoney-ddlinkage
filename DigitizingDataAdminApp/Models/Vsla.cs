@@ -40,5 +40,6 @@ namespace DigitizingDataAdminApp.Models
         public virtual ICollection<VslaDdActivation> VslaDdActivations { get; set; }
         public virtual VslaRegion VslaRegion { get; set; }
         public virtual ICollection<VslaCycle> VslaCycles { get; set; }
+        public virtual Cbt_info Cbt_info { get; set; }
     }
 }

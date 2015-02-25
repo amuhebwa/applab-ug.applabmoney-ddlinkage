@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -26,7 +27,10 @@ namespace DigitizingDataAdminApp.Models
         public string ContactPerson { get; set; }
         public string PositionInVsla { get; set; }
         public string PhoneNumber { get; set; }
-        public int CBT { get; set; }
+        // public int CBT { get; set; }
+        public string CBT { get; set; }
+        public SelectList CbtModel { get; set; }
+        public SelectList VslaRegionsModel { get; set; }
         public string Status { get; set; }
     }
 }

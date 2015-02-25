@@ -109,6 +109,10 @@
             <End Role="Member" EntitySet="Member" />
             <End Role="Saving" EntitySet="Saving" />
           </AssociationSet>
+          <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.Store.FK_Vsla_Cbt_info">
+            <End Role="Cbt_info" EntitySet="Cbt_info" />
+            <End Role="Vsla" EntitySet="Vsla" />
+          </AssociationSet>
           <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
             <End Role="Vsla" EntitySet="Vsla" />
             <End Role="VslaCycle" EntitySet="VslaCycle" />
@@ -568,6 +572,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Vsla_Cbt_info">
+          <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cbt_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vsla">
+              <PropertyRef Name="CBT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_VslaCycle_Vsla">
           <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
           <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="*" />
@@ -690,6 +706,10 @@
             <End Role="VslaRegion" EntitySet="VslaRegions" />
             <End Role="Cbt_info" EntitySet="Cbt_info" />
           </AssociationSet>
+          <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.FK_Vsla_Cbt_info">
+            <End Role="Cbt_info" EntitySet="Cbt_info" />
+            <End Role="Vsla" EntitySet="Vslas" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
@@ -724,6 +744,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
+          <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
         </EntityType>
         <EntityType Name="DataSubmission">
           <Key>
@@ -929,6 +950,7 @@
           <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
           <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="Vsla" ToRole="VslaRegion" />
           <NavigationProperty Name="VslaCycles" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="Vsla" ToRole="VslaCycle" />
+          <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
         </EntityType>
         <EntityType Name="VslaCycle">
           <Key>
@@ -1206,6 +1228,18 @@
             </Principal>
             <Dependent Role="Cbt_info">
               <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vsla_Cbt_info">
+          <End Type="ledgerlinkModel.Cbt_info" Role="Cbt_info" Multiplicity="0..1" />
+          <End Type="ledgerlinkModel.Vsla" Role="Vsla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cbt_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vsla">
+              <PropertyRef Name="CBT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

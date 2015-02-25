@@ -41,8 +41,9 @@
             @Html.LabelFor(model => model.RegionId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.RegionId)
-            @Html.ValidationMessageFor(model => model.RegionId)
+           @* @Html.EditorFor(model => model.RegionId)
+            @Html.ValidationMessageFor(model => model.RegionId)*@
+             @Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:250px; height:30px;" })
         </div>
 
         <div class="editor-label">
@@ -113,8 +114,9 @@
             @Html.LabelFor(model => model.CBT)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.CBT)
-            @Html.ValidationMessageFor(model => model.CBT)
+           @* @Html.EditorFor(model => model.CBT)
+            @Html.ValidationMessageFor(model => model.CBT)*@
+            @Html.DropDownList("Id", Model.CbtModel, new { @style = "width:250px; height:30px;" })
         </div>
 
         <div class="editor-label">
@@ -132,7 +134,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "VslaData")
 </div>
 
 @section Scripts {
