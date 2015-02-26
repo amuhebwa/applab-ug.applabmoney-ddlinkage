@@ -5,61 +5,66 @@
     ViewBag.Title = "AddCbt";
 }
 
-<h2>AddCbt</h2>
-
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>CbtInformation</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+        <legend>Add new CBT</legend>
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Region)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:250px; height:30px;" })
+            </div>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Region)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PhoneNumber)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+            </div>
         </div>
-        <div class="editor-field">
-              @Html.DropDownList("RegionId", Model.VslaRegionsModel,new { @style ="width:250px; height:30px;" })
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Email)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PhoneNumber)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Status)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Status)
+                @Html.ValidationMessageFor(model => model.Status)
+            </div>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PhoneNumber)
-            @Html.ValidationMessageFor(model => model.PhoneNumber)
+        <div class="form-group">
+            <p>
+                <input class="btn btn-small btn-primary" type="submit" value=" Create " style="width: 100px;" />
+            </p>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.Email)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
-        </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "CbtData")
 </div>
 
 @section Scripts {

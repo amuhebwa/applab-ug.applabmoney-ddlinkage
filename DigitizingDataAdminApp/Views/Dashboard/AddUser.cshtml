@@ -5,62 +5,67 @@
     ViewBag.Title = "AddUser";
 }
 
-<h2>AddUser</h2>
-
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>UserInformation</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Username)
+        <legend>Add new user</legend>
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Username)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)
+            </div>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Username)
-            @Html.ValidationMessageFor(model => model.Username)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Fullname)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Fullname)
+                @Html.ValidationMessageFor(model => model.Fullname)
+            </div>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Fullname)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Email)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Fullname)
-            @Html.ValidationMessageFor(model => model.Fullname)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Password)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
+        <div class="form-group">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.UserLevel)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.UserLevel)
+                @Html.ValidationMessageFor(model => model.UserLevel)
+            </div>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.Email)
+        <div class="form-group">
+            <p>
+                <input class="btn btn-small btn-primary" type="submit" value=" Create " style="width: 100px;" />
+            </p>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Password)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.Password)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserLevel)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UserLevel)
-            @Html.ValidationMessageFor(model => model.UserLevel)
-        </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "UsersData")
 </div>
 
 @section Scripts {

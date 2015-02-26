@@ -10,7 +10,6 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
     {
-        //
         // GET: /Dashboard/
 
         public ActionResult Index()
@@ -18,7 +17,8 @@ namespace DigitizingDataAdminApp.Controllers
             return View();
         }
         // Action Result for user details
-        public ActionResult UsersData() {
+        public ActionResult UsersData()
+        {
             AllUsersInformation all_users = new AllUsersInformation();
             List<UserInformation> single_user = new List<UserInformation>();
             single_user = users_infor();
@@ -26,16 +26,18 @@ namespace DigitizingDataAdminApp.Controllers
             return View(all_users);
         }
         // Action Result for vsla details
-        public ActionResult VslaData() {
+        public ActionResult VslaData()
+        {
             AllVslaInformation all_vsla = new AllVslaInformation();
             List<VslaInformation> single_vsla = new List<VslaInformation>();
             single_vsla = vsla_info();
             all_vsla.AllVslaList = single_vsla;
             return View(all_vsla);
-            
+
         }
         // Action Result for CBT Data
-        public ActionResult CbtData() {
+        public ActionResult CbtData()
+        {
             AllCbtInformation all_cbt = new AllCbtInformation();
             List<CbtInformation> single_cbt = new List<CbtInformation>();
             single_cbt = cbt_info();
@@ -44,12 +46,14 @@ namespace DigitizingDataAdminApp.Controllers
             return View(all_cbt);
         }
         // Audit user logs
-        public ActionResult AuditLogs() {
+        public ActionResult AuditLogs()
+        {
             return View();
         }
         // Logout
-        public ActionResult Logout() {
-            
+        public ActionResult Logout()
+        {
+
             return View();
         }
         // Function to add a new user to the system
@@ -77,7 +81,8 @@ namespace DigitizingDataAdminApp.Controllers
         }
         // Function to edit the user
         [HttpGet]
-        public ActionResult EditUser(int id) {
+        public ActionResult EditUser(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
             var usr = db.Users.Find(id);
             UserInformation user_data = new UserInformation
@@ -90,10 +95,11 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = usr.UserLevel
             };
             return View(user_data);
-        
+
         }
         [HttpPost]
-        public ActionResult EditUser(UserInformation info, int id) {
+        public ActionResult EditUser(UserInformation info, int id)
+        {
             using (ledgerlinkEntities database = new ledgerlinkEntities())
             {
                 var query = database.Users.Find(id);
@@ -136,7 +142,8 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         // Display all the user details
-        public ActionResult UserDetails(int id) {
+        public ActionResult UserDetails(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
             var usr = db.Users.Find(id);
             UserInformation user_data = new UserInformation
@@ -151,166 +158,8 @@ namespace DigitizingDataAdminApp.Controllers
             return View(user_data);
         }
         // Get the VSLA detailed information
-    public ActionResult VslaDetails(int id) {
-        ledgerlinkEntities database = new ledgerlinkEntities();
-        var vsla_info = (from table_vsla in database.Vslas
-                         join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id 
-                         join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
-                         where table_vsla.VslaId == id
-                         select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions }).Single();
-
-        VslaInformation vsla_data = new VslaInformation {
-            VslaId = vsla_info.db_vsla.VslaId,
-            VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-            VslaName = vsla_info.db_vsla.VslaName ?? "--",
-            // RegionId = vsla_info.db_vsla.RegionId.ToString(),
-            RegionId = vsla_info.db_regions.RegionName,
-            DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
-            DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
-            PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-            VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-            GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-            ContactPerson = vsla_info.db_vsla.ContactPerson,
-            PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-            PhoneNumber = vsla_info.db_vsla.PhoneNumber,
-            CBT = vsla_info.db_cbt.Name ?? "--",
-            Status = vsla_info.db_vsla.Status
-        };
-        return View(vsla_data);
-    }
-        // Edit VSLA
-        [HttpGet]
-    public ActionResult EditVsla(int id) {
-        ledgerlinkEntities database = new ledgerlinkEntities();
-        //var vsla = database.Vslas.Find(id);
-        //VslaInformation vsla_data = new VslaInformation
-        //{
-        //    VslaCode = vsla.VslaCode ?? "--",
-        //    VslaName = vsla.VslaName ?? "--",
-        //    RegionId = vsla.RegionId.ToString(), // change this back to integer
-        //    DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Today,
-        //    DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Today,
-        //    PhysicalAddress = vsla.PhysicalAddress ?? "--",
-        //    VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
-        //    GpsLocation = vsla.GpsLocation ?? "--",
-        //    ContactPerson = vsla.ContactPerson ?? "--",
-        //    PositionInVsla = vsla.PositionInVsla ?? "--",
-        //    PhoneNumber = vsla.PhoneNumber ?? "--",
-        //   // CBT = vsla.CBT.HasValue ? (int)vsla.CBT : 00,
-        //   CBT = "Place Holder",
-        //    Status = vsla.Status ?? "--"
-
-        //};
-        //return View(vsla_data);
-
-        var vsla_info = (from table_vsla in database.Vslas
-                         join table_cbt in
-                             database.Cbt_info on table_vsla.CBT equals table_cbt.Id
-                         where table_vsla.VslaId == id
-                         select new { db_vsla = table_vsla, db_cbt = table_cbt }).Single();
-        // Get the list of all cbts to populate in the dropdown list
-        List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a=>a.Name).ToList();
-        SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
-            // Get a list of all vsla regions to populate in the dropdown list
-        List<VslaRegion> all_vsla_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-        SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName");
-
-        VslaInformation vsla_data = new VslaInformation
+        public ActionResult VslaDetails(int id)
         {
-            VslaId = vsla_info.db_vsla.VslaId,
-            VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-            VslaName = vsla_info.db_vsla.VslaName ?? "--",
-           // RegionId = vsla_info.db_vsla.RegionId.ToString(),
-           VslaRegionsModel = vsla_Regions,
-            DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
-            DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
-            PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-            VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-            GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-            ContactPerson = vsla_info.db_vsla.ContactPerson,
-            PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-            PhoneNumber = vsla_info.db_vsla.PhoneNumber,
-            //CBT = vsla_info.db_cbt.Name ?? "--",
-            CbtModel = cbt_info,
-            Status = vsla_info.db_vsla.Status
-        };
-        return View(vsla_data);
-    }
-        [HttpPost]
-        public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId)
-        {
-            using (ledgerlinkEntities database = new ledgerlinkEntities())
-            {
-                var query = database.Vslas.Find(VslaId);
-                query.VslaCode = vsla.VslaCode;
-                query.VslaName = vsla.VslaName;
-                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
-                query.GpsLocation = vsla.GpsLocation;
-                query.DateRegistered = vsla.DateRegistered;
-                query.DateLinked = vsla.DateLinked;
-                query.RegionId = RegionId;
-                query.ContactPerson = vsla.ContactPerson;
-                query.PositionInVsla = vsla.PositionInVsla;
-                query.PhoneNumber = vsla.PhoneNumber;
-                //query.CBT = vsla.CBT;
-                //query.CBT = int.Parse("1");
-                query.CBT = Id;
-                query.Status = vsla.Status;
-
-                database.SaveChanges();
-                return RedirectToAction("VslaData");
-            }
-        }
-        // Method for adding a new vsla
-        public ActionResult AddVsla() {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-            // Get all cbts
-            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
-            // Get all vsla regions
-
-            List<VslaRegion> all_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
-
-            VslaInformation vsla_list_options = new VslaInformation {
-                VslaRegionsModel = regions_list,
-                CbtModel = cbt_info
-            };
-            return View(vsla_list_options);
-        }
-        [HttpPost]
-        public ActionResult AddVsla(Vsla new_vsla, int RegionId, int Id)
-        {
-            if (ModelState.IsValid)
-            {
-                ledgerlinkEntities database = new ledgerlinkEntities();
-                //database.Vslas.Add(new_vsla);
-                //database.SaveChanges();
-                //return RedirectToAction("VslaData");
-                Vsla added_vsla = new Vsla {
-                    VslaCode = new_vsla.VslaCode,
-                    VslaName = new_vsla.VslaName,
-                    RegionId = RegionId,
-                    DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
-                    DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
-                    PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = new_vsla.GpsLocation ?? "--",
-                    ContactPerson = new_vsla.ContactPerson,
-                    PositionInVsla = new_vsla.PositionInVsla,
-                    PhoneNumber = new_vsla.PhoneNumber,
-                    CBT = Id,
-                    Status = new_vsla.Status
-                };
-                database.Vslas.Add(added_vsla);
-                database.SaveChanges();
-                return RedirectToAction("VslaData");
-            }
-            return View(new_vsla);
-        }
-        // Delete a VSLA
-        [HttpGet]
-        public ActionResult DeleteVsla(int id) {
             ledgerlinkEntities database = new ledgerlinkEntities();
             var vsla_info = (from table_vsla in database.Vslas
                              join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
@@ -338,8 +187,150 @@ namespace DigitizingDataAdminApp.Controllers
             };
             return View(vsla_data);
         }
+        // Edit VSLA
+        [HttpGet]
+        public ActionResult EditVsla(int id)
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+
+            var vsla_info = (from table_vsla in database.Vslas
+                             join table_cbt in
+                                 database.Cbt_info on table_vsla.CBT equals table_cbt.Id
+                             where table_vsla.VslaId == id
+                             select new { db_vsla = table_vsla, db_cbt = table_cbt }).Single();
+            // Get the list of all cbts to populate in the dropdown list
+            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
+            // Get a list of all vsla regions to populate in the dropdown list
+            List<VslaRegion> all_vsla_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName");
+
+            VslaInformation vsla_data = new VslaInformation
+            {
+                VslaId = vsla_info.db_vsla.VslaId,
+                VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
+                VslaName = vsla_info.db_vsla.VslaName ?? "--",
+                // RegionId = vsla_info.db_vsla.RegionId.ToString(),
+                VslaRegionsModel = vsla_Regions,
+                DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
+                DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
+                PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
+                ContactPerson = vsla_info.db_vsla.ContactPerson,
+                PositionInVsla = vsla_info.db_vsla.PositionInVsla,
+                PhoneNumber = vsla_info.db_vsla.PhoneNumber,
+                //CBT = vsla_info.db_cbt.Name ?? "--",
+                CbtModel = cbt_info,
+                Status = vsla_info.db_vsla.Status
+            };
+            return View(vsla_data);
+        }
         [HttpPost]
-        public ActionResult DeleteVsla(Vsla vsla, int id) {
+        public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId)
+        {
+            using (ledgerlinkEntities database = new ledgerlinkEntities())
+            {
+                var query = database.Vslas.Find(VslaId);
+                query.VslaCode = vsla.VslaCode;
+                query.VslaName = vsla.VslaName;
+                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
+                query.GpsLocation = vsla.GpsLocation;
+                query.DateRegistered = vsla.DateRegistered;
+                query.DateLinked = vsla.DateLinked;
+                query.RegionId = RegionId;
+                query.ContactPerson = vsla.ContactPerson;
+                query.PositionInVsla = vsla.PositionInVsla;
+                query.PhoneNumber = vsla.PhoneNumber;
+                //query.CBT = vsla.CBT;
+                //query.CBT = int.Parse("1");
+                query.CBT = Id;
+                query.Status = vsla.Status;
+
+                database.SaveChanges();
+                return RedirectToAction("VslaData");
+            }
+        }
+        // Method for adding a new vsla
+        public ActionResult AddVsla()
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            // Get all cbts
+            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
+            // Get all vsla regions
+
+            List<VslaRegion> all_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
+
+            VslaInformation vsla_list_options = new VslaInformation
+            {
+                VslaRegionsModel = regions_list,
+                CbtModel = cbt_info
+            };
+            return View(vsla_list_options);
+        }
+        [HttpPost]
+        public ActionResult AddVsla(Vsla new_vsla, int RegionId, int Id)
+        {
+            if (ModelState.IsValid)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                Vsla added_vsla = new Vsla
+                {
+                    VslaCode = new_vsla.VslaCode,
+                    VslaName = new_vsla.VslaName,
+                    RegionId = RegionId,
+                    DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
+                    DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
+                    PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = new_vsla.GpsLocation ?? "--",
+                    ContactPerson = new_vsla.ContactPerson,
+                    PositionInVsla = new_vsla.PositionInVsla,
+                    PhoneNumber = new_vsla.PhoneNumber,
+                    CBT = Id,
+                    Status = new_vsla.Status
+                };
+                database.Vslas.Add(added_vsla);
+                database.SaveChanges();
+                return RedirectToAction("VslaData");
+            }
+            return View(new_vsla);
+        }
+        // Delete a VSLA
+        [HttpGet]
+        public ActionResult DeleteVsla(int id)
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var vsla_info = (from table_vsla in database.Vslas
+                             join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
+                             join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
+                             where table_vsla.VslaId == id
+                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions }).Single();
+
+            VslaInformation vsla_data = new VslaInformation
+            {
+                VslaId = vsla_info.db_vsla.VslaId,
+                VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
+                VslaName = vsla_info.db_vsla.VslaName ?? "--",
+                RegionId = vsla_info.db_regions.RegionName,
+                DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
+                DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
+                PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
+                ContactPerson = vsla_info.db_vsla.ContactPerson,
+                PositionInVsla = vsla_info.db_vsla.PositionInVsla,
+                PhoneNumber = vsla_info.db_vsla.PhoneNumber,
+                CBT = vsla_info.db_cbt.Name ?? "--",
+                Status = vsla_info.db_vsla.Status
+            };
+            return View(vsla_data);
+        }
+        [HttpPost]
+        public ActionResult DeleteVsla(Vsla vsla, int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
             vsla.VslaId = id;
             db.Vslas.Attach(vsla);
@@ -350,11 +341,13 @@ namespace DigitizingDataAdminApp.Controllers
 
         // ---- CBT Methods
         // Add a new CBT
-        public ActionResult AddCbt() {
+        public ActionResult AddCbt()
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
             List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
             SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
-            CbtInformation regionsSelector = new CbtInformation {
+            CbtInformation regionsSelector = new CbtInformation
+            {
                 VslaRegionsModel = regions_list
             };
             return View(regionsSelector);
@@ -365,13 +358,14 @@ namespace DigitizingDataAdminApp.Controllers
             if (ModelState.IsValid)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
-                Cbt_info cbx = new Cbt_info {
+                Cbt_info cbx = new Cbt_info
+                {
                     Name = new_cbt.Name,
                     Region = RegionId,
                     PhoneNumber = new_cbt.PhoneNumber,
                     Email = new_cbt.Email,
                     Status = new_cbt.Status
-  
+
                 };
                 database.Cbt_info.Add(cbx);
                 database.SaveChanges();
@@ -380,14 +374,16 @@ namespace DigitizingDataAdminApp.Controllers
             return View(new_cbt);
         }
         // View individual cbt information
-        public ActionResult CbtDetails(int id) {
+        public ActionResult CbtDetails(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             var all_information = (from table_cbt in db.Cbt_info
-                                   join table_region
-                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId where table_cbt.Id == id
+                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, db_region = table_region }).Single();
-            CbtInformation cbt_data = new CbtInformation {
+            CbtInformation cbt_data = new CbtInformation
+            {
                 Id = all_information.dt_cbt.Id,
                 Name = all_information.dt_cbt.Name,
                 Region = all_information.db_region.RegionName,
@@ -396,18 +392,18 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = all_information.dt_cbt.Status
             };
 
-           // return View(cbt_data);
+            // return View(cbt_data);
             return View(cbt_data);
         }
         // Edit CBT information
         [HttpGet]
-        public ActionResult EditCbt(int id) {
+        public ActionResult EditCbt(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             // select query for a particular cbt
             var all_information = (from table_cbt in db.Cbt_info
-                                   join table_region
-                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
@@ -430,7 +426,8 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId)
         {
-            using (ledgerlinkEntities database = new ledgerlinkEntities()) {
+            using (ledgerlinkEntities database = new ledgerlinkEntities())
+            {
                 var query = database.Cbt_info.Find(id);
                 query.Name = cbt.Name;
                 query.Region = RegionId;
@@ -440,16 +437,16 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
-           
+
         }
-       // Delete CBT information
+        // Delete CBT information
         [HttpGet]
-        public ActionResult DeleteCbt(int id) {
+        public ActionResult DeleteCbt(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             var all_information = (from table_cbt in db.Cbt_info
-                                   join table_region
-                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, db_region = table_region }).Single();
             CbtInformation cbt_data = new CbtInformation
@@ -466,7 +463,8 @@ namespace DigitizingDataAdminApp.Controllers
             return View(cbt_data);
         }
         [HttpPost]
-        public ActionResult DeleteCbt(Cbt_info cbt, int id) {
+        public ActionResult DeleteCbt(Cbt_info cbt, int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
             cbt.Id = id;
             db.Cbt_info.Attach(cbt);
@@ -520,8 +518,8 @@ namespace DigitizingDataAdminApp.Controllers
                     ContactPerson = item.ContactPerson ?? "--",
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
-                   // CBT = item.CBT.HasValue ? (int)item.CBT : 11,
-                   CBT = "Place Holder",
+                    // CBT = item.CBT.HasValue ? (int)item.CBT : 11,
+                    CBT = "Place Holder",
                     Status = item.Status ?? "--"
                 });
             }
@@ -535,18 +533,18 @@ namespace DigitizingDataAdminApp.Controllers
 
             // selecting from multiple tables
             var all_information = (from table_cbt in db.Cbt_info
-                                   join table_region
-                                       in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    select new { dt_cbt = table_cbt, db_region = table_region });
-            foreach (var item in all_information) {
-                cbts.Add(new CbtInformation 
+            foreach (var item in all_information)
+            {
+                cbts.Add(new CbtInformation
                 {
-                Id = item.dt_cbt.Id,
-                Name = item.dt_cbt.Name,
-                Region = item.db_region.RegionName,
-                PhoneNumber = item.dt_cbt.PhoneNumber,
-                Email = item.dt_cbt.Email,
-                Status = item.dt_cbt.Status
+                    Id = item.dt_cbt.Id,
+                    Name = item.dt_cbt.Name,
+                    Region = item.db_region.RegionName,
+                    PhoneNumber = item.dt_cbt.PhoneNumber,
+                    Email = item.dt_cbt.Email,
+                    Status = item.dt_cbt.Status
                 });
             }
 

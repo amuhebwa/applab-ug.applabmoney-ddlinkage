@@ -5,16 +5,15 @@
     ViewBag.Title = "EditUser";
 }
 
-<h2>EditUser</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>UserInformation</legend>
+        <legend>Edit Information for Registered User</legend>
 
         @Html.HiddenFor(model => model.Id)
-
+        <div class="form-group">
         <div class="editor-label">
             @Html.LabelFor(model => model.Username)
         </div>
@@ -22,6 +21,9 @@
             @Html.EditorFor(model => model.Username)
             @Html.ValidationMessageFor(model => model.Username)
         </div>
+
+            </div>
+        <div class="form-group">
         <div class="editor-label">
             @Html.LabelFor(model => model.Password)
         </div>
@@ -29,6 +31,8 @@
             @Html.EditorFor(model => model.Password)
             @Html.ValidationMessageFor(model => model.Password)
         </div>
+            </div>
+        <div class="form-group">
         <div class="editor-label">
             @Html.LabelFor(model => model.Fullname)
         </div>
@@ -36,7 +40,8 @@
             @Html.EditorFor(model => model.Fullname)
             @Html.ValidationMessageFor(model => model.Fullname)
         </div>
-
+            </div>
+        <div class="form-group">
         <div class="editor-label">
             @Html.LabelFor(model => model.Email)
         </div>
@@ -44,7 +49,8 @@
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
         </div>
-
+            </div>
+        <div class="form-group">
         <div class="editor-label">
             @Html.LabelFor(model => model.UserLevel)
         </div>
@@ -52,15 +58,17 @@
             @Html.EditorFor(model => model.UserLevel)
             @Html.ValidationMessageFor(model => model.UserLevel)
         </div>
-
+</div>
+        <div class="form-group">
         <p>
-            <input type="submit" value="Update Details" />
+            <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />
         </p>
+            </div>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "UsersData")
 </div>
 
 @section Scripts {

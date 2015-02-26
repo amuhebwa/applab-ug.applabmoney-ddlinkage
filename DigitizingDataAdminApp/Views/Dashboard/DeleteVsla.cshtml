@@ -5,113 +5,130 @@
     ViewBag.Title = "DeleteVsla";
 }
 
-<h2>DeleteVsla</h2>
-
-<h3>Are you sure you want to delete this?</h3>
 <fieldset>
-    <legend>VslaInformation</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.VslaId)
+    <legend>Are you sure you want to delete this VSLA Information ?</legend>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaId)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaId)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.VslaId)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaCode)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaCode)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.VslaCode)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaName)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaName)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.VslaCode)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.RegionId)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.RegionId)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.VslaName)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.DateRegistered)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.DateRegistered)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.VslaName)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.DateLinked)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.DateLinked)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.RegionId)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PhysicalAddress)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PhysicalAddress)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.RegionId)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaPhoneMsisdn)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaPhoneMsisdn)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DateRegistered)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.GpsLocation)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.GpsLocation)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DateRegistered)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.ContactPerson)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.ContactPerson)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DateLinked)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PositionInVsla)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PositionInVsla)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DateLinked)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </div>
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhysicalAddress)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.CBT)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CBT)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PhysicalAddress)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.VslaPhoneMsisdn)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.VslaPhoneMsisdn)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.GpsLocation)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.GpsLocation)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.ContactPerson)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ContactPerson)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PositionInVsla)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PositionInVsla)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhoneNumber)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PhoneNumber)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CBT)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CBT)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Status)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Status)
+        </div>
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <p>
+            <input class="btn btn-small btn-danger" type="submit" value=" Delete " style="width: 100px;" />
+            |
+            <label>OR</label>
+            |
+        @Html.ActionLink("Back to List", "VslaData")
+        </p>
+    </div>
 }

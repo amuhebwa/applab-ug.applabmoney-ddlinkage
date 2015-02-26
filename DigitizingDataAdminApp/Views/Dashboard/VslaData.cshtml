@@ -1,49 +1,26 @@
 ﻿@model DigitizingDataAdminApp.Models.AllVslaInformation
-
+@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "VslaData";
 }
 
-<h2>VslaData</h2>
+<h4>All Village Lending And Saving Associations</h4>
+<hr />
 
 <p>
     @Html.ActionLink("Add New Vsla", "AddVsla")
 </p>
 
-<table style="width:800px;">
-   <thead>
-       <tr>
-           <td>Id</td>
-           <td>VslaName</td>
-            <td>VslaCode</td>
-            <td>DateRegistered</td>
-           <td></td>
-       </tr>
-   </thead>
-
-  @foreach (var item in Model.AllVslaList) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.VslaId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VslaName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VslaCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateRegistered)
-        </td>
-       
-        <td>
-            @Html.ActionLink("Edit", "EditVsla", new { id=item.VslaId }) |
-            @Html.ActionLink("Details", "VslaDetails", new { id=item.VslaId }) |
-            @Html.ActionLink("Delete", "DeleteVsla", new { id=item.VslaId })
-        </td>
-    </tr>
-}
-
-</table>
-
+<div style="width:auto; margin: 0 auto;">
+        @Html.Grid(Model.AllVslaList).Columns(columns => 
+                    {
+                        columns.Add(c => c.VslaId).Titled("Id");
+                        columns.Add(c => c.VslaName).Titled("VSLA Name");
+                        columns.Add(c => c.VslaCode).Titled("VSLA Code");
+                        columns.Add(c => c.DateRegistered).Titled("Date Registered");
+                        columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Edit", "EditVsla", new { id = c.VslaId }));
+                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "VslaDetails", new { id = c.VslaId }));
+                        columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteVsla", new { id = c.VslaId }));
+                    }).WithPaging(10).Sortable(true)
+    </div>
