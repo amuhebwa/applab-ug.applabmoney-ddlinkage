@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DigitizingDataAdminApp.Models;
+using System.Web.Security;
 
 namespace DigitizingDataAdminApp.Controllers
 {
@@ -27,7 +28,9 @@ namespace DigitizingDataAdminApp.Controllers
                     if (current_user != null) {
                         Session["UserId"] = current_user.Id.ToString();
                         Session["Username"] = current_user.Username;
-                        return RedirectToAction("Dashboard");
+                        FormsAuthentication.SetAuthCookie(user.Id.ToString(), false); 
+                        //return RedirectToAction("Dashboard"); 
+                        return RedirectToAction("Dashboard","Dashboard");
                     }
 
                 }
@@ -36,9 +39,17 @@ namespace DigitizingDataAdminApp.Controllers
             return View(user);
         }
         // This renders the landing page after logging in
-        public ActionResult Dashboard() {
-            return View();
-        }
+        //[Authorize]
+        //public ActionResult Dashboard() {
+        //    if (Session["UserId"] != null)
+        //    {
+        //        return View();
+        //    }
+        //    else {
+        //        return RedirectToAction("Index","Login");
+        //    }
+            
+        //}
 
     }
 }

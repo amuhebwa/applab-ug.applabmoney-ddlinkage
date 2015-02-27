@@ -11,10 +11,17 @@ namespace DigitizingDataAdminApp.Controllers
     public class DashboardController : Controller
     {
         // GET: /Dashboard/
-
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Dashboard()
         {
-            return View();
+            if (Session["UserId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Index");
+            }
         }
         // Action Result for user details
         public ActionResult UsersData()
@@ -46,15 +53,20 @@ namespace DigitizingDataAdminApp.Controllers
             return View(all_cbt);
         }
         // Audit user logs
-        public ActionResult AuditLogs()
+        public ActionResult LogsData()
         {
-            return View();
+            AllLogsInformation all_logs = new AllLogsInformation();
+            List<LogsInformation> info_logs = new List<LogsInformation>();
+            info_logs = logs_list();
+            all_logs.AllLogsList = info_logs;
+            return View(all_logs);
         }
         // Logout
         public ActionResult Logout()
         {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index");
 
-            return View();
         }
         // Function to add a new user to the system
         public ActionResult AddUser()
@@ -242,8 +254,6 @@ namespace DigitizingDataAdminApp.Controllers
                 query.ContactPerson = vsla.ContactPerson;
                 query.PositionInVsla = vsla.PositionInVsla;
                 query.PhoneNumber = vsla.PhoneNumber;
-                //query.CBT = vsla.CBT;
-                //query.CBT = int.Parse("1");
                 query.CBT = Id;
                 query.Status = vsla.Status;
 
@@ -549,6 +559,28 @@ namespace DigitizingDataAdminApp.Controllers
             }
 
             return cbts;
+        }
+        //   get a list of logs
+        public List<LogsInformation> logs_list()
+        {
+            List<LogsInformation> logs = new List<LogsInformation>();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var logs_info = (from database_logs in database.Audit_Log
+                             join database_users in database.Users on
+                                 database_logs.UserId equals database_users.Id
+                             select new { db_logs = database_logs, db_users = database_users });
+
+            foreach (var data in logs_info)
+            {
+                logs.Add(new LogsInformation
+                {
+                    LogId = data.db_logs.LogId,
+                    userId = data.db_users.Username,
+                    LogTime = data.db_logs.LogDate,
+                    ActionPerformed = data.db_logs.ActionPerformed
+                });
+            }
+            return logs;
         }
     }
 }

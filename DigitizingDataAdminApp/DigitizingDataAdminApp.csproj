@@ -219,6 +219,7 @@
     <Compile Include="Models\LoanRepayment.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LogsInformation.cs" />
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\Meeting.cs">
@@ -399,11 +400,9 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_CustomLayout.cshtml" />
     <Content Include="Views\Shared\_SideMenu.cshtml" />
-    <Content Include="Views\Login\Dashboard.cshtml" />
     <Content Include="Views\Dashboard\UsersData.cshtml" />
     <Content Include="Views\Dashboard\VslaData.cshtml" />
     <Content Include="Views\Dashboard\CbtData.cshtml" />
-    <Content Include="Views\Dashboard\AuditLogs.cshtml" />
     <Content Include="Views\Dashboard\EditUser.cshtml" />
     <Content Include="Views\Dashboard\DeleteUser.cshtml" />
     <Content Include="Views\Dashboard\UserDetails.cshtml" />
@@ -419,6 +418,8 @@
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
     <Content Include="Views\Shared\_CustomLoginPage.cshtml" />
+    <Content Include="Views\Dashboard\LogsData.cshtml" />
+    <Content Include="Views\Dashboard\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

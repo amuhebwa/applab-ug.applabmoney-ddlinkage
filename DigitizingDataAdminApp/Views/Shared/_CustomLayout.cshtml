@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <title>@ViewBag.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
@@ -19,7 +19,7 @@
 <body>
 
     <div class="container wrap sidebar-right">
-        <div class="container-fluid" style="margin-top:20px;">
+        <div class="container-fluid" style="margin-top: 20px;">
             <div class="row">
                 <div class="navbar-header col-mod-12">
                     <h3>@Html.ActionLink("your logo here", "Index", "Login")</h3>
@@ -35,12 +35,12 @@
                 <div class="col-md-2">
                     <div class="well sidebar-offcanvas vertical-align">
                         <ul class="nav  nav-pills nav-stacked" role="navigation">
-                            <li>@Html.ActionLink("Home", "Dashboard", "Login") </li>
+                            <li>@Html.ActionLink("Home", "Dashboard", "Dashboard") </li>
                             <li>@Html.ActionLink("Vlsa", "VslaData", "Dashboard")</li>
                             <li>@Html.ActionLink("Cbt", "CbtData", "Dashboard")</li>
                             <li>@Html.ActionLink("Users", "UsersData", "Dashboard")</li>
-                            <li>@Html.ActionLink("Audit", "AuditLogs", "Dashboard")</li>
-                            <li>@Html.ActionLink("Logout", "Index", "Login")</li>
+                            <li>@Html.ActionLink("Logs", "LogsData", "Dashboard")</li>
+                            <li>@Html.ActionLink("Logout", "Logout")</li>
                         </ul>
 
                     </div>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="panel-footer col-md-12" style="padding: 20px; margin-top: 10px;">
+        <div class="panel-footer col-md-12" style="padding: 20px; margin-top: 10px; height:50px;">
 
             <p style="text-align: center;">&copy; @DateTime.Now.Year - LedgerLink Administrator Portal</p>
 
