@@ -14,6 +14,11 @@ namespace DigitizingDataAdminApp.Models
     
     public partial class User
     {
+        public User()
+        {
+            this.Audit_Log = new HashSet<Audit_Log>();
+        }
+    
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -21,5 +26,7 @@ namespace DigitizingDataAdminApp.Models
         public string Email { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public string UserLevel { get; set; }
+    
+        public virtual ICollection<Audit_Log> Audit_Log { get; set; }
     }
 }

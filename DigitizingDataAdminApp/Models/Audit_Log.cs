@@ -18,5 +18,7 @@ namespace DigitizingDataAdminApp.Models
         public int UserId { get; set; }
         public System.DateTime LogDate { get; set; }
         public string ActionPerformed { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

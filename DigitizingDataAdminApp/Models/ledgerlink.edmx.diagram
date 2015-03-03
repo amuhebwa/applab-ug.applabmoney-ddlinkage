@@ -42,6 +42,7 @@
         <AssociationConnector Association="ledgerlinkModel.FK_VslaCycle_Vsla" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Cbt_info_VslaRegion" />
         <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Cbt_info" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Audit_Log_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

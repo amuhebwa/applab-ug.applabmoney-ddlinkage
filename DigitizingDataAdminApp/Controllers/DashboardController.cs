@@ -30,6 +30,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<UserInformation> single_user = new List<UserInformation>();
             single_user = users_infor();
             all_users.AllUsersList = single_user;
+            string action = "Viewed all users";
+            logUserActivity(action);
             return View(all_users);
         }
         // Action Result for vsla details
@@ -39,6 +41,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<VslaInformation> single_vsla = new List<VslaInformation>();
             single_vsla = vsla_info();
             all_vsla.AllVslaList = single_vsla;
+            string action = "Viewed all village lending and saving associations information";
+            logUserActivity(action);
             return View(all_vsla);
 
         }
@@ -49,7 +53,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<CbtInformation> single_cbt = new List<CbtInformation>();
             single_cbt = cbt_info();
             all_cbt.AllCbtList = single_cbt;
-
+            string action = "Viewed all commnity based trainers information";
+            logUserActivity(action);
             return View(all_cbt);
         }
         // Audit user logs
@@ -59,12 +64,22 @@ namespace DigitizingDataAdminApp.Controllers
             List<LogsInformation> info_logs = new List<LogsInformation>();
             info_logs = logs_list();
             all_logs.AllLogsList = info_logs;
+            string action = "Viewed log information";
+            logUserActivity(action);
             return View(all_logs);
         }
-        // Logout
+        /**
+         * Logout
+         * Note : The user-activity logging function should be called
+         * before logging FormAutentication.SignOut() ie before the user
+         * session is destroyed
+         * 
+         **/
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
+            string action = "logged out";
+            logUserActivity(action);
+            FormsAuthentication.SignOut();  
             return RedirectToAction("Index");
 
         }
@@ -84,6 +99,8 @@ namespace DigitizingDataAdminApp.Controllers
                     db.Users.Add(user);
                     db.SaveChanges();
                     ModelState.Clear();
+                    string action = "Added a new user called " + user.Username;
+                    logUserActivity(action);
                     user = null;
                     ViewBag.Message = "New User has been added";
                 }
@@ -121,6 +138,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Email = info.Email;
                 query.UserLevel = info.UserLevel;
                 database.SaveChanges();
+                string action = "Edited information for " + info.Fullname;
+                logUserActivity(action);
                 return RedirectToAction("UsersData");
             }
         }
@@ -129,16 +148,18 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var usr = db.Users.Find(id);
+            var user = db.Users.Find(id);
             UserInformation user_data = new UserInformation
             {
-                Id = usr.Id,
-                Username = usr.Username,
-                Password = usr.Password,
-                Fullname = usr.Fullname,
-                Email = usr.Email,
-                UserLevel = usr.UserLevel
+                Id = user.Id,
+                Username = user.Username,
+                Password = user.Password,
+                Fullname = user.Fullname,
+                Email = user.Email,
+                UserLevel = user.UserLevel
             };
+            string action = "Deleted information for " + user.Fullname;
+            logUserActivity(action);
             return View(user_data);
         }
 
@@ -167,6 +188,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = usr.Email,
                 UserLevel = usr.UserLevel
             };
+            string action = "Viewed list of all users in the System";
+            logUserActivity(action);
             return View(user_data);
         }
         // Get the VSLA detailed information
@@ -197,6 +220,8 @@ namespace DigitizingDataAdminApp.Controllers
                 CBT = vsla_info.db_cbt.Name ?? "--",
                 Status = vsla_info.db_vsla.Status
             };
+            string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
+            logUserActivity(action);
             return View(vsla_data);
         }
         // Edit VSLA
@@ -236,6 +261,8 @@ namespace DigitizingDataAdminApp.Controllers
                 CbtModel = cbt_info,
                 Status = vsla_info.db_vsla.Status
             };
+            string action = "Edited information for VSLA named " + vsla_info.db_vsla.VslaName ?? "--";
+            logUserActivity(action);
             return View(vsla_data);
         }
         [HttpPost]
@@ -304,6 +331,8 @@ namespace DigitizingDataAdminApp.Controllers
                 };
                 database.Vslas.Add(added_vsla);
                 database.SaveChanges();
+                string action = "Added new  VSLA named " + new_vsla.VslaName;
+                logUserActivity(action);
                 return RedirectToAction("VslaData");
             }
             return View(new_vsla);
@@ -336,6 +365,8 @@ namespace DigitizingDataAdminApp.Controllers
                 CBT = vsla_info.db_cbt.Name ?? "--",
                 Status = vsla_info.db_vsla.Status
             };
+            string action = "Deleted all information for VSLA named " + vsla_info.db_vsla.VslaName;
+            logUserActivity(action);
             return View(vsla_data);
         }
         [HttpPost]
@@ -377,6 +408,8 @@ namespace DigitizingDataAdminApp.Controllers
                     Status = new_cbt.Status
 
                 };
+                string action = "Added a new CBT called " + new_cbt.Name;
+                logUserActivity(action);
                 database.Cbt_info.Add(cbx);
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
@@ -401,7 +434,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = all_information.dt_cbt.Email,
                 Status = all_information.dt_cbt.Status
             };
-
+            string action = "Viewed CBT details for  " + all_information.dt_cbt.Name;
+            logUserActivity(action);
             // return View(cbt_data);
             return View(cbt_data);
         }
@@ -431,6 +465,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = all_information.dt_cbt.Email,
                 Status = all_information.dt_cbt.Status
             };
+            string action = "Edited CBT information for  " + all_information.dt_cbt.Name;
+            logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
@@ -468,8 +504,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = all_information.dt_cbt.Email,
                 Status = all_information.dt_cbt.Status
             };
-
-            // return View(cbt_data);
+            string action = "Deletedd CBT information for  " + all_information.dt_cbt.Name;
+            logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
@@ -582,5 +618,23 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return logs;
         }
+
+        // Log the user activities
+        public void logUserActivity(string action)
+        {
+            object session_id = Session["UserId"];
+            // Only log the data if the session is not null
+            if (session_id != null)
+            {
+                Audit_Log log = new Audit_Log();
+                log.LogDate = DateTime.Today.Date;
+
+                log.UserId = Convert.ToInt32(session_id);
+                log.ActionPerformed = action;
+                ledgerlinkEntities ll = new ledgerlinkEntities();
+                ll.Audit_Log.Add(log);
+                ll.SaveChanges();
+            }
+        } // EOM
     }
 }

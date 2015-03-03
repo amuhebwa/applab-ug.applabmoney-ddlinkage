@@ -53,6 +53,10 @@
             <End Role="Member" EntitySet="Member" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
+          <AssociationSet Name="FK_Audit_Log_Users" Association="ledgerlinkModel.Store.FK_Audit_Log_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Audit_Log" EntitySet="Audit_Log" />
+          </AssociationSet>
           <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.Store.FK_Cbt_info_VslaRegion">
             <End Role="VslaRegion" EntitySet="VslaRegion" />
             <End Role="Cbt_info" EntitySet="Cbt_info" />
@@ -404,6 +408,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Audit_Log_Users">
+          <End Role="Users" Type="ledgerlinkModel.Store.Users" Multiplicity="1" />
+          <End Role="Audit_Log" Type="ledgerlinkModel.Store.Audit_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Audit_Log">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cbt_info_VslaRegion">
           <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="1" />
           <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="*" />
@@ -710,6 +726,10 @@
             <End Role="Cbt_info" EntitySet="Cbt_info" />
             <End Role="Vsla" EntitySet="Vslas" />
           </AssociationSet>
+          <AssociationSet Name="FK_Audit_Log_Users" Association="ledgerlinkModel.FK_Audit_Log_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Audit_Log" EntitySet="Audit_Log" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
@@ -732,6 +752,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ActionPerformed" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="User" Relationship="ledgerlinkModel.FK_Audit_Log_Users" FromRole="Audit_Log" ToRole="User" />
         </EntityType>
         <EntityType Name="Cbt_info">
           <Key>
@@ -927,6 +948,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <Property Name="UserLevel" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Audit_Log" Relationship="ledgerlinkModel.FK_Audit_Log_Users" FromRole="User" ToRole="Audit_Log" />
         </EntityType>
         <EntityType Name="Vsla">
           <Key>
@@ -1240,6 +1262,18 @@
             </Principal>
             <Dependent Role="Vsla">
               <PropertyRef Name="CBT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Audit_Log_Users">
+          <End Type="ledgerlinkModel.User" Role="User" Multiplicity="1" />
+          <End Type="ledgerlinkModel.Audit_Log" Role="Audit_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Audit_Log">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
