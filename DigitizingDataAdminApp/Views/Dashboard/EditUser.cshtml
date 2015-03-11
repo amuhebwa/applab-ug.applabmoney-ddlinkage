@@ -55,8 +55,9 @@
             @Html.LabelFor(model => model.UserLevel)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UserLevel)
-            @Html.ValidationMessageFor(model => model.UserLevel)
+            @*@Html.EditorFor(model => model.UserLevel)
+            @Html.ValidationMessageFor(model => model.UserLevel)*@
+            @Html.DropDownList("Level_Id", Model.UserTypes, new { @style = "width:250px; height:30px;" })
         </div>
 </div>
         <div class="form-group">

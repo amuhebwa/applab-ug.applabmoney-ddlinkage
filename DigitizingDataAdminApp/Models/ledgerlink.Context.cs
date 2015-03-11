@@ -37,6 +37,7 @@ namespace DigitizingDataAdminApp.Models
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<Saving> Savings { get; set; }
+        public DbSet<UserPermission> UserPermissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vsla> Vslas { get; set; }
         public DbSet<VslaCycle> VslaCycles { get; set; }

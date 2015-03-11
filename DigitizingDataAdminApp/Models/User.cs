@@ -25,8 +25,9 @@ namespace DigitizingDataAdminApp.Models
         public string Fullname { get; set; }
         public string Email { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
-        public string UserLevel { get; set; }
+        public int UserLevel { get; set; }
     
         public virtual ICollection<Audit_Log> Audit_Log { get; set; }
+        public virtual UserPermission UserPermission { get; set; }
     }
 }

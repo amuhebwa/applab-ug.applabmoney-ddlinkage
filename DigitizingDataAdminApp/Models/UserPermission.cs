@@ -12,17 +12,11 @@ namespace DigitizingDataAdminApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class VslaRegion
+    public partial class UserPermission
     {
-        public VslaRegion()
-        {
-            this.Cbt_info = new HashSet<Cbt_info>();
-        }
+        public int Level_Id { get; set; }
+        public string UserType { get; set; }
     
-        public int RegionId { get; set; }
-        public string RegionCode { get; set; }
-        public string RegionName { get; set; }
-    
-        public virtual ICollection<Cbt_info> Cbt_info { get; set; }
+        public virtual User User { get; set; }
     }
 }

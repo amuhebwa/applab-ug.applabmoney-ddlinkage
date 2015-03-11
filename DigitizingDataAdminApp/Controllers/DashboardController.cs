@@ -113,21 +113,28 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var usr = db.Users.Find(id);
+           // var usr = db.Users.Find(id);
+            var user_details = (from table_users in db.Users
+                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                                where table_users.Id == id
+                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+            List<UserPermission> user_levels = db.UserPermissions.OrderBy(a => a.UserType).ToList();
+            SelectList user_types = new SelectList(user_levels, "Level_Id", "UserType", user_details.db_user.UserLevel);
             UserInformation user_data = new UserInformation
             {
-                Id = usr.Id,
-                Username = usr.Username,
-                Password = usr.Password,
-                Fullname = usr.Fullname,
-                Email = usr.Email,
-                UserLevel = usr.UserLevel
+                Id = user_details.db_user.Id,
+                Username = user_details.db_user.Username,
+                Password = user_details.db_user.Password,
+                Fullname = user_details.db_user.Fullname,
+                Email = user_details.db_user.Email,
+                //UserLevel = user_details.db_permissions.UserType,
+                UserTypes = user_types,
             };
             return View(user_data);
 
         }
         [HttpPost]
-        public ActionResult EditUser(UserInformation info, int id)
+        public ActionResult EditUser(UserInformation info, int id, int Level_Id)
         {
             using (ledgerlinkEntities database = new ledgerlinkEntities())
             {
@@ -136,7 +143,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Password = info.Password;
                 query.Fullname = info.Fullname;
                 query.Email = info.Email;
-                query.UserLevel = info.UserLevel;
+                query.UserLevel = Level_Id;
                 database.SaveChanges();
                 string action = "Edited information for " + info.Fullname;
                 logUserActivity(action);
@@ -148,17 +155,22 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var user = db.Users.Find(id);
+           // var user = db.Users.Find(id);
+            var user_details = (from table_users in db.Users
+                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                                where table_users.Id == id
+                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+
             UserInformation user_data = new UserInformation
             {
-                Id = user.Id,
-                Username = user.Username,
-                Password = user.Password,
-                Fullname = user.Fullname,
-                Email = user.Email,
-                UserLevel = user.UserLevel
+                Id = user_details.db_user.Id,
+                Username = user_details.db_user.Username,
+                Password = user_details.db_user.Password,
+                Fullname = user_details.db_user.Fullname,
+                Email = user_details.db_user.Email,
+                UserLevel = user_details.db_permissions.UserType
             };
-            string action = "Deleted information for " + user.Fullname;
+            string action = "Deleted information for " + user_details.db_user.Fullname;
             logUserActivity(action);
             return View(user_data);
         }
@@ -178,15 +190,27 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult UserDetails(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var usr = db.Users.Find(id);
+          // var user_details = db.Users.Find(id);
+
+            //var all_information = (from table_cbt in db.Cbt_info
+            //                       join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+            //                       where table_cbt.Id == id
+            //                       select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+
+           var user_details = (from table_users in db.Users
+                      join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                      where table_users.Id == id
+                      select new { db_user = table_users, db_permissions = table_permissions }).Single();
+
+
             UserInformation user_data = new UserInformation
             {
-                Id = usr.Id,
-                Username = usr.Username,
-                Password = usr.Password,
-                Fullname = usr.Fullname,
-                Email = usr.Email,
-                UserLevel = usr.UserLevel
+                Id = user_details.db_user.Id,
+                Username = user_details.db_user.Username,
+                Password = user_details.db_user.Password,
+                Fullname = user_details.db_user.Fullname,
+                Email = user_details.db_user.Email,
+                UserLevel = user_details.db_permissions.UserType
             };
             string action = "Viewed list of all users in the System";
             logUserActivity(action);
@@ -235,12 +259,13 @@ namespace DigitizingDataAdminApp.Controllers
                                  database.Cbt_info on table_vsla.CBT equals table_cbt.Id
                              where table_vsla.VslaId == id
                              select new { db_vsla = table_vsla, db_cbt = table_cbt }).Single();
-            // Get the list of all cbts to populate in the dropdown list
-            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
+
             // Get a list of all vsla regions to populate in the dropdown list
             List<VslaRegion> all_vsla_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName");
+            SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName", vsla_info.db_vsla.RegionId);
+            // Get the list of all cbts to populate in the dropdown list
+            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name", vsla_info.db_vsla.CBT);
 
             VslaInformation vsla_data = new VslaInformation
             {
@@ -525,17 +550,20 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<UserInformation> users = new List<UserInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var user_details = (from data in db.Users select data);
+           // var user_details = (from data in db.Users select data);
+            var user_details = (from table_users in db.Users
+                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                                select new { db_user = table_users, db_permissions = table_permissions });
             foreach (var item in user_details)
             {
                 users.Add(
                     new UserInformation
                     {
-                        Id = item.Id,
-                        Username = item.Username,
-                        Fullname = item.Fullname,
-                        Email = item.Email,
-                        UserLevel = item.UserLevel
+                        Id = item.db_user.Id,
+                        Username = item.db_user.Username,
+                        Fullname = item.db_user.Fullname,
+                        Email = item.db_user.Email,
+                        UserLevel = item.db_permissions.UserType
                     });
             }
 

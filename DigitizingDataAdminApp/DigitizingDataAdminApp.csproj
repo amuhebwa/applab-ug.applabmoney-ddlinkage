@@ -220,8 +220,6 @@
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LogsInformation.cs" />
-    <Compile Include="Models\UserInformation.cs" />
-    <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\Meeting.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -232,6 +230,11 @@
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
+      <DependentUpon>ledgerlink.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserInformation.cs" />
+    <Compile Include="Models\UserLogin.cs" />
+    <Compile Include="Models\UserPermission.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Vsla.cs">
@@ -255,6 +258,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\Images\logo.jpeg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -312,6 +316,13 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <EntityDeploy Include="Models\ledgerlink.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ledgerlink.Designer.cs</LastGenOutput>
@@ -329,13 +340,6 @@
       <DependentUpon>ledgerlink.edmx</DependentUpon>
       <LastGenOutput>ledgerlink.cs</LastGenOutput>
     </Content>
-    <Content Include="Grid.mvc.readme" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -26,9 +26,9 @@
     <EntitySetMapping Name="Cbt_info">
       <EntityTypeMapping TypeName="ledgerlinkModel.Cbt_info">
         <MappingFragment StoreEntitySet="Cbt_info">
+          <ScalarProperty Name="Region" ColumnName="Region" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Region" ColumnName="Region" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Status" ColumnName="Status" />
@@ -188,14 +188,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="UserPermissions">
-      <EntityTypeMapping TypeName="ledgerlinkModel.UserPermission">
-        <MappingFragment StoreEntitySet="UserPermissions">
-          <ScalarProperty Name="Level_Id" ColumnName="Level_Id" />
-          <ScalarProperty Name="UserType" ColumnName="UserType" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="ledgerlinkModel.User">
         <MappingFragment StoreEntitySet="Users">
@@ -275,6 +267,14 @@
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
           <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserPermissions">
+      <EntityTypeMapping TypeName="ledgerlinkModel.UserPermission">
+        <MappingFragment StoreEntitySet="UserPermissions">
+          <ScalarProperty Name="Level_Id" ColumnName="Level_Id" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

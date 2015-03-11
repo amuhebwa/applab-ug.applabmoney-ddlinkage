@@ -52,8 +52,12 @@
                 @Html.LabelFor(model => model.UserLevel)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.UserLevel)
-                @Html.ValidationMessageFor(model => model.UserLevel)
+               @* @Html.EditorFor(model => model.UserLevel)
+                @Html.ValidationMessageFor(model => model.UserLevel)*@
+                <select id="user_level">
+                    <option value="1">Administrator</option>
+                    <option value="2">User</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
