@@ -34,10 +34,11 @@ namespace DigitizingDataAdminApp.Models
         public string PositionInVsla { get; set; }
         public string PhoneNumber { get; set; }
         public Nullable<int> CBT { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
     
         public virtual Cbt_info Cbt_info { get; set; }
         public virtual ICollection<Member> Members { get; set; }
+        public virtual Status Status1 { get; set; }
         public virtual ICollection<VslaDdActivation> VslaDdActivations { get; set; }
         public virtual ICollection<VslaCycle> VslaCycles { get; set; }
     }

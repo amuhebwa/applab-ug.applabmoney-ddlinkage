@@ -188,6 +188,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Status">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
+          <ScalarProperty Name="Status1" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="UserPermissions">
       <EntityTypeMapping TypeName="ledgerlinkModel.UserPermission">
         <MappingFragment StoreEntitySet="UserPermissions">

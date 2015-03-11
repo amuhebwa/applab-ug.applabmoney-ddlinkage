@@ -21,6 +21,7 @@ namespace DigitizingDataAdminApp.Models
         public string Email { get; set; }
         public string Status { get; set; }
         public SelectList VslaRegionsModel { get; set; }
+        public SelectList StatusType { get; set; }
     }
 
 }

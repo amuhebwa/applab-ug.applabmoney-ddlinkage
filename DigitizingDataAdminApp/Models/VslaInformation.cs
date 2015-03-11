@@ -32,5 +32,6 @@ namespace DigitizingDataAdminApp.Models
         public SelectList CbtModel { get; set; }
         public SelectList VslaRegionsModel { get; set; }
         public string Status { get; set; }
+        public SelectList StatusType { get; set; }
     }
 }

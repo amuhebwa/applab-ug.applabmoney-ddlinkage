@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6edb0e30c7cc48d4853bcf0ca36d7e16" Name="Diagram1">
+      <Diagram DiagramId="e234d8f697b2460f97da5f3e2cb01a54" Name="Diagram1">
         <EntityTypeShape EntityType="ledgerlinkModel.Attendance" Width="1.5" PointX="12" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Audit_Log" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="3" PointY="14.125" IsExpanded="true" />
@@ -17,15 +17,17 @@
         <EntityTypeShape EntityType="ledgerlinkModel.Meeting" Width="1.5" PointX="9.75" PointY="13" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Member" Width="1.5" PointX="7.5" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Saving" Width="1.5" PointX="12" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Status" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.UserPermission" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ledgerlinkModel.Vsla" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Vsla" Width="1.5" PointX="5.25" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.VslaCycle" Width="1.5" PointX="7.5" PointY="13.875" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.VslaDdActivation" Width="1.5" PointX="7.5" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ledgerlinkModel.VslaRegion" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.VslaRegion" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
         <AssociationConnector Association="ledgerlinkModel.FK_Attendance_Meeting" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Attendance_Member" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Audit_Log_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Cbt_info_Status" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Cbt_info_VslaRegion" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Cbt_info" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Fine_Meeting_Issued" ManuallyRouted="false" />
@@ -41,6 +43,7 @@
         <AssociationConnector Association="ledgerlinkModel.FK_Saving_Meeting" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Member_Vsla" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Saving_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Status" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_Users_UserPermissions" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_DdActivation_Vsla" ManuallyRouted="false" />
         <AssociationConnector Association="ledgerlinkModel.FK_VslaCycle_Vsla" ManuallyRouted="false" />

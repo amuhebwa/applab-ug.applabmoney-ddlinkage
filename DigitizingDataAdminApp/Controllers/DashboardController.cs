@@ -79,7 +79,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             string action = "logged out";
             logUserActivity(action);
-            FormsAuthentication.SignOut();  
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index");
 
         }
@@ -113,7 +113,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-           // var usr = db.Users.Find(id);
+            // var usr = db.Users.Find(id);
             var user_details = (from table_users in db.Users
                                 join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 where table_users.Id == id
@@ -155,7 +155,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-           // var user = db.Users.Find(id);
+            // var user = db.Users.Find(id);
             var user_details = (from table_users in db.Users
                                 join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 where table_users.Id == id
@@ -190,17 +190,11 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult UserDetails(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-          // var user_details = db.Users.Find(id);
 
-            //var all_information = (from table_cbt in db.Cbt_info
-            //                       join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-            //                       where table_cbt.Id == id
-            //                       select new { dt_cbt = table_cbt, db_region = table_region }).Single();
-
-           var user_details = (from table_users in db.Users
-                      join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                      where table_users.Id == id
-                      select new { db_user = table_users, db_permissions = table_permissions }).Single();
+            var user_details = (from table_users in db.Users
+                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                                where table_users.Id == id
+                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
 
 
             UserInformation user_data = new UserInformation
@@ -223,8 +217,9 @@ namespace DigitizingDataAdminApp.Controllers
             var vsla_info = (from table_vsla in database.Vslas
                              join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
                              join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
+                             join table_status in database.Status on table_vsla.Status equals table_status.Status_Id
                              where table_vsla.VslaId == id
-                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions }).Single();
+                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
 
             VslaInformation vsla_data = new VslaInformation
             {
@@ -242,7 +237,7 @@ namespace DigitizingDataAdminApp.Controllers
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber,
                 CBT = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_vsla.Status
+                Status = vsla_info.db_status.Status1
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
             logUserActivity(action);
@@ -266,6 +261,9 @@ namespace DigitizingDataAdminApp.Controllers
             // Get the list of all cbts to populate in the dropdown list
             List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
             SelectList cbt_info = new SelectList(cbt_list, "Id", "Name", vsla_info.db_vsla.CBT);
+            // Get the status type ie active/inactive,
+            List<Status> status = database.Status.OrderBy(a => a.Status_Id).ToList();
+            SelectList status_types = new SelectList(status, "Status_Id", "Status1", vsla_info.db_cbt.Status);
 
             VslaInformation vsla_data = new VslaInformation
             {
@@ -284,14 +282,15 @@ namespace DigitizingDataAdminApp.Controllers
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber,
                 //CBT = vsla_info.db_cbt.Name ?? "--",
                 CbtModel = cbt_info,
-                Status = vsla_info.db_vsla.Status
+                //Status = vsla_info.db_vsla.Status.ToString()
+                StatusType = status_types
             };
             string action = "Edited information for VSLA named " + vsla_info.db_vsla.VslaName ?? "--";
             logUserActivity(action);
             return View(vsla_data);
         }
         [HttpPost]
-        public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId)
+        public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
             using (ledgerlinkEntities database = new ledgerlinkEntities())
             {
@@ -307,7 +306,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.PositionInVsla = vsla.PositionInVsla;
                 query.PhoneNumber = vsla.PhoneNumber;
                 query.CBT = Id;
-                query.Status = vsla.Status;
+                //query.Status = int.Parse(vsla.Status);
+                query.Status = Status_Id;
 
                 database.SaveChanges();
                 return RedirectToAction("VslaData");
@@ -370,14 +370,16 @@ namespace DigitizingDataAdminApp.Controllers
             var vsla_info = (from table_vsla in database.Vslas
                              join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
                              join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
+                             join table_status in database.Status on table_vsla.Status equals table_status.Status_Id
                              where table_vsla.VslaId == id
-                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions }).Single();
+                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
 
             VslaInformation vsla_data = new VslaInformation
             {
                 VslaId = vsla_info.db_vsla.VslaId,
                 VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
                 VslaName = vsla_info.db_vsla.VslaName ?? "--",
+                // RegionId = vsla_info.db_vsla.RegionId.ToString(),
                 RegionId = vsla_info.db_regions.RegionName,
                 DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
                 DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
@@ -388,7 +390,7 @@ namespace DigitizingDataAdminApp.Controllers
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber,
                 CBT = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_vsla.Status
+                Status = vsla_info.db_status.Status1
             };
             string action = "Deleted all information for VSLA named " + vsla_info.db_vsla.VslaName;
             logUserActivity(action);
@@ -448,16 +450,17 @@ namespace DigitizingDataAdminApp.Controllers
 
             var all_information = (from table_cbt in db.Cbt_info
                                    join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   join table_status in db.Status on table_cbt.Status equals table_status.Status_Id
                                    where table_cbt.Id == id
-                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+                                   select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
             CbtInformation cbt_data = new CbtInformation
             {
                 Id = all_information.dt_cbt.Id,
                 Name = all_information.dt_cbt.Name,
-                Region = all_information.db_region.RegionName,
+                Region = all_information.dt_region.RegionName,
                 PhoneNumber = all_information.dt_cbt.PhoneNumber,
                 Email = all_information.dt_cbt.Email,
-                Status = all_information.dt_cbt.Status
+                Status = all_information.dt_status.Status1
             };
             string action = "Viewed CBT details for  " + all_information.dt_cbt.Name;
             logUserActivity(action);
@@ -479,6 +482,9 @@ namespace DigitizingDataAdminApp.Controllers
             // Get all cbt to populate in the dropdown list
             List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
             SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName", all_information.db_region.RegionId);
+            // Get the status ie active/inactive
+            List<Status> status = db.Status.OrderBy(a => a.Status_Id).ToList();
+            SelectList status_list = new SelectList(status, "Status_Id", "Status1", all_information.dt_cbt.Status);
 
             // Create a cbt object
             CbtInformation cbt_data = new CbtInformation
@@ -488,14 +494,14 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaRegionsModel = regions_list,
                 PhoneNumber = all_information.dt_cbt.PhoneNumber,
                 Email = all_information.dt_cbt.Email,
-                Status = all_information.dt_cbt.Status
+                StatusType = status_list
             };
             string action = "Edited CBT information for  " + all_information.dt_cbt.Name;
             logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
-        public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId)
+        public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
             using (ledgerlinkEntities database = new ledgerlinkEntities())
             {
@@ -504,7 +510,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Region = RegionId;
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
-                query.Status = cbt.Status;
+                query.Status = Status_Id;
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
@@ -515,19 +521,19 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteCbt(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-
             var all_information = (from table_cbt in db.Cbt_info
                                    join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                   join table_status in db.Status on table_cbt.Status equals table_status.Status_Id
                                    where table_cbt.Id == id
-                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+                                   select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
             CbtInformation cbt_data = new CbtInformation
             {
                 Id = all_information.dt_cbt.Id,
                 Name = all_information.dt_cbt.Name,
-                Region = all_information.db_region.RegionName,
+                Region = all_information.dt_region.RegionName,
                 PhoneNumber = all_information.dt_cbt.PhoneNumber,
                 Email = all_information.dt_cbt.Email,
-                Status = all_information.dt_cbt.Status
+                Status = all_information.dt_status.Status1
             };
             string action = "Deletedd CBT information for  " + all_information.dt_cbt.Name;
             logUserActivity(action);
@@ -550,7 +556,6 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<UserInformation> users = new List<UserInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-           // var user_details = (from data in db.Users select data);
             var user_details = (from table_users in db.Users
                                 join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 select new { db_user = table_users, db_permissions = table_permissions });
@@ -592,9 +597,8 @@ namespace DigitizingDataAdminApp.Controllers
                     ContactPerson = item.ContactPerson ?? "--",
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
-                    // CBT = item.CBT.HasValue ? (int)item.CBT : 11,
-                    CBT = "Place Holder",
-                    Status = item.Status ?? "--"
+                    CBT = "--",
+                    Status = item.Status.ToString() ?? "--"
                 });
             }
             return vsla_list;
@@ -605,20 +609,21 @@ namespace DigitizingDataAdminApp.Controllers
             List<CbtInformation> cbts = new List<CbtInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
 
-            // selecting from multiple tables
-            var all_information = (from table_cbt in db.Cbt_info
-                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                   select new { dt_cbt = table_cbt, db_region = table_region });
-            foreach (var item in all_information)
+            var data = (from table_cbt in db.Cbt_info
+                        join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                        join table_status in db.Status on table_cbt.Status equals table_status.Status_Id
+                        select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status });
+
+            foreach (var item in data)
             {
                 cbts.Add(new CbtInformation
                 {
                     Id = item.dt_cbt.Id,
                     Name = item.dt_cbt.Name,
-                    Region = item.db_region.RegionName,
+                    Region = item.dt_region.RegionName,
                     PhoneNumber = item.dt_cbt.PhoneNumber,
                     Email = item.dt_cbt.Email,
-                    Status = item.dt_cbt.Status
+                    Status = item.dt_status.Status1
                 });
             }
 

@@ -229,6 +229,9 @@
     <Compile Include="Models\Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Status.cs">
+      <DependentUpon>ledgerlink.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
