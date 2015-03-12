@@ -40,7 +40,7 @@
           <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Member" EntityType="ledgerlinkModel.Store.Member" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Status" EntityType="ledgerlinkModel.Store.Status" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="StatusType" EntityType="ledgerlinkModel.Store.StatusType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.Store.UserPermissions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Vsla" EntityType="ledgerlinkModel.Store.Vsla" store:Type="Tables" Schema="dbo" />
@@ -58,10 +58,6 @@
           <AssociationSet Name="FK_Audit_Log_Users" Association="ledgerlinkModel.Store.FK_Audit_Log_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Audit_Log" EntitySet="Audit_Log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cbt_info_Status" Association="ledgerlinkModel.Store.FK_Cbt_info_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Cbt_info" EntitySet="Cbt_info" />
           </AssociationSet>
           <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.Store.FK_Cbt_info_VslaRegion">
             <End Role="VslaRegion" EntitySet="VslaRegion" />
@@ -125,10 +121,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.Store.FK_Vsla_Cbt_info">
             <End Role="Cbt_info" EntitySet="Cbt_info" />
-            <End Role="Vsla" EntitySet="Vsla" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Vsla_Status" Association="ledgerlinkModel.Store.FK_Vsla_Status">
-            <End Role="Status" EntitySet="Status" />
             <End Role="Vsla" EntitySet="Vsla" />
           </AssociationSet>
           <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
@@ -321,18 +313,18 @@
           <Property Name="MeetingId" Type="int" />
           <Property Name="MemberId" Type="int" />
         </EntityType>
-        <EntityType Name="Status">
+        <EntityType Name="StatusType">
           <Key>
             <PropertyRef Name="Status_Id" />
           </Key>
           <Property Name="Status_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CurrentStatus" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="UserPermissions">
           <Key>
             <PropertyRef Name="Level_Id" />
           </Key>
-          <Property Name="Level_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Level_Id" Type="int" Nullable="false" />
           <Property Name="UserType" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Users">
@@ -445,18 +437,6 @@
             </Principal>
             <Dependent Role="Audit_Log">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cbt_info_Status">
-          <End Role="Status" Type="ledgerlinkModel.Store.Status" Multiplicity="1" />
-          <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Status_Id" />
-            </Principal>
-            <Dependent Role="Cbt_info">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -630,13 +610,13 @@
         </Association>
         <Association Name="FK_Users_UserPermissions">
           <End Role="UserPermissions" Type="ledgerlinkModel.Store.UserPermissions" Multiplicity="1" />
-          <End Role="Users" Type="ledgerlinkModel.Store.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="ledgerlinkModel.Store.Users" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserPermissions">
               <PropertyRef Name="Level_Id" />
             </Principal>
             <Dependent Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserLevel" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -649,18 +629,6 @@
             </Principal>
             <Dependent Role="Vsla">
               <PropertyRef Name="CBT" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Vsla_Status">
-          <End Role="Status" Type="ledgerlinkModel.Store.Status" Multiplicity="1" />
-          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Status_Id" />
-            </Principal>
-            <Dependent Role="Vsla">
-              <PropertyRef Name="VslaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -706,7 +674,7 @@
           <EntitySet Name="Meetings" EntityType="ledgerlinkModel.Meeting" />
           <EntitySet Name="Members" EntityType="ledgerlinkModel.Member" />
           <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
-          <EntitySet Name="Status" EntityType="ledgerlinkModel.Status" />
+          <EntitySet Name="StatusTypes" EntityType="ledgerlinkModel.StatusType" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.UserPermission" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
           <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
@@ -724,10 +692,6 @@
           <AssociationSet Name="FK_Audit_Log_Users" Association="ledgerlinkModel.FK_Audit_Log_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Audit_Log" EntitySet="Audit_Log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cbt_info_Status" Association="ledgerlinkModel.FK_Cbt_info_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Cbt_info" EntitySet="Cbt_info" />
           </AssociationSet>
           <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.FK_Cbt_info_VslaRegion">
             <End Role="VslaRegion" EntitySet="VslaRegions" />
@@ -789,10 +753,6 @@
             <End Role="Member" EntitySet="Members" />
             <End Role="Saving" EntitySet="Savings" />
           </AssociationSet>
-          <AssociationSet Name="FK_Vsla_Status" Association="ledgerlinkModel.FK_Vsla_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Vsla" EntitySet="Vslas" />
-          </AssociationSet>
           <AssociationSet Name="FK_Users_UserPermissions" Association="ledgerlinkModel.FK_Users_UserPermissions">
             <End Role="UserPermissions" EntitySet="UserPermissions" />
             <End Role="Users" EntitySet="Users" />
@@ -839,7 +799,6 @@
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Status1" Relationship="ledgerlinkModel.FK_Cbt_info_Status" FromRole="Cbt_info" ToRole="Status" />
           <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
           <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
         </EntityType>
@@ -1013,22 +972,20 @@
           <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_Saving_Meeting" FromRole="Saving" ToRole="Meeting" />
           <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Saving_Member" FromRole="Saving" ToRole="Member" />
         </EntityType>
-        <EntityType Name="Status">
+        <EntityType Name="StatusType">
           <Key>
             <PropertyRef Name="Status_Id" />
           </Key>
           <Property Name="Status_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Status1" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Cbt_info_Status" FromRole="Status" ToRole="Cbt_info" />
-          <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_Vsla_Status" FromRole="Status" ToRole="Vsla" />
+          <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="UserPermission">
           <Key>
             <PropertyRef Name="Level_Id" />
           </Key>
-          <Property Name="Level_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Level_Id" Type="Int32" Nullable="false" />
           <Property Name="UserType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="User" Relationship="ledgerlinkModel.FK_Users_UserPermissions" FromRole="UserPermissions" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="ledgerlinkModel.FK_Users_UserPermissions" FromRole="UserPermissions" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1064,7 +1021,6 @@
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
           <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
-          <NavigationProperty Name="Status1" Relationship="ledgerlinkModel.FK_Vsla_Status" FromRole="Vsla" ToRole="Status" />
           <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
           <NavigationProperty Name="VslaCycles" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="Vsla" ToRole="VslaCycle" />
         </EntityType>
@@ -1151,18 +1107,6 @@
             </Principal>
             <Dependent Role="Audit_Log">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cbt_info_Status">
-          <End Role="Status" Type="ledgerlinkModel.Status" Multiplicity="1" />
-          <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Status_Id" />
-            </Principal>
-            <Dependent Role="Cbt_info">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1346,27 +1290,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Vsla_Status">
-          <End Role="Status" Type="ledgerlinkModel.Status" Multiplicity="1" />
-          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Status_Id" />
-            </Principal>
-            <Dependent Role="Vsla">
-              <PropertyRef Name="VslaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_UserPermissions">
           <End Role="UserPermissions" Type="ledgerlinkModel.UserPermission" Multiplicity="1" />
-          <End Role="Users" Type="ledgerlinkModel.User" Multiplicity="0..1" />
+          <End Role="Users" Type="ledgerlinkModel.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserPermissions">
               <PropertyRef Name="Level_Id" />
             </Principal>
             <Dependent Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserLevel" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1587,11 +1519,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Status">
-            <EntityTypeMapping TypeName="ledgerlinkModel.Status">
-              <MappingFragment StoreEntitySet="Status">
+          <EntitySetMapping Name="StatusTypes">
+            <EntityTypeMapping TypeName="ledgerlinkModel.StatusType">
+              <MappingFragment StoreEntitySet="StatusType">
                 <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
-                <ScalarProperty Name="Status1" ColumnName="Status" />
+                <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

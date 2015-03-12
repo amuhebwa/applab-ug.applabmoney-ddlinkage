@@ -51,8 +51,9 @@
                 @Html.LabelFor(model => model.Status)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Status)
-                @Html.ValidationMessageFor(model => model.Status)
+                @*@Html.EditorFor(model => model.Status)
+                @Html.ValidationMessageFor(model => model.Status)*@
+                @Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })
             </div>
         </div>
         <div class="form-group">

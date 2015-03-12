@@ -27,5 +27,6 @@ namespace DigitizingDataAdminApp.Models
        // public DateTime DateCreated { get; set; }
         public string UserLevel { get; set; }
         public SelectList UserTypes { get; set; }
+        public SelectList AccessLevel { get; set; }
     }
 }

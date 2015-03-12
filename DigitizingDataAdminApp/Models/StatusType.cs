@@ -12,12 +12,9 @@ namespace DigitizingDataAdminApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Status
+    public partial class StatusType
     {
         public int Status_Id { get; set; }
-        public string Status1 { get; set; }
-    
-        public virtual Cbt_info Cbt_info { get; set; }
-        public virtual Vsla Vsla { get; set; }
+        public string CurrentStatus { get; set; }
     }
 }

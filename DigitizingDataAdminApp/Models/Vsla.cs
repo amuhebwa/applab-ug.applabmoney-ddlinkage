@@ -38,7 +38,6 @@ namespace DigitizingDataAdminApp.Models
     
         public virtual Cbt_info Cbt_info { get; set; }
         public virtual ICollection<Member> Members { get; set; }
-        public virtual Status Status1 { get; set; }
         public virtual ICollection<VslaDdActivation> VslaDdActivations { get; set; }
         public virtual ICollection<VslaCycle> VslaCycles { get; set; }
     }

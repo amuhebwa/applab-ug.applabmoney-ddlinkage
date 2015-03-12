@@ -26,7 +26,6 @@ namespace DigitizingDataAdminApp.Models
         public string Email { get; set; }
         public int Status { get; set; }
     
-        public virtual Status Status1 { get; set; }
         public virtual VslaRegion VslaRegion { get; set; }
         public virtual ICollection<Vsla> Vslas { get; set; }
     }

@@ -188,11 +188,11 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Status">
-      <EntityTypeMapping TypeName="ledgerlinkModel.Status">
-        <MappingFragment StoreEntitySet="Status">
+    <EntitySetMapping Name="StatusTypes">
+      <EntityTypeMapping TypeName="ledgerlinkModel.StatusType">
+        <MappingFragment StoreEntitySet="StatusType">
           <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
-          <ScalarProperty Name="Status1" ColumnName="Status" />
+          <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

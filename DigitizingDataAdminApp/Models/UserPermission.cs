@@ -14,9 +14,14 @@ namespace DigitizingDataAdminApp.Models
     
     public partial class UserPermission
     {
+        public UserPermission()
+        {
+            this.Users = new HashSet<User>();
+        }
+    
         public int Level_Id { get; set; }
         public string UserType { get; set; }
     
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
