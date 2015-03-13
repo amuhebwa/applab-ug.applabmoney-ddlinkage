@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using DigitizingDataAdminApp.Models;
 using System.Web.Security;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace DigitizingDataAdminApp.Controllers
 {
@@ -58,6 +60,7 @@ namespace DigitizingDataAdminApp.Controllers
             return View(all_cbt);
         }
         // Audit user logs
+        // [Authorize(Roles="Admin")]
         public ActionResult LogsData()
         {
             AllLogsInformation all_logs = new AllLogsInformation();
@@ -106,7 +109,8 @@ namespace DigitizingDataAdminApp.Controllers
                 {
                     Username = user.Username,
                     Fullname = user.Fullname,
-                    Password = user.Password,
+                    Password = hashedPassword(user.Password),
+                    // Password = user.Password,
                     Email = user.Email,
                     UserLevel = Level_Id
                 };
@@ -119,6 +123,20 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return RedirectToAction("UsersData");
         }
+        // Hash the user password before storing it
+        private string hashedPassword(string password)
+        {
+            MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();
+            byte[] bs = System.Text.Encoding.UTF8.GetBytes(password);
+            bs = cryptography.ComputeHash(bs);
+            StringBuilder s = new StringBuilder();
+            foreach (byte b in bs)
+            {
+                s.Append(b.ToString("x2").ToLower());
+            }
+            return s.ToString();
+        }
+
         // Function to edit the user
         [HttpGet]
         public ActionResult EditUser(int id)
@@ -186,11 +204,19 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult DeleteUser(User user, int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            user.Id = id;
-            db.Users.Attach(user);
-            db.Users.Remove(user);
-            db.SaveChanges();
+            try
+            {
+                ledgerlinkEntities db = new ledgerlinkEntities();
+                user.Id = id;
+                db.Users.Attach(user);
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
             return RedirectToAction("UsersData");
         }
 
@@ -407,11 +433,19 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult DeleteVsla(Vsla vsla, int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            vsla.VslaId = id;
-            db.Vslas.Attach(vsla);
-            db.Vslas.Remove(vsla);
-            db.SaveChanges();
+            try
+            {
+                ledgerlinkEntities db = new ledgerlinkEntities();
+                vsla.VslaId = id;
+                db.Vslas.Attach(vsla);
+                db.Vslas.Remove(vsla);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
             return RedirectToAction("VslaData");
         }
 
@@ -546,18 +580,26 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = all_information.dt_cbt.Email,
                 Status = all_information.dt_status.CurrentStatus
             };
-            string action = "Deletedd CBT information for  " + all_information.dt_cbt.Name;
+            string action = "Deleted CBT information for  " + all_information.dt_cbt.Name;
             logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
         public ActionResult DeleteCbt(Cbt_info cbt, int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            cbt.Id = id;
-            db.Cbt_info.Attach(cbt);
-            db.Cbt_info.Remove(cbt);
-            db.SaveChanges();
+            try
+            {
+                ledgerlinkEntities db = new ledgerlinkEntities();
+                cbt.Id = id;
+                db.Cbt_info.Attach(cbt);
+                db.Cbt_info.Remove(cbt);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
             return RedirectToAction("CbtData");
         }
 

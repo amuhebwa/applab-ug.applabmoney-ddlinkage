@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using DigitizingDataAdminApp.Models;
 using System.Web.Security;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace DigitizingDataAdminApp.Controllers
 {
@@ -26,8 +28,9 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 using (ledgerlinkEntities database = new ledgerlinkEntities())
                 {
+                    string password = hashedPassword(user.Password);
                     var current_user = database.Users.Where(a => a.Username.Equals(user.Username)
-                        && a.Password.Equals(user.Password)).FirstOrDefault();
+                        && a.Password.Equals(password)).FirstOrDefault();
                     if (current_user != null)
                     {
                         Session["UserId"] = current_user.Id.ToString();
@@ -60,7 +63,19 @@ namespace DigitizingDataAdminApp.Controllers
                 ll.SaveChanges();
             }
         } // EOM
-
+        // Hash the login password
+        private string hashedPassword(string password)
+        {
+            MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();
+            byte[] bs = System.Text.Encoding.UTF8.GetBytes(password);
+            bs = cryptography.ComputeHash(bs);
+            StringBuilder s = new StringBuilder();
+            foreach (byte b in bs)
+            {
+                s.Append(b.ToString("x2").ToLower());
+            }
+            return s.ToString();
+        }
     }
 }
 
