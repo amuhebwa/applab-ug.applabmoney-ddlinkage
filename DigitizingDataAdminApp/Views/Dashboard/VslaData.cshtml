@@ -22,5 +22,7 @@
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Edit", "EditVsla", new { id = c.VslaId }));
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "VslaDetails", new { id = c.VslaId }));
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteVsla", new { id = c.VslaId }));
+                        columns.Add().Titled("Meetings").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Meetings", "VslaMeetings", new { id = c.VslaId }));
+                        columns.Add().Titled("Members").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Members", "VslaMembers", new { id = c.VslaId }));
                     }).WithPaging(10).Sortable(true)
     </div>

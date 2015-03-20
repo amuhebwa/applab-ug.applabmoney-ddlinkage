@@ -264,6 +264,7 @@
     <Compile Include="Models\Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SingleMeetingProcedures.cs" />
     <Compile Include="Models\StatusType.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -285,6 +286,8 @@
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VslaInformation.cs" />
+    <Compile Include="Models\VslaMeetingInformation.cs" />
+    <Compile Include="Models\VslaMembersInformation.cs" />
     <Compile Include="Models\VslaRegion.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -465,6 +468,10 @@
     <Content Include="Views\Shared\_CustomLoginPage.cshtml" />
     <Content Include="Views\Dashboard\LogsData.cshtml" />
     <Content Include="Views\Dashboard\Dashboard.cshtml" />
+    <Content Include="Views\Dashboard\VslaMembers.cshtml" />
+    <Content Include="Views\Dashboard\VslaMeetings.cshtml" />
+    <Content Include="Views\Dashboard\MemberDetails.cshtml" />
+    <Content Include="Views\Dashboard\SingleMeetingDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

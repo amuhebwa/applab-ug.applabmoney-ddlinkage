@@ -1,0 +1,21 @@
+﻿@model DigitizingDataAdminApp.Models.AllVslaMemberInformation
+@using GridMvc.Html
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "VslaMembers";
+}
+
+<h4>VslaMeetings</h4>
+<div style="width:auto; margin: 0 auto;">
+        @Html.Grid(Model.allVslaMembers).Columns(columns => 
+                    {
+                        //columns.Add(c => c.MeetingId).Titled("Id");
+                        columns.Add(c => c.memberNumber).Titled("Member No.");
+                        columns.Add(c => c.surname).Titled("Surname");
+                        columns.Add(c => c.otherNames).Titled("Other Names");
+                        columns.Add(c => c.gender).Titled("Gender");
+                        columns.Add(c => c.occupation).Titled("Occupation");
+                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "MemberDetails", new { id = c.memberId }));
+                        
+                    }).WithPaging(10).Sortable(true)
+    </div>

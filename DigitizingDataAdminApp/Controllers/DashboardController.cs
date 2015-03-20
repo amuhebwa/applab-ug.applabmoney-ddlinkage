@@ -7,6 +7,7 @@ using DigitizingDataAdminApp.Models;
 using System.Web.Security;
 using System.Text;
 using System.Security.Cryptography;
+using System.Data.Objects.SqlClient;
 
 namespace DigitizingDataAdminApp.Controllers
 {
@@ -214,7 +215,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
             return RedirectToAction("UsersData");
@@ -443,12 +444,159 @@ namespace DigitizingDataAdminApp.Controllers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
             return RedirectToAction("VslaData");
         }
+        // View all meetings attached to a particular vsla
+        public ActionResult VslaMeetings(int id)
+        {
+            AllVslaMeetingInformation totalMeetings = new AllVslaMeetingInformation();
+            List<VslaMeetingInformation> singleMeeting = new List<VslaMeetingInformation>();
+            singleMeeting = getMeetingData(id);
+            totalMeetings.allVslaMeetings = singleMeeting;
+            // Log this activity
+            return View(totalMeetings);
+        }
+        // Helper method to query the database all information for all meetings
+        public List<VslaMeetingInformation> getMeetingData(int Id)
+        {
+            List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            try
+            {
+                var meetings = (from db_meetings in db.Meetings
+                                join db_cycles in db.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
+                                join db_vsla in db.Vslas on db_cycles.VslaId equals db_vsla.VslaId
+                                where db_vsla.VslaId == Id
+                                select new { dt_meetings = db_meetings, dt_cycles = db_cycles, dt_vsla = db_vsla });
+                foreach (var item in meetings)
+                {
+                    allMeetings.Add(new VslaMeetingInformation
+                    {
+                        MeetingId = item.dt_meetings.MeetingId,
+                        cashFines = (decimal)item.dt_meetings.CashFines,
+                        meetingDate = item.dt_meetings.MeetingDate,
+                        membersPresent = int.Parse(item.dt_meetings.CountOfMembersPresent.ToString()),
+                        totalSavings = (decimal)item.dt_meetings.SumOfSavings,
+                        totalLoans = (decimal)item.dt_meetings.SumOfLoanIssues,
+                        totalLoanRepayment = (decimal)item.dt_meetings.SumOfLoanRepayments
+                    });
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+            return allMeetings;
+        }
+        // Details of a particular meeting
+        public ActionResult SingleMeetingDetails(int id)
+        {
+            AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
+            List<SingleMeetingProcedures> meetingsList = new List<SingleMeetingProcedures>();
+            meetingsList = MeetingDetails(id);
+            allInformation.allMeetingData = meetingsList;
+            return View(allInformation);
+        }
+        public List<SingleMeetingProcedures> MeetingDetails(int id)
+        {
+            List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var cuda = (from db_attendance in db.Attendances
+                        join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
+                        join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
+                        join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
+                        join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId} into joinedFinesAttendance
+                        where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
+                        from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
+                        from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+                        select new
+                        {
+                            db_attendance,
+                            db_member,
+                            db_savings,
+                            loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
+                            loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
+                            amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount
+
+                        });
+            foreach (var item in cuda) {
+                meetings.Add(new SingleMeetingProcedures { 
+                 Id = item.db_attendance.AttendanceId,
+                 memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
+                 isPresent = item.db_attendance.IsPresent.ToString(),
+                 amountSaved = (decimal)item.db_savings.Amount,
+                 loanNumber = (int)item.loanNo,
+                 principleAmount = (decimal)item.loanAmount,
+                 finedAmount = (decimal)item.amountInFines
+                 
+                });
+            }
+            return meetings;
+        }
+
+        // View all members attached to a cetain vsla
+        public ActionResult VslaMembers(int id)
+        {
+            AllVslaMemberInformation memberData = new AllVslaMemberInformation();
+            List<VslaMembersInformation> membersList = new List<VslaMembersInformation>();
+            membersList = getMembersData(id);
+            memberData.allVslaMembers = membersList;
+            return View(memberData);
+        }
+        // list of all members attached to a particular vsla
+        public List<VslaMembersInformation> getMembersData(int id)
+        {
+            List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var members = (from db_members in db.Members where db_members.VslaId == id select new { dt_members = db_members });
+            foreach (var item in members)
+            {
+                allMembers.Add(new VslaMembersInformation
+                {
+                    memberId = item.dt_members.MemberId,
+                    memberNumber = int.Parse(item.dt_members.MemberNo.ToString()),
+                    cyclesCompleted = int.Parse(item.dt_members.CyclesCompleted.ToString()),
+                    surname = item.dt_members.Surname,
+                    otherNames = item.dt_members.OtherNames,
+                    gender = item.dt_members.Gender,
+                    occupation = item.dt_members.Occupation,
+                    // dateArchived = item.dt_members.DateArchived,
+                    // DateOfBirth = item.dt_members.DateOfBirth,
+                    //isActive = (Boolean)item.dt_members.IsActive,
+                    //isArchive = (Boolean)item.dt_members.IsArchived,
+                    // phoneNumber = item.dt_members.PhoneNo
+
+                });
+            }
+
+            return allMembers;
+        }
+        // View all details attached to a given member of a vsla
+        public ActionResult MemberDetails(int id)
+        {
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var member = (from db_members in db.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
+            VslaMembersInformation memberInfo = new VslaMembersInformation
+            {
+                memberNumber = int.Parse(member.dt_members.MemberNo.ToString()),
+                cyclesCompleted = int.Parse(member.dt_members.CyclesCompleted.ToString()),
+                surname = member.dt_members.Surname,
+                otherNames = member.dt_members.OtherNames,
+                gender = member.dt_members.Gender,
+                occupation = member.dt_members.Occupation,
+                dateArchived = member.dt_members.DateArchived,
+                DateOfBirth = member.dt_members.DateOfBirth,
+                isActive = member.dt_members.IsActive.ToString(),
+                isArchive = member.dt_members.IsArchived.ToString(),
+                phoneNumber = member.dt_members.PhoneNo
+
+            };
+            return View(memberInfo);
+        }
         // Add a new CBT
         public ActionResult AddCbt()
         {
@@ -597,7 +745,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
             return RedirectToAction("CbtData");
