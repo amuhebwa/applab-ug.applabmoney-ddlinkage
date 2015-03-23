@@ -5,9 +5,9 @@
     ViewBag.Title = "SingleMeetingDetails";
 }
 
-<h4>SingleMeetingDetails</h4>
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.allMeetingData).Columns(columns => 
+<h4>Meeting Details</h4>
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.allMeetingData).Columns(columns =>
                     {
                         columns.Add(c => c.memberName).Titled("Name");
                         columns.Add(c => c.isPresent).Titled("Attended");
@@ -16,4 +16,4 @@
                         columns.Add(c => c.principleAmount).Titled("Amount Taken(Loan)");
                         columns.Add(c => c.finedAmount).Titled("Fines");
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

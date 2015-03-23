@@ -6,8 +6,8 @@
 }
 
 <h4>VslaMeetings</h4>
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.allVslaMeetings).Columns(columns => 
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.allVslaMeetings).Columns(columns =>
                     {
                         //columns.Add(c => c.MeetingId).Titled("Id");
                         columns.Add(c => c.meetingDate).Titled("Date");
@@ -17,6 +17,6 @@
                         columns.Add(c => c.totalLoans).Titled("Total Loans");
                         columns.Add(c => c.totalLoanRepayment).Titled("Total Loan Repayment");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "SingleMeetingDetails", new { id = c.MeetingId }));
-                        
+
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

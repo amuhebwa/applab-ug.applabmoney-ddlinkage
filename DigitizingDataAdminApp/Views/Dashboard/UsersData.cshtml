@@ -11,8 +11,8 @@
     @Html.ActionLink("Add New User", "AddUser")
 </p>
 
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.AllUsersList).Columns(columns => 
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.AllUsersList).Columns(columns =>
                     {
                         columns.Add(c => c.Id).Titled("UserId");
                         columns.Add(c => c.Username).Titled("Username");
@@ -23,4 +23,4 @@
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "UserDetails", new { id = c.Id }));
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteUser", new { id = c.Id }));
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

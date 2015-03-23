@@ -10,7 +10,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<VslaInformation> AllVslaList { get; set; }
         public VslaInformation VslaDetails { get; set; }
-    
+
     }
     // Setters and getters for VSLA
     public class VslaInformation

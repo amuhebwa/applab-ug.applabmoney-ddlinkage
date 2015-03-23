@@ -12,8 +12,8 @@
     @Html.ActionLink("Add New Vsla", "AddVsla")
 </p>
 
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.AllVslaList).Columns(columns => 
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.AllVslaList).Columns(columns =>
                     {
                         columns.Add(c => c.VslaId).Titled("Id");
                         columns.Add(c => c.VslaName).Titled("VSLA Name");
@@ -25,4 +25,4 @@
                         columns.Add().Titled("Meetings").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Meetings", "VslaMeetings", new { id = c.VslaId }));
                         columns.Add().Titled("Members").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Members", "VslaMembers", new { id = c.VslaId }));
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

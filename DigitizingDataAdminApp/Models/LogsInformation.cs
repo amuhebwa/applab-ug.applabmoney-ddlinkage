@@ -14,7 +14,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public int LogId { get; set; }
         public string userId { get; set; }
-        public DateTime LogTime{get; set;}
+        public DateTime LogTime { get; set; }
         public string ActionPerformed { get; set; }
     }
 }

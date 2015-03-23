@@ -11,8 +11,8 @@
     @Html.ActionLink("Add New CBT", "AddCbt")
 </p>
 
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.AllCbtList).Columns(columns => 
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.AllCbtList).Columns(columns =>
                     {
                         columns.Add(c => c.Id).Titled("Id");
                         columns.Add(c => c.Name).Titled("Name");
@@ -24,4 +24,4 @@
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "CbtDetails", new { id = c.Id }));
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteCbt", new { id = c.Id }));
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

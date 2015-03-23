@@ -261,6 +261,7 @@
     <Compile Include="Models\Member.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PasswordHashing.cs" />
     <Compile Include="Models\Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

@@ -105,13 +105,13 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                PasswordHashing _password = new PasswordHashing();
                 ledgerlinkEntities db = new ledgerlinkEntities();
                 User usr = new User
                 {
                     Username = user.Username,
                     Fullname = user.Fullname,
-                    Password = hashedPassword(user.Password),
-                    // Password = user.Password,
+                    Password = _password.hashedPassword(user.Password),
                     Email = user.Email,
                     UserLevel = Level_Id
                 };
@@ -123,19 +123,6 @@ namespace DigitizingDataAdminApp.Controllers
                 user = null;
             }
             return RedirectToAction("UsersData");
-        }
-        // Hash the user password before storing it
-        private string hashedPassword(string password)
-        {
-            MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();
-            byte[] bs = System.Text.Encoding.UTF8.GetBytes(password);
-            bs = cryptography.ComputeHash(bs);
-            StringBuilder s = new StringBuilder();
-            foreach (byte b in bs)
-            {
-                s.Append(b.ToString("x2").ToLower());
-            }
-            return s.ToString();
         }
 
         // Function to edit the user
@@ -509,7 +496,7 @@ namespace DigitizingDataAdminApp.Controllers
                         join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
                         join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
                         join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-                        join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId} into joinedFinesAttendance
+                        join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
                         where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
                         from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
                         from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
@@ -523,16 +510,18 @@ namespace DigitizingDataAdminApp.Controllers
                             amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount
 
                         });
-            foreach (var item in cuda) {
-                meetings.Add(new SingleMeetingProcedures { 
-                 Id = item.db_attendance.AttendanceId,
-                 memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
-                 isPresent = item.db_attendance.IsPresent.ToString(),
-                 amountSaved = (decimal)item.db_savings.Amount,
-                 loanNumber = (int)item.loanNo,
-                 principleAmount = (decimal)item.loanAmount,
-                 finedAmount = (decimal)item.amountInFines
-                 
+            foreach (var item in cuda)
+            {
+                meetings.Add(new SingleMeetingProcedures
+                {
+                    Id = item.db_attendance.AttendanceId,
+                    memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
+                    isPresent = item.db_attendance.IsPresent.ToString(),
+                    amountSaved = (decimal)item.db_savings.Amount,
+                    loanNumber = (int)item.loanNo,
+                    principleAmount = (decimal)item.loanAmount,
+                    finedAmount = (decimal)item.amountInFines
+
                 });
             }
             return meetings;
@@ -564,12 +553,6 @@ namespace DigitizingDataAdminApp.Controllers
                     otherNames = item.dt_members.OtherNames,
                     gender = item.dt_members.Gender,
                     occupation = item.dt_members.Occupation,
-                    // dateArchived = item.dt_members.DateArchived,
-                    // DateOfBirth = item.dt_members.DateOfBirth,
-                    //isActive = (Boolean)item.dt_members.IsActive,
-                    //isArchive = (Boolean)item.dt_members.IsArchived,
-                    // phoneNumber = item.dt_members.PhoneNo
-
                 });
             }
 

@@ -8,12 +8,12 @@
 <h4>User-System Interaction Logs</h4>
 <hr />
 
-<div style="width:auto; margin: 0 auto;">
-        @Html.Grid(Model.AllLogsList).Columns(columns => 
+<div style="width: auto; margin: 0 auto;">
+    @Html.Grid(Model.AllLogsList).Columns(columns =>
                     {
                         columns.Add(c => c.LogId).Titled("Id");
                         columns.Add(c => c.userId).Titled("User");
                         columns.Add(c => c.LogTime).Titled("Log time");
                         columns.Add(c => c.ActionPerformed).Titled("Action Performed");
                     }).WithPaging(10).Sortable(true)
-    </div>
+</div>

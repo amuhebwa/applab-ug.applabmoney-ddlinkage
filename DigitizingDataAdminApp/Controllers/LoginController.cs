@@ -12,14 +12,15 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
-        //
-        // GET: /Login/
-
         public ActionResult Index()
         {
             return View();
         }
-        // Action result for logging in
+        /**
+         * Queries the database and validates the submitted name against registered users
+         * logs in user if the registered cresential are right, and re-directs to the login
+         * page if they are wrong
+         **/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(UserLogin user)
@@ -28,7 +29,9 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 using (ledgerlinkEntities database = new ledgerlinkEntities())
                 {
-                    string password = hashedPassword(user.Password);
+                    //string password = hashedPassword(user.Password);
+                    PasswordHashing _password = new PasswordHashing();
+                    string password = _password.hashedPassword(user.Password);
                     var current_user = database.Users.Where(a => a.Username.Equals(user.Username)
                         && a.Password.Equals(password)).FirstOrDefault();
                     if (current_user != null)
@@ -46,7 +49,9 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return View(user);
         }
-        // Log the user activities
+        /**
+         *  Logs user-interaction with the system
+         * */
         public void logUserActivity(string action)
         {
             object session_id = Session["UserId"];
@@ -62,19 +67,6 @@ namespace DigitizingDataAdminApp.Controllers
                 ll.Audit_Log.Add(log);
                 ll.SaveChanges();
             }
-        } // EOM
-        // Hash the login password
-        private string hashedPassword(string password)
-        {
-            MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();
-            byte[] bs = System.Text.Encoding.UTF8.GetBytes(password);
-            bs = cryptography.ComputeHash(bs);
-            StringBuilder s = new StringBuilder();
-            foreach (byte b in bs)
-            {
-                s.Append(b.ToString("x2").ToLower());
-            }
-            return s.ToString();
         }
     }
 }
