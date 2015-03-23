@@ -13,6 +13,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public int Id { get; set; }
         public string isPresent { get; set; }
+        public int memberId { get; set; }
         public string memberName { get; set; }
         public decimal amountSaved { get; set; }
         public decimal finedAmount { get; set; }

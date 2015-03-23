@@ -17,5 +17,5 @@
                         columns.Add(c => c.occupation).Titled("Occupation");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "MemberDetails", new { id = c.memberId }));
 
-                    }).WithPaging(10).Sortable(true)
+                    }).WithPaging(30).Sortable(true)
 </div>

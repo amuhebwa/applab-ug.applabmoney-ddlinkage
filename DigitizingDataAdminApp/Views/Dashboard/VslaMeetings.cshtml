@@ -18,5 +18,5 @@
                         columns.Add(c => c.totalLoanRepayment).Titled("Total Loan Repayment");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "SingleMeetingDetails", new { id = c.MeetingId }));
 
-                    }).WithPaging(10).Sortable(true)
+                    }).WithPaging(30).Sortable(true)
 </div>

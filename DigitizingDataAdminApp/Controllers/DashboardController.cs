@@ -556,6 +556,7 @@ namespace DigitizingDataAdminApp.Controllers
                 meetings.Add(new SingleMeetingProcedures
                 {
                     Id = item.db_attendance.AttendanceId,
+                    memberId = item.db_member.MemberId,
                     memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
                     isPresent = item.db_attendance.IsPresent.ToString(),
                     amountSaved = (decimal)item.db_savings.Amount,
