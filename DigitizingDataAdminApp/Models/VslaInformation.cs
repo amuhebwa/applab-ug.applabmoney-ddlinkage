@@ -12,7 +12,6 @@ namespace DigitizingDataAdminApp.Models
         public VslaInformation VslaDetails { get; set; }
 
     }
-    // Setters and getters for VSLA
     public class VslaInformation
     {
         public int VslaId { get; set; }
@@ -27,7 +26,6 @@ namespace DigitizingDataAdminApp.Models
         public string ContactPerson { get; set; }
         public string PositionInVsla { get; set; }
         public string PhoneNumber { get; set; }
-        // public int CBT { get; set; }
         public string CBT { get; set; }
         public SelectList CbtModel { get; set; }
         public SelectList VslaRegionsModel { get; set; }

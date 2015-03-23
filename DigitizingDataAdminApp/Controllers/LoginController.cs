@@ -29,9 +29,9 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 using (ledgerlinkEntities database = new ledgerlinkEntities())
                 {
-                    //string password = hashedPassword(user.Password);
-                    PasswordHashing _password = new PasswordHashing();
-                    string password = _password.hashedPassword(user.Password);
+                    PasswordHashing passwordHashing = new PasswordHashing();
+                    ActivityLogging activityLogging = new ActivityLogging();
+                    string password = passwordHashing.hashedPassword(user.Password);
                     var current_user = database.Users.Where(a => a.Username.Equals(user.Username)
                         && a.Password.Equals(password)).FirstOrDefault();
                     if (current_user != null)
@@ -40,7 +40,7 @@ namespace DigitizingDataAdminApp.Controllers
                         Session["Username"] = current_user.Username;
                         FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
                         string action = "Logged in";
-                        logUserActivity(action);
+                        activityLogging.logUserActivity(action);
                         return RedirectToAction("Dashboard", "Dashboard");
                     }
 
@@ -48,25 +48,6 @@ namespace DigitizingDataAdminApp.Controllers
 
             }
             return View(user);
-        }
-        /**
-         *  Logs user-interaction with the system
-         * */
-        public void logUserActivity(string action)
-        {
-            object session_id = Session["UserId"];
-            // Only log the data if the session is not null
-            if (session_id != null)
-            {
-                Audit_Log log = new Audit_Log();
-                log.LogDate = DateTime.Today.Date;
-
-                log.UserId = Convert.ToInt32(session_id);
-                log.ActionPerformed = action;
-                ledgerlinkEntities ll = new ledgerlinkEntities();
-                ll.Audit_Log.Add(log);
-                ll.SaveChanges();
-            }
         }
     }
 }

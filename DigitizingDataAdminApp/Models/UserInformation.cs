@@ -12,7 +12,7 @@ namespace DigitizingDataAdminApp.Models
         public List<UserInformation> AllUsersList { get; set; }
         public UserInformation userDetails { get; set; }
     }
-    // Setters and getters for the individual user information
+
     public class UserInformation
     {
         public int Id { get; set; }
@@ -24,7 +24,6 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage = "Password is a required field", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string Password { get; set; }
-        // public DateTime DateCreated { get; set; }
         public string UserLevel { get; set; }
         public SelectList UserTypes { get; set; }
         public SelectList AccessLevel { get; set; }

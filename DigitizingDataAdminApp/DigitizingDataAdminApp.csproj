@@ -211,6 +211,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ActivityLogging.cs" />
     <Compile Include="Models\Attendance.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

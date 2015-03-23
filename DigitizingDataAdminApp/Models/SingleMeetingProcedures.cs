@@ -18,6 +18,5 @@ namespace DigitizingDataAdminApp.Models
         public decimal finedAmount { get; set; }
         public decimal principleAmount { get; set; }
         public int loanNumber { get; set; }
-        // public DateTime dueDate { get; set; }
     }
 }

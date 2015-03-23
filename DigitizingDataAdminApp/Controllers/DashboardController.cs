@@ -13,7 +13,10 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
     {
-        // GET: /Dashboard/
+
+        // Initialize the user logging class
+        ActivityLogging activityLogging = new ActivityLogging();
+
         [Authorize]
         public ActionResult Dashboard()
         {
@@ -26,7 +29,9 @@ namespace DigitizingDataAdminApp.Controllers
                 return RedirectToAction("Index", "Index");
             }
         }
-        // Action Result for user details
+        /**
+         * Get all information concerning registered information
+         * */
         public ActionResult UsersData()
         {
             AllUsersInformation all_users = new AllUsersInformation();
@@ -34,10 +39,12 @@ namespace DigitizingDataAdminApp.Controllers
             single_user = users_infor();
             all_users.AllUsersList = single_user;
             string action = "Viewed all users";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(all_users);
         }
-        // Action Result for vsla details
+        /**
+         * Get all information concerning VSLAs
+         * */
         public ActionResult VslaData()
         {
             AllVslaInformation all_vsla = new AllVslaInformation();
@@ -45,11 +52,13 @@ namespace DigitizingDataAdminApp.Controllers
             single_vsla = vsla_info();
             all_vsla.AllVslaList = single_vsla;
             string action = "Viewed all village lending and saving associations information";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(all_vsla);
 
         }
-        // Action Result for CBT Data
+        /**
+         * Get all information concerned with CBTs
+         * */
         public ActionResult CbtData()
         {
             AllCbtInformation all_cbt = new AllCbtInformation();
@@ -57,11 +66,12 @@ namespace DigitizingDataAdminApp.Controllers
             single_cbt = cbt_info();
             all_cbt.AllCbtList = single_cbt;
             string action = "Viewed all commnity based trainers information";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(all_cbt);
         }
-        // Audit user logs
-        // [Authorize(Roles="Admin")]
+        /**
+         * Display all the log information
+         * */
         public ActionResult LogsData()
         {
             AllLogsInformation all_logs = new AllLogsInformation();
@@ -69,7 +79,7 @@ namespace DigitizingDataAdminApp.Controllers
             info_logs = logs_list();
             all_logs.AllLogsList = info_logs;
             string action = "Viewed log information";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(all_logs);
         }
         /**
@@ -82,12 +92,14 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult Logout()
         {
             string action = "logged out";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             FormsAuthentication.SignOut();
             return RedirectToAction("Index");
 
         }
-        // Function to add a new user to the system
+        /**
+         * Register a new user annd add them into the system
+         * */
         public ActionResult AddUser()
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -119,13 +131,15 @@ namespace DigitizingDataAdminApp.Controllers
                 db.SaveChanges();
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
-                logUserActivity(action);
+                activityLogging.logUserActivity(action);
                 user = null;
             }
             return RedirectToAction("UsersData");
         }
 
-        // Function to edit the user
+        /**
+         * Edit a particular user's information.
+         * */
         [HttpGet]
         public ActionResult EditUser(int id)
         {
@@ -161,11 +175,13 @@ namespace DigitizingDataAdminApp.Controllers
                 query.UserLevel = Level_Id;
                 database.SaveChanges();
                 string action = "Edited information for " + info.Fullname;
-                logUserActivity(action);
+                activityLogging.logUserActivity(action);
                 return RedirectToAction("UsersData");
             }
         }
-        // Delete a user
+        /**
+         * Delete a particular user form the system
+         * */
         [HttpGet]
         public ActionResult DeleteUser(int id)
         {
@@ -185,7 +201,7 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = user_details.db_permissions.UserType
             };
             string action = "Deleted information for " + user_details.db_user.Fullname;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(user_data);
         }
 
@@ -208,7 +224,9 @@ namespace DigitizingDataAdminApp.Controllers
             return RedirectToAction("UsersData");
         }
 
-        // Display all the user details
+        /**
+         * Display all information for a particular user
+         * */
         public ActionResult UserDetails(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -229,10 +247,12 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = user_details.db_permissions.UserType
             };
             string action = "Viewed list of all users in the System";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(user_data);
         }
-        // Get the VSLA detailed information
+        /**
+         * Display information for a particular VSLA
+         * */
         public ActionResult VslaDetails(int id)
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
@@ -261,10 +281,12 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vsla_info.db_status.CurrentStatus
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(vsla_data);
         }
-        // Edit VSLA
+        /**
+         * Edit a given VSLA
+         * */
         [HttpGet]
         public ActionResult EditVsla(int id)
         {
@@ -279,9 +301,11 @@ namespace DigitizingDataAdminApp.Controllers
             // Get a list of all vsla regions to populate in the dropdown list
             List<VslaRegion> all_vsla_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
             SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName", vsla_info.db_vsla.RegionId);
+
             // Get the list of all cbts to populate in the dropdown list
             List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
             SelectList cbt_info = new SelectList(cbt_list, "Id", "Name", vsla_info.db_vsla.CBT);
+
             // Get the status type ie active/inactive,
             List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
             SelectList status_types = new SelectList(status, "Status_Id", "CurrentStatus", vsla_info.db_cbt.Status);
@@ -304,9 +328,12 @@ namespace DigitizingDataAdminApp.Controllers
                 StatusType = status_types
             };
             string action = "Edited information for VSLA named " + vsla_info.db_vsla.VslaName ?? "--";
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(vsla_data);
         }
+        /**
+         * Edit details for a particular VSLA
+         * */
         [HttpPost]
         public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
@@ -330,7 +357,9 @@ namespace DigitizingDataAdminApp.Controllers
                 return RedirectToAction("VslaData");
             }
         }
-        // Method for adding a new vsla
+        /**
+         * Add a new Village savings and lending association (VSLA) to the system
+         * */
         public ActionResult AddVsla()
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
@@ -380,12 +409,14 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Vslas.Add(added_vsla);
                 database.SaveChanges();
                 string action = "Added new  VSLA named " + new_vsla.VslaName;
-                logUserActivity(action);
+                activityLogging.logUserActivity(action);
                 return RedirectToAction("VslaData");
             }
             return View(new_vsla);
         }
-        // Delete a VSLA
+        /**
+         * Delete a particular VSLA from the system
+         * */
         [HttpGet]
         public ActionResult DeleteVsla(int id)
         {
@@ -415,7 +446,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vsla_info.db_status.CurrentStatus
             };
             string action = "Deleted all information for VSLA named " + vsla_info.db_vsla.VslaName;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(vsla_data);
         }
         [HttpPost]
@@ -436,17 +467,22 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return RedirectToAction("VslaData");
         }
-        // View all meetings attached to a particular vsla
+        /**
+         * View all meetings attached to a particular VSLA
+         * */
         public ActionResult VslaMeetings(int id)
         {
             AllVslaMeetingInformation totalMeetings = new AllVslaMeetingInformation();
             List<VslaMeetingInformation> singleMeeting = new List<VslaMeetingInformation>();
             singleMeeting = getMeetingData(id);
             totalMeetings.allVslaMeetings = singleMeeting;
-            // Log this activity
+            string action = "Viewed information concerning vsla meetings";
+            activityLogging.logUserActivity(action);
             return View(totalMeetings);
         }
-        // Helper method to query the database all information for all meetings
+        /**
+         * Helper method to query the database all information for all meetings
+         * */
         public List<VslaMeetingInformation> getMeetingData(int Id)
         {
             List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
@@ -479,7 +515,9 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return allMeetings;
         }
-        // Details of a particular meeting
+        /**
+         * Get details for a particular meeting held on a partuclar day by a VSLA
+         * */
         public ActionResult SingleMeetingDetails(int id)
         {
             AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
@@ -488,6 +526,9 @@ namespace DigitizingDataAdminApp.Controllers
             allInformation.allMeetingData = meetingsList;
             return View(allInformation);
         }
+        /**
+         * Helper class for getting information concerned with all meetings in the whole system
+         * */
         public List<SingleMeetingProcedures> MeetingDetails(int id)
         {
             List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
@@ -524,10 +565,14 @@ namespace DigitizingDataAdminApp.Controllers
 
                 });
             }
+            string action = "Viewed information for a single VSLA meeting";
+            activityLogging.logUserActivity(action);
             return meetings;
         }
 
-        // View all members attached to a cetain vsla
+        /**
+         *  View all members attached to a given vsla
+         * */
         public ActionResult VslaMembers(int id)
         {
             AllVslaMemberInformation memberData = new AllVslaMemberInformation();
@@ -536,7 +581,10 @@ namespace DigitizingDataAdminApp.Controllers
             memberData.allVslaMembers = membersList;
             return View(memberData);
         }
-        // list of all members attached to a particular vsla
+        /**
+         * Helper method to query the database and get a list of all members attached to a 
+         * particular vsla
+         * */
         public List<VslaMembersInformation> getMembersData(int id)
         {
             List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
@@ -555,10 +603,13 @@ namespace DigitizingDataAdminApp.Controllers
                     occupation = item.dt_members.Occupation,
                 });
             }
-
+            string action = "Viewed information for all members for a selected vsla";
+            activityLogging.logUserActivity(action);
             return allMembers;
         }
-        // View all details attached to a given member of a vsla
+        /**
+         * Get all information for a given user attached to a particular vsla
+         * */
         public ActionResult MemberDetails(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -578,9 +629,13 @@ namespace DigitizingDataAdminApp.Controllers
                 phoneNumber = member.dt_members.PhoneNo
 
             };
+            string action = "Viewed information for vsla member called " + member.dt_members.Surname + " " + member.dt_members.OtherNames;
+            activityLogging.logUserActivity(action);
             return View(memberInfo);
         }
-        // Add a new CBT
+        /**
+         * Add a new community based trainer (CBT) to the system
+         * */
         public ActionResult AddCbt()
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -613,7 +668,7 @@ namespace DigitizingDataAdminApp.Controllers
 
                 };
                 string action = "Added a new CBT called " + new_cbt.Name;
-                logUserActivity(action);
+                activityLogging.logUserActivity(action);
                 database.Cbt_info.Add(cbx);
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
@@ -621,7 +676,9 @@ namespace DigitizingDataAdminApp.Controllers
             return View(new_cbt);
         }
 
-        // View individual cbt information
+        /**
+         * View all information for a particular CBT
+         * */
         public ActionResult CbtDetails(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -641,10 +698,12 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = all_information.dt_status.CurrentStatus
             };
             string action = "Viewed CBT details for  " + all_information.dt_cbt.Name;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(cbt_data);
         }
-        // Edit CBT information
+        /**
+         * Edit information for a particular CBT
+         * */
         [HttpGet]
         public ActionResult EditCbt(int id)
         {
@@ -658,6 +717,7 @@ namespace DigitizingDataAdminApp.Controllers
             // all reegions
             List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
             SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName", all_information.db_region.RegionId);
+
             // Get the status ie active/inactive
             List<StatusType> status = db.StatusTypes.OrderBy(a => a.Status_Id).ToList();
             SelectList status_list = new SelectList(status, "Status_Id", "CurrentStatus", all_information.dt_cbt.Status);
@@ -672,8 +732,9 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = all_information.dt_cbt.Email,
                 StatusType = status_list
             };
+
             string action = "Edited CBT information for  " + all_information.dt_cbt.Name;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
@@ -692,7 +753,9 @@ namespace DigitizingDataAdminApp.Controllers
             }
 
         }
-        // Delete CBT information
+        /**
+         * Delete a particular CBT from the system
+         * */
         [HttpGet]
         public ActionResult DeleteCbt(int id)
         {
@@ -712,7 +775,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = all_information.dt_status.CurrentStatus
             };
             string action = "Deleted CBT information for  " + all_information.dt_cbt.Name;
-            logUserActivity(action);
+            activityLogging.logUserActivity(action);
             return View(cbt_data);
         }
         [HttpPost]
@@ -734,8 +797,9 @@ namespace DigitizingDataAdminApp.Controllers
             return RedirectToAction("CbtData");
         }
 
-        // ----HELPER METHODS-----
-        // 1. Helper method to get information for all registered users
+        /**
+         * Helper method to get information for all registered users
+         * */
         public List<UserInformation> users_infor()
         {
             List<UserInformation> users = new List<UserInformation>();
@@ -759,7 +823,10 @@ namespace DigitizingDataAdminApp.Controllers
             return users;
 
         }
-        // 2. Helper method to get all information concerning vsla
+
+        /**
+         * Helper method to get all information concerning vsla
+         * */
         public List<VslaInformation> vsla_info()
         {
             List<VslaInformation> vsla_list = new List<VslaInformation>();
@@ -772,7 +839,7 @@ namespace DigitizingDataAdminApp.Controllers
                     VslaId = item.VslaId,
                     VslaCode = item.VslaCode ?? "--",
                     VslaName = item.VslaName ?? "--",
-                    RegionId = item.RegionId.ToString(), // change this back to integer
+                    RegionId = item.RegionId.ToString(),
                     DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
                     DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
                     PhysicalAddress = item.PhysicalAddress ?? "--",
@@ -787,7 +854,10 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return vsla_list;
         }
-        // 3. Helper method to get the list of all CBTS that have been added to a system
+
+        /**
+         * Helper method to get the list of all CBTS that have been added to a system
+         * */
         public List<CbtInformation> cbt_info()
         {
             List<CbtInformation> cbts = new List<CbtInformation>();
@@ -813,7 +883,10 @@ namespace DigitizingDataAdminApp.Controllers
 
             return cbts;
         }
-        //   get a list of logs
+
+        /**
+         * Get all the log information
+         * */
         public List<LogsInformation> logs_list()
         {
             List<LogsInformation> logs = new List<LogsInformation>();
@@ -836,22 +909,5 @@ namespace DigitizingDataAdminApp.Controllers
             return logs;
         }
 
-        // Log the user activities
-        public void logUserActivity(string action)
-        {
-            object session_id = Session["UserId"];
-            // Only log the data if the session is not null
-            if (session_id != null)
-            {
-                Audit_Log log = new Audit_Log();
-                log.LogDate = DateTime.Today.Date;
-
-                log.UserId = Convert.ToInt32(session_id);
-                log.ActionPerformed = action;
-                ledgerlinkEntities ll = new ledgerlinkEntities();
-                ll.Audit_Log.Add(log);
-                ll.SaveChanges();
-            }
-        }
     }
 }
