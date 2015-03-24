@@ -5,7 +5,7 @@
     ViewBag.Title = "VslaMembers";
 }
 
-<h4>VslaMeetings</h4>
+<h4>All Members of @Model.vslaName</h4>
 <div style="width: auto;min-width:1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMembers).Columns(columns =>
                     {

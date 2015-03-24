@@ -4,10 +4,9 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "SingleMeetingDetails";
 }
-
-<h4>Meeting Details</h4>
+<h4>Meeting Details for meeting held on @Model.meetingDate</h4>
 <div style="width: auto; min-width:1000px; margin: 0 auto;">
-    @Html.Grid(Model.allMeetingData).Columns(columns =>
+    @Html.Grid(this.Model.allMeetingData).Columns(columns =>
                     {
                         columns.Add(c => c.memberName).Titled("Name").Sanitized(false).Encoded(false).RenderValueAs(c => @Html.ActionLink(c.memberName, "MemberDetails", new { id = c.memberId }));
                         columns.Add(c => c.isPresent).Titled("Attended");

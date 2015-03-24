@@ -472,10 +472,15 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult VslaMeetings(int id)
         {
+            ledgerlinkEntities database = new ledgerlinkEntities();
             AllVslaMeetingInformation totalMeetings = new AllVslaMeetingInformation();
             List<VslaMeetingInformation> singleMeeting = new List<VslaMeetingInformation>();
+            // Get the vsla name
+            var vslaName = database.Vslas.Find(id);
+            // Get all meetings attached to a given vsla
             singleMeeting = getMeetingData(id);
             totalMeetings.allVslaMeetings = singleMeeting;
+            totalMeetings.vslaName = vslaName.VslaName;
             string action = "Viewed information concerning vsla meetings";
             activityLogging.logUserActivity(action);
             return View(totalMeetings);
@@ -520,10 +525,16 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult SingleMeetingDetails(int id)
         {
+            ledgerlinkEntities database = new ledgerlinkEntities();
             AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
             List<SingleMeetingProcedures> meetingsList = new List<SingleMeetingProcedures>();
+            
+            // Get the date when the meeting was held
+            var meetingDate = database.Meetings.Find(id);
+            // Get the all the meeting details
             meetingsList = MeetingDetails(id);
             allInformation.allMeetingData = meetingsList;
+            allInformation.meetingDate = meetingDate.MeetingDate;
             return View(allInformation);
         }
         /**
@@ -576,10 +587,15 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult VslaMembers(int id)
         {
+            ledgerlinkEntities database = new ledgerlinkEntities();
             AllVslaMemberInformation memberData = new AllVslaMemberInformation();
             List<VslaMembersInformation> membersList = new List<VslaMembersInformation>();
+            // Get the name of vsla
+            var vslaName = database.Vslas.Find(id);
+            // Get the list of all members
             membersList = getMembersData(id);
             memberData.allVslaMembers = membersList;
+            memberData.vslaName = vslaName.VslaName;
             return View(memberData);
         }
         /**

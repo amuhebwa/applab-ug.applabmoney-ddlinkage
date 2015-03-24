@@ -8,6 +8,7 @@ namespace DigitizingDataAdminApp.Models
     public class AllVslaMeetingInformation
     {
         public List<VslaMeetingInformation> allVslaMeetings { get; set; }
+        public string vslaName { get; set; }
     }
     public class VslaMeetingInformation
     {
