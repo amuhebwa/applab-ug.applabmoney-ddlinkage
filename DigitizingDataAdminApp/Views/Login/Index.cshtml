@@ -8,8 +8,15 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-
+       
+        if (!@ViewData.ModelState.IsValid)
+        { 
+        <div style="font-family:inherit; color:red;font-size:1.125em; font-weight:bold;">
+            @Html.ValidationSummary(true)
+        </div>
+        
+        }
+        
         <fieldset>
             <legend>
                 <img src="~/Content/Images/logo.jpeg" style="height: 20px; padding-left: 10px;" />
@@ -22,7 +29,7 @@
                     </div>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.Username)
-                        @Html.ValidationMessageFor(model => model.Username)
+                        @Html.ValidationMessageFor(model => model.Username,"", new{@style="font-family:inherit; color:red;font-weight:bold;"})
                     </div>
                 </div>
                 <div class="form-group">
@@ -31,7 +38,7 @@
                     </div>
                     <div>
                         @Html.EditorFor(model => model.Password)
-                        @Html.ValidationMessageFor(model => model.Password)
+                        @Html.ValidationMessageFor(model => model.Password,"", new{@style="font-family:inherit; color:red;font-weight:bold;"})
                     </div>
                 </div>
                 <div class="form-group" style="padding-left: 20px;">

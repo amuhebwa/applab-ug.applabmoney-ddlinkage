@@ -27,8 +27,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (ledgerlinkEntities database = new ledgerlinkEntities())
-                {
+                    ledgerlinkEntities database = new ledgerlinkEntities();
                     PasswordHashing passwordHashing = new PasswordHashing();
                     ActivityLogging activityLogging = new ActivityLogging();
                     string password = passwordHashing.hashedPassword(user.Password);
@@ -43,11 +42,12 @@ namespace DigitizingDataAdminApp.Controllers
                         activityLogging.logUserActivity(action);
                         return RedirectToAction("Dashboard", "Dashboard");
                     }
-
-                }
-
+                    else {
+                        ModelState.AddModelError("", "The Username or password provided is wrong!!");
+                    }
             }
-            return View(user);
+          
+            return View();
         }
     }
 }
