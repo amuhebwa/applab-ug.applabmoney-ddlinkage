@@ -549,9 +549,11 @@ namespace DigitizingDataAdminApp.Controllers
                         join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
                         join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
                         join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
+                        join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId} into joinedRepaymentAttendance
                         where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
                         from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
                         from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+                        from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
                         select new
                         {
                             db_attendance,
@@ -559,7 +561,10 @@ namespace DigitizingDataAdminApp.Controllers
                             db_savings,
                             loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
                             loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-                            amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount
+                            amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
+                            loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
+                            remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+                            
 
                         });
             foreach (var item in cuda)
@@ -573,7 +578,9 @@ namespace DigitizingDataAdminApp.Controllers
                     amountSaved = (decimal)item.db_savings.Amount,
                     loanNumber = (int)item.loanNo,
                     principleAmount = (decimal)item.loanAmount,
-                    finedAmount = (decimal)item.amountInFines
+                    finedAmount = (decimal)item.amountInFines,
+                    loanRepaymentAmount = (decimal)item.loanRepaymentAmount,
+                    remainingBalanceOnLoan = (decimal)item.remainingBalanceOnLoan
 
                 });
             }

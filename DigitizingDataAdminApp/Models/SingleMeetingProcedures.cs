@@ -19,6 +19,8 @@ namespace DigitizingDataAdminApp.Models
         public decimal amountSaved { get; set; }
         public decimal finedAmount { get; set; }
         public decimal principleAmount { get; set; }
+        public decimal loanRepaymentAmount { get; set; }
+        public decimal remainingBalanceOnLoan { get; set; }
         public int loanNumber { get; set; }
     }
 }

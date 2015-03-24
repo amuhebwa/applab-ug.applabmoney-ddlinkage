@@ -43,7 +43,7 @@ namespace DigitizingDataAdminApp.Controllers
                         return RedirectToAction("Dashboard", "Dashboard");
                     }
                     else {
-                        ModelState.AddModelError("", "The Username or password provided is wrong!!");
+                        ModelState.AddModelError("", "The Username or Password provided is wrong!!");
                     }
             }
           
