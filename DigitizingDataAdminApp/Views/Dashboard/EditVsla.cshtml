@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "EditVsla";
 }
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -43,7 +42,7 @@
                 @Html.LabelFor(model => model.DateRegistered)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.DateRegistered)
+                @Html.TextBoxFor(model => model.DateRegistered, new { @class = "date", @id = "DateRegistered", @Value = Model.DateRegistered.ToString() })
                 @Html.ValidationMessageFor(model => model.DateRegistered)
             </div>
         </div>
@@ -52,7 +51,7 @@
                 @Html.LabelFor(model => model.DateLinked)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.DateLinked)
+                @Html.TextBoxFor(model => model.DateLinked, new { @class = "date", @id = "DateLinked", @Value = Model.DateLinked.ToString() })
                 @Html.ValidationMessageFor(model => model.DateLinked)
             </div>
         </div>
@@ -115,8 +114,6 @@
                 @Html.LabelFor(model => model.CBT)
             </div>
             <div class="editor-field">
-                @* @Html.EditorFor(model => model.CBT)
-            @Html.ValidationMessageFor(model => model.CBT)*@
                 @Html.DropDownList("Id", Model.CbtModel, new { @style = "width:250px; height:30px;" })
             </div>
         </div>
@@ -125,8 +122,6 @@
                 @Html.LabelFor(model => model.Status)
             </div>
             <div class="editor-field">
-                @*  @Html.EditorFor(model => model.Status)
-                @Html.ValidationMessageFor(model => model.Status)*@
                 @Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })
             </div>
         </div>
@@ -144,4 +139,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+    </script>
 }

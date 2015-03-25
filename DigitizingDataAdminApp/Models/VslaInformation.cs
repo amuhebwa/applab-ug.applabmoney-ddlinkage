@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -18,7 +19,15 @@ namespace DigitizingDataAdminApp.Models
         public string VslaCode { get; set; }
         public string VslaName { get; set; }
         public string RegionId { get; set; }
+
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateRegistered { get; set; }
+
+        [DataType(DataType.Date)]
+       // [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateLinked { get; set; }
         public string PhysicalAddress { get; set; }
         public string VslaPhoneMsisdn { get; set; }
