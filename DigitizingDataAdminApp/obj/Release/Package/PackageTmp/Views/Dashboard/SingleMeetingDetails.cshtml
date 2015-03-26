@@ -1,0 +1,20 @@
+﻿@model DigitizingDataAdminApp.Models.AllSingleMeetingProcedures
+@using GridMvc.Html
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "SingleMeetingDetails";
+}
+<h4>Details for the Meeting held on @Model.meetingDate</h4>
+<div style="width: auto; min-width:1000px; margin: 0 auto;">
+    @Html.Grid(this.Model.allMeetingData).Columns(columns =>
+                    {
+                        columns.Add(c => c.memberName).Titled("Name").Sanitized(false).Encoded(false).RenderValueAs(c => @Html.ActionLink(c.memberName, "MemberDetails", new { id = c.memberId }));
+                        columns.Add(c => c.isPresent).Titled("Attended");
+                        columns.Add(c => c.amountSaved).Titled("Amount Saved");
+                        columns.Add(c => c.loanNumber).Titled("Loan Number");
+                        columns.Add(c => c.principleAmount).Titled("Loan Taken");
+                        columns.Add(c => c.finedAmount).Titled("Fines");
+                        columns.Add(c => c.loanRepaymentAmount).Titled("Loan Cleared");
+                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Remaining");
+                    }).WithPaging(30).Sortable(true)
+</div>

@@ -40,6 +40,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <DesktopBuildPackageLocation>..\..\..\..\..\Desktop\Exported_code\DigitizingDataWebService.zip</DesktopBuildPackageLocation>
+    <DeployIisAppPath>Default Web Site/DigitizingDataWebService</DeployIisAppPath>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +93,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\DD_file_publish.pubxml" />
     <None Include="Properties\PublishProfiles\DD_Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\ledgerlink-manager.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

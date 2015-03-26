@@ -1,0 +1,118 @@
+﻿@model DigitizingDataAdminApp.Models.VslaInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "VslaDetails";
+}
+
+<fieldset>
+    <legend>Village Savings and Lending Detailed Information</legend>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaCode)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaCode)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaName)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaName)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.RegionId)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.RegionId)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.DateRegistered)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.DateRegistered)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.DateLinked)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.DateLinked)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PhysicalAddress)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PhysicalAddress)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.VslaPhoneMsisdn)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.VslaPhoneMsisdn)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.GpsLocation)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.GpsLocation)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.ContactPerson)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.ContactPerson)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PositionInVsla)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PositionInVsla)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.CBT)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CBT)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Status)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Status)
+        </div>
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "EditVsla", new { id = Model.VslaId }) |
+    @Html.ActionLink("Back to List", "VslaData")
+</p>

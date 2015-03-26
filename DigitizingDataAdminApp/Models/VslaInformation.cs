@@ -21,13 +21,10 @@ namespace DigitizingDataAdminApp.Models
         public string RegionId { get; set; }
 
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateRegistered { get; set; }
 
         [DataType(DataType.Date)]
-       // [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateLinked { get; set; }
         public string PhysicalAddress { get; set; }
         public string VslaPhoneMsisdn { get; set; }

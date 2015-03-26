@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ledgerlinkModelStoreContainer" CdmEntityContainer="ledgerlinkEntities">
+    <EntitySetMapping Name="Attendances">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Attendance">
+        <MappingFragment StoreEntitySet="Attendance">
+          <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+          <ScalarProperty Name="AttendanceIdEx" ColumnName="AttendanceIdEx" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="IsPresent" ColumnName="IsPresent" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Audit_Log">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Audit_Log">
+        <MappingFragment StoreEntitySet="Audit_Log">
+          <ScalarProperty Name="LogId" ColumnName="LogId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+          <ScalarProperty Name="ActionPerformed" ColumnName="ActionPerformed" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cbt_info">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Cbt_info">
+        <MappingFragment StoreEntitySet="Cbt_info">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataSubmissions">
+      <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission">
+        <MappingFragment StoreEntitySet="DataSubmission">
+          <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+          <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+          <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+          <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+          <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+          <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataSubmission_20140113">
+      <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission_20140113">
+        <MappingFragment StoreEntitySet="DataSubmission_20140113">
+          <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+          <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+          <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+          <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+          <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+          <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataSubmission_20140113_2">
+      <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission_20140113_2">
+        <MappingFragment StoreEntitySet="DataSubmission_20140113_2">
+          <ScalarProperty Name="SubmissionId" ColumnName="SubmissionId" />
+          <ScalarProperty Name="SourceVslaCode" ColumnName="SourceVslaCode" />
+          <ScalarProperty Name="SourcePhoneImei" ColumnName="SourcePhoneImei" />
+          <ScalarProperty Name="SourceNetworkOperator" ColumnName="SourceNetworkOperator" />
+          <ScalarProperty Name="SourceNetworkType" ColumnName="SourceNetworkType" />
+          <ScalarProperty Name="SubmissionTimestamp" ColumnName="SubmissionTimestamp" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="ProcessedFlag" ColumnName="ProcessedFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fines">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Fine">
+        <MappingFragment StoreEntitySet="Fine">
+          <ScalarProperty Name="FineId" ColumnName="FineId" />
+          <ScalarProperty Name="FineIdEx" ColumnName="FineIdEx" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+          <ScalarProperty Name="IsCleared" ColumnName="IsCleared" />
+          <ScalarProperty Name="DateCleared" ColumnName="DateCleared" />
+          <ScalarProperty Name="IssuedInMeetingId" ColumnName="IssuedInMeetingId" />
+          <ScalarProperty Name="PaidInMeetingId" ColumnName="PaidInMeetingId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoanIssues">
+      <EntityTypeMapping TypeName="ledgerlinkModel.LoanIssue">
+        <MappingFragment StoreEntitySet="LoanIssue">
+          <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+          <ScalarProperty Name="LoanIdEx" ColumnName="LoanIdEx" />
+          <ScalarProperty Name="LoanNo" ColumnName="LoanNo" />
+          <ScalarProperty Name="PrincipalAmount" ColumnName="PrincipalAmount" />
+          <ScalarProperty Name="InterestAmount" ColumnName="InterestAmount" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="DateCleared" ColumnName="DateCleared" />
+          <ScalarProperty Name="DateDue" ColumnName="DateDue" />
+          <ScalarProperty Name="IsCleared" ColumnName="IsCleared" />
+          <ScalarProperty Name="IsDefaulted" ColumnName="IsDefaulted" />
+          <ScalarProperty Name="TotalRepaid" ColumnName="TotalRepaid" />
+          <ScalarProperty Name="IsWrittenOff" ColumnName="IsWrittenOff" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoanRepayments">
+      <EntityTypeMapping TypeName="ledgerlinkModel.LoanRepayment">
+        <MappingFragment StoreEntitySet="LoanRepayment">
+          <ScalarProperty Name="RepaymentId" ColumnName="RepaymentId" />
+          <ScalarProperty Name="RepaymentIdEx" ColumnName="RepaymentIdEx" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="BalanceAfter" ColumnName="BalanceAfter" />
+          <ScalarProperty Name="BalanceBefore" ColumnName="BalanceBefore" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="LastDateDue" ColumnName="LastDateDue" />
+          <ScalarProperty Name="NextDateDue" ColumnName="NextDateDue" />
+          <ScalarProperty Name="InterestAmount" ColumnName="InterestAmount" />
+          <ScalarProperty Name="RolloverAmount" ColumnName="RolloverAmount" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Meetings">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Meeting">
+        <MappingFragment StoreEntitySet="Meeting">
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="MeetingIdEx" ColumnName="MeetingIdEx" />
+          <ScalarProperty Name="CashExpenses" ColumnName="CashExpenses" />
+          <ScalarProperty Name="CashFines" ColumnName="CashFines" />
+          <ScalarProperty Name="CashFromBank" ColumnName="CashFromBank" />
+          <ScalarProperty Name="CashFromBox" ColumnName="CashFromBox" />
+          <ScalarProperty Name="CashSavedBank" ColumnName="CashSavedBank" />
+          <ScalarProperty Name="CashSavedBox" ColumnName="CashSavedBox" />
+          <ScalarProperty Name="CashWelfare" ColumnName="CashWelfare" />
+          <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+          <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+          <ScalarProperty Name="IsDataSent" ColumnName="IsDataSent" />
+          <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
+          <ScalarProperty Name="CountOfMembersPresent" ColumnName="CountOfMembersPresent" />
+          <ScalarProperty Name="SumOfSavings" ColumnName="SumOfSavings" />
+          <ScalarProperty Name="SumOfLoanIssues" ColumnName="SumOfLoanIssues" />
+          <ScalarProperty Name="SumOfLoanRepayments" ColumnName="SumOfLoanRepayments" />
+          <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Member">
+        <MappingFragment StoreEntitySet="Member">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MemberIdEx" ColumnName="MemberIdEx" />
+          <ScalarProperty Name="MemberNo" ColumnName="MemberNo" />
+          <ScalarProperty Name="CyclesCompleted" ColumnName="CyclesCompleted" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="OtherNames" ColumnName="OtherNames" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+          <ScalarProperty Name="DateArchived" ColumnName="DateArchived" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Savings">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Saving">
+        <MappingFragment StoreEntitySet="Saving">
+          <ScalarProperty Name="SavingId" ColumnName="SavingId" />
+          <ScalarProperty Name="SavingIdEx" ColumnName="SavingIdEx" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusTypes">
+      <EntityTypeMapping TypeName="ledgerlinkModel.StatusType">
+        <MappingFragment StoreEntitySet="StatusType">
+          <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
+          <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserPermissions">
+      <EntityTypeMapping TypeName="ledgerlinkModel.UserPermission">
+        <MappingFragment StoreEntitySet="UserPermissions">
+          <ScalarProperty Name="Level_Id" ColumnName="Level_Id" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="ledgerlinkModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="UserLevel" ColumnName="UserLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vslas">
+      <EntityTypeMapping TypeName="ledgerlinkModel.Vsla">
+        <MappingFragment StoreEntitySet="Vsla">
+          <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+          <ScalarProperty Name="VslaCode" ColumnName="VslaCode" />
+          <ScalarProperty Name="VslaName" ColumnName="VslaName" />
+          <ScalarProperty Name="VslaPhoneMsisdn" ColumnName="VslaPhoneMsisdn" />
+          <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+          <ScalarProperty Name="GpsLocation" ColumnName="GpsLocation" />
+          <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+          <ScalarProperty Name="DateLinked" ColumnName="DateLinked" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="PositionInVsla" ColumnName="PositionInVsla" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="CBT" ColumnName="CBT" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VslaCycles">
+      <EntityTypeMapping TypeName="ledgerlinkModel.VslaCycle">
+        <MappingFragment StoreEntitySet="VslaCycle">
+          <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+          <ScalarProperty Name="CycleIdEx" ColumnName="CycleIdEx" />
+          <ScalarProperty Name="DateEnded" ColumnName="DateEnded" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="CycleCode" ColumnName="CycleCode" />
+          <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+          <ScalarProperty Name="IsEnded" ColumnName="IsEnded" />
+          <ScalarProperty Name="MaxShareQuantity" ColumnName="MaxShareQuantity" />
+          <ScalarProperty Name="MaxStartShare" ColumnName="MaxStartShare" />
+          <ScalarProperty Name="SharedAmount" ColumnName="SharedAmount" />
+          <ScalarProperty Name="SharePrice" ColumnName="SharePrice" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+          <ScalarProperty Name="MigratedInterest" ColumnName="MigratedInterest" />
+          <ScalarProperty Name="MigratedFines" ColumnName="MigratedFines" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VslaDdActivations">
+      <EntityTypeMapping TypeName="ledgerlinkModel.VslaDdActivation">
+        <MappingFragment StoreEntitySet="VslaDdActivation">
+          <ScalarProperty Name="ActivationId" ColumnName="ActivationId" />
+          <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="PassKey" ColumnName="PassKey" />
+          <ScalarProperty Name="PhoneImei01" ColumnName="PhoneImei01" />
+          <ScalarProperty Name="PhoneImei02" ColumnName="PhoneImei02" />
+          <ScalarProperty Name="SimImsiNo01" ColumnName="SimImsiNo01" />
+          <ScalarProperty Name="SimImsiNo02" ColumnName="SimImsiNo02" />
+          <ScalarProperty Name="SimNetworkOperator01" ColumnName="SimNetworkOperator01" />
+          <ScalarProperty Name="SimNetworkOperator02" ColumnName="SimNetworkOperator02" />
+          <ScalarProperty Name="SimSerialNo01" ColumnName="SimSerialNo01" />
+          <ScalarProperty Name="SimSerialNo02" ColumnName="SimSerialNo02" />
+          <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VslaRegions">
+      <EntityTypeMapping TypeName="ledgerlinkModel.VslaRegion">
+        <MappingFragment StoreEntitySet="VslaRegion">
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
