@@ -34,26 +34,26 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult UsersData()
         {
-            AllUsersInformation all_users = new AllUsersInformation();
-            List<UserInformation> single_user = new List<UserInformation>();
-            single_user = users_infor();
-            all_users.AllUsersList = single_user;
+            AllUsersInformation allUsers = new AllUsersInformation();
+            List<UserInformation> singleUser = new List<UserInformation>();
+            singleUser = usersInformation();
+            allUsers.AllUsersList = singleUser;
             string action = "Viewed all users";
             activityLogging.logUserActivity(action);
-            return View(all_users);
+            return View(allUsers);
         }
         /**
          * Get all information concerning VSLAs
          * */
         public ActionResult VslaData()
         {
-            AllVslaInformation all_vsla = new AllVslaInformation();
-            List<VslaInformation> single_vsla = new List<VslaInformation>();
-            single_vsla = vsla_info();
-            all_vsla.AllVslaList = single_vsla;
+            AllVslaInformation allVslas = new AllVslaInformation();
+            List<VslaInformation> getVslaData = new List<VslaInformation>();
+            getVslaData = getVslaInformation();
+            allVslas.AllVslaList = getVslaData;
             string action = "Viewed all village lending and saving associations information";
             activityLogging.logUserActivity(action);
-            return View(all_vsla);
+            return View(allVslas);
 
         }
         /**
@@ -61,26 +61,26 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult CbtData()
         {
-            AllCbtInformation all_cbt = new AllCbtInformation();
-            List<CbtInformation> single_cbt = new List<CbtInformation>();
-            single_cbt = cbt_info();
-            all_cbt.AllCbtList = single_cbt;
+            AllCbtInformation allCbts = new AllCbtInformation();
+            List<CbtInformation> getCbtData = new List<CbtInformation>();
+            getCbtData = getCbtInformation();
+            allCbts.AllCbtList = getCbtData;
             string action = "Viewed all commnity based trainers information";
             activityLogging.logUserActivity(action);
-            return View(all_cbt);
+            return View(allCbts);
         }
         /**
          * Display all the log information
          * */
         public ActionResult LogsData()
         {
-            AllLogsInformation all_logs = new AllLogsInformation();
-            List<LogsInformation> info_logs = new List<LogsInformation>();
-            info_logs = logs_list();
-            all_logs.AllLogsList = info_logs;
+            AllLogsInformation loggedInformation = new AllLogsInformation();
+            List<LogsInformation> loggedData = new List<LogsInformation>();
+            loggedData = getAllLogInformation();
+            loggedInformation.AllLogsList = loggedData;
             string action = "Viewed log information";
             activityLogging.logUserActivity(action);
-            return View(all_logs);
+            return View(loggedInformation);
         }
         /**
          * Logout
@@ -102,8 +102,8 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddUser()
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            List<UserPermission> permission = db.UserPermissions.OrderBy(a => a.Level_Id).ToList();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            List<UserPermission> permission = database.UserPermissions.OrderBy(a => a.Level_Id).ToList();
             SelectList accessPermissions = new SelectList(permission, "Level_Id", "UserType");
             UserInformation data = new UserInformation
             {
@@ -118,8 +118,8 @@ namespace DigitizingDataAdminApp.Controllers
             if (ModelState.IsValid)
             {
                 PasswordHashing _password = new PasswordHashing();
-                ledgerlinkEntities db = new ledgerlinkEntities();
-                User usr = new User
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                User _user = new User
                 {
                     Username = user.Username,
                     Fullname = user.Fullname,
@@ -127,8 +127,8 @@ namespace DigitizingDataAdminApp.Controllers
                     Email = user.Email,
                     UserLevel = Level_Id
                 };
-                db.Users.Add(usr);
-                db.SaveChanges();
+                database.Users.Add(_user);
+                database.SaveChanges();
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
                 activityLogging.logUserActivity(action);
@@ -144,19 +144,19 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditUser(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var user_details = (from table_users in db.Users
-                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                                where table_users.Id == id
-                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+            var userDetails = (from table_users in db.Users
+                               join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                               where table_users.Id == id
+                               select new { db_user = table_users, db_permissions = table_permissions }).Single();
             List<UserPermission> user_levels = db.UserPermissions.OrderBy(a => a.UserType).ToList();
-            SelectList user_types = new SelectList(user_levels, "Level_Id", "UserType", user_details.db_user.UserLevel);
+            SelectList user_types = new SelectList(user_levels, "Level_Id", "UserType", userDetails.db_user.UserLevel);
             UserInformation user_data = new UserInformation
             {
-                Id = user_details.db_user.Id,
-                Username = user_details.db_user.Username,
-                Password = user_details.db_user.Password,
-                Fullname = user_details.db_user.Fullname,
-                Email = user_details.db_user.Email,
+                Id = userDetails.db_user.Id,
+                Username = userDetails.db_user.Username,
+                Password = userDetails.db_user.Password,
+                Fullname = userDetails.db_user.Fullname,
+                Email = userDetails.db_user.Email,
                 UserTypes = user_types,
             };
             return View(user_data);
@@ -165,19 +165,18 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditUser(UserInformation info, int id, int Level_Id)
         {
-            using (ledgerlinkEntities database = new ledgerlinkEntities())
-            {
-                var query = database.Users.Find(id);
-                query.Username = info.Username;
-                query.Password = info.Password;
-                query.Fullname = info.Fullname;
-                query.Email = info.Email;
-                query.UserLevel = Level_Id;
-                database.SaveChanges();
-                string action = "Edited information for " + info.Fullname;
-                activityLogging.logUserActivity(action);
-                return RedirectToAction("UsersData");
-            }
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var query = database.Users.Find(id);
+            query.Username = info.Username;
+            query.Password = info.Password;
+            query.Fullname = info.Fullname;
+            query.Email = info.Email;
+            query.UserLevel = Level_Id;
+            database.SaveChanges();
+            string action = "Edited information for " + info.Fullname;
+            activityLogging.logUserActivity(action);
+            return RedirectToAction("UsersData");
+
         }
         /**
          * Delete a particular user form the system
@@ -185,24 +184,24 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult DeleteUser(int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            var user_details = (from table_users in db.Users
-                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                                where table_users.Id == id
-                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var userDetails = (from tb_users in database.Users
+                               join table_permissions in database.UserPermissions on tb_users.UserLevel equals table_permissions.Level_Id
+                               where tb_users.Id == id
+                               select new { db_users = tb_users, db_permissions = table_permissions }).Single();
 
-            UserInformation user_data = new UserInformation
+            UserInformation userData = new UserInformation
             {
-                Id = user_details.db_user.Id,
-                Username = user_details.db_user.Username,
-                Password = user_details.db_user.Password,
-                Fullname = user_details.db_user.Fullname,
-                Email = user_details.db_user.Email,
-                UserLevel = user_details.db_permissions.UserType
+                Id = userDetails.db_users.Id,
+                Username = userDetails.db_users.Username,
+                Password = userDetails.db_users.Password,
+                Fullname = userDetails.db_users.Fullname,
+                Email = userDetails.db_users.Email,
+                UserLevel = userDetails.db_permissions.UserType
             };
-            string action = "Deleted information for " + user_details.db_user.Fullname;
+            string action = "Deleted information for " + userDetails.db_users.Fullname;
             activityLogging.logUserActivity(action);
-            return View(user_data);
+            return View(userData);
         }
 
         [HttpPost]
@@ -210,11 +209,11 @@ namespace DigitizingDataAdminApp.Controllers
         {
             try
             {
-                ledgerlinkEntities db = new ledgerlinkEntities();
+                ledgerlinkEntities database = new ledgerlinkEntities();
                 user.Id = id;
-                db.Users.Attach(user);
-                db.Users.Remove(user);
-                db.SaveChanges();
+                database.Users.Attach(user);
+                database.Users.Remove(user);
+                database.SaveChanges();
             }
             catch (Exception)
             {
@@ -229,26 +228,26 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult UserDetails(int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
+            ledgerlinkEntities database = new ledgerlinkEntities();
 
-            var user_details = (from table_users in db.Users
-                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                                where table_users.Id == id
-                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+            var user_details = (from tb_users in database.Users
+                                join tb_permissions in database.UserPermissions on tb_users.UserLevel equals tb_permissions.Level_Id
+                                where tb_users.Id == id
+                                select new { db_users = tb_users, db_permissions = tb_permissions }).Single();
 
 
-            UserInformation user_data = new UserInformation
+            UserInformation userData = new UserInformation
             {
-                Id = user_details.db_user.Id,
-                Username = user_details.db_user.Username,
-                Password = user_details.db_user.Password,
-                Fullname = user_details.db_user.Fullname,
-                Email = user_details.db_user.Email,
+                Id = user_details.db_users.Id,
+                Username = user_details.db_users.Username,
+                Password = user_details.db_users.Password,
+                Fullname = user_details.db_users.Fullname,
+                Email = user_details.db_users.Email,
                 UserLevel = user_details.db_permissions.UserType
             };
             string action = "Viewed list of all users in the System";
             activityLogging.logUserActivity(action);
-            return View(user_data);
+            return View(userData);
         }
         /**
          * Display information for a particular VSLA
@@ -256,14 +255,14 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult VslaDetails(int id)
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
-            var vsla_info = (from table_vsla in database.Vslas
-                             join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
-                             join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
-                             join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
-                             where table_vsla.VslaId == id
-                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
+            var vsla_info = (from tb_vsla in database.Vslas
+                             join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
+                             join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
+                             join tb_status in database.StatusTypes on tb_vsla.Status equals tb_status.Status_Id
+                             where tb_vsla.VslaId == id
+                             select new { db_vsla = tb_vsla, db_cbt = tb_cbt, db_regions = tb_regions, db_status = tb_status }).Single();
 
-            VslaInformation vsla_data = new VslaInformation
+            VslaInformation vslaData = new VslaInformation
             {
                 VslaId = vsla_info.db_vsla.VslaId,
                 VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
@@ -282,7 +281,7 @@ namespace DigitizingDataAdminApp.Controllers
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
             activityLogging.logUserActivity(action);
-            return View(vsla_data);
+            return View(vslaData);
         }
         /**
          * Edit a given VSLA
@@ -292,30 +291,30 @@ namespace DigitizingDataAdminApp.Controllers
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
 
-            var vsla_info = (from table_vsla in database.Vslas
-                             join table_cbt in
-                                 database.Cbt_info on table_vsla.CBT equals table_cbt.Id
-                             where table_vsla.VslaId == id
-                             select new { db_vsla = table_vsla, db_cbt = table_cbt }).Single();
+            var vsla_info = (from tb_vsla in database.Vslas
+                             join tb_cbt in
+                                 database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
+                             where tb_vsla.VslaId == id
+                             select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).Single();
 
             // Get a list of all vsla regions to populate in the dropdown list
-            List<VslaRegion> all_vsla_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList vsla_Regions = new SelectList(all_vsla_regions, "RegionId", "RegionName", vsla_info.db_vsla.RegionId);
+            List<VslaRegion> allVslaRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList vslaRegionsList = new SelectList(allVslaRegions, "RegionId", "RegionName", vsla_info.db_vsla.RegionId);
 
             // Get the list of all cbts to populate in the dropdown list
-            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name", vsla_info.db_vsla.CBT);
+            List<Cbt_info> AllCbtsList = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            SelectList cbtsList = new SelectList(AllCbtsList, "Id", "Name", vsla_info.db_vsla.CBT);
 
             // Get the status type ie active/inactive,
             List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList status_types = new SelectList(status, "Status_Id", "CurrentStatus", vsla_info.db_cbt.Status);
+            SelectList statusTypes = new SelectList(status, "Status_Id", "CurrentStatus", vsla_info.db_cbt.Status);
 
-            VslaInformation vsla_data = new VslaInformation
+            VslaInformation vslaData = new VslaInformation
             {
                 VslaId = vsla_info.db_vsla.VslaId,
                 VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
                 VslaName = vsla_info.db_vsla.VslaName ?? "--",
-                VslaRegionsModel = vsla_Regions,
+                VslaRegionsModel = vslaRegionsList,
                 DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
                 DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
                 PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
@@ -324,12 +323,12 @@ namespace DigitizingDataAdminApp.Controllers
                 ContactPerson = vsla_info.db_vsla.ContactPerson,
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber,
-                CbtModel = cbt_info,
-                StatusType = status_types
+                CbtModel = cbtsList,
+                StatusType = statusTypes
             };
             string action = "Edited information for VSLA named " + vsla_info.db_vsla.VslaName ?? "--";
             activityLogging.logUserActivity(action);
-            return View(vsla_data);
+            return View(vslaData);
         }
         /**
          * Edit details for a particular VSLA
@@ -337,25 +336,24 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
-            using (ledgerlinkEntities database = new ledgerlinkEntities())
-            {
-                var query = database.Vslas.Find(VslaId);
-                query.VslaCode = vsla.VslaCode;
-                query.VslaName = vsla.VslaName;
-                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
-                query.GpsLocation = vsla.GpsLocation;
-                query.DateRegistered = vsla.DateRegistered;
-                query.DateLinked = vsla.DateLinked;
-                query.RegionId = RegionId;
-                query.ContactPerson = vsla.ContactPerson;
-                query.PositionInVsla = vsla.PositionInVsla;
-                query.PhoneNumber = vsla.PhoneNumber;
-                query.CBT = Id;
-                query.Status = Status_Id;
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var query = database.Vslas.Find(VslaId);
+            query.VslaCode = vsla.VslaCode;
+            query.VslaName = vsla.VslaName;
+            query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
+            query.GpsLocation = vsla.GpsLocation;
+            query.DateRegistered = vsla.DateRegistered;
+            query.DateLinked = vsla.DateLinked;
+            query.RegionId = RegionId;
+            query.ContactPerson = vsla.ContactPerson;
+            query.PositionInVsla = vsla.PositionInVsla;
+            query.PhoneNumber = vsla.PhoneNumber;
+            query.CBT = Id;
+            query.Status = Status_Id;
 
-                database.SaveChanges();
-                return RedirectToAction("VslaData");
-            }
+            database.SaveChanges();
+            return RedirectToAction("VslaData");
+
         }
         /**
          * Add a new Village savings and lending association (VSLA) to the system
@@ -365,22 +363,22 @@ namespace DigitizingDataAdminApp.Controllers
             ledgerlinkEntities database = new ledgerlinkEntities();
 
             // Get all cbts
-            List<Cbt_info> cbt_list = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbt_info = new SelectList(cbt_list, "Id", "Name");
+            List<Cbt_info> AllCbtsList = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            SelectList cbtsList = new SelectList(AllCbtsList, "Id", "Name");
 
             // Get all vsla regions
-            List<VslaRegion> all_regions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
+            List<VslaRegion> allRegionsList = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regions_list = new SelectList(allRegionsList, "RegionId", "RegionName");
 
             // Get the status type ie active/inactive
             List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList status_list = new SelectList(status, "Status_Id", "CurrentStatus");
+            SelectList statusList = new SelectList(status, "Status_Id", "CurrentStatus");
 
             VslaInformation vsla_list_options = new VslaInformation
             {
                 VslaRegionsModel = regions_list,
-                CbtModel = cbt_info,
-                StatusType = status_list
+                CbtModel = cbtsList,
+                StatusType = statusList
             };
             return View(vsla_list_options);
         }
@@ -390,7 +388,7 @@ namespace DigitizingDataAdminApp.Controllers
             if (ModelState.IsValid)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
-                Vsla added_vsla = new Vsla
+                Vsla addedVsla = new Vsla
                 {
                     VslaCode = new_vsla.VslaCode,
                     VslaName = new_vsla.VslaName,
@@ -406,7 +404,7 @@ namespace DigitizingDataAdminApp.Controllers
                     CBT = Id,
                     Status = Status_Id
                 };
-                database.Vslas.Add(added_vsla);
+                database.Vslas.Add(addedVsla);
                 database.SaveChanges();
                 string action = "Added new  VSLA named " + new_vsla.VslaName;
                 activityLogging.logUserActivity(action);
@@ -421,44 +419,44 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteVsla(int id)
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
-            var vsla_info = (from table_vsla in database.Vslas
+            var vslaInformation = (from table_vsla in database.Vslas
                              join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
                              join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
                              join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
                              where table_vsla.VslaId == id
                              select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
 
-            VslaInformation vsla_data = new VslaInformation
+            VslaInformation vslaData = new VslaInformation
             {
-                VslaId = vsla_info.db_vsla.VslaId,
-                VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-                VslaName = vsla_info.db_vsla.VslaName ?? "--",
-                RegionId = vsla_info.db_regions.RegionName,
-                DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
-                DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
-                PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla_info.db_vsla.ContactPerson,
-                PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-                PhoneNumber = vsla_info.db_vsla.PhoneNumber,
-                CBT = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_status.CurrentStatus
+                VslaId = vslaInformation.db_vsla.VslaId,
+                VslaCode = vslaInformation.db_vsla.VslaCode ?? "--",
+                VslaName = vslaInformation.db_vsla.VslaName ?? "--",
+                RegionId = vslaInformation.db_regions.RegionName,
+                DateRegistered = vslaInformation.db_vsla.DateRegistered.HasValue ? vslaInformation.db_vsla.DateRegistered : System.DateTime.Now,
+                DateLinked = vslaInformation.db_vsla.DateLinked.HasValue ? vslaInformation.db_vsla.DateLinked : System.DateTime.Now,
+                PhysicalAddress = vslaInformation.db_vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vslaInformation.db_vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vslaInformation.db_vsla.GpsLocation ?? "--",
+                ContactPerson = vslaInformation.db_vsla.ContactPerson,
+                PositionInVsla = vslaInformation.db_vsla.PositionInVsla,
+                PhoneNumber = vslaInformation.db_vsla.PhoneNumber,
+                CBT = vslaInformation.db_cbt.Name ?? "--",
+                Status = vslaInformation.db_status.CurrentStatus
             };
-            string action = "Deleted all information for VSLA named " + vsla_info.db_vsla.VslaName;
+            string action = "Deleted all information for VSLA named " + vslaInformation.db_vsla.VslaName;
             activityLogging.logUserActivity(action);
-            return View(vsla_data);
+            return View(vslaData);
         }
         [HttpPost]
         public ActionResult DeleteVsla(Vsla vsla, int id)
         {
             try
             {
-                ledgerlinkEntities db = new ledgerlinkEntities();
+                ledgerlinkEntities database = new ledgerlinkEntities();
                 vsla.VslaId = id;
-                db.Vslas.Attach(vsla);
-                db.Vslas.Remove(vsla);
-                db.SaveChanges();
+                database.Vslas.Attach(vsla);
+                database.Vslas.Remove(vsla);
+                database.SaveChanges();
             }
             catch (Exception)
             {
@@ -491,12 +489,12 @@ namespace DigitizingDataAdminApp.Controllers
         public List<VslaMeetingInformation> getMeetingData(int Id)
         {
             List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
-            ledgerlinkEntities db = new ledgerlinkEntities();
+            ledgerlinkEntities database = new ledgerlinkEntities();
             try
             {
-                var meetings = (from db_meetings in db.Meetings
-                                join db_cycles in db.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
-                                join db_vsla in db.Vslas on db_cycles.VslaId equals db_vsla.VslaId
+                var meetings = (from db_meetings in database.Meetings
+                                join db_cycles in database.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
+                                join db_vsla in database.Vslas on db_cycles.VslaId equals db_vsla.VslaId
                                 where db_vsla.VslaId == Id
                                 select new { dt_meetings = db_meetings, dt_cycles = db_cycles, dt_vsla = db_vsla });
                 foreach (var item in meetings)
@@ -528,7 +526,7 @@ namespace DigitizingDataAdminApp.Controllers
             ledgerlinkEntities database = new ledgerlinkEntities();
             AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
             List<SingleMeetingProcedures> meetingsList = new List<SingleMeetingProcedures>();
-            
+
             // Get the date when the meeting was held
             var meetingDate = database.Meetings.Find(id);
             // Get the all the meeting details
@@ -549,7 +547,7 @@ namespace DigitizingDataAdminApp.Controllers
                         join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
                         join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
                         join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-                        join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId} into joinedRepaymentAttendance
+                        join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
                         where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
                         from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
                         from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
@@ -564,7 +562,7 @@ namespace DigitizingDataAdminApp.Controllers
                             amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
                             loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
                             remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
-                            
+
 
                         });
             foreach (var item in cuda)
@@ -612,8 +610,8 @@ namespace DigitizingDataAdminApp.Controllers
         public List<VslaMembersInformation> getMembersData(int id)
         {
             List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            var members = (from db_members in db.Members where db_members.VslaId == id select new { dt_members = db_members });
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var members = (from db_members in database.Members where db_members.VslaId == id select new { dt_members = db_members });
             foreach (var item in members)
             {
                 allMembers.Add(new VslaMembersInformation
@@ -636,8 +634,8 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult MemberDetails(int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-            var member = (from db_members in db.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var member = (from db_members in database.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
             VslaMembersInformation memberInfo = new VslaMembersInformation
             {
                 memberNumber = int.Parse(member.dt_members.MemberNo.ToString()),
@@ -662,16 +660,16 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddCbt()
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
+            ledgerlinkEntities database = new ledgerlinkEntities();
             // Regions
-            List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName");
+            List<VslaRegion> allRegionsList = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName");
             // Status types
-            List<StatusType> status = db.StatusTypes.OrderBy(a => a.Status_Id).ToList();
+            List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
             SelectList statusTypes = new SelectList(status, "Status_Id", "CurrentStatus");
             CbtInformation regionsSelector = new CbtInformation
             {
-                VslaRegionsModel = regions_list,
+                VslaRegionsModel = regionsList,
                 StatusType = statusTypes
             };
             return View(regionsSelector);
@@ -707,23 +705,23 @@ namespace DigitizingDataAdminApp.Controllers
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
-            var all_information = (from table_cbt in db.Cbt_info
+            var allInformation = (from table_cbt in db.Cbt_info
                                    join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
-            CbtInformation cbt_data = new CbtInformation
+            CbtInformation cbtData = new CbtInformation
             {
-                Id = all_information.dt_cbt.Id,
-                Name = all_information.dt_cbt.Name,
-                Region = all_information.dt_region.RegionName,
-                PhoneNumber = all_information.dt_cbt.PhoneNumber,
-                Email = all_information.dt_cbt.Email,
-                Status = all_information.dt_status.CurrentStatus
+                Id = allInformation.dt_cbt.Id,
+                Name = allInformation.dt_cbt.Name,
+                Region = allInformation.dt_region.RegionName,
+                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+                Email = allInformation.dt_cbt.Email,
+                Status = allInformation.dt_status.CurrentStatus
             };
-            string action = "Viewed CBT details for  " + all_information.dt_cbt.Name;
+            string action = "Viewed CBT details for  " + allInformation.dt_cbt.Name;
             activityLogging.logUserActivity(action);
-            return View(cbt_data);
+            return View(cbtData);
         }
         /**
          * Edit information for a particular CBT
@@ -733,33 +731,33 @@ namespace DigitizingDataAdminApp.Controllers
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
-            var all_information = (from table_cbt in db.Cbt_info
+            var allInformation = (from table_cbt in db.Cbt_info
                                    join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
             // all reegions
-            List<VslaRegion> all_regions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regions_list = new SelectList(all_regions, "RegionId", "RegionName", all_information.db_region.RegionId);
+            List<VslaRegion> allRegions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            SelectList regionsList = new SelectList(allRegions, "RegionId", "RegionName", allInformation.db_region.RegionId);
 
             // Get the status ie active/inactive
             List<StatusType> status = db.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList status_list = new SelectList(status, "Status_Id", "CurrentStatus", all_information.dt_cbt.Status);
+            SelectList statusList = new SelectList(status, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
             // Create a cbt object
-            CbtInformation cbt_data = new CbtInformation
+            CbtInformation cbtData = new CbtInformation
             {
-                Id = all_information.dt_cbt.Id,
-                Name = all_information.dt_cbt.Name,
-                VslaRegionsModel = regions_list,
-                PhoneNumber = all_information.dt_cbt.PhoneNumber,
-                Email = all_information.dt_cbt.Email,
-                StatusType = status_list
+                Id = allInformation.dt_cbt.Id,
+                Name = allInformation.dt_cbt.Name,
+                VslaRegionsModel = regionsList,
+                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+                Email = allInformation.dt_cbt.Email,
+                StatusType = statusList
             };
 
-            string action = "Edited CBT information for  " + all_information.dt_cbt.Name;
+            string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
             activityLogging.logUserActivity(action);
-            return View(cbt_data);
+            return View(cbtData);
         }
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
@@ -784,34 +782,34 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteCbt(int id)
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var all_information = (from table_cbt in db.Cbt_info
+            var allInformation = (from table_cbt in db.Cbt_info
                                    join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                    join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
                                    where table_cbt.Id == id
                                    select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
-            CbtInformation cbt_data = new CbtInformation
+            CbtInformation cbtData = new CbtInformation
             {
-                Id = all_information.dt_cbt.Id,
-                Name = all_information.dt_cbt.Name,
-                Region = all_information.dt_region.RegionName,
-                PhoneNumber = all_information.dt_cbt.PhoneNumber,
-                Email = all_information.dt_cbt.Email,
-                Status = all_information.dt_status.CurrentStatus
+                Id = allInformation.dt_cbt.Id,
+                Name = allInformation.dt_cbt.Name,
+                Region = allInformation.dt_region.RegionName,
+                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+                Email = allInformation.dt_cbt.Email,
+                Status = allInformation.dt_status.CurrentStatus
             };
-            string action = "Deleted CBT information for  " + all_information.dt_cbt.Name;
+            string action = "Deleted CBT information for  " + allInformation.dt_cbt.Name;
             activityLogging.logUserActivity(action);
-            return View(cbt_data);
+            return View(cbtData);
         }
         [HttpPost]
         public ActionResult DeleteCbt(Cbt_info cbt, int id)
         {
             try
             {
-                ledgerlinkEntities db = new ledgerlinkEntities();
+                ledgerlinkEntities database = new ledgerlinkEntities();
                 cbt.Id = id;
-                db.Cbt_info.Attach(cbt);
-                db.Cbt_info.Remove(cbt);
-                db.SaveChanges();
+                database.Cbt_info.Attach(cbt);
+                database.Cbt_info.Remove(cbt);
+                database.SaveChanges();
             }
             catch (Exception)
             {
@@ -824,7 +822,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Helper method to get information for all registered users
          * */
-        public List<UserInformation> users_infor()
+        public List<UserInformation> usersInformation()
         {
             List<UserInformation> users = new List<UserInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -851,14 +849,14 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Helper method to get all information concerning vsla
          * */
-        public List<VslaInformation> vsla_info()
+        public List<VslaInformation> getVslaInformation()
         {
-            List<VslaInformation> vsla_list = new List<VslaInformation>();
+            List<VslaInformation> vslaList = new List<VslaInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var vsla_details = (from data in db.Vslas select data);
-            foreach (var item in vsla_details)
+            var vslaDetails = (from data in db.Vslas select data);
+            foreach (var item in vslaDetails)
             {
-                vsla_list.Add(new VslaInformation
+                vslaList.Add(new VslaInformation
                 {
                     VslaId = item.VslaId,
                     VslaCode = item.VslaCode ?? "--",
@@ -876,13 +874,13 @@ namespace DigitizingDataAdminApp.Controllers
                     Status = item.Status.ToString() ?? "--"
                 });
             }
-            return vsla_list;
+            return vslaList;
         }
 
         /**
          * Helper method to get the list of all CBTS that have been added to a system
          * */
-        public List<CbtInformation> cbt_info()
+        public List<CbtInformation> getCbtInformation()
         {
             List<CbtInformation> cbts = new List<CbtInformation>();
             ledgerlinkEntities db = new ledgerlinkEntities();
@@ -911,16 +909,16 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all the log information
          * */
-        public List<LogsInformation> logs_list()
+        public List<LogsInformation> getAllLogInformation()
         {
             List<LogsInformation> logs = new List<LogsInformation>();
             ledgerlinkEntities database = new ledgerlinkEntities();
-            var logs_info = (from database_logs in database.Audit_Log
+            var logsInformation = (from database_logs in database.Audit_Log
                              join database_users in database.Users on
                                  database_logs.UserId equals database_users.Id
                              select new { db_logs = database_logs, db_users = database_users });
 
-            foreach (var data in logs_info)
+            foreach (var data in logsInformation)
             {
                 logs.Add(new LogsInformation
                 {
