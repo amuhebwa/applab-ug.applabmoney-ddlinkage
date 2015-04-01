@@ -14,7 +14,6 @@
 <div style="width: auto;min-width:1000px; margin: 0 auto;">
     @Html.Grid(Model.AllCbtList).Columns(columns =>
                     {
-                        columns.Add(c => c.Id).Titled("Id");
                         columns.Add(c => c.Name).Titled("Name");
                         columns.Add(c => c.Region).Titled("Region");
                         columns.Add(c => c.PhoneNumber).Titled("Phone Number");

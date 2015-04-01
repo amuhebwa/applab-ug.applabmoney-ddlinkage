@@ -273,11 +273,11 @@ namespace DigitizingDataAdminApp.Controllers
                 PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
                 VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
                 GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla_info.db_vsla.ContactPerson,
+                ContactPerson = vsla_info.db_vsla.ContactPerson?? "--",
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-                PhoneNumber = vsla_info.db_vsla.PhoneNumber,
+                PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
                 CBT = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_status.CurrentStatus
+                Status = vsla_info.db_status.CurrentStatus ?? "--"
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
             activityLogging.logUserActivity(action);
