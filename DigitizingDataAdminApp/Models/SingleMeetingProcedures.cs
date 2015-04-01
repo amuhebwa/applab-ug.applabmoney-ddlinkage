@@ -16,11 +16,11 @@ namespace DigitizingDataAdminApp.Models
         public string isPresent { get; set; }
         public int memberId { get; set; }
         public string memberName { get; set; }
-        public decimal amountSaved { get; set; }
-        public decimal finedAmount { get; set; }
-        public decimal principleAmount { get; set; }
-        public decimal loanRepaymentAmount { get; set; }
-        public decimal remainingBalanceOnLoan { get; set; }
+        public long amountSaved { get; set; }
+        public long finedAmount { get; set; }
+        public long principleAmount { get; set; }
+        public long loanRepaymentAmount { get; set; }
+        public long remainingBalanceOnLoan { get; set; }
         public int loanNumber { get; set; }
     }
 }

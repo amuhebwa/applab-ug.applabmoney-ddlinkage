@@ -12,9 +12,9 @@
                         columns.Add(c => c.isPresent).Titled("Attended");
                         columns.Add(c => c.amountSaved).Titled("Amount Saved");
                         columns.Add(c => c.loanNumber).Titled("Loan Number");
-                        columns.Add(c => c.principleAmount).Titled("Loan Taken");
+                        columns.Add(c => c.principleAmount).Titled("Loan Amount");
                         columns.Add(c => c.finedAmount).Titled("Fines");
                         columns.Add(c => c.loanRepaymentAmount).Titled("Loan Cleared");
-                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Remaining");
+                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Outstanding");
                     }).WithPaging(30).Sortable(true)
 </div>

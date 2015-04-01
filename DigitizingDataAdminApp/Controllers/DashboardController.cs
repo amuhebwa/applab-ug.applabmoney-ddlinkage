@@ -502,12 +502,12 @@ namespace DigitizingDataAdminApp.Controllers
                     allMeetings.Add(new VslaMeetingInformation
                     {
                         MeetingId = item.dt_meetings.MeetingId,
-                        cashFines = (decimal)item.dt_meetings.CashFines,
+                        cashFines = (long)item.dt_meetings.CashFines,
                         meetingDate = item.dt_meetings.MeetingDate,
                         membersPresent = int.Parse(item.dt_meetings.CountOfMembersPresent.ToString()),
-                        totalSavings = (decimal)item.dt_meetings.SumOfSavings,
-                        totalLoans = (decimal)item.dt_meetings.SumOfLoanIssues,
-                        totalLoanRepayment = (decimal)item.dt_meetings.SumOfLoanRepayments
+                        totalSavings = (long)item.dt_meetings.SumOfSavings,
+                        totalLoans = (long)item.dt_meetings.SumOfLoanIssues,
+                        totalLoanRepayment = (long)item.dt_meetings.SumOfLoanRepayments
                     });
                 }
             }
@@ -573,12 +573,12 @@ namespace DigitizingDataAdminApp.Controllers
                     memberId = item.db_member.MemberId,
                     memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
                     isPresent = item.db_attendance.IsPresent.ToString(),
-                    amountSaved = (decimal)item.db_savings.Amount,
+                    amountSaved = (long)item.db_savings.Amount,
                     loanNumber = (int)item.loanNo,
-                    principleAmount = (decimal)item.loanAmount,
-                    finedAmount = (decimal)item.amountInFines,
-                    loanRepaymentAmount = (decimal)item.loanRepaymentAmount,
-                    remainingBalanceOnLoan = (decimal)item.remainingBalanceOnLoan
+                    principleAmount = (long)item.loanAmount,
+                    finedAmount = (long)item.amountInFines,
+                    loanRepaymentAmount = (long)item.loanRepaymentAmount,
+                    remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
 
                 });
             }
