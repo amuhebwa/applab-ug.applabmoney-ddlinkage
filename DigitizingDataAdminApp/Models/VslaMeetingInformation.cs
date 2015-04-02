@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -24,7 +26,12 @@ namespace DigitizingDataAdminApp.Models
         public Boolean isDataSent { get; set; }
         public int cycleId { get; set; }
         public long cashFines { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? meetingDate { get; set; }
+        public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
+
         public int membersPresent { get; set; }
         public long totalSavings { get; set; }
         public long totalLoans { get; set; }

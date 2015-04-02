@@ -385,30 +385,38 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddVsla(Vsla new_vsla, int RegionId, int Id, int Status_Id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ledgerlinkEntities database = new ledgerlinkEntities();
-                Vsla addedVsla = new Vsla
+                if (ModelState.IsValid)
                 {
-                    VslaCode = new_vsla.VslaCode,
-                    VslaName = new_vsla.VslaName,
-                    RegionId = RegionId,
-                    DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
-                    DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
-                    PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = new_vsla.GpsLocation ?? "--",
-                    ContactPerson = new_vsla.ContactPerson,
-                    PositionInVsla = new_vsla.PositionInVsla,
-                    PhoneNumber = new_vsla.PhoneNumber,
-                    CBT = Id,
-                    Status = Status_Id
-                };
-                database.Vslas.Add(addedVsla);
-                database.SaveChanges();
-                string action = "Added new  VSLA named " + new_vsla.VslaName;
-                activityLogging.logUserActivity(action);
-                return RedirectToAction("VslaData");
+                    ledgerlinkEntities database = new ledgerlinkEntities();
+                    Vsla addedVsla = new Vsla
+                    {
+                        VslaCode = new_vsla.VslaCode,
+                        VslaName = new_vsla.VslaName,
+                        RegionId = RegionId,
+                        DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
+                        DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
+                        PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
+                        VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
+                        GpsLocation = new_vsla.GpsLocation ?? "--",
+                        ContactPerson = new_vsla.ContactPerson,
+                        PositionInVsla = new_vsla.PositionInVsla,
+                        PhoneNumber = new_vsla.PhoneNumber,
+                        CBT = Id,
+                        Status = Status_Id
+                    };
+                    database.Vslas.Add(addedVsla);
+                    database.SaveChanges();
+                    string action = "Added new  VSLA named " + new_vsla.VslaName;
+                    activityLogging.logUserActivity(action);
+                    return RedirectToAction("VslaData");
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
             return View(new_vsla);
         }

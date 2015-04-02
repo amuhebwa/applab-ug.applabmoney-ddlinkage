@@ -13,7 +13,7 @@
                     {
                         columns.Add(c => c.LogId).Titled("Id");
                         columns.Add(c => c.userId).Titled("User");
-                        columns.Add(c => c.LogTime).Titled("Log time");
+                        columns.Add(c => c.formattedLogTime).Titled("Log time");
                         columns.Add(c => c.ActionPerformed).Titled("Action Performed");
                     }).WithPaging(30).Sortable(true)
 </div>

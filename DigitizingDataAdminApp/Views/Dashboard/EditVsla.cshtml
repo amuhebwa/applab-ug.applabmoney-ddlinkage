@@ -32,12 +32,12 @@
 
         <tr>
             <td><strong>@Html.DisplayName("Date Registered")</strong></td>
-            <td>@Html.TextBoxFor(model => model.DateRegistered, new { @class = "date", @id = "DateRegistered", @Value = Model.DateRegistered.ToString() })
+            <td>@Html.TextBoxFor(model => model.DateRegistered, new { @class = "date", @id = "DateRegistered", @Value = Model.DateRegistered.Value.ToShortDateString() })
                 @Html.ValidationMessageFor(model => model.DateRegistered)</td>
         </tr>
         <tr>
             <td><strong>@Html.DisplayName("Date linked")</strong></td>
-            <td>@Html.TextBoxFor(model => model.DateLinked, new { @class = "date", @id = "DateLinked", @Value = Model.DateLinked.ToString() })
+            <td>@Html.TextBoxFor(model => model.DateLinked, new { @class = "date", @id = "DateLinked", @Value = Model.DateLinked.Value.ToShortDateString() })
                 @Html.ValidationMessageFor(model => model.DateLinked)</td>
         </tr>
         <tr>

@@ -18,7 +18,7 @@
                         //columns.Add(c => c.VslaId).Titled("Id");
                         columns.Add(c => c.VslaName).Titled("VSLA Name");
                         columns.Add(c => c.VslaCode).Titled("VSLA Code");
-                        columns.Add(c => c.DateRegistered).Titled("Date Registered");
+                        columns.Add(c => c.formattedDateRegistered).Titled("Date Registered");
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Edit", "EditVsla", new { id = c.VslaId }));
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "VslaDetails", new { id = c.VslaId }));
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteVsla", new { id = c.VslaId }));

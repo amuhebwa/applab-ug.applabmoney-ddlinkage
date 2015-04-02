@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -19,8 +21,17 @@ namespace DigitizingDataAdminApp.Models
         public string otherNames { get; set; }
         public string gender { get; set; }
         public string occupation { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? dateArchived { get; set; }
+        public string formattedDateArchived { get { return dateArchived.Value.ToShortDateString(); } }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfBirth { get; set; }
+        public string formattedDateOfBirth { get { return DateOfBirth.Value.ToShortDateString(); } }
+
         public string isActive { get; set; }
         public string isArchive { get; set; }
         public string phoneNumber { get; set; }

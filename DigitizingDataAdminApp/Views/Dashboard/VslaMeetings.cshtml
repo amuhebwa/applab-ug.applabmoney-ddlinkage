@@ -9,7 +9,7 @@
 <div style="width: auto;min-width:1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMeetings).Columns(columns =>
                     {
-                        columns.Add(c => c.meetingDate).Titled("Date");
+                        columns.Add(c => c.formattedMeetingDate).Titled("Date");
                         columns.Add(c => c.membersPresent).Titled("Members Present");
                         columns.Add(c => c.cashFines).Titled("Total Fines");
                         columns.Add(c => c.totalSavings).Titled("Total Savings");
