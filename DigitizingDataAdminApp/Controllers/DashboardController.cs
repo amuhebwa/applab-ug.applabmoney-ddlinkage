@@ -8,7 +8,8 @@ using System.Web.Security;
 using System.Text;
 using System.Security.Cryptography;
 using System.Data.Objects.SqlClient;
-
+using System.Web.Helpers;
+using System.IO;
 namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
@@ -609,6 +610,7 @@ namespace DigitizingDataAdminApp.Controllers
             membersList = getMembersData(id);
             memberData.allVslaMembers = membersList;
             memberData.vslaName = vslaName.VslaName;
+            memberData.vslaId = id; // passing the id of the vsla on whch members are attached
             return View(memberData);
         }
         /**
@@ -637,6 +639,58 @@ namespace DigitizingDataAdminApp.Controllers
             activityLogging.logUserActivity(action);
             return allMembers;
         }
+        /**
+         * Export the list of members to a csv file
+         * */
+        public void ExportMembers(int id, string fileName)
+        {
+            List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var members = (from db_members in database.Members where db_members.VslaId == id select new { dt_members = db_members });
+            foreach (var item in members)
+            {
+                allMembers.Add(new VslaMembersInformation
+                {
+                    memberId = item.dt_members.MemberId,
+                    memberNumber = int.Parse(item.dt_members.MemberNo.ToString()),
+                    cyclesCompleted = int.Parse(item.dt_members.CyclesCompleted.ToString()),
+                    surname = item.dt_members.Surname,
+                    otherNames = item.dt_members.OtherNames,
+                    gender = item.dt_members.Gender,
+                    occupation = item.dt_members.Occupation,
+                });
+            }
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Member Number\",\"Cycles Completed\",\"Surname\",\"Other Names\",\"Gender\",\"Occupation\"");
+
+            Response.ClearContent();
+
+            String attachment = "attachment;filename=" + fileName.Replace(" ","_") + ".csv";
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in allMembers)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.memberNumber,
+                                           line.cyclesCompleted,
+                                           line.surname,
+                                           line.otherNames,
+                                           line.gender,
+                                           line.occupation
+                                           ));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+        }
+
+
+
+
+
         /**
          * Get all information for a given user attached to a particular vsla
          * */

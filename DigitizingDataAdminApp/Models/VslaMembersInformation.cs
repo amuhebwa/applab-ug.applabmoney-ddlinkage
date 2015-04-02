@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<VslaMembersInformation> allVslaMembers { get; set; }
         public string vslaName { get; set; }
+        public int vslaId { get; set; } // Id of the vsla on which members are attached
     }
     public class VslaMembersInformation
     {
