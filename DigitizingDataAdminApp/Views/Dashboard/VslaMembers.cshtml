@@ -7,8 +7,7 @@
 
 <h4>All Members of @Model.vslaName</h4>
 <div>
-    @*Export Data : @Html.ActionLink("Excel", "ExportMembers", "Dashboard")*@
-    Export Data : @Html.ActionLink("Excel", "ExportMembers", new { id = @Model.vslaId, fileName = @Model.vslaName})
+    Export Data : @Html.ActionLink("Excel", "ExportMembersToCSV", new { id = @Model.vslaId, fileName = @Model.vslaName})
 </div>
 <div style="width: auto; min-width: 1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMembers).Columns(columns =>

@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<VslaMeetingInformation> allVslaMeetings { get; set; }
         public string vslaName { get; set; }
+        public int vslaId { get; set; }
     }
     public class VslaMeetingInformation
     {

@@ -6,15 +6,16 @@
 }
 
 <h4>All VSLA Meetings For @Model.vslaName</h4>
+<p> @Html.ActionLink("Export to CSV", "ExportVSLAMeetingsToCSV", new {id=@Model.vslaId, fileName = @Model.vslaName})</p>
 <div style="width: auto;min-width:1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMeetings).Columns(columns =>
                     {
                         columns.Add(c => c.formattedMeetingDate).Titled("Date");
                         columns.Add(c => c.membersPresent).Titled("Members Present");
-                        columns.Add(c => c.cashFines).Titled("Total Fines");
-                        columns.Add(c => c.totalSavings).Titled("Total Savings");
+                        columns.Add(c => c.cashFines).Titled("Fines");
+                        columns.Add(c => c.totalSavings).Titled("Amount Saved");
                         columns.Add(c => c.totalLoans).Titled("Total Loans");
-                        columns.Add(c => c.totalLoanRepayment).Titled("Total Loan Repayment");
+                        columns.Add(c => c.totalLoanRepayment).Titled("Loan Outstanding");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Details", "SingleMeetingDetails", new { id = c.MeetingId }));
 
                     }).WithPaging(30).Sortable(true)

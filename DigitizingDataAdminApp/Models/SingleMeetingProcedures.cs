@@ -9,6 +9,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<SingleMeetingProcedures> allMeetingData { get; set; }
         public DateTime? meetingDate { get; set; }
+        public int vslaId { get; set; }
     }
     public class SingleMeetingProcedures
     {

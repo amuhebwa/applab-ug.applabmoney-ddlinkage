@@ -57,6 +57,8 @@ namespace DigitizingDataAdminApp.Controllers
             return View(allVslas);
 
         }
+
+
         /**
          * Get all information concerned with CBTs
          * */
@@ -274,7 +276,7 @@ namespace DigitizingDataAdminApp.Controllers
                 PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
                 VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
                 GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla_info.db_vsla.ContactPerson?? "--",
+                ContactPerson = vsla_info.db_vsla.ContactPerson ?? "--",
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
                 CBT = vsla_info.db_cbt.Name ?? "--",
@@ -416,7 +418,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
             return View(new_vsla);
@@ -429,11 +431,11 @@ namespace DigitizingDataAdminApp.Controllers
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
             var vslaInformation = (from table_vsla in database.Vslas
-                             join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
-                             join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
-                             join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
-                             where table_vsla.VslaId == id
-                             select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
+                                   join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
+                                   join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
+                                   join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
+                                   where table_vsla.VslaId == id
+                                   select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
 
             VslaInformation vslaData = new VslaInformation
             {
@@ -488,10 +490,12 @@ namespace DigitizingDataAdminApp.Controllers
             singleMeeting = getMeetingData(id);
             totalMeetings.allVslaMeetings = singleMeeting;
             totalMeetings.vslaName = vslaName.VslaName;
+            totalMeetings.vslaId = id;
             string action = "Viewed information concerning vsla meetings";
             activityLogging.logUserActivity(action);
             return View(totalMeetings);
         }
+
         /**
          * Helper method to query the database all information for all meetings
          * */
@@ -528,6 +532,59 @@ namespace DigitizingDataAdminApp.Controllers
             return allMeetings;
         }
         /**
+         * Export all VSLA meetings attached to a particular VSLA to CSV
+         * */
+        public void ExportVSLAMeetingsToCSV(int id, string fileName)
+        {
+            List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            var meetings = (from db_meetings in database.Meetings
+                            join db_cycles in database.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
+                            join db_vsla in database.Vslas on db_cycles.VslaId equals db_vsla.VslaId
+                            where db_vsla.VslaId == id
+                            select new { dt_meetings = db_meetings, dt_cycles = db_cycles, dt_vsla = db_vsla });
+            foreach (var item in meetings)
+            {
+                allMeetings.Add(new VslaMeetingInformation
+                {
+                    MeetingId = item.dt_meetings.MeetingId,
+                    cashFines = (long)item.dt_meetings.CashFines,
+                    meetingDate = item.dt_meetings.MeetingDate,
+                    membersPresent = int.Parse(item.dt_meetings.CountOfMembersPresent.ToString()),
+                    totalSavings = (long)item.dt_meetings.SumOfSavings,
+                    totalLoans = (long)item.dt_meetings.SumOfLoanIssues,
+                    totalLoanRepayment = (long)item.dt_meetings.SumOfLoanRepayments
+                });
+            }
+            StringWriter sw = new StringWriter();
+
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\"");
+
+            Response.ClearContent();
+
+            String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
+
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "text/csv";
+            foreach (var line in allMeetings)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                                           line.meetingDate.Value.ToShortDateString(),
+                                           line.membersPresent,
+                                           line.cashFines,
+                                           line.totalSavings,
+                                           line.totalLoans,
+                                           line.totalLoanRepayment
+                                           ));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+
+        }
+        /**
          * Get details for a particular meeting held on a partuclar day by a VSLA
          * */
         public ActionResult SingleMeetingDetails(int id)
@@ -542,6 +599,7 @@ namespace DigitizingDataAdminApp.Controllers
             meetingsList = MeetingDetails(id);
             allInformation.allMeetingData = meetingsList;
             allInformation.meetingDate = meetingDate.MeetingDate;
+            allInformation.vslaId = id;
             return View(allInformation);
         }
         /**
@@ -551,7 +609,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
             ledgerlinkEntities db = new ledgerlinkEntities();
-            var cuda = (from db_attendance in db.Attendances
+            var meeting = (from db_attendance in db.Attendances
                         join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
                         join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
                         join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
@@ -574,7 +632,7 @@ namespace DigitizingDataAdminApp.Controllers
 
 
                         });
-            foreach (var item in cuda)
+            foreach (var item in meeting)
             {
                 meetings.Add(new SingleMeetingProcedures
                 {
@@ -595,6 +653,79 @@ namespace DigitizingDataAdminApp.Controllers
             activityLogging.logUserActivity(action);
             return meetings;
         }
+        /**
+         * Export details of a single meeting to a csv file
+         * */
+        public void ExportSingleMeetingDetailsCSV(int id) {
+            List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var meeting = (from db_attendance in db.Attendances
+                           join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
+                           join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
+                           join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
+                           join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
+                           join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
+                           where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
+                           from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
+                           from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+                           from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
+                           select new
+                           {
+                               db_attendance,
+                               db_member,
+                               db_savings,
+                               loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
+                               loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
+                               amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
+                               loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
+                               remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+
+
+                           });
+            foreach (var item in meeting)
+            {
+                meetings.Add(new SingleMeetingProcedures
+                {
+                    Id = item.db_attendance.AttendanceId,
+                    memberId = item.db_member.MemberId,
+                    memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
+                    isPresent = item.db_attendance.IsPresent.ToString(),
+                    amountSaved = (long)item.db_savings.Amount,
+                    loanNumber = (int)item.loanNo,
+                    principleAmount = (long)item.loanAmount,
+                    finedAmount = (long)item.amountInFines,
+                    loanRepaymentAmount = (long)item.loanRepaymentAmount,
+                    remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
+
+                });
+            }
+            StringWriter sw = new StringWriter();
+            sw.WriteLine("\"Member Name\",\"Attendance\",\"Amount Saved\",\"Loan Number\",\"Loan Taken\",\"Fines\",\"Loan Cleared\",\"Loan Outstanding\"");
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
+            Response.ContentType = "text/csv";
+
+
+            foreach (var line in meetings)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
+                                           line.memberName,
+                                           line.isPresent,
+                                           line.amountSaved,
+                                           line.loanNumber,
+                                           line.principleAmount,
+                                           line.finedAmount,
+                                           line.loanRepaymentAmount,
+                                           line.remainingBalanceOnLoan
+                                           ));
+            }
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
+        
+        } // EOF
 
         /**
          *  View all members attached to a given vsla
@@ -642,7 +773,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Export the list of members to a csv file
          * */
-        public void ExportMembers(int id, string fileName)
+        public void ExportMembersToCSV(int id, string fileName)
         {
             List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
             ledgerlinkEntities database = new ledgerlinkEntities();
@@ -666,7 +797,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.ClearContent();
 
-            String attachment = "attachment;filename=" + fileName.Replace(" ","_") + ".csv";
+            String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
 
@@ -686,11 +817,6 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.End();
         }
-
-
-
-
-
         /**
          * Get all information for a given user attached to a particular vsla
          * */
@@ -768,10 +894,10 @@ namespace DigitizingDataAdminApp.Controllers
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             var allInformation = (from table_cbt in db.Cbt_info
-                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                   join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
-                                   where table_cbt.Id == id
-                                   select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
+                                  join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                  join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
+                                  where table_cbt.Id == id
+                                  select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
             CbtInformation cbtData = new CbtInformation
             {
                 Id = allInformation.dt_cbt.Id,
@@ -794,9 +920,9 @@ namespace DigitizingDataAdminApp.Controllers
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             var allInformation = (from table_cbt in db.Cbt_info
-                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                   where table_cbt.Id == id
-                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+                                  join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                  where table_cbt.Id == id
+                                  select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
             // all reegions
             List<VslaRegion> allRegions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
@@ -845,10 +971,10 @@ namespace DigitizingDataAdminApp.Controllers
         {
             ledgerlinkEntities db = new ledgerlinkEntities();
             var allInformation = (from table_cbt in db.Cbt_info
-                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                   join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
-                                   where table_cbt.Id == id
-                                   select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
+                                  join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                  join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
+                                  where table_cbt.Id == id
+                                  select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
             CbtInformation cbtData = new CbtInformation
             {
                 Id = allInformation.dt_cbt.Id,
@@ -938,7 +1064,67 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return vslaList;
         }
+        /**
+        * Export all VSLA data to a csv file
+        * 
+        * */
+        public void ExportVSLAsToCSV()
+        {
+            List<VslaInformation> vslaList = new List<VslaInformation>();
+            ledgerlinkEntities db = new ledgerlinkEntities();
+            var vslaDetails = (from data in db.Vslas select data);
+            foreach (var item in vslaDetails)
+            {
+                vslaList.Add(new VslaInformation
+                {
+                    VslaId = item.VslaId,
+                    VslaCode = item.VslaCode ?? "--",
+                    VslaName = item.VslaName ?? "--",
+                    RegionId = item.RegionId.ToString(),
+                    DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
+                    DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
+                    PhysicalAddress = item.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = item.GpsLocation ?? "--",
+                    ContactPerson = item.ContactPerson ?? "--",
+                    PositionInVsla = item.PositionInVsla ?? "--",
+                    PhoneNumber = item.PhoneNumber ?? "--",
+                    CBT = "--",
+                    Status = item.Status.ToString() ?? "--"
+                });
+            }
+            StringWriter stringWriter = new StringWriter();
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"CBT\",\"Status\"");
 
+            Response.ClearContent();
+            String attachment = "attachment;filename=all_VSLAs.csv";
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "text/csv";
+            foreach (var line in vslaList)
+            {
+
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\"",
+                                           line.VslaCode,
+                                           line.VslaName,
+                                           line.RegionId,
+                                           line.DateRegistered.Value.ToShortDateString(),
+                                           line.DateLinked.Value.ToShortDateString(),
+                                           line.PhysicalAddress,
+                                           line.VslaPhoneMsisdn,
+                                           line.ContactPerson,
+                                           line.PositionInVsla,
+                                           line.PhoneNumber,
+                                           line.CBT,
+                                           line.Status.Equals("1") ? "Active" : "Inactive"
+                                           ));
+
+            }
+            Response.Write(stringWriter.ToString());
+
+            Response.End();
+
+
+        }
         /**
          * Helper method to get the list of all CBTS that have been added to a system
          * */
@@ -976,9 +1162,9 @@ namespace DigitizingDataAdminApp.Controllers
             List<LogsInformation> logs = new List<LogsInformation>();
             ledgerlinkEntities database = new ledgerlinkEntities();
             var logsInformation = (from database_logs in database.Audit_Log
-                             join database_users in database.Users on
-                                 database_logs.UserId equals database_users.Id
-                             select new { db_logs = database_logs, db_users = database_users });
+                                   join database_users in database.Users on
+                                       database_logs.UserId equals database_users.Id
+                                   select new { db_logs = database_logs, db_users = database_users });
 
             foreach (var data in logsInformation)
             {
