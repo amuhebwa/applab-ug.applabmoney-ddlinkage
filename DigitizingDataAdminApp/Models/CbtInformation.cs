@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -14,12 +15,23 @@ namespace DigitizingDataAdminApp.Models
     public class CbtInformation
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "full Name is a required field", AllowEmptyStrings = false)]
         public string Name { get; set; }
+
         public string Region { get; set; }
+
+        [Required(ErrorMessage = "Phone Number is a required field", AllowEmptyStrings = false)]
         public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Email is a required field", AllowEmptyStrings = false)]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
         public string Email { get; set; }
+
         public string Status { get; set; }
+
         public SelectList VslaRegionsModel { get; set; }
+
         public SelectList StatusType { get; set; }
     }
 

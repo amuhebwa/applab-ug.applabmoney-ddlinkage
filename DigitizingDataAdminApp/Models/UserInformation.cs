@@ -16,16 +16,25 @@ namespace DigitizingDataAdminApp.Models
     public class UserInformation
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Username is a required field", AllowEmptyStrings = false)]
         public string Username { get; set; }
+
         [Required(ErrorMessage = "Full name is a required field", AllowEmptyStrings = false)]
         public string Fullname { get; set; }
+
+        [Required(ErrorMessage="Email is a required field", AllowEmptyStrings=false)]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
         public string Email { get; set; }
+
         [Required(ErrorMessage = "Password is a required field", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string Password { get; set; }
+
         public string UserLevel { get; set; }
+
         public SelectList UserTypes { get; set; }
+
         public SelectList AccessLevel { get; set; }
     }
 }

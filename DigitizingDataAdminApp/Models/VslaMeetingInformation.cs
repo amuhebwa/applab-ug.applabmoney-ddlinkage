@@ -16,16 +16,27 @@ namespace DigitizingDataAdminApp.Models
     public class VslaMeetingInformation
     {
         public int MeetingId { get; set; }
+
         public long cashExpenses { get; set; }
+
         public long cashFromBank { get; set; }
+
         public long cashFromBox { get; set; }
+
         public long cashSavedBank { get; set; }
+
         public long cashSavedBox { get; set; }
+
         public decimal cashWelfare { get; set; }
+
         public DateTime? dateSent { get; set; }
+
         public Boolean isCurrent { get; set; }
+
         public Boolean isDataSent { get; set; }
+
         public int cycleId { get; set; }
+
         public long cashFines { get; set; }
 
         [DataType(DataType.Date)]
@@ -34,8 +45,11 @@ namespace DigitizingDataAdminApp.Models
         public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
 
         public int membersPresent { get; set; }
+
         public long totalSavings { get; set; }
+
         public long totalLoans { get; set; }
+
         public long totalLoanRepayment { get; set; }
     }
 }

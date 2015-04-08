@@ -16,7 +16,7 @@ namespace DigitizingDataAdminApp.Models
         public void logUserActivity(string action)
         {
             object session_id = HttpContext.Current.Session["UserId"];
-            
+
             // Only log the data if the session is not null
             if (session_id != null)
             {

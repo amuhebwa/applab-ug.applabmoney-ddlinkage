@@ -9,7 +9,7 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-
+    @*
     <fieldset>
         <legend>Edit Information for Registered User</legend>
 
@@ -56,8 +56,6 @@
                 @Html.LabelFor(model => model.UserLevel)
             </div>
             <div class="editor-field">
-                @*@Html.EditorFor(model => model.UserLevel)
-            @Html.ValidationMessageFor(model => model.UserLevel)*@
                 @Html.DropDownList("Level_Id", Model.UserTypes, new { @style = "width:250px; height:30px;" })
             </div>
         </div>
@@ -66,12 +64,42 @@
                 <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />
             </p>
         </div>
-    </fieldset>
-}
+    </fieldset>*@
+<h4 style="text-align: center;">Edit Information for @Html.DisplayFor(model => model.Fullname) </h4>
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>@Html.DisplayName("Username")</strong></td>
+            <td>@Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Fullname")</strong></td>
+            <td>@Html.EditorFor(model => model.Fullname)
+                @Html.ValidationMessageFor(model => model.Fullname)</td>
+        </tr>
 
-<div>
-    @Html.ActionLink("Back to List", "UsersData")
-</div>
+        <tr>
+            <td><strong>@Html.DisplayName("Email")</strong></td>
+            <td>@Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Password")</strong></td>
+            <td>@Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Access Level")</strong></td>
+            <td>@Html.DropDownList("Level_Id", Model.UserTypes, new { @style = "width:250px; height:30px;" })</td>
+        </tr>
+    </table>
+    <p>
+        <input class="btn btn-small btn-primary" type="submit" value="Update" style="width: 100px;" />
+        | 
+         @Html.ActionLink("Back to List", "UsersData")
+    </p>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

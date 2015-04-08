@@ -8,66 +8,43 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+    <h4 style="text-align: center;">Add New User </h4>
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>@Html.DisplayName("Username")</strong></td>
+            <td>@Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Fullname")</strong></td>
+            <td>@Html.EditorFor(model => model.Fullname)
+                @Html.ValidationMessageFor(model => model.Fullname)</td>
+        </tr>
 
-    <fieldset>
-        <legend>Add new user</legend>
-        <div class="form-group">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Username)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Username)
-                @Html.ValidationMessageFor(model => model.Username)
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Fullname)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Fullname)
-                @Html.ValidationMessageFor(model => model.Fullname)
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Email)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Email)
-                @Html.ValidationMessageFor(model => model.Email)
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Password)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Password)
-                @Html.ValidationMessageFor(model => model.Password)
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserLevel)
-            </div>
-            <div class="editor-field">
-                @* @Html.EditorFor(model => model.UserLevel)
-                @Html.ValidationMessageFor(model => model.UserLevel)*@
-                @Html.DropDownList("Level_Id", Model.AccessLevel, new { @style = "width:250px; height:30px;" })
-            </div>
-        </div>
-        <div class="form-group">
-            <p>
-                <input class="btn btn-small btn-primary" type="submit" value=" Create " style="width: 100px;" />
-            </p>
-        </div>
-    </fieldset>
+        <tr>
+            <td><strong>@Html.DisplayName("Email")</strong></td>
+            <td>@Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Password")</strong></td>
+            <td>@Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Access Level")</strong></td>
+            <td>@Html.DropDownList("Level_Id", Model.AccessLevel, new { @style = "width:250px; height:30px;" })</td>
+        </tr>
+    </table>
+    <p>
+        <input class="btn btn-small btn-primary" type="submit" value="Add new User" style="width: 150px;" />
+        | 
+         @Html.ActionLink("Back to List", "UsersData")
+    </p>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "UsersData")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

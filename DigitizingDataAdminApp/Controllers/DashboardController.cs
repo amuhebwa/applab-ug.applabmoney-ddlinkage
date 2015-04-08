@@ -610,28 +610,28 @@ namespace DigitizingDataAdminApp.Controllers
             List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
             ledgerlinkEntities db = new ledgerlinkEntities();
             var meeting = (from db_attendance in db.Attendances
-                        join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
-                        join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
-                        join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-                        join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-                        join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
-                        where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
-                        from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
-                        from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
-                        from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
-                        select new
-                        {
-                            db_attendance,
-                            db_member,
-                            db_savings,
-                            loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
-                            loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-                            amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
-                            loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
-                            remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+                           join db_member in db.Members on db_attendance.MemberId equals db_member.MemberId
+                           join db_savings in db.Savings on db_attendance.MemberId equals db_savings.MemberId
+                           join db_loan in db.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
+                           join db_fines in db.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
+                           join db_loanRepayment in db.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
+                           where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
+                           from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
+                           from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+                           from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
+                           select new
+                           {
+                               db_attendance,
+                               db_member,
+                               db_savings,
+                               loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
+                               loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
+                               amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
+                               loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
+                               remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
 
 
-                        });
+                           });
             foreach (var item in meeting)
             {
                 meetings.Add(new SingleMeetingProcedures
@@ -656,7 +656,8 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Export details of a single meeting to a csv file
          * */
-        public void ExportSingleMeetingDetailsCSV(int id) {
+        public void ExportSingleMeetingDetailsCSV(int id)
+        {
             List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
             ledgerlinkEntities db = new ledgerlinkEntities();
             var meeting = (from db_attendance in db.Attendances
@@ -724,7 +725,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.End();
 
-        
+
         } // EOF
 
         /**

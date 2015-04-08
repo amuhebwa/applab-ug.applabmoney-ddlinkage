@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "SingleMeetingDetails";
 }
-<h4>Details for the Meeting held on @Model.meetingDate</h4>
+<h4>Details for the Meeting held on @Model.meetingDate.Value.ToShortDateString()</h4>
+<p> @Html.ActionLink("Export to CSV", "ExportSingleMeetingDetailsCSV", new {id=@Model.vslaId})</p>
 <div style="width: auto; min-width:1000px; margin: 0 auto;">
     @Html.Grid(this.Model.allMeetingData).Columns(columns =>
                     {
@@ -12,9 +13,9 @@
                         columns.Add(c => c.isPresent).Titled("Attended");
                         columns.Add(c => c.amountSaved).Titled("Amount Saved");
                         columns.Add(c => c.loanNumber).Titled("Loan Number");
-                        columns.Add(c => c.principleAmount).Titled("Loan Taken");
+                        columns.Add(c => c.principleAmount).Titled("Loan Amount");
                         columns.Add(c => c.finedAmount).Titled("Fines");
                         columns.Add(c => c.loanRepaymentAmount).Titled("Loan Cleared");
-                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Remaining");
+                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Outstanding");
                     }).WithPaging(30).Sortable(true)
 </div>

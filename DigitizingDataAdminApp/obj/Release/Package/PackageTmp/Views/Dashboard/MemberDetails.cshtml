@@ -3,95 +3,52 @@
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
+<h4 style="text-align: center;">Member Information for  @Html.DisplayFor(model => model.surname) @Html.DisplayFor(model => model.otherNames) </h4>
+<hr />
+<table class="table table-bordered">
+    <tr>
+        <td><strong>@Html.DisplayName("Member Number")</strong></td>
+        <td>@Html.DisplayFor(model => model.memberNumber)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Surname")</strong></td>
+        <td>@Html.DisplayFor(model => model.surname)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Other Names")</strong></td>
+        <td>@Html.DisplayFor(model => model.otherNames)</td>
+    </tr>
 
-<fieldset>
-    <legend>Member Information for  @Html.DisplayFor(model => model.surname) @Html.DisplayFor(model => model.otherNames)</legend>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Member Number")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.memberNumber)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Surname")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.surname)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Other Names")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.otherNames)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Gender")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.gender)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Occupation")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.occupation)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Date of Birth")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Date Archive")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.dateArchived)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Number of Cycles Completed")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.cyclesCompleted)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Is Member Active")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.isActive)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Is Member Archived")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.isArchive)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="display-label">
-            @Html.DisplayName("Phone Number")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.phoneNumber)
-        </div>
-    </div>
-</fieldset>
+    <tr>
+        <td><strong>@Html.DisplayName("Gender")</strong></td>
+        <td>@Html.DisplayFor(model => model.gender)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Occupation")</strong></td>
+        <td>@Html.DisplayFor(model => model.occupation)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Date of Birth")</strong></td>
+        <td>@Html.DisplayFor(model => model.formattedDateOfBirth)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Date Archive")</strong></td>
+        <td>@Html.DisplayFor(model => model.formattedDateArchived)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Number of Cycles Completed")</strong></td>
+        <td>@Html.DisplayFor(model => model.cyclesCompleted)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Is Member Active")</strong></td>
+        <td>@Html.DisplayFor(model => model.isActive)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Is Member Archived")</strong></td>
+        <td>@Html.DisplayFor(model => model.isArchive)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+        <td>@Html.DisplayFor(model => model.phoneNumber)</td>
+    </tr>
+</table>
