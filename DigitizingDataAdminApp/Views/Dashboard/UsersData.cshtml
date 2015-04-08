@@ -8,7 +8,7 @@
 <h4>Registered Users Information</h4>
 <hr />
 <p>
-    <a href="@Url.Action("AddUser", "Dashboard")"><img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/system_user.png")"/> </a>
+    <a href="@Url.Action("AddUser", "Dashboard")"><img  src="@Url.Content("~/Content/Images/system_user.png")"/> </a>
 </p>
 
 <div style="width: auto;min-width:1000px; margin: 0 auto;">
@@ -20,10 +20,10 @@
                         columns.Add(c => c.Email).Titled("Email");
                         columns.Add(c => c.UserLevel).Titled("User Level");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("UserDetails", "Dashboard", new { id = c.Id })">
-                       <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/details.png")"/></a>);
+                       <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditUser", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/edit.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteUser", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/delete.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
                     }).WithPaging(30).Sortable(true)
 </div>
