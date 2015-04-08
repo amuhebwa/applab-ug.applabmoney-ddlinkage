@@ -301,7 +301,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\Images\add_cbt.png" />
+    <Content Include="Content\Images\add_group.png" />
+    <Content Include="Content\Images\delete.png" />
+    <Content Include="Content\Images\details.png" />
+    <Content Include="Content\Images\edit.png" />
+    <Content Include="Content\Images\export_csv.png" />
+    <Content Include="Content\Images\export_pdf.png" />
     <Content Include="Content\Images\logo.jpeg" />
+    <Content Include="Content\Images\system_user.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />

@@ -11,16 +11,32 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/themes/base/css", "/Content/css")
-    @RenderSection("scripts", required:false)
+    @RenderSection("scripts", required: false)
     <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
     <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
     <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
+    <style type="text/css">
+        .vertical-align, .col-md-2 {
+            min-height: 450px;
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+        #side-navigation li {
+            margin-top: 20px;
+            border-color: #fff;
+        }
+        
+        #side-navigation li a {
+            text-decoration:none;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container wrap sidebar-right">
-        <div class="container-fluid" style="margin-top: 20px;">
+        <div class="container-fluid" style="margin-top: 40px; margin-bottom: 20px;">
             <div class="row">
                 <div class="navbar-header col-mod-12">
                     <img src="~/Content/Images/logo.jpeg" style="height: 50px; padding-left: 40px;" />
@@ -28,39 +44,32 @@
             </div>
         </div>
 
+        <div class="model-body row-fluid">
+            <div class="col-md-2">
+                <div class="well sidebar-offcanvas vertical-align">
+                    <ul class="nav  nav-pills nav-stacked" role="navigation" id="side-navigation">
+                        <li><strong>@Html.ActionLink("Home", "Dashboard", "Dashboard") </strong></li>
+                        <li><strong>@Html.ActionLink("VSLA Groups", "VslaData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("CBTs", "CbtData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("System Users", "UsersData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("Logs", "LogsData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("Logout", "Logout")</strong></li>
+                    </ul>
 
-
-        <div class="container-fluid">
-
-            <div class="model-body row-fluid">
-                <div class="col-md-2">
-                    <div class="well sidebar-offcanvas vertical-align">
-                        <ul class="nav  nav-pills nav-stacked" role="navigation">
-                            <li>@Html.ActionLink("Home", "Dashboard", "Dashboard") </li>
-                            <li>@Html.ActionLink("VSLA Groups", "VslaData", "Dashboard")</li>
-                            <li>@Html.ActionLink("CBTs", "CbtData", "Dashboard")</li>
-                            <li>@Html.ActionLink("System Users", "UsersData", "Dashboard")</li>
-                            <li>@Html.ActionLink("Logs", "LogsData", "Dashboard")</li>
-                            <li>@Html.ActionLink("Logout", "Logout")</li>
-                        </ul>
-
-                    </div>
                 </div>
-                <div class="col-md-8" style="float: none; margin: 0 auto;">
-                    @RenderBody()
-                </div>
-
-
+            </div>
+            <div class="col-md-8" style="float: none; margin: 0 auto;">
+                @RenderBody()
             </div>
         </div>
 
-        <div class="panel-footer col-md-12" style="padding: 20px; margin-top: 10px; height: 50px;">
+        <div class="panel-footer col-md-12" style="padding: 20px; margin-top: 10px; height: 50px; background-color: #fff;">
 
             <p style="text-align: center;">&copy; @DateTime.Now.Year - LedgerLink Manager</p>
 
         </div>
     </div>
 
-   @* @RenderSection("scripts", required: false)*@
+
 </body>
 </html>
