@@ -9,7 +9,6 @@
 <hr />
 
 <p>
-    @*@Html.ActionLink("Add New Vsla", "AddVsla") | @Html.ActionLink("Export to CSV", "ExportVSLAsToCSV")*@
     <a href="@Url.Action("AddVsla", "Dashboard")">
         <img  src="@Url.Content("~/Content/Images/add_group.png")"/>
     </a>|
@@ -30,7 +29,7 @@
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("VslaDetails", "Dashboard", new { id = c.VslaId })">
                             <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditVsla", "Dashboard", new { id = c.VslaId })">
-                             <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteVsla", "Dashboard", new { id = c.VslaId })">
                             <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
                     }).WithPaging(30).Sortable(true)

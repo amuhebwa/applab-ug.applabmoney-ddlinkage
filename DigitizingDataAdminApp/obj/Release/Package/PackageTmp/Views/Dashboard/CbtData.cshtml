@@ -8,9 +8,8 @@
 <h4>Community Based Trainers(CBTs)</h4>
 <hr />
 <p>
-    @*@Html.ActionLink("Add New CBT", "AddCbt")*@
     <a href="@Url.Action("AddCbt", "Dashboard")">
-        <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/add_cbt.png")"/>
+        <img  src="@Url.Content("~/Content/Images/add_cbt.png")"/>
     </a>
 </p>
 
@@ -23,10 +22,10 @@
                         columns.Add(c => c.Email).Titled("Email");
                         columns.Add(c => c.Status).Titled("Status");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("CbtDetails", "Dashboard", new { id = c.Id })">
-                       <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/details.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/edit.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/delete.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
                     }).WithPaging(30).Sortable(true)
 </div>

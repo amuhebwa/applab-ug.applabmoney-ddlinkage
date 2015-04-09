@@ -11,10 +11,10 @@
 <p>
     @*@Html.ActionLink("Add New Vsla", "AddVsla") | @Html.ActionLink("Export to CSV", "ExportVSLAsToCSV")*@
     <a href="@Url.Action("AddVsla", "Dashboard")">
-        <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/add_group.png")"/>
+        <img  src="@Url.Content("~/Content/Images/add_group.png")"/>
     </a>|
     <a href="@Url.Action("ExportVSLAsToCSV", "Dashboard")">
-        <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/export_csv.png")"/>
+        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
     </a>
 </p>
 
@@ -28,10 +28,10 @@
                         columns.Add().Titled("Meetings").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Meetings", "VslaMeetings", new { id = c.VslaId }));
                         columns.Add().Titled("Members").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Members", "VslaMembers", new { id = c.VslaId }));
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("VslaDetails", "Dashboard", new { id = c.VslaId })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/details.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                         columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditVsla", "Dashboard", new { id = c.VslaId })">
-                             <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/edit.png")"/></a>);
+                             <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteVsla", "Dashboard", new { id = c.VslaId })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/delete.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
                     }).WithPaging(30).Sortable(true)
 </div>

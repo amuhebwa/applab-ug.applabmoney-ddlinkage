@@ -9,7 +9,7 @@
 @*<p> @Html.ActionLink("Export to CSV", "ExportVSLAMeetingsToCSV", new {id=@Model.vslaId, fileName = @Model.vslaName})</p>*@
 <p>
     <a href="@Url.Action("ExportVSLAMeetingsToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
-        <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/export_csv.png")"/>
+        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
     </a>
 </p>
 <div style="width: auto; min-width: 1000px; margin: 0 auto;">
@@ -22,6 +22,6 @@
                         columns.Add(c => c.totalLoans).Titled("Total Loans");
                         columns.Add(c => c.totalLoanRepayment).Titled("Loan Outstanding");
                         columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("SingleMeetingDetails", "Dashboard", new { id = c.MeetingId })">
-                            <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/details.png")"/></a>);
+                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                     }).WithPaging(30).Sortable(true)
 </div>

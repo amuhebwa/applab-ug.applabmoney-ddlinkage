@@ -118,26 +118,36 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddUser(User user, int Level_Id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && user != null)
             {
                 PasswordHashing _password = new PasswordHashing();
+                string _hashedPassword = _password.hashedPassword(user.Password);
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 User _user = new User
                 {
                     Username = user.Username,
                     Fullname = user.Fullname,
-                    Password = _password.hashedPassword(user.Password),
+                    Password = _hashedPassword,
                     Email = user.Email,
                     UserLevel = Level_Id
                 };
-                database.Users.Add(_user);
-                database.SaveChanges();
+                if (_user != null && _hashedPassword != null)
+                {
+                    database.Users.Add(_user);
+                    database.SaveChanges();
+                }
+                else
+                {
+                    return RedirectToAction("AddUser");
+                }
+
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
                 activityLogging.logUserActivity(action);
                 user = null;
+                return RedirectToAction("UsersData");
             }
-            return RedirectToAction("UsersData");
+            return View();
         }
 
         /**
@@ -168,18 +178,26 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditUser(UserInformation info, int id, int Level_Id)
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-            var query = database.Users.Find(id);
-            query.Username = info.Username;
-            query.Password = info.Password;
-            query.Fullname = info.Fullname;
-            query.Email = info.Email;
-            query.UserLevel = Level_Id;
-            database.SaveChanges();
-            string action = "Edited information for " + info.Fullname;
-            activityLogging.logUserActivity(action);
-            return RedirectToAction("UsersData");
+            if (ModelState.IsValid && info != null)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                var query = database.Users.Find(id);
+                query.Username = info.Username;
+                query.Password = info.Password;
+                query.Fullname = info.Fullname;
+                query.Email = info.Email;
+                query.UserLevel = Level_Id;
+                if (info.Username == null || info.Password == null || info.Password == null || info.Email == null || info.Fullname == null)
+                {
+                    return RedirectToAction("UsersData");
+                }
 
+                database.SaveChanges();
+                string action = "Edited information for " + info.Fullname;
+                activityLogging.logUserActivity(action);
+                return RedirectToAction("UsersData");
+            }
+            return View();
         }
         /**
          * Delete a particular user form the system
@@ -210,20 +228,16 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult DeleteUser(User user, int id)
         {
-            try
+            if (ModelState.IsValid && user != null)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 user.Id = id;
                 database.Users.Attach(user);
                 database.Users.Remove(user);
                 database.SaveChanges();
+                return RedirectToAction("UsersData");
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return RedirectToAction("UsersData");
+            return View();
         }
 
         /**
@@ -339,23 +353,31 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-            var query = database.Vslas.Find(VslaId);
-            query.VslaCode = vsla.VslaCode;
-            query.VslaName = vsla.VslaName;
-            query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
-            query.GpsLocation = vsla.GpsLocation;
-            query.DateRegistered = vsla.DateRegistered;
-            query.DateLinked = vsla.DateLinked;
-            query.RegionId = RegionId;
-            query.ContactPerson = vsla.ContactPerson;
-            query.PositionInVsla = vsla.PositionInVsla;
-            query.PhoneNumber = vsla.PhoneNumber;
-            query.CBT = Id;
-            query.Status = Status_Id;
-
-            database.SaveChanges();
-            return RedirectToAction("VslaData");
+            if (ModelState.IsValid && vsla != null)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                var query = database.Vslas.Find(VslaId);
+                query.VslaCode = vsla.VslaCode;
+                query.VslaName = vsla.VslaName;
+                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
+                query.GpsLocation = vsla.GpsLocation;
+                query.DateRegistered = vsla.DateRegistered;
+                query.DateLinked = vsla.DateLinked;
+                query.RegionId = RegionId;
+                query.ContactPerson = vsla.ContactPerson;
+                query.PositionInVsla = vsla.PositionInVsla;
+                query.PhoneNumber = vsla.PhoneNumber;
+                query.CBT = Id;
+                query.Status = Status_Id;
+                if (vsla.VslaCode == null || vsla.VslaName == null || vsla.VslaPhoneMsisdn == null || vsla.GpsLocation == null || vsla.DateRegistered == null || vsla.DateLinked == null ||
+                    vsla.ContactPerson == null || vsla.PositionInVsla == null || vsla.PhoneNumber == null)
+                {
+                    return RedirectToAction("VslaData");
+                }
+                database.SaveChanges();
+                return RedirectToAction("VslaData");
+            }
+            return View();
 
         }
         /**
@@ -388,40 +410,38 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddVsla(Vsla new_vsla, int RegionId, int Id, int Status_Id)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    ledgerlinkEntities database = new ledgerlinkEntities();
-                    Vsla addedVsla = new Vsla
-                    {
-                        VslaCode = new_vsla.VslaCode,
-                        VslaName = new_vsla.VslaName,
-                        RegionId = RegionId,
-                        DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
-                        DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
-                        PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
-                        VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
-                        GpsLocation = new_vsla.GpsLocation ?? "--",
-                        ContactPerson = new_vsla.ContactPerson,
-                        PositionInVsla = new_vsla.PositionInVsla,
-                        PhoneNumber = new_vsla.PhoneNumber,
-                        CBT = Id,
-                        Status = Status_Id
-                    };
-                    database.Vslas.Add(addedVsla);
-                    database.SaveChanges();
-                    string action = "Added new  VSLA named " + new_vsla.VslaName;
-                    activityLogging.logUserActivity(action);
-                    return RedirectToAction("VslaData");
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            if (ModelState.IsValid && new_vsla != null)
+            {
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                Vsla addedVsla = new Vsla
+                {
+                    VslaCode = new_vsla.VslaCode,
+                    VslaName = new_vsla.VslaName,
+                    RegionId = RegionId,
+                    DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
+                    DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
+                    PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = new_vsla.GpsLocation ?? "--",
+                    ContactPerson = new_vsla.ContactPerson,
+                    PositionInVsla = new_vsla.PositionInVsla,
+                    PhoneNumber = new_vsla.PhoneNumber,
+                    CBT = Id,
+                    Status = Status_Id
+                };
+                if (addedVsla == null)
+                {
+                    RedirectToAction("AddVsla");
+                }
+                database.Vslas.Add(addedVsla);
+                database.SaveChanges();
+                string action = "Added new  VSLA named " + new_vsla.VslaName;
+                activityLogging.logUserActivity(action);
+                return RedirectToAction("VslaData");
             }
-            return View(new_vsla);
+            //return View(new_vsla);
+            return View();
         }
         /**
          * Delete a particular VSLA from the system
@@ -461,20 +481,16 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult DeleteVsla(Vsla vsla, int id)
         {
-            try
+            if (ModelState.IsValid && vsla != null)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 vsla.VslaId = id;
                 database.Vslas.Attach(vsla);
                 database.Vslas.Remove(vsla);
                 database.SaveChanges();
+                return RedirectToAction("VslaData");
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return RedirectToAction("VslaData");
+            return View();
         }
         /**
          * View all meetings attached to a particular VSLA
@@ -866,7 +882,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && new_cbt != null)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 Cbt_info cbx = new Cbt_info
@@ -878,13 +894,19 @@ namespace DigitizingDataAdminApp.Controllers
                     Status = Status_Id
 
                 };
+                if (cbx == null)
+                {
+                    RedirectToAction("AddCbt");
+                }
                 string action = "Added a new CBT called " + new_cbt.Name;
                 activityLogging.logUserActivity(action);
+
                 database.Cbt_info.Add(cbx);
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
-            return View(new_cbt);
+            //return View(new_cbt);
+            return View();
         }
 
         /**
@@ -951,18 +973,24 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
-            using (ledgerlinkEntities database = new ledgerlinkEntities())
+            if (ModelState.IsValid && cbt != null)
             {
+                ledgerlinkEntities database = new ledgerlinkEntities();
                 var query = database.Cbt_info.Find(id);
                 query.Name = cbt.Name;
                 query.Region = RegionId;
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
                 query.Status = Status_Id;
+
+                if (cbt.Name == null || cbt.PhoneNumber == null || cbt.Email == null)
+                {
+                    return RedirectToAction("CbtData");
+                }
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
-
+            return View();
         }
         /**
          * Delete a particular CBT from the system
@@ -992,20 +1020,16 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult DeleteCbt(Cbt_info cbt, int id)
         {
-            try
+            if (ModelState.IsValid && cbt != null)
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 cbt.Id = id;
                 database.Cbt_info.Attach(cbt);
                 database.Cbt_info.Remove(cbt);
                 database.SaveChanges();
+                return RedirectToAction("CbtData");
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return RedirectToAction("CbtData");
+            return View();
         }
 
         /**
@@ -1126,6 +1150,7 @@ namespace DigitizingDataAdminApp.Controllers
 
 
         }
+
         /**
          * Helper method to get the list of all CBTS that have been added to a system
          * */

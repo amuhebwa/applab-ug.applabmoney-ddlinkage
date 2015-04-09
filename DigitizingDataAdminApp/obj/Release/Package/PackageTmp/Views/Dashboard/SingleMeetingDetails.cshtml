@@ -8,7 +8,7 @@
 <p>
     @*@Html.ActionLink("Export to CSV", "ExportSingleMeetingDetailsCSV", new {id=@Model.vslaId})*@
     <a href="@Url.Action("ExportSingleMeetingDetailsCSV", "Dashboard", new { id = @Model.vslaId })">
-        <img  src="@Url.Content("~/digitizingdataadminapp/Content/Images/export_csv.png")"/>
+        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
     </a>
 
 </p>

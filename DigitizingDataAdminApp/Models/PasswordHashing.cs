@@ -9,8 +9,13 @@ namespace DigitizingDataAdminApp.Models
 {
     public class PasswordHashing
     {
+        public PasswordHashing(){ 
+        }
         public string hashedPassword(string password)
         {
+            if (password == null) {
+                return null;
+            }
             MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();
             byte[] _bytes = System.Text.Encoding.UTF8.GetBytes(password);
             _bytes = cryptography.ComputeHash(_bytes);

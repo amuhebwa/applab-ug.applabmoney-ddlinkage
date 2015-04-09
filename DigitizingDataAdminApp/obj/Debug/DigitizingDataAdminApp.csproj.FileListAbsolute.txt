@@ -47,4 +47,3 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.pdb
-C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
