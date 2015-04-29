@@ -363,7 +363,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.GpsLocation = vsla.GpsLocation;
                 query.DateRegistered = vsla.DateRegistered;
                 query.DateLinked = vsla.DateLinked;
-                query.RegionId = RegionId;
+                query.RegionId = (int)RegionId;
                 query.ContactPerson = vsla.ContactPerson;
                 query.PositionInVsla = vsla.PositionInVsla;
                 query.PhoneNumber = vsla.PhoneNumber;
