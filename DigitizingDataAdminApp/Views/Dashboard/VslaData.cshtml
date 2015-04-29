@@ -10,10 +10,10 @@
 
 <p>
     <a href="@Url.Action("AddVsla", "Dashboard")">
-        <img  src="@Url.Content("~/Content/Images/add_group.png")"/>
+        <img  src="@Url.Content("~/Content/Images/add_group.png")"/> <strong>Add New VSLA</strong>
     </a>|
     <a href="@Url.Action("ExportVSLAsToCSV", "Dashboard")">
-        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
+        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/> <strong>Export to CSV</strong>
     </a>
 </p>
 
@@ -21,8 +21,8 @@
     @Html.Grid(Model.AllVslaList).Columns(columns =>
                     {
                         //columns.Add(c => c.VslaId).Titled("Id");
-                        columns.Add(c => c.VslaName).Titled("VSLA Name");
-                        columns.Add(c => c.VslaCode).Titled("VSLA Code");
+                        columns.Add(c => c.VslaName).Titled("VSLA Name").Filterable(true);
+                        columns.Add(c => c.VslaCode).Titled("VSLA Code").Filterable(true);
                         columns.Add(c => c.formattedDateRegistered).Titled("Date Registered");
                         columns.Add().Titled("Meetings").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Meetings", "VslaMeetings", new { id = c.VslaId }));
                         columns.Add().Titled("Members").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Members", "VslaMembers", new { id = c.VslaId }));

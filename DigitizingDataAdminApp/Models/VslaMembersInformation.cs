@@ -22,6 +22,7 @@ namespace DigitizingDataAdminApp.Models
         public string otherNames { get; set; }
         public string gender { get; set; }
         public string occupation { get; set; }
+        public int vslaId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

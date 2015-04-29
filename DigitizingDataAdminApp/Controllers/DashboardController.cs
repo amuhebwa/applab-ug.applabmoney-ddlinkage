@@ -837,7 +837,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information for a given user attached to a particular vsla
          * */
-        public ActionResult MemberDetails(int id)
+        public ActionResult MemberDetails(int id, int vslaId)
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
             var member = (from db_members in database.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
@@ -853,7 +853,8 @@ namespace DigitizingDataAdminApp.Controllers
                 DateOfBirth = member.dt_members.DateOfBirth,
                 isActive = member.dt_members.IsActive.ToString(),
                 isArchive = member.dt_members.IsArchived.ToString(),
-                phoneNumber = member.dt_members.PhoneNo
+                phoneNumber = member.dt_members.PhoneNo,
+                vslaId = (int)vslaId
 
             };
             string action = "Viewed information for vsla member called " + member.dt_members.Surname + " " + member.dt_members.OtherNames;
