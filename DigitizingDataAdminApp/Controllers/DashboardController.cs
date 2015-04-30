@@ -867,18 +867,41 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult AddCbt()
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
+
             // Regions
-            List<VslaRegion> allRegionsList = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+            List<VslaRegion> allRegionsList = new List<VslaRegion>();
+            allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
+            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                allRegionsList.Add(new VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
             SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName");
+
             // Status types
-            List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList statusTypes = new SelectList(status, "Status_Id", "CurrentStatus");
-            CbtInformation regionsSelector = new CbtInformation
+            List<StatusType> statusOptions = new List<StatusType>();
+            statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
+            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var status in databaseStatuses)
+            {
+                statusOptions.Add(new StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus");
+
+            CbtInformation dropDownOptions = new CbtInformation
             {
                 VslaRegionsModel = regionsList,
                 StatusType = statusTypes
             };
-            return View(regionsSelector);
+            return View(dropDownOptions);
         }
         [HttpPost]
         public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
@@ -893,7 +916,6 @@ namespace DigitizingDataAdminApp.Controllers
                     PhoneNumber = new_cbt.PhoneNumber,
                     Email = new_cbt.Email,
                     Status = Status_Id
-
                 };
                 if (cbx == null)
                 {
