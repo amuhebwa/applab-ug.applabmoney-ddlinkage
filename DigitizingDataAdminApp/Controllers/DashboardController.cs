@@ -866,6 +866,58 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddCbt()
         {
+            CbtInformation dropDownOptions = getCbtDropDownOptions();
+            return View(dropDownOptions);
+        }
+        [HttpPost]
+        public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
+        {
+            if (string.IsNullOrEmpty(new_cbt.Name)) {
+                ModelState.AddModelError("Name", "Please add a valid Name");
+            }
+            else if (RegionId == 0)
+            {
+                ModelState.AddModelError("Region", "Please Select a region");
+            }
+            else if (string.IsNullOrEmpty(new_cbt.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
+            }
+            else if (string.IsNullOrEmpty(new_cbt.Email)) {
+                ModelState.AddModelError("Email","Please Enter Valid Email Address");
+            }
+            
+            else if (Status_Id == 0) {
+                ModelState.AddModelError("Status", "Please select status");
+            }
+            else
+            { // All are valid
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                Cbt_info _cbt = new Cbt_info
+                {
+                    Name = new_cbt.Name,
+                    Region = RegionId,
+                    PhoneNumber = new_cbt.PhoneNumber,
+                    Email = new_cbt.Email,
+                    Status = Status_Id
+                };
+                string action = "Added a new CBT called " + new_cbt.Name;
+                activityLogging.logUserActivity(action);
+
+                database.Cbt_info.Add(_cbt);
+                database.SaveChanges();
+                return RedirectToAction("CbtData");
+            }
+
+            // If validation is not done properly, re-create the drop down list
+            CbtInformation dropDownOptions = getCbtDropDownOptions();
+            return View(dropDownOptions);
+
+        }
+        /** 
+         * Get the regions and status(Active/Inactive) for populating in the drop down list
+         * */
+        public CbtInformation getCbtDropDownOptions() {
             ledgerlinkEntities database = new ledgerlinkEntities();
 
             // Regions
@@ -880,7 +932,7 @@ namespace DigitizingDataAdminApp.Controllers
                     RegionName = region.RegionName
                 });
             }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName");
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
 
             // Status types
             List<StatusType> statusOptions = new List<StatusType>();
@@ -894,42 +946,14 @@ namespace DigitizingDataAdminApp.Controllers
                     CurrentStatus = status.CurrentStatus
                 });
             }
-            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus");
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
 
             CbtInformation dropDownOptions = new CbtInformation
             {
                 VslaRegionsModel = regionsList,
                 StatusType = statusTypes
             };
-            return View(dropDownOptions);
-        }
-        [HttpPost]
-        public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
-        {
-            if (ModelState.IsValid && new_cbt != null)
-            {
-                ledgerlinkEntities database = new ledgerlinkEntities();
-                Cbt_info cbx = new Cbt_info
-                {
-                    Name = new_cbt.Name,
-                    Region = RegionId,
-                    PhoneNumber = new_cbt.PhoneNumber,
-                    Email = new_cbt.Email,
-                    Status = Status_Id
-                };
-                if (cbx == null)
-                {
-                    RedirectToAction("AddCbt");
-                }
-                string action = "Added a new CBT called " + new_cbt.Name;
-                activityLogging.logUserActivity(action);
-
-                database.Cbt_info.Add(cbx);
-                database.SaveChanges();
-                return RedirectToAction("CbtData");
-            }
-            //return View(new_cbt);
-            return View();
+            return dropDownOptions;
         }
 
         /**
@@ -937,23 +961,8 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult CbtDetails(int id)
         {
-            ledgerlinkEntities db = new ledgerlinkEntities();
-
-            var allInformation = (from table_cbt in db.Cbt_info
-                                  join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                  join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
-                                  where table_cbt.Id == id
-                                  select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
-            CbtInformation cbtData = new CbtInformation
-            {
-                Id = allInformation.dt_cbt.Id,
-                Name = allInformation.dt_cbt.Name,
-                Region = allInformation.dt_region.RegionName,
-                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-                Email = allInformation.dt_cbt.Email,
-                Status = allInformation.dt_status.CurrentStatus
-            };
-            string action = "Viewed CBT details for  " + allInformation.dt_cbt.Name;
+            CbtInformation cbtData = getCbtInformationForEditing(id);
+            string action = "Viewed CBT details for  " + cbtData.Name;
             activityLogging.logUserActivity(action);
             return View(cbtData);
         }
@@ -970,13 +979,32 @@ namespace DigitizingDataAdminApp.Controllers
                                   where table_cbt.Id == id
                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
-            // all reegions
-            List<VslaRegion> allRegions = db.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regionsList = new SelectList(allRegions, "RegionId", "RegionName", allInformation.db_region.RegionId);
+            // Regions
+            List<VslaRegion> allRegionsList = new List<VslaRegion>();
+            var databaseRegions = db.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                allRegionsList.Add(new VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName",allInformation.db_region.RegionId);
 
-            // Get the status ie active/inactive
-            List<StatusType> status = db.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList statusList = new SelectList(status, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
+            // Status types
+            List<StatusType> statusOptions = new List<StatusType>();
+            var databaseStatuses = db.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var status in databaseStatuses)
+            {
+                statusOptions.Add(new StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
+
 
             // Create a cbt object
             CbtInformation cbtData = new CbtInformation
@@ -986,7 +1014,7 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaRegionsModel = regionsList,
                 PhoneNumber = allInformation.dt_cbt.PhoneNumber,
                 Email = allInformation.dt_cbt.Email,
-                StatusType = statusList
+                StatusType = statusTypes
             };
 
             string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
@@ -996,7 +1024,19 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
-            if (ModelState.IsValid && cbt != null)
+            if (string.IsNullOrEmpty(cbt.Name))
+            {
+                ModelState.AddModelError("Name", "Please add a valid Name");
+            }
+            else if (string.IsNullOrEmpty(cbt.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
+            }
+            else if (string.IsNullOrEmpty(cbt.Email))
+            {
+                ModelState.AddModelError("Email","Please Enter Valid Email Address");
+            }
+            else
             {
                 ledgerlinkEntities database = new ledgerlinkEntities();
                 var query = database.Cbt_info.Find(id);
@@ -1005,23 +1045,62 @@ namespace DigitizingDataAdminApp.Controllers
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
                 query.Status = Status_Id;
-
-                if (cbt.Name == null || cbt.PhoneNumber == null || cbt.Email == null)
-                {
-                    return RedirectToAction("CbtData");
-                }
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
-            return View();
+            // In case validation fails, recreate the form with pre-populated data
+            ledgerlinkEntities db = new ledgerlinkEntities();
+
+            var allInformation = (from table_cbt in db.Cbt_info
+                                  join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
+                                  where table_cbt.Id == id
+                                  select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+
+            // Regions
+            List<VslaRegion> allRegionsList = new List<VslaRegion>();
+            var databaseRegions = db.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                allRegionsList.Add(new VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
+
+            // Status types
+            List<StatusType> statusOptions = new List<StatusType>();
+            var databaseStatuses = db.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var status in databaseStatuses)
+            {
+                statusOptions.Add(new StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
+
+
+            // Create a cbt object
+            CbtInformation cbtData = new CbtInformation
+            {
+                Id = allInformation.dt_cbt.Id,
+                Name = allInformation.dt_cbt.Name,
+                VslaRegionsModel = regionsList,
+                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+                Email = allInformation.dt_cbt.Email,
+                StatusType = statusTypes
+            };
+            return View(cbtData);
         }
         /**
-         * Delete a particular CBT from the system
+         * Function to query the database and get Information related to a particular CBT for editing
          * */
-        [HttpGet]
-        public ActionResult DeleteCbt(int id)
-        {
+        public CbtInformation getCbtInformationForEditing(int id) {
             ledgerlinkEntities db = new ledgerlinkEntities();
+
             var allInformation = (from table_cbt in db.Cbt_info
                                   join table_region in db.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   join table_status in db.StatusTypes on table_cbt.Status equals table_status.Status_Id
@@ -1036,7 +1115,18 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = allInformation.dt_cbt.Email,
                 Status = allInformation.dt_status.CurrentStatus
             };
-            string action = "Deleted CBT information for  " + allInformation.dt_cbt.Name;
+            return cbtData;
+        }
+
+
+        /**
+         * Delete a particular CBT from the system
+         * */
+        [HttpGet]
+        public ActionResult DeleteCbt(int id)
+        {
+            CbtInformation cbtData = getCbtInformationForEditing(id);
+            string action = "Deleted CBT information for  " + cbtData.Name;
             activityLogging.logUserActivity(action);
             return View(cbtData);
         }
