@@ -105,24 +105,38 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddUser()
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-            List<UserPermission> permission = database.UserPermissions.OrderBy(a => a.Level_Id).ToList();
-            SelectList accessPermissions = new SelectList(permission, "Level_Id", "UserType");
-            UserInformation data = new UserInformation
-            {
-                AccessLevel = accessPermissions
-            };
-            return View(data);
+             UserInformation permissionLevels = getAccessPermissions();
+            return View(permissionLevels);
         }
 
         [HttpPost]
         public ActionResult AddUser(User user, int Level_Id)
         {
-            if (ModelState.IsValid && user != null)
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            PasswordHashing _password = new PasswordHashing();
+            string _hashedPassword = _password.hashedPassword(user.Password); // Hash the password
+            if (string.IsNullOrEmpty(user.Username))
             {
-                PasswordHashing _password = new PasswordHashing();
-                string _hashedPassword = _password.hashedPassword(user.Password);
-                ledgerlinkEntities database = new ledgerlinkEntities();
+                ModelState.AddModelError("Username", "Please Add a valid Username");
+            }
+            else if (string.IsNullOrEmpty(user.Fullname))
+            {
+                ModelState.AddModelError("Fullname", "Please Add a valid Fullname");
+            }
+            else if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Please Add a valid Email");
+            }
+            else if (string.IsNullOrEmpty(_hashedPassword))
+            {
+                ModelState.AddModelError("Password", "Please Enter Valid Password");
+            }
+            else if (Level_Id == 0)
+            {
+                ModelState.AddModelError("AccessLevel", "Please select Access Level");
+            }
+            else
+            { // All fields have been validated
                 User _user = new User
                 {
                     Username = user.Username,
@@ -131,23 +145,40 @@ namespace DigitizingDataAdminApp.Controllers
                     Email = user.Email,
                     UserLevel = Level_Id
                 };
-                if (_user != null && _hashedPassword != null)
-                {
-                    database.Users.Add(_user);
-                    database.SaveChanges();
-                }
-                else
-                {
-                    return RedirectToAction("AddUser");
-                }
-
+                database.Users.Add(_user);
+                database.SaveChanges();
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
                 activityLogging.logUserActivity(action);
                 user = null;
                 return RedirectToAction("UsersData");
             }
-            return View();
+            UserInformation permissionLevels = getAccessPermissions();
+            return View(permissionLevels);
+        }
+
+        /**
+         * Get the user level permissions to populate in the drop down list 
+         **/
+        public UserInformation getAccessPermissions() {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            List<UserPermission> permissions = new List<UserPermission>();
+            permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
+            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
+            foreach (var permission in databasePermissions)
+            {
+                permissions.Add(new UserPermission
+                {
+                    Level_Id = permission.Level_Id,
+                    UserType = permission.UserType
+                });
+            }
+            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", 0);
+            UserInformation data = new UserInformation
+            {
+                AccessLevel = acccessPermissions
+            };
+            return data;
         }
 
         /**
@@ -161,8 +192,17 @@ namespace DigitizingDataAdminApp.Controllers
                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                where table_users.Id == id
                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
-            List<UserPermission> user_levels = db.UserPermissions.OrderBy(a => a.UserType).ToList();
-            SelectList user_types = new SelectList(user_levels, "Level_Id", "UserType", userDetails.db_user.UserLevel);
+            List<UserPermission> permissions = new List<UserPermission>();
+            var databasePermissions = db.UserPermissions.OrderBy(a => a.Level_Id);
+            foreach (var permission in databasePermissions)
+            {
+                permissions.Add(new UserPermission
+                {
+                    Level_Id = permission.Level_Id,
+                    UserType = permission.UserType
+                });
+            }
+            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", userDetails.db_permissions.Level_Id);
             UserInformation user_data = new UserInformation
             {
                 Id = userDetails.db_user.Id,
@@ -170,34 +210,66 @@ namespace DigitizingDataAdminApp.Controllers
                 Password = userDetails.db_user.Password,
                 Fullname = userDetails.db_user.Fullname,
                 Email = userDetails.db_user.Email,
-                UserTypes = user_types,
+                UserTypes = acccessPermissions,
             };
             return View(user_data);
 
         }
         [HttpPost]
-        public ActionResult EditUser(UserInformation info, int id, int Level_Id)
+        public ActionResult EditUser(UserInformation user, int id, int Level_Id)
         {
-            if (ModelState.IsValid && info != null)
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            if (string.IsNullOrEmpty(user.Username))
             {
-                ledgerlinkEntities database = new ledgerlinkEntities();
+                ModelState.AddModelError("Username", "Username cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(user.Fullname))
+            {
+                ModelState.AddModelError("Fullname", "Fullname cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Email cannot be empty");
+            } else if (string.IsNullOrEmpty(user.Password)) {
+                ModelState.AddModelError("Password","Password cannot be empty");
+            }
+            else if (Level_Id == 0)
+            {
+                ModelState.AddModelError("AccessLevel", "Please select Access Level");
+            }
+            else {
                 var query = database.Users.Find(id);
-                query.Username = info.Username;
-                query.Password = info.Password;
-                query.Fullname = info.Fullname;
-                query.Email = info.Email;
+                query.Username = user.Username;
+                query.Password = user.Password;
+                query.Fullname = user.Fullname;
+                query.Email = user.Email;
                 query.UserLevel = Level_Id;
-                if (info.Username == null || info.Password == null || info.Password == null || info.Email == null || info.Fullname == null)
-                {
-                    return RedirectToAction("UsersData");
-                }
-
                 database.SaveChanges();
-                string action = "Edited information for " + info.Fullname;
+                string action = "Edited information for " + user.Fullname;
                 activityLogging.logUserActivity(action);
                 return RedirectToAction("UsersData");
             }
-            return View();
+            List<UserPermission> permissions = new List<UserPermission>();
+            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
+            foreach (var permission in databasePermissions)
+            {
+                permissions.Add(new UserPermission
+                {
+                    Level_Id = permission.Level_Id,
+                    UserType = permission.UserType
+                });
+            }
+            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", Level_Id);
+            UserInformation user_data = new UserInformation
+            {
+                Id = id,
+                Username = user.Username,
+                Password = user.Password,
+                Fullname = user.Fullname,
+                Email = user.Email,
+                UserTypes = acccessPermissions,
+            };
+            return View(user_data);
         }
         /**
          * Delete a particular user form the system
@@ -440,7 +512,6 @@ namespace DigitizingDataAdminApp.Controllers
                 activityLogging.logUserActivity(action);
                 return RedirectToAction("VslaData");
             }
-            //return View(new_vsla);
             return View();
         }
         /**
@@ -597,8 +668,6 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(sw.ToString());
 
             Response.End();
-
-
         }
         /**
          * Get details for a particular meeting held on a partuclar day by a VSLA
@@ -872,7 +941,8 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
         {
-            if (string.IsNullOrEmpty(new_cbt.Name)) {
+            if (string.IsNullOrEmpty(new_cbt.Name))
+            {
                 ModelState.AddModelError("Name", "Please add a valid Name");
             }
             else if (RegionId == 0)
@@ -883,11 +953,13 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
             }
-            else if (string.IsNullOrEmpty(new_cbt.Email)) {
-                ModelState.AddModelError("Email","Please Enter Valid Email Address");
+            else if (string.IsNullOrEmpty(new_cbt.Email))
+            {
+                ModelState.AddModelError("Email", "Please Enter Valid Email Address");
             }
-            
-            else if (Status_Id == 0) {
+
+            else if (Status_Id == 0)
+            {
                 ModelState.AddModelError("Status", "Please select status");
             }
             else
@@ -917,7 +989,8 @@ namespace DigitizingDataAdminApp.Controllers
         /** 
          * Get the regions and status(Active/Inactive) for populating in the drop down list
          * */
-        public CbtInformation getCbtDropDownOptions() {
+        public CbtInformation getCbtDropDownOptions()
+        {
             ledgerlinkEntities database = new ledgerlinkEntities();
 
             // Regions
@@ -990,7 +1063,7 @@ namespace DigitizingDataAdminApp.Controllers
                     RegionName = region.RegionName
                 });
             }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName",allInformation.db_region.RegionId);
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
 
             // Status types
             List<StatusType> statusOptions = new List<StatusType>();
@@ -1034,7 +1107,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else if (string.IsNullOrEmpty(cbt.Email))
             {
-                ModelState.AddModelError("Email","Please Enter Valid Email Address");
+                ModelState.AddModelError("Email", "Please Enter Valid Email Address");
             }
             else
             {
@@ -1098,7 +1171,8 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Function to query the database and get Information related to a particular CBT for editing
          * */
-        public CbtInformation getCbtInformationForEditing(int id) {
+        public CbtInformation getCbtInformationForEditing(int id)
+        {
             ledgerlinkEntities db = new ledgerlinkEntities();
 
             var allInformation = (from table_cbt in db.Cbt_info
