@@ -105,7 +105,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddUser()
         {
-             UserInformation permissionLevels = getAccessPermissions();
+            UserInformation permissionLevels = getAccessPermissions();
             return View(permissionLevels);
         }
 
@@ -160,7 +160,8 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get the user level permissions to populate in the drop down list 
          **/
-        public UserInformation getAccessPermissions() {
+        public UserInformation getAccessPermissions()
+        {
             ledgerlinkEntities database = new ledgerlinkEntities();
             List<UserPermission> permissions = new List<UserPermission>();
             permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
@@ -192,6 +193,8 @@ namespace DigitizingDataAdminApp.Controllers
                                join table_permissions in db.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                where table_users.Id == id
                                select new { db_user = table_users, db_permissions = table_permissions }).Single();
+
+            // Get access levels
             List<UserPermission> permissions = new List<UserPermission>();
             var databasePermissions = db.UserPermissions.OrderBy(a => a.Level_Id);
             foreach (var permission in databasePermissions)
@@ -230,14 +233,17 @@ namespace DigitizingDataAdminApp.Controllers
             else if (string.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError("Email", "Email cannot be empty");
-            } else if (string.IsNullOrEmpty(user.Password)) {
-                ModelState.AddModelError("Password","Password cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(user.Password))
+            {
+                ModelState.AddModelError("Password", "Password cannot be empty");
             }
             else if (Level_Id == 0)
             {
                 ModelState.AddModelError("AccessLevel", "Please select Access Level");
             }
-            else {
+            else
+            {
                 var query = database.Users.Find(id);
                 query.Username = user.Username;
                 query.Password = user.Password;
@@ -378,45 +384,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult EditVsla(int id)
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-
-            var vsla_info = (from tb_vsla in database.Vslas
-                             join tb_cbt in
-                                 database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
-                             where tb_vsla.VslaId == id
-                             select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).Single();
-
-            // Get a list of all vsla regions to populate in the dropdown list
-            List<VslaRegion> allVslaRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList vslaRegionsList = new SelectList(allVslaRegions, "RegionId", "RegionName", vsla_info.db_vsla.RegionId);
-
-            // Get the list of all cbts to populate in the dropdown list
-            List<Cbt_info> AllCbtsList = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbtsList = new SelectList(AllCbtsList, "Id", "Name", vsla_info.db_vsla.CBT);
-
-            // Get the status type ie active/inactive,
-            List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList statusTypes = new SelectList(status, "Status_Id", "CurrentStatus", vsla_info.db_cbt.Status);
-
-            VslaInformation vslaData = new VslaInformation
-            {
-                VslaId = vsla_info.db_vsla.VslaId,
-                VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-                VslaName = vsla_info.db_vsla.VslaName ?? "--",
-                VslaRegionsModel = vslaRegionsList,
-                DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
-                DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
-                PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla_info.db_vsla.ContactPerson,
-                PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-                PhoneNumber = vsla_info.db_vsla.PhoneNumber,
-                CbtModel = cbtsList,
-                StatusType = statusTypes
-            };
-            string action = "Edited information for VSLA named " + vsla_info.db_vsla.VslaName ?? "--";
-            activityLogging.logUserActivity(action);
+            VslaInformation vslaData = getVslaEditInformation(id);
             return View(vslaData);
         }
         /**
@@ -425,9 +393,61 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
-            if (ModelState.IsValid && vsla != null)
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            if (string.IsNullOrEmpty(vsla.VslaCode))
             {
-                ledgerlinkEntities database = new ledgerlinkEntities();
+                ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
+            }
+            else if (string.IsNullOrEmpty(vsla.VslaName))
+            {
+                ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
+            }
+            else if (RegionId == 0)
+            {
+                ModelState.AddModelError("RegionName", "Please select a region");
+            }
+            else if (string.IsNullOrEmpty(vsla.DateRegistered.ToString()))
+            {
+                ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
+            }
+            else if (string.IsNullOrEmpty(vsla.DateLinked.ToString()))
+            {
+                ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
+            }
+            else if (string.IsNullOrEmpty(vsla.PhysicalAddress))
+            {
+                ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
+            }
+            else if (string.IsNullOrEmpty(vsla.VslaPhoneMsisdn))
+            {
+                ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.GpsLocation))
+            {
+                ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.ContactPerson))
+            {
+                ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
+            }
+            else if (string.IsNullOrEmpty(vsla.PositionInVsla))
+            {
+                ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
+            }
+            else if (Id == 0)
+            {
+                ModelState.AddModelError("CbtModel", "Select Responsible CBT");
+            }
+            else if (Status_Id == 0)
+            {
+                ModelState.AddModelError("StatusType", "Select Status Type");
+            }
+            else
+            {
                 var query = database.Vslas.Find(VslaId);
                 query.VslaCode = vsla.VslaCode;
                 query.VslaName = vsla.VslaName;
@@ -441,15 +461,12 @@ namespace DigitizingDataAdminApp.Controllers
                 query.PhoneNumber = vsla.PhoneNumber;
                 query.CBT = Id;
                 query.Status = Status_Id;
-                if (vsla.VslaCode == null || vsla.VslaName == null || vsla.VslaPhoneMsisdn == null || vsla.GpsLocation == null || vsla.DateRegistered == null || vsla.DateLinked == null ||
-                    vsla.ContactPerson == null || vsla.PositionInVsla == null || vsla.PhoneNumber == null)
-                {
-                    return RedirectToAction("VslaData");
-                }
                 database.SaveChanges();
                 return RedirectToAction("VslaData");
             }
-            return View();
+            // If one of the validations fails, reload the form and repopulate the dropdown list
+            VslaInformation vslaData = getVslaEditInformation(VslaId);
+            return View(vslaData);
 
         }
         /**
@@ -457,62 +474,223 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult AddVsla()
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-
-            // Get all cbts
-            List<Cbt_info> AllCbtsList = database.Cbt_info.OrderBy(a => a.Name).ToList();
-            SelectList cbtsList = new SelectList(AllCbtsList, "Id", "Name");
-
-            // Get all vsla regions
-            List<VslaRegion> allRegionsList = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            SelectList regions_list = new SelectList(allRegionsList, "RegionId", "RegionName");
-
-            // Get the status type ie active/inactive
-            List<StatusType> status = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            SelectList statusList = new SelectList(status, "Status_Id", "CurrentStatus");
-
-            VslaInformation vsla_list_options = new VslaInformation
-            {
-                VslaRegionsModel = regions_list,
-                CbtModel = cbtsList,
-                StatusType = statusList
-            };
-            return View(vsla_list_options);
+            VslaInformation vslaDropDownOptions = this.getVslaDropDownOptions();
+            return View(vslaDropDownOptions);
         }
         [HttpPost]
-        public ActionResult AddVsla(Vsla new_vsla, int RegionId, int Id, int Status_Id)
+        public ActionResult AddVsla(Vsla vsla, int RegionId, int Id, int Status_Id)
         {
-
-            if (ModelState.IsValid && new_vsla != null)
+            if (string.IsNullOrEmpty(vsla.VslaCode))
             {
+                ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
+            }
+            else if (string.IsNullOrEmpty(vsla.VslaName))
+            {
+                ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
+            }
+            else if (RegionId == 0)
+            {
+                ModelState.AddModelError("RegionName", "Please select a region");
+            }
+            else if (string.IsNullOrEmpty(vsla.DateRegistered.ToString()))
+            {
+                ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
+            }
+            else if (string.IsNullOrEmpty(vsla.DateLinked.ToString()))
+            {
+                ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
+            }
+            else if (string.IsNullOrEmpty(vsla.PhysicalAddress))
+            {
+                ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
+            }
+            else if (string.IsNullOrEmpty(vsla.VslaPhoneMsisdn))
+            {
+                ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.GpsLocation))
+            {
+                ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.ContactPerson))
+            {
+                ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
+            }
+            else if (string.IsNullOrEmpty(vsla.PositionInVsla))
+            {
+                ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
+            }
+            else if (string.IsNullOrEmpty(vsla.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
+            }
+            else if (Id == 0)
+            {
+                ModelState.AddModelError("CBT", "Please Select CBT in charge");
+            }
+            else if (Status_Id == 0)
+            {
+                ModelState.AddModelError("Status", "Select the VSLA status");
+            }
+            else
+            { // Phew !!! All fields are valid
                 ledgerlinkEntities database = new ledgerlinkEntities();
-                Vsla addedVsla = new Vsla
+                Vsla newVsla = new Vsla
                 {
-                    VslaCode = new_vsla.VslaCode,
-                    VslaName = new_vsla.VslaName,
+                    VslaCode = vsla.VslaCode,
+                    VslaName = vsla.VslaName,
                     RegionId = RegionId,
-                    DateRegistered = new_vsla.DateRegistered.HasValue ? new_vsla.DateRegistered : System.DateTime.Now,
-                    DateLinked = new_vsla.DateLinked.HasValue ? new_vsla.DateLinked : System.DateTime.Now,
-                    PhysicalAddress = new_vsla.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = new_vsla.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = new_vsla.GpsLocation ?? "--",
-                    ContactPerson = new_vsla.ContactPerson,
-                    PositionInVsla = new_vsla.PositionInVsla,
-                    PhoneNumber = new_vsla.PhoneNumber,
+                    DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Now,
+                    DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Now,
+                    PhysicalAddress = vsla.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = vsla.GpsLocation ?? "--",
+                    ContactPerson = vsla.ContactPerson,
+                    PositionInVsla = vsla.PositionInVsla,
+                    PhoneNumber = vsla.PhoneNumber,
                     CBT = Id,
                     Status = Status_Id
                 };
-                if (addedVsla == null)
-                {
-                    RedirectToAction("AddVsla");
-                }
-                database.Vslas.Add(addedVsla);
+                database.Vslas.Add(newVsla);
                 database.SaveChanges();
-                string action = "Added new  VSLA named " + new_vsla.VslaName;
+                string action = "Added new  VSLA named " + vsla.VslaName;
                 activityLogging.logUserActivity(action);
                 return RedirectToAction("VslaData");
             }
-            return View();
+            // If one of the fields are not valid, reload the form and re-populate the dropdown list
+            VslaInformation vslaDropDownOptions = this.getVslaDropDownOptions();
+            return View(vslaDropDownOptions);
+        }
+        /**
+         * Get the list of regions, cbts, and status to populate in the dropdown list
+         * Note : There is default value(with Id 0) as a place holder in case there are not elements in the database to populate the list
+         **/
+        public VslaInformation getVslaDropDownOptions()
+        {
+
+            ledgerlinkEntities database = new ledgerlinkEntities();
+
+            // Get all CBTs and populate them in a dropdown list
+            List<Cbt_info> cbts = new List<Cbt_info>();
+            cbts.Add(new Cbt_info { Id = 0, Name = "-Select CBT" });
+            var database_cbts = database.Cbt_info.OrderBy(a => a.Name);
+            foreach (var cbt in database_cbts)
+            {
+                cbts.Add(new Cbt_info
+                {
+                    Id = cbt.Id,
+                    Name = cbt.Name
+                });
+            }
+            SelectList allCbts = new SelectList(cbts, "Id", "Name", 0);
+
+            // Get all Regions in which VSLAs are operating and populate them in a dropdown list
+            List<VslaRegion> regions = new List<VslaRegion>();
+            regions.Add(new VslaRegion { RegionId = 0, RegionName = "-Select Region-" });
+            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                regions.Add(new VslaRegion
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", 0);
+
+            // Get all status types(active/inactive) and populate them in a dropdown list
+            List<StatusType> statusTypes = new List<StatusType>();
+            statusTypes.Add(new StatusType { Status_Id = 0, CurrentStatus = "-Select Status-" });
+            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var statusType in databaseStatusTypes)
+            {
+                statusTypes.Add(new StatusType
+                {
+                    Status_Id = statusType.Status_Id,
+                    CurrentStatus = statusType.CurrentStatus
+                });
+            }
+            SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", 0);
+            VslaInformation vslaListOptions = new VslaInformation
+            {
+                VslaRegionsModel = allRegions,
+                CbtModel = allCbts,
+                StatusType = statusTypesList
+            };
+            return vslaListOptions;
+        }
+        /**
+         * Get the options for re-populating the edit VSLA form, in case of the forms fails
+         **/
+        public VslaInformation getVslaEditInformation(int id)
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+
+            var vsla = (from tb_vsla in database.Vslas
+                        join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
+                        where tb_vsla.VslaId == id
+                        select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).Single();
+
+            // Get a list of all vsla regions to populate in the dropdown list
+            List<VslaRegion> regions = new List<VslaRegion>();
+            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                regions.Add(new VslaRegion
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
+
+            // Get the list of all cbts to populate in the dropdown list
+            List<Cbt_info> cbts = new List<Cbt_info>();
+            var database_cbts = database.Cbt_info.OrderBy(a => a.Name);
+            foreach (var cbt in database_cbts)
+            {
+                cbts.Add(new Cbt_info
+                {
+                    Id = cbt.Id,
+                    Name = cbt.Name
+                });
+            }
+            SelectList allCbts = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
+
+            // Get the status type ie active/inactive
+            List<StatusType> statusTypes = new List<StatusType>();
+            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var statusType in databaseStatusTypes)
+            {
+                statusTypes.Add(new StatusType
+                {
+                    Status_Id = statusType.Status_Id,
+                    CurrentStatus = statusType.CurrentStatus
+                });
+            }
+            SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.db_cbt.Status);
+
+            VslaInformation vslaData = new VslaInformation
+            {
+                VslaId = vsla.db_vsla.VslaId,
+                VslaCode = vsla.db_vsla.VslaCode ?? "--",
+                VslaName = vsla.db_vsla.VslaName ?? "--",
+                VslaRegionsModel = allRegions,
+                DateRegistered = vsla.db_vsla.DateRegistered.HasValue ? vsla.db_vsla.DateRegistered : System.DateTime.Now,
+                DateLinked = vsla.db_vsla.DateLinked.HasValue ? vsla.db_vsla.DateLinked : System.DateTime.Now,
+                PhysicalAddress = vsla.db_vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vsla.db_vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vsla.db_vsla.GpsLocation ?? "--",
+                ContactPerson = vsla.db_vsla.ContactPerson,
+                PositionInVsla = vsla.db_vsla.PositionInVsla,
+                PhoneNumber = vsla.db_vsla.PhoneNumber,
+                CbtModel = allCbts,
+                StatusType = statusTypesList
+            };
+            string action = "Edited information for VSLA named " + vsla.db_vsla.VslaName ?? "--";
+            activityLogging.logUserActivity(action);
+            //  return View(vslaData);
+            return vslaData;
         }
         /**
          * Delete a particular VSLA from the system
