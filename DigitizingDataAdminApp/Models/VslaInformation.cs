@@ -41,6 +41,7 @@ namespace DigitizingDataAdminApp.Models
         public string PhysicalAddress { get; set; }
 
         [Required(ErrorMessage = "Phone MSISDN is a require field", AllowEmptyStrings = false)]
+        [StringLength(20, ErrorMessage = "Must be under 20 characters")]
         public string VslaPhoneMsisdn { get; set; }
 
         [Required(ErrorMessage = "GPS Location is a require field", AllowEmptyStrings = false)]
@@ -53,6 +54,7 @@ namespace DigitizingDataAdminApp.Models
         public string PositionInVsla { get; set; }
 
         [Required(ErrorMessage = "Phone Number is a require field", AllowEmptyStrings = false)]
+        [StringLength(20,ErrorMessage="Must be under 20 characters")]
         public string PhoneNumber { get; set; }
 
         public string CBT { get; set; }

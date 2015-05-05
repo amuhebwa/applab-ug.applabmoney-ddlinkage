@@ -5,31 +5,31 @@
     ViewBag.Title = "UserDetails";
 }
 
-<h4 style="text-align: center;">Add New User </h4>
-    <hr />
-    <table class="table table-bordered">
-        <tr>
-            <td><strong>@Html.DisplayName("Username")</strong></td>
-            <td>@Html.DisplayFor(model => model.Username)</td>
-        </tr>
-        <tr>
-            <td><strong>@Html.DisplayName("Fullname")</strong></td>
-            <td>@Html.DisplayFor(model => model.Fullname)</td>
-        </tr>
+<h4 style="text-align: center;"><strong>Add New User</strong></h4>
+<hr />
+<table class="table table-bordered">
+    <tr>
+        <td><strong>@Html.DisplayName("Username")</strong></td>
+        <td>@Html.DisplayFor(model => model.Username)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Fullname")</strong></td>
+        <td>@Html.DisplayFor(model => model.Fullname)</td>
+    </tr>
 
-        <tr>
-            <td><strong>@Html.DisplayName("Email")</strong></td>
-            <td>@Html.DisplayFor(model => model.Email)</td>
-        </tr>
-        <tr>
-            <td><strong>@Html.DisplayName("Password")</strong></td>
-            <td>@Html.DisplayFor(model => model.Password)</td>
-        </tr>
-        <tr>
-            <td><strong>@Html.DisplayName("Access Level")</strong></td>
-            <td>@Html.DisplayFor(model => model.UserLevel)</td>
-        </tr>
-    </table>
+    <tr>
+        <td><strong>@Html.DisplayName("Email")</strong></td>
+        <td>@Html.DisplayFor(model => model.Email)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Password")</strong></td>
+        <td>@Html.DisplayFor(model => model.Password)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Access Level")</strong></td>
+        <td>@Html.DisplayFor(model => model.UserLevel)</td>
+    </tr>
+</table>
 <p>
     @Html.ActionLink("Edit", "EditUser", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "UsersData")

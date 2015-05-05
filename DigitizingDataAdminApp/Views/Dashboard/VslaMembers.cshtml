@@ -5,7 +5,7 @@
     ViewBag.Title = "VslaMembers";
 }
 
-<h4>All Members of @Model.vslaName</h4>
+<h4><strong>All Members of @Model.vslaName</strong></h4>
 <div>
     <a href="@Url.Action("ExportMembersToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
         <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>

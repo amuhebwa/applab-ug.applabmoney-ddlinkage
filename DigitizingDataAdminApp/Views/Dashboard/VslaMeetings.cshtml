@@ -5,11 +5,11 @@
     ViewBag.Title = "VslaMeetings";
 }
 
-<h4>All VSLA Meetings For @Model.vslaName</h4>
-@*<p> @Html.ActionLink("Export to CSV", "ExportVSLAMeetingsToCSV", new {id=@Model.vslaId, fileName = @Model.vslaName})</p>*@
+<h4><strong>All VSLA Meetings For @Model.vslaName</strong></h4>
 <p>
     <a href="@Url.Action("ExportVSLAMeetingsToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
-        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/> <strong>Export to CSV</strong>
+        <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
+        <strong>Export to CSV</strong>
     </a>
     |
     <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>

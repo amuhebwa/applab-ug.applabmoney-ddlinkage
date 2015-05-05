@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Data.Objects.SqlClient;
 using System.Web.Helpers;
 using System.IO;
+using System.Text.RegularExpressions;
 namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
@@ -480,9 +481,14 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddVsla(Vsla vsla, int RegionId, int Id, int Status_Id)
         {
+            Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
             if (string.IsNullOrEmpty(vsla.VslaCode))
             {
                 ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
+            }
+            else if (!vsla.VslaCode.Trim().ToString().StartsWith("VS"))
+            {
+                ModelState.AddModelError("VslaCode", "VSLA Code starts with VS");
             }
             else if (string.IsNullOrEmpty(vsla.VslaName))
             {
@@ -508,6 +514,10 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
             }
+            else if (!phoneRegex.IsMatch(vsla.VslaPhoneMsisdn))
+            {
+                ModelState.AddModelError("VslaPhoneMsisdn", "Please Enter Numbers Only");
+            }
             else if (string.IsNullOrEmpty(vsla.GpsLocation))
             {
                 ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
@@ -520,9 +530,20 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
             }
+            else if (vsla.PositionInVsla.ToString().Trim().Length > 20) {
+                ModelState.AddModelError("PositionInVsla", "Maximum : 20 Characters");
+            }
             else if (string.IsNullOrEmpty(vsla.PhoneNumber))
             {
                 ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
+            }
+            else if (vsla.PhoneNumber.ToString().Trim().Length > 20)
+            {
+                ModelState.AddModelError("PhoneNumber", "Maximum : 20 Characters");
+            }
+            else if (!phoneRegex.IsMatch(vsla.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Please Enter Numbers Only");
             }
             else if (Id == 0)
             {

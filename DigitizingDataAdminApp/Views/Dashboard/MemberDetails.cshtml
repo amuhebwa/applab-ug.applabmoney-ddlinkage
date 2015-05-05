@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
-<h4 style="text-align: center;">Member Information for  @Html.DisplayFor(model => model.surname) @Html.DisplayFor(model => model.otherNames) </h4>
+<h4 style="text-align: center;"><strong>Member Information for  @Html.DisplayFor(model => model.surname) @Html.DisplayFor(model => model.otherNames)</strong></h4>
 <hr />
 <table class="table table-bordered">
     <tr>
@@ -52,5 +52,5 @@
         <td>@Html.DisplayFor(model => model.phoneNumber)</td>
     </tr>
 </table>
-<p> <strong> @Html.ActionLink("Back to Members List", "VslaMembers", new {id = @Model.vslaId })</strong></p>
+<p><strong>@Html.ActionLink("Back to Members List", "VslaMembers", new { id = @Model.vslaId })</strong></p>
 
