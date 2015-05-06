@@ -7,7 +7,7 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <h4 style="text-align: center;">Edit Information for @Html.DisplayFor(model => model.VslaName) </h4>
+    <h4 style="text-align: center;"><strong>Edit Information for @Html.DisplayFor(model => model.VslaName)</strong></h4>
     <hr />
     <table class="table table-bordered">
         <thead>
@@ -72,11 +72,15 @@
         </tr>
         <tr>
             <td><strong>@Html.DisplayName("Responsible CBT")</strong></td>
-            <td>@Html.DropDownList("Id", Model.CbtModel, new { @style = "width:250px; height:30px;" })</td>
+            <td>@Html.DropDownList("Id", Model.CbtModel, new { @style = "width:250px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.CbtModel)
+            </td>
         </tr>
         <tr>
             <td><strong>@Html.DisplayName("Status of VSLA")</strong></td>
-            <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })</td>
+            <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.StatusType)
+            </td>
         </tr>
     </table>
     <p>

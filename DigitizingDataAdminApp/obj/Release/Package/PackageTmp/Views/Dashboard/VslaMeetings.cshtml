@@ -5,17 +5,19 @@
     ViewBag.Title = "VslaMeetings";
 }
 
-<h4>All VSLA Meetings For @Model.vslaName</h4>
-@*<p> @Html.ActionLink("Export to CSV", "ExportVSLAMeetingsToCSV", new {id=@Model.vslaId, fileName = @Model.vslaName})</p>*@
+<h4><strong>All VSLA Meetings For @Model.vslaName</strong></h4>
 <p>
     <a href="@Url.Action("ExportVSLAMeetingsToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
         <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
+        <strong>Export to CSV</strong>
     </a>
+    |
+    <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>
 </p>
 <div style="width: auto; min-width: 1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMeetings).Columns(columns =>
                     {
-                        columns.Add(c => c.formattedMeetingDate).Titled("Date");
+                        columns.Add(c => c.formattedMeetingDate).Titled("Date").Filterable(true);
                         columns.Add(c => c.membersPresent).Titled("Members Present");
                         columns.Add(c => c.cashFines).Titled("Fines");
                         columns.Add(c => c.totalSavings).Titled("Amount Saved");

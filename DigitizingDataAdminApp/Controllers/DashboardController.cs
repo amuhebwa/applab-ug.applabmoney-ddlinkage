@@ -518,6 +518,10 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("VslaPhoneMsisdn", "Please Enter Numbers Only");
             }
+            else if (vsla.VslaPhoneMsisdn.ToString().Trim().Length > 20)
+            {
+                ModelState.AddModelError("VslaPhoneMsisdn", "Maximum : 20 Characters");
+            }
             else if (string.IsNullOrEmpty(vsla.GpsLocation))
             {
                 ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
@@ -529,9 +533,6 @@ namespace DigitizingDataAdminApp.Controllers
             else if (string.IsNullOrEmpty(vsla.PositionInVsla))
             {
                 ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
-            }
-            else if (vsla.PositionInVsla.ToString().Trim().Length > 20) {
-                ModelState.AddModelError("PositionInVsla", "Maximum : 20 Characters");
             }
             else if (string.IsNullOrEmpty(vsla.PhoneNumber))
             {

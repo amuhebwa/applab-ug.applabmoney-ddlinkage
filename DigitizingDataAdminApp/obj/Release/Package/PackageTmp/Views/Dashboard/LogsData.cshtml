@@ -5,13 +5,13 @@
     ViewBag.Title = "LogsData";
 }
 
-<h4>User-System Interaction Logs</h4>
+<h4><strong>User-System Interaction Logs</strong></h4>
 <hr />
 
-<div style="width: auto; min-width:1000px; margin: 0 auto;">
+<div style="width: auto; min-width: 1000px; margin: 0 auto;">
     @Html.Grid(Model.AllLogsList).Columns(columns =>
                     {
-                        columns.Add(c => c.LogId).Titled("Id");
+                        columns.Add(c => c.LogId).Titled("ID");
                         columns.Add(c => c.userId).Titled("User");
                         columns.Add(c => c.formattedLogTime).Titled("Log time");
                         columns.Add(c => c.ActionPerformed).Titled("Action Performed");

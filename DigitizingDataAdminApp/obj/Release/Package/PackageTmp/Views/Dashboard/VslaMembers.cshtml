@@ -5,12 +5,14 @@
     ViewBag.Title = "VslaMembers";
 }
 
-<h4>All Members of @Model.vslaName</h4>
+<h4><strong>All Members of @Model.vslaName</strong></h4>
 <div>
-    @*Export Data : @Html.ActionLink("Excel", "ExportMembersToCSV", new { id = @Model.vslaId, fileName = @Model.vslaName})*@
     <a href="@Url.Action("ExportMembersToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
         <img  src="@Url.Content("~/Content/Images/export_csv.png")"/>
+        <strong>Export to CSV</strong>
     </a>
+    |
+    <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>
 </div>
 <div style="width: auto; min-width: 1000px; margin: 0 auto;">
     @Html.Grid(Model.allVslaMembers).Columns(columns =>
@@ -20,7 +22,7 @@
                         columns.Add(c => c.otherNames).Titled("Other Names");
                         columns.Add(c => c.gender).Titled("Gender");
                         columns.Add(c => c.occupation).Titled("Occupation");
-                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("MemberDetails", "Dashboard", new { id = c.memberId })">
+                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("MemberDetails", "Dashboard", new { id = c.memberId, vslaId = @Model.vslaId })">
                             <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
                     }).WithPaging(30).Sortable(true)
 </div>

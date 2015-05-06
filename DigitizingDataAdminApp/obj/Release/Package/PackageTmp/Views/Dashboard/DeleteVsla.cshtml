@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "DeleteVsla";
 }
-<h4 style="text-align:center;" >Do you want delete @Html.DisplayFor(model => model.VslaName) from the system ? </h4>
+<h4 style="text-align: center;"><strong>Do you want delete @Html.DisplayFor(model => model.VslaName) from the system ? </strong></h4>
 <hr />
 <table class="table table-bordered">
     <tr>
@@ -63,7 +63,7 @@
 </table>
 <p>
     @using (Html.BeginForm())
-{
+    {
    
         <p>
             <input class="btn btn-small btn-danger" type="submit" value=" Delete " style="width: 100px;" />
@@ -73,5 +73,5 @@
         @Html.ActionLink("Back to List", "VslaData")
         </p>
    
-}
+    }
 </p>
