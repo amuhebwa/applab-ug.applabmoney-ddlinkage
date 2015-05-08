@@ -17,19 +17,121 @@ namespace DigitizingDataAdminApp.Controllers
     {
 
         // Initialize the user logging class
-        ActivityLogging activityLogging = new ActivityLogging();
+        DataLogging dataLogging;
+        public DashboardController() {
+            dataLogging = new DataLogging();
+        }
 
         [Authorize]
         public ActionResult Dashboard()
         {
             if (Session["UserId"] != null)
             {
-                return View();
+                // Generate overview of the statistics
+                ledgerlinkEntities database = new ledgerlinkEntities();
+                // Total VSLAs
+                long totalVslas = database.Vslas.Select(x => x.VslaName).Count();
+                // Total Members
+                int femaleMMembers = (from db_members in database.Members
+                                      where db_members.Gender == "Female"
+                                      select new { db_members }).Count();
+                int maleMembers = (from db_members in database.Members
+                                   where db_members.Gender == "Male"
+                                   select new { db_members }).Count();
+                int totalMembers = (int)database.Members.Select(x => x.MemberId).Count();
+                // Savings, Loans and repayments
+                double totalSavings = (double)database.Meetings.Select(x => x.SumOfSavings).Sum();
+                double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
+                double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
+                // Attendance
+                int totalPresent = (from db_present in database.Attendances
+                                    where db_present.IsPresent == true
+                                    select new { db_present }).Count();
+                int totalAbsent = (from db_present in database.Attendances
+                                   where db_present.IsPresent == false
+                                   select new { db_present }).Count();
+                // Total number of submissions
+                int totalSubmissions = (int)database.DataSubmissions.Select(x => x.SourceVslaCode).Count();
+                // Total meetings
+                int totalMeeetings = (int)database.Meetings.Select(x => x.MeetingId).Count();
+                DashboardSummary summary = new DashboardSummary
+                {
+                    femaleMembers = femaleMMembers,
+                    maleMembers = maleMembers,
+                    totalMembers = totalMembers,
+                    totalAbsent = totalAbsent,
+                    totalPresent = totalPresent,
+                    totalLoanRepayment = totalLoanRepayment,
+                    totalLoans = totalLoans,
+                    totalSavings = totalSavings,
+                    totalSubmissions = totalSubmissions,
+                    totalMeeetings = totalMeeetings,
+                    totalVslas = totalVslas
+
+
+                };
+                return View(summary);
             }
             else
             {
                 return RedirectToAction("Index", "Index");
             }
+        }
+        /**
+         * **** Generate Graphs for Summary Data Visualization****
+         * */
+        // 1. Members by Gender
+        public ActionResult showMembersByGender()
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            int femaleMMembers = (from db_members in database.Members
+                                  where db_members.Gender == "Female"
+                                  select new { db_members }).Count();
+            int maleMembers = (from db_members in database.Members
+                               where db_members.Gender == "Male"
+                               select new { db_members }).Count();
+            new Chart(width: 300, height: 300)
+            .AddTitle("Members By Gender")
+            .AddSeries(chartType: "pie",
+                xValue: new[] { "Males", "Females" },
+                yValues: new[] { maleMembers.ToString(), femaleMMembers.ToString() }
+                ).AddLegend().Write("bmp");
+            return null;
+        }
+        // 2. Attendance (Absent/Present)
+        public ActionResult showAttendance()
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            long totalPresent = (from db_present in database.Attendances
+                                 where db_present.IsPresent == true
+                                 select new { db_present }).Count();
+            long totalAbsent = (from db_present in database.Attendances
+                                where db_present.IsPresent == false
+                                select new { db_present }).Count();
+            new Chart(width: 300, height: 300)
+            .AddTitle("Overall Attendance")
+            .AddSeries(chartType: "pie",
+                xValue: new[] { "Present", "Absent" },
+               yValues: new[] { totalPresent.ToString(), totalAbsent.ToString() }
+               ).AddLegend().Write("bmp");
+            return null;
+        }
+        // 3. Show total savings, loans given out and loan repayments
+        public ActionResult showSavingsLoansAndRepayments()
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            double totalSavings = (double)database.Meetings.Select(x => x.SumOfSavings).Sum();
+            double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
+            double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
+
+            new Chart(width: 300, height: 300)
+            .AddTitle("Financial Break down")
+            .AddSeries(chartType: "column",
+            xValue: new[] { "Total Savings", "Total Loans", "Loan Repayment" },
+            yValues: new[] { totalSavings.ToString(), totalLoans.ToString(), totalLoanRepayment.ToString() })
+            .Write("bmp");
+
+            return null;
         }
         /**
          * Get all information concerning registered information
@@ -41,7 +143,7 @@ namespace DigitizingDataAdminApp.Controllers
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
             string action = "Viewed all users";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(allUsers);
         }
         /**
@@ -54,7 +156,7 @@ namespace DigitizingDataAdminApp.Controllers
             getVslaData = getVslaInformation();
             allVslas.AllVslaList = getVslaData;
             string action = "Viewed all village lending and saving associations information";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(allVslas);
 
         }
@@ -70,7 +172,7 @@ namespace DigitizingDataAdminApp.Controllers
             getCbtData = getCbtInformation();
             allCbts.AllCbtList = getCbtData;
             string action = "Viewed all commnity based trainers information";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(allCbts);
         }
         /**
@@ -83,7 +185,7 @@ namespace DigitizingDataAdminApp.Controllers
             loggedData = getAllLogInformation();
             loggedInformation.AllLogsList = loggedData;
             string action = "Viewed log information";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(loggedInformation);
         }
         /**
@@ -96,7 +198,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult Logout()
         {
             string action = "logged out";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             FormsAuthentication.SignOut();
             return RedirectToAction("Index");
 
@@ -150,7 +252,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
-                activityLogging.logUserActivity(action);
+                dataLogging.writeLogsToFile(action);
                 user = null;
                 return RedirectToAction("UsersData");
             }
@@ -253,7 +355,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.UserLevel = Level_Id;
                 database.SaveChanges();
                 string action = "Edited information for " + user.Fullname;
-                activityLogging.logUserActivity(action);
+                dataLogging.writeLogsToFile(action);
                 return RedirectToAction("UsersData");
             }
             List<UserPermission> permissions = new List<UserPermission>();
@@ -300,7 +402,7 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = userDetails.db_permissions.UserType
             };
             string action = "Deleted information for " + userDetails.db_users.Fullname;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(userData);
         }
 
@@ -342,7 +444,7 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = user_details.db_permissions.UserType
             };
             string action = "Viewed list of all users in the System";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(userData);
         }
         /**
@@ -376,7 +478,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vsla_info.db_status.CurrentStatus ?? "--"
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(vslaData);
         }
         /**
@@ -576,7 +678,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Vslas.Add(newVsla);
                 database.SaveChanges();
                 string action = "Added new  VSLA named " + vsla.VslaName;
-                activityLogging.logUserActivity(action);
+                dataLogging.writeLogsToFile(action);
                 return RedirectToAction("VslaData");
             }
             // If one of the fields are not valid, reload the form and re-populate the dropdown list
@@ -710,7 +812,7 @@ namespace DigitizingDataAdminApp.Controllers
                 StatusType = statusTypesList
             };
             string action = "Edited information for VSLA named " + vsla.db_vsla.VslaName ?? "--";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             //  return View(vslaData);
             return vslaData;
         }
@@ -746,7 +848,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vslaInformation.db_status.CurrentStatus
             };
             string action = "Deleted all information for VSLA named " + vslaInformation.db_vsla.VslaName;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(vslaData);
         }
         [HttpPost]
@@ -779,7 +881,7 @@ namespace DigitizingDataAdminApp.Controllers
             totalMeetings.vslaName = vslaName.VslaName;
             totalMeetings.vslaId = id;
             string action = "Viewed information concerning vsla meetings";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(totalMeetings);
         }
 
@@ -935,7 +1037,7 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             string action = "Viewed information for a single VSLA meeting";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return meetings;
         }
         /**
@@ -1053,7 +1155,7 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             string action = "Viewed information for all members for a selected vsla";
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return allMembers;
         }
         /**
@@ -1127,7 +1229,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             };
             string action = "Viewed information for vsla member called " + member.dt_members.Surname + " " + member.dt_members.OtherNames;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(memberInfo);
         }
         /**
@@ -1174,7 +1276,7 @@ namespace DigitizingDataAdminApp.Controllers
                     Status = Status_Id
                 };
                 string action = "Added a new CBT called " + new_cbt.Name;
-                activityLogging.logUserActivity(action);
+                dataLogging.writeLogsToFile(action);
 
                 database.Cbt_info.Add(_cbt);
                 database.SaveChanges();
@@ -1236,7 +1338,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             CbtInformation cbtData = getCbtInformationForEditing(id);
             string action = "Viewed CBT details for  " + cbtData.Name;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         /**
@@ -1291,7 +1393,7 @@ namespace DigitizingDataAdminApp.Controllers
             };
 
             string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         [HttpPost]
@@ -1401,7 +1503,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             CbtInformation cbtData = getCbtInformationForEditing(id);
             string action = "Deleted CBT information for  " + cbtData.Name;
-            activityLogging.logUserActivity(action);
+            dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         [HttpPost]

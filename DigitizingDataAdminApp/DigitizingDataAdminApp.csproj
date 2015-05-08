@@ -222,6 +222,8 @@
     <Compile Include="Models\Cbt_info.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardSummary.cs" />
+    <Compile Include="Models\DataLogging.cs" />
     <Compile Include="Models\DataSubmission.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -486,7 +488,7 @@
     <Content Include="Views\Shared\Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Logs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
