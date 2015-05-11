@@ -666,7 +666,7 @@ namespace DigitizingDataAdminApp.Controllers
                  * */
                 int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
                 string getYear = DateTime.Now.Year.ToString().Substring(2);
-                string generatedVslaCode = "VS" + getMaxId.ToString() + getYear;
+                string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
 
                 Vsla newVsla = new Vsla
                 {
