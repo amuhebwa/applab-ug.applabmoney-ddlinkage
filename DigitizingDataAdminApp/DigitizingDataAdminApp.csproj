@@ -488,7 +488,7 @@
     <Content Include="Views\Shared\Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Logs\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -11,11 +11,11 @@
     <h4 style="text-align: center; min-width: 800px;"><strong>Add New Vsla</strong></h4>
     <hr />
     <table class="table table-bordered">
-        <tr>
+        @*<tr>
             <td><strong>@Html.DisplayName("VSLA Code")</strong></td>
             <td>@Html.TextBoxFor(model => model.VslaCode, new { @Placeholder = "e.g VS10101" })
                 @Html.ValidationMessageFor(model => model.VslaCode)</td>
-        </tr>
+        </tr>*@
         <tr>
             <td><strong>@Html.DisplayName("VSLA Name")</strong></td>
             <td>@Html.TextBoxFor(model => model.VslaName)

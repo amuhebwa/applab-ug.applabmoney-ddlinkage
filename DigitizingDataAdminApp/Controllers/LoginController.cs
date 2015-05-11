@@ -13,12 +13,12 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
-        DataLogging dataLogging;
+        // DataLogging dataLogging;
         ledgerlinkEntities database;
         PasswordHashing passwordHashing;
         public LoginController()
         {
-            dataLogging = new DataLogging();
+            // dataLogging = new DataLogging();
             database = new ledgerlinkEntities();
             passwordHashing = new PasswordHashing();
         }
@@ -46,8 +46,8 @@ namespace DigitizingDataAdminApp.Controllers
                     Session["UserId"] = current_user.Id.ToString();
                     Session["Username"] = current_user.Username;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
-                    action = "Logged in as " + user.Username;
-                    dataLogging.writeLogsToFile(action);
+                   //  action = "Logged in as " + user.Username;
+                   // dataLogging.writeLogsToFile(action);
 
                     return RedirectToAction("Dashboard", "Dashboard");
                 }
@@ -55,7 +55,7 @@ namespace DigitizingDataAdminApp.Controllers
                 {
                     ModelState.AddModelError("", "The Username or Password provided is wrong!!");
                     action = "Failed to login with " + " " + user.Username + " and " + user.Password;
-                    dataLogging.writeLogsToFile(action);
+                   // dataLogging.writeLogsToFile(action);
                 }
             }
 

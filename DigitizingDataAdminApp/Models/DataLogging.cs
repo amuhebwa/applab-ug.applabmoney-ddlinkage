@@ -10,14 +10,21 @@ namespace DigitizingDataAdminApp.Models
 {
     public class DataLogging
     {
-        String filePath;
+        string filePath;
         public DataLogging() {
-            filePath = "~/App_Data/Logs/Text.txt";
+
+            filePath = @"~/App_Data/Logs.txt";
+
         }
         // Method to do the actual writing to the file
         public void writeLogsToFile(string action) {
             String data = action + " " + DateTime.Now.ToString();
-            using (StreamWriter writer = new StreamWriter(System.Web.HttpContext.Current.Server.MapPath(filePath), true))
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+            using (StreamWriter writer = new StreamWriter(System.Web.Hosting.HostingEnvironment.MapPath(filePath), true))
             {
                 writer.WriteLine(data);
             }

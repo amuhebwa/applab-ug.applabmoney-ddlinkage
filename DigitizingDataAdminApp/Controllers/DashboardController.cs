@@ -17,12 +17,12 @@ namespace DigitizingDataAdminApp.Controllers
     {
 
         // Initialize the user logging class
-        DataLogging dataLogging;
+        // DataLogging dataLogging;
         ledgerlinkEntities database;
         public DashboardController()
         {
             database = new ledgerlinkEntities();
-            dataLogging = new DataLogging();
+            // dataLogging = new DataLogging();
         }
 
         [Authorize]
@@ -31,13 +31,15 @@ namespace DigitizingDataAdminApp.Controllers
             if (Session["UserId"] != null)
             {
                 // Generate overview of the statistics
-               // ledgerlinkEntities database = new ledgerlinkEntities();
+                // ledgerlinkEntities database = new ledgerlinkEntities();
                 // Total VSLAs
                 long totalVslas = database.Vslas.Select(x => x.VslaName).Count();
                 // Total Members
-                int femaleMMembers = (from db_members in database.Members where db_members.Gender == "Female"
+                int femaleMMembers = (from db_members in database.Members
+                                      where db_members.Gender == "Female"
                                       select new { db_members }).Count();
-                int maleMembers = (from db_members in database.Members where db_members.Gender == "Male"
+                int maleMembers = (from db_members in database.Members
+                                   where db_members.Gender == "Male"
                                    select new { db_members }).Count();
                 int totalMembers = (int)database.Members.Select(x => x.MemberId).Count();
                 // Savings, Loans and repayments
@@ -45,9 +47,11 @@ namespace DigitizingDataAdminApp.Controllers
                 double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
                 double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
                 // Attendance
-                int totalPresent = (from db_present in database.Attendances where db_present.IsPresent == true
+                int totalPresent = (from db_present in database.Attendances
+                                    where db_present.IsPresent == true
                                     select new { db_present }).Count();
-                int totalAbsent = (from db_present in database.Attendances where db_present.IsPresent == false
+                int totalAbsent = (from db_present in database.Attendances
+                                   where db_present.IsPresent == false
                                    select new { db_present }).Count();
                 // Total number of submissions
                 int totalSubmissions = (int)database.DataSubmissions.Select(x => x.SourceVslaCode).Count();
@@ -82,10 +86,12 @@ namespace DigitizingDataAdminApp.Controllers
         // 1. Members by Gender
         public ActionResult showMembersByGender()
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
-            int femaleMMembers = (from db_members in database.Members where db_members.Gender == "Female"
+            // ledgerlinkEntities database = new ledgerlinkEntities();
+            int femaleMMembers = (from db_members in database.Members
+                                  where db_members.Gender == "Female"
                                   select new { db_members }).Count();
-            int maleMembers = (from db_members in database.Members  where db_members.Gender == "Male"
+            int maleMembers = (from db_members in database.Members
+                               where db_members.Gender == "Male"
                                select new { db_members }).Count();
             new Chart(width: 300, height: 300)
             .AddTitle("Members By Gender")
@@ -99,9 +105,11 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult showAttendance()
         {
             // ledgerlinkEntities database = new ledgerlinkEntities();
-            long totalPresent = (from db_present in database.Attendances where db_present.IsPresent == true 
+            long totalPresent = (from db_present in database.Attendances
+                                 where db_present.IsPresent == true
                                  select new { db_present }).Count();
-            long totalAbsent = (from db_present in database.Attendances where db_present.IsPresent == false
+            long totalAbsent = (from db_present in database.Attendances
+                                where db_present.IsPresent == false
                                 select new { db_present }).Count();
             new Chart(width: 300, height: 300)
             .AddTitle("Overall Attendance")
@@ -114,7 +122,7 @@ namespace DigitizingDataAdminApp.Controllers
         // 3. Show total savings, loans given out and loan repayments
         public ActionResult showSavingsLoansAndRepayments()
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
             double totalSavings = (double)database.Meetings.Select(x => x.SumOfSavings).Sum();
             double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
             double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
@@ -137,8 +145,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<UserInformation> singleUser = new List<UserInformation>();
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
-            string action = "Viewed all users";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed all users";
+            // dataLogging.writeLogsToFile(action);
             return View(allUsers);
         }
         /**
@@ -150,8 +158,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<VslaInformation> getVslaData = new List<VslaInformation>();
             getVslaData = getVslaInformation();
             allVslas.AllVslaList = getVslaData;
-            string action = "Viewed all village lending and saving associations information";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed all village lending and saving associations information";
+            // dataLogging.writeLogsToFile(action);
             return View(allVslas);
 
         }
@@ -166,8 +174,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<CbtInformation> getCbtData = new List<CbtInformation>();
             getCbtData = getCbtInformation();
             allCbts.AllCbtList = getCbtData;
-            string action = "Viewed all commnity based trainers information";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed all commnity based trainers information";
+            // dataLogging.writeLogsToFile(action);
             return View(allCbts);
         }
         /**
@@ -179,8 +187,8 @@ namespace DigitizingDataAdminApp.Controllers
             List<LogsInformation> loggedData = new List<LogsInformation>();
             loggedData = getAllLogInformation();
             loggedInformation.AllLogsList = loggedData;
-            string action = "Viewed log information";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed log information";
+            // dataLogging.writeLogsToFile(action);
             return View(loggedInformation);
         }
         /**
@@ -192,8 +200,8 @@ namespace DigitizingDataAdminApp.Controllers
          **/
         public ActionResult Logout()
         {
-            string action = "logged out";
-            dataLogging.writeLogsToFile(action);
+            // string action = "logged out";
+            //  dataLogging.writeLogsToFile(action);
             FormsAuthentication.SignOut();
             return RedirectToAction("Index");
 
@@ -210,7 +218,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult AddUser(User user, int Level_Id)
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
             PasswordHashing _password = new PasswordHashing();
             string _hashedPassword = _password.hashedPassword(user.Password); // Hash the password
             if (string.IsNullOrEmpty(user.Username))
@@ -247,7 +255,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 ModelState.Clear();
                 string action = "Added a new user called " + user.Username;
-                dataLogging.writeLogsToFile(action);
+                // dataLogging.writeLogsToFile(action);
                 user = null;
                 return RedirectToAction("UsersData");
             }
@@ -260,7 +268,7 @@ namespace DigitizingDataAdminApp.Controllers
          **/
         public UserInformation getAccessPermissions()
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
             List<UserPermission> permissions = new List<UserPermission>();
             permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
             var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
@@ -286,7 +294,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult EditUser(int id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             var userDetails = (from table_users in database.Users
                                join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                where table_users.Id == id
@@ -319,7 +327,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditUser(UserInformation user, int id, int Level_Id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             if (string.IsNullOrEmpty(user.Username))
             {
                 ModelState.AddModelError("Username", "Username cannot be empty");
@@ -350,7 +358,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.UserLevel = Level_Id;
                 database.SaveChanges();
                 string action = "Edited information for " + user.Fullname;
-                dataLogging.writeLogsToFile(action);
+                // dataLogging.writeLogsToFile(action);
                 return RedirectToAction("UsersData");
             }
             List<UserPermission> permissions = new List<UserPermission>();
@@ -381,7 +389,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult DeleteUser(int id)
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
             var userDetails = (from tb_users in database.Users
                                join table_permissions in database.UserPermissions on tb_users.UserLevel equals table_permissions.Level_Id
                                where tb_users.Id == id
@@ -397,7 +405,7 @@ namespace DigitizingDataAdminApp.Controllers
                 UserLevel = userDetails.db_permissions.UserType
             };
             string action = "Deleted information for " + userDetails.db_users.Fullname;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(userData);
         }
 
@@ -406,7 +414,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (ModelState.IsValid && user != null)
             {
-               // ledgerlinkEntities database = new ledgerlinkEntities();
+                // ledgerlinkEntities database = new ledgerlinkEntities();
                 user.Id = id;
                 database.Users.Attach(user);
                 database.Users.Remove(user);
@@ -437,8 +445,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = user_details.db_users.Email,
                 UserLevel = user_details.db_permissions.UserType
             };
-            string action = "Viewed list of all users in the System";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed list of all users in the System";
+            // dataLogging.writeLogsToFile(action);
             return View(userData);
         }
         /**
@@ -446,7 +454,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult VslaDetails(int id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             var vsla_info = (from tb_vsla in database.Vslas
                              join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
                              join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
@@ -472,7 +480,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vsla_info.db_status.CurrentStatus ?? "--"
             };
             string action = "Viewed all information for VSLA named " + vsla_info.db_vsla.VslaName;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(vslaData);
         }
         /**
@@ -578,15 +586,15 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult AddVsla(Vsla vsla, int RegionId, int Id, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(vsla.VslaCode))
-            {
-                ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
-            }
-            else if (!vsla.VslaCode.Trim().ToString().StartsWith("VS"))
-            {
-                ModelState.AddModelError("VslaCode", "VSLA Code starts with VS");
-            }
-            else if (string.IsNullOrEmpty(vsla.VslaName))
+            //if (string.IsNullOrEmpty(vsla.VslaCode))
+            //{
+            //    ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
+            //}
+            //else if (!vsla.VslaCode.Trim().ToString().StartsWith("VS"))
+            //{
+            //    ModelState.AddModelError("VslaCode", "VSLA Code starts with VS");
+            //}
+            if (string.IsNullOrEmpty(vsla.VslaName))
             {
                 ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
             }
@@ -653,9 +661,16 @@ namespace DigitizingDataAdminApp.Controllers
             else
             { //! All fields are valid
                 // ledgerlinkEntities database = new ledgerlinkEntities();
+                /**
+                 * Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy)
+                 * */
+                int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
+                string getYear = DateTime.Now.Year.ToString().Substring(2);
+                string generatedVslaCode = "VS" + getMaxId.ToString() + getYear;
+
                 Vsla newVsla = new Vsla
                 {
-                    VslaCode = vsla.VslaCode,
+                    VslaCode = generatedVslaCode,
                     VslaName = vsla.VslaName,
                     RegionId = RegionId,
                     DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Now,
@@ -672,7 +687,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Vslas.Add(newVsla);
                 database.SaveChanges();
                 string action = "Added new  VSLA named " + vsla.VslaName;
-                dataLogging.writeLogsToFile(action);
+                // dataLogging.writeLogsToFile(action);
                 return RedirectToAction("VslaData");
             }
             // If one of the fields are not valid, reload the form and re-populate the dropdown list
@@ -685,7 +700,7 @@ namespace DigitizingDataAdminApp.Controllers
          **/
         public VslaInformation getVslaDropDownOptions()
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
             // Get all CBTs and populate them in a dropdown list
             List<Cbt_info> cbts = new List<Cbt_info>();
             cbts.Add(new Cbt_info { Id = 0, Name = "-Select CBT" });
@@ -803,7 +818,7 @@ namespace DigitizingDataAdminApp.Controllers
                 StatusType = statusTypesList
             };
             string action = "Edited information for VSLA named " + vsla.db_vsla.VslaName ?? "--";
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return vslaData;
         }
         /**
@@ -838,7 +853,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vslaInformation.db_status.CurrentStatus
             };
             string action = "Deleted all information for VSLA named " + vslaInformation.db_vsla.VslaName;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(vslaData);
         }
         [HttpPost]
@@ -870,8 +885,8 @@ namespace DigitizingDataAdminApp.Controllers
             totalMeetings.allVslaMeetings = singleMeeting;
             totalMeetings.vslaName = vslaName.VslaName;
             totalMeetings.vslaId = id;
-            string action = "Viewed information concerning vsla meetings";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed information concerning vsla meetings";
+            // dataLogging.writeLogsToFile(action);
             return View(totalMeetings);
         }
 
@@ -966,7 +981,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult SingleMeetingDetails(int id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
             List<SingleMeetingProcedures> meetingsList = new List<SingleMeetingProcedures>();
 
@@ -1026,8 +1041,8 @@ namespace DigitizingDataAdminApp.Controllers
 
                 });
             }
-            string action = "Viewed information for a single VSLA meeting";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed information for a single VSLA meeting";
+            // dataLogging.writeLogsToFile(action);
             return meetings;
         }
         /**
@@ -1110,7 +1125,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult VslaMembers(int id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             AllVslaMemberInformation memberData = new AllVslaMemberInformation();
             List<VslaMembersInformation> membersList = new List<VslaMembersInformation>();
             // Get the name of vsla
@@ -1144,8 +1159,8 @@ namespace DigitizingDataAdminApp.Controllers
                     occupation = item.dt_members.Occupation,
                 });
             }
-            string action = "Viewed information for all members for a selected vsla";
-            dataLogging.writeLogsToFile(action);
+            // string action = "Viewed information for all members for a selected vsla";
+            // dataLogging.writeLogsToFile(action);
             return allMembers;
         }
         /**
@@ -1199,7 +1214,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult MemberDetails(int id, int vslaId)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             var member = (from db_members in database.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
             VslaMembersInformation memberInfo = new VslaMembersInformation
             {
@@ -1218,7 +1233,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             };
             string action = "Viewed information for vsla member called " + member.dt_members.Surname + " " + member.dt_members.OtherNames;
-            dataLogging.writeLogsToFile(action);
+            //  dataLogging.writeLogsToFile(action);
             return View(memberInfo);
         }
         /**
@@ -1255,7 +1270,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             { // All are valid
-               //  ledgerlinkEntities database = new ledgerlinkEntities();
+                //  ledgerlinkEntities database = new ledgerlinkEntities();
                 Cbt_info _cbt = new Cbt_info
                 {
                     Name = new_cbt.Name,
@@ -1265,7 +1280,7 @@ namespace DigitizingDataAdminApp.Controllers
                     Status = Status_Id
                 };
                 string action = "Added a new CBT called " + new_cbt.Name;
-                dataLogging.writeLogsToFile(action);
+                // dataLogging.writeLogsToFile(action);
 
                 database.Cbt_info.Add(_cbt);
                 database.SaveChanges();
@@ -1281,7 +1296,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public CbtInformation getCbtDropDownOptions()
         {
-           // ledgerlinkEntities database = new ledgerlinkEntities();
+            // ledgerlinkEntities database = new ledgerlinkEntities();
 
             // Regions
             List<VslaRegion> allRegionsList = new List<VslaRegion>();
@@ -1326,7 +1341,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             CbtInformation cbtData = getCbtInformationForEditing(id);
             string action = "Viewed CBT details for  " + cbtData.Name;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         /**
@@ -1379,13 +1394,13 @@ namespace DigitizingDataAdminApp.Controllers
             };
 
             string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
-           //   ledgerlinkEntities database = new ledgerlinkEntities();
+            //   ledgerlinkEntities database = new ledgerlinkEntities();
             if (string.IsNullOrEmpty(cbt.Name))
             {
                 ModelState.AddModelError("Name", "Please add a valid Name");
@@ -1460,7 +1475,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public CbtInformation getCbtInformationForEditing(int id)
         {
-           //  ledgerlinkEntities database = new ledgerlinkEntities();
+            //  ledgerlinkEntities database = new ledgerlinkEntities();
             var allInformation = (from table_cbt in database.Cbt_info
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
@@ -1487,7 +1502,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             CbtInformation cbtData = getCbtInformationForEditing(id);
             string action = "Deleted CBT information for  " + cbtData.Name;
-            dataLogging.writeLogsToFile(action);
+            // dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         [HttpPost]
