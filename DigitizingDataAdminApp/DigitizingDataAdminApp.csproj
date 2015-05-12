@@ -30,23 +30,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DeployEncryptKey>ledgerlink</DeployEncryptKey>
-    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <IncludeIisSettings>false</IncludeIisSettings>
-    <DesktopBuildPackageLocation>..\..\..\..\..\Desktop\DigitizingDataAdminApp.zip</DesktopBuildPackageLocation>
+    <DesktopBuildPackageLocation>..\..\..\..\..\Desktop\Exported_code\DigitizingDataAdminApp.zip</DesktopBuildPackageLocation>
     <DeployIisAppPath>DigitizingDataAdminApp</DeployIisAppPath>
     <PublishDatabaseSettings>
       <Objects>
-        <ObjectGroup Name="ledgerlinkEntities-Deployment" Order="1">
-          <Destination Path="" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=AGGREY-PC%3bInitial Catalog=ledgerlink%3bIntegrated Security=True%3bApplication Name=EntityFramework" ScriptSchema="False" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
-            <Source Path="obj\Debug\AutoScripts\ledgerlinkEntities-Deployment_DataOnly.sql" Transacted="True" />
-          </Object>
-        </ObjectGroup>
       </Objects>
     </PublishDatabaseSettings>
     <PackageAsSingleFile>true</PackageAsSingleFile>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

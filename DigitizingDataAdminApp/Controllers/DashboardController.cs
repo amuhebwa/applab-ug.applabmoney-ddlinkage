@@ -499,11 +499,11 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
         {
             // ledgerlinkEntities database = new ledgerlinkEntities();
-            if (string.IsNullOrEmpty(vsla.VslaCode))
-            {
-                ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
-            }
-            else if (string.IsNullOrEmpty(vsla.VslaName))
+            //if (string.IsNullOrEmpty(vsla.VslaCode))
+            //{
+            //    ModelState.AddModelError("VslaCode", "Please Add a valid VSLA Code");
+            //}
+            if (string.IsNullOrEmpty(vsla.VslaName))
             {
                 ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
             }
@@ -554,7 +554,7 @@ namespace DigitizingDataAdminApp.Controllers
             else
             {
                 var query = database.Vslas.Find(VslaId);
-                query.VslaCode = vsla.VslaCode;
+                // query.VslaCode = vsla.VslaCode;
                 query.VslaName = vsla.VslaName;
                 query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
                 query.GpsLocation = vsla.GpsLocation;

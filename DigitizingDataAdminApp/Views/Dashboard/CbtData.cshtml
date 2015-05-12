@@ -5,7 +5,7 @@
     ViewBag.Title = "CbtData";
 }
 
-<h4><strong>Based Trainers(CBTs)</strong></h4>
+<h4><strong>Community Based Trainers(CBTs)</strong></h4>
 <hr />
 <p>
     <a href="@Url.Action("AddCbt", "Dashboard")">
@@ -18,7 +18,7 @@
     @Html.Grid(Model.AllCbtList).Columns(columns =>
                     {
                         columns.Add(c => c.Name).Titled("Name");
-                        columns.Add(c => c.Region).Titled("Region");
+                        columns.Add(c => c.Region).Titled("District");
                         columns.Add(c => c.PhoneNumber).Titled("Phone Number");
                         columns.Add(c => c.Email).Titled("Email");
                         columns.Add(c => c.Status).Titled("Status");
