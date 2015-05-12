@@ -25,7 +25,7 @@
 
         <tr>
             <td><strong>@Html.DisplayName("Phone Number")</strong></td>
-            <td>@Html.EditorFor(model => model.PhoneNumber)
+            <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })
                 @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
         </tr>
         <tr>

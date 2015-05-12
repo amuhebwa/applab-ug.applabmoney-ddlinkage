@@ -22,9 +22,8 @@
 <div style="width: auto; min-width: 1000px; margin: 0 auto;">
     @Html.Grid(Model.AllVslaList).Columns(columns =>
                     {
-                        //columns.Add(c => c.VslaId).Titled("Id");
-                        columns.Add(c => c.VslaName).Titled("VSLA Name").Filterable(true);
-                        columns.Add(c => c.VslaCode).Titled("VSLA Code").Filterable(true);
+                        columns.Add(c => c.VslaName).Titled("VSLA Name");
+                        columns.Add(c => c.VslaCode).Titled("VSLA Code");
                         columns.Add(c => c.formattedDateRegistered).Titled("Date Registered");
                         columns.Add().Titled("Meetings").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Meetings", "VslaMeetings", new { id = c.VslaId }));
                         columns.Add().Titled("Members").Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Members", "VslaMembers", new { id = c.VslaId }));
