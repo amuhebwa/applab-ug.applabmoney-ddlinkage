@@ -8,14 +8,9 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <h4 style="text-align: center; min-width: 800px;"><strong>Add New Vsla</strong></h4>
+    <h4 style="text-align: center; min-width: 800px;"><strong>Add New VSLA</strong></h4>
     <hr />
     <table class="table table-bordered">
-        @*<tr>
-            <td><strong>@Html.DisplayName("VSLA Code")</strong></td>
-            <td>@Html.TextBoxFor(model => model.VslaCode, new { @Placeholder = "e.g VS10101" })
-                @Html.ValidationMessageFor(model => model.VslaCode)</td>
-        </tr>*@
         <tr>
             <td><strong>@Html.DisplayName("VSLA Name")</strong></td>
             <td>@Html.TextBoxFor(model => model.VslaName)
@@ -34,7 +29,7 @@
                 @Html.ValidationMessageFor(model => model.DateRegistered)</td>
         </tr>
         <tr>
-            <td><strong>@Html.DisplayName("Date linked")</strong></td>
+            <td><strong>@Html.DisplayName("Date linked to the Bank")</strong></td>
             <td>@Html.TextBoxFor(model => model.DateLinked, new { @Value = @DateTime.Now.ToShortDateString() })
                 @Html.ValidationMessageFor(model => model.DateLinked)</td>
         </tr>
@@ -64,7 +59,7 @@
                 @Html.ValidationMessageFor(model => model.PositionInVsla)</td>
         </tr>
         <tr>
-            <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+            <td><strong>@Html.DisplayName("Phone Number of Contact Person")</strong></td>
             <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })
                 @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
         </tr>

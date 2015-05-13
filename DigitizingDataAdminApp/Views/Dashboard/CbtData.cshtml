@@ -1,5 +1,4 @@
 ﻿@model DigitizingDataAdminApp.Models.AllCbtInformation
-@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "CbtData";
@@ -8,25 +7,42 @@
 <h4><strong>Community Based Trainers(CBTs)</strong></h4>
 <hr />
 <p>
-    <a href="@Url.Action("AddCbt", "Dashboard")">
-        <img  src="@Url.Content("~/Content/Images/add_cbt.png")"/>
-        <strong>Add New CBT</strong>
-    </a>
+    <a href="@Url.Action("AddCbt", "Dashboard")"><strong>Add New CBT</strong></a>
 </p>
 
-<div style="width: auto; min-width: 1000px; margin: 0 auto;">
-    @Html.Grid(Model.AllCbtList).Columns(columns =>
-                    {
-                        columns.Add(c => c.Name).Titled("Name");
-                        columns.Add(c => c.Region).Titled("District");
-                        columns.Add(c => c.PhoneNumber).Titled("Phone Number");
-                        columns.Add(c => c.Email).Titled("Email");
-                        columns.Add(c => c.Status).Titled("Status");
-                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("CbtDetails", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
-                        columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
-                        columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
-                    }).WithPaging(30).Sortable(true)
+<div style="width: auto; min-width: 900px; margin: 0 auto;">
+    <table class="display" style="width: 100%;" id="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>District</th>
+                <th>PhoneNumber</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AllCbtList)
+            { 
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Region</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>@item.Status</td>
+                    <td><a href="@Url.Action("CbtDetails", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                    <td><a href="@Url.Action("EditCbt", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
+                    <td><a href="@Url.Action("DeleteCbt", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

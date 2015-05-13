@@ -26,7 +26,7 @@
                 @Html.ValidationMessageFor(model => model.VslaName)</td>
         </tr>
         <tr>
-            <td><strong>@Html.DisplayName("Region")</strong></td>
+            <td><strong>@Html.DisplayName("District")</strong></td>
             <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:250px; height:30px;" })</td>
         </tr>
 
@@ -36,7 +36,7 @@
                 @Html.ValidationMessageFor(model => model.DateRegistered)</td>
         </tr>
         <tr>
-            <td><strong>@Html.DisplayName("Date linked")</strong></td>
+            <td><strong>@Html.DisplayName("Date linked to the bank")</strong></td>
             <td>@Html.TextBoxFor(model => model.DateLinked, new { @class = "date", @id = "DateLinked", @Value = Model.DateLinked.Value.ToShortDateString() })
                 @Html.ValidationMessageFor(model => model.DateLinked)</td>
         </tr>
@@ -66,7 +66,7 @@
                 @Html.ValidationMessageFor(model => model.PositionInVsla)</td>
         </tr>
         <tr>
-            <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+            <td><strong>@Html.DisplayName("Phone Number of Contact Person")</strong></td>
             <td>@Html.EditorFor(model => model.PhoneNumber)
                 @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
         </tr>

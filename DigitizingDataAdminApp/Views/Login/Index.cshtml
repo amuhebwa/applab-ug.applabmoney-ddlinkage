@@ -5,9 +5,11 @@
     ViewBag.Title = "Index";
 }
 <div style="width: auto; margin-left: auto; margin-right: auto;">
-    
-    <img src="~/Content/Images/logo.jpeg" style="height: 50px; margin-left:20%; display:block;" />
 
+    <img src="~/Content/Images/logo.jpeg" style="height: 50px; margin-left: 20%; display: block;" />
+    <div style="margin-left: 18%; width: auto;">
+        <h5><strong>Enter your Login Credentials </strong></h5>
+    </div>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -20,8 +22,9 @@
         
         }
         <fieldset>
-            <legend> Please Enter your Login Credentials </legend>
-            <div class="login-form" style="margin-left: 20%; width:auto;">
+            <legend></legend>
+
+            <div class="login-form" style="margin-left: 20%; width: auto;">
                 <div class="form-group">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Username)

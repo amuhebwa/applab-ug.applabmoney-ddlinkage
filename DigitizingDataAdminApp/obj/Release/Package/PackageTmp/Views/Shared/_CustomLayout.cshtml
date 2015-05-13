@@ -8,13 +8,22 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/jquery")
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
     @Scripts.Render("~/bundles/jqueryui")
+     <script src="@Url.Content("~/Scripts/DataTables/jquery.dataTables.min.js")"></script>
+    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css">
     @Styles.Render("~/Content/themes/base/css", "/Content/css")
     @RenderSection("scripts", required: false)
     <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
-    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#data-table').dataTable();
+        });
+    </script>
+
     <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
     <style type="text/css">
         .vertical-align, .col-md-2 {
@@ -27,10 +36,10 @@
             margin-top: 20px;
             border-color: #fff;
         }
-        
-        #side-navigation li a {
-            text-decoration:none;
-        }
+
+            #side-navigation li a {
+                text-decoration: none;
+            }
     </style>
 </head>
 <body>
@@ -39,7 +48,7 @@
         <div class="container-fluid" style="margin-top: 40px; margin-bottom: 20px;">
             <div class="row">
                 <div class="navbar-header col-mod-12">
-                    <img src="~/Content/Images/logo.jpeg" style="height: 50px; padding-left: 40px;" />
+                    <img src="~/Content/Images/logo.jpeg" style="height: 40px; padding-left: 40px;" />
                 </div>
             </div>
         </div>
@@ -52,13 +61,12 @@
                         <li><strong>@Html.ActionLink("VSLA Groups", "VslaData", "Dashboard")</strong></li>
                         <li><strong>@Html.ActionLink("CBTs", "CbtData", "Dashboard")</strong></li>
                         <li><strong>@Html.ActionLink("System Users", "UsersData", "Dashboard")</strong></li>
-                        @*<li><strong>@Html.ActionLink("Logs", "LogsData", "Dashboard")</strong></li>*@
                         <li><strong>@Html.ActionLink("Logout", "Logout")</strong></li>
                     </ul>
 
                 </div>
             </div>
-            <div class="col-md-8" style="float: none; margin: 0 auto;">
+            <div class="col-md-8" style="margin-left:50px;">
                 @RenderBody()
             </div>
         </div>

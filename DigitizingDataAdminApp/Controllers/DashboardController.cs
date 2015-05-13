@@ -151,7 +151,6 @@ namespace DigitizingDataAdminApp.Controllers
             allVslas.AllVslaList = getVslaData;
 
             return View(allVslas);
-
         }
 
 
@@ -220,10 +219,13 @@ namespace DigitizingDataAdminApp.Controllers
             else if (string.IsNullOrEmpty(_hashedPassword))
             {
                 ModelState.AddModelError("Password", "Please Enter Valid Password");
-            } else if (user.Password.ToString().Trim().Length > 30) {
+            }
+            else if (user.Password.ToString().Trim().Length > 30)
+            {
                 ModelState.AddModelError("Password", "Max : 30 characters");
             }
-            else if (user.Password.ToString().Trim().Length < 6) {
+            else if (user.Password.ToString().Trim().Length < 6)
+            {
                 ModelState.AddModelError("Password", "Min : 6 characters");
             }
             else if (Level_Id == 0)
@@ -1204,7 +1206,7 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
             }
-            else if (!phoneRegex.IsMatch(new_cbt.PhoneNumber)) 
+            else if (!phoneRegex.IsMatch(new_cbt.PhoneNumber))
             {
                 ModelState.AddModelError("PhoneNumber", "Please Enter only digits");
             }
@@ -1349,18 +1351,6 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
-            //if (string.IsNullOrEmpty(cbt.Name))
-            //{
-            //    ModelState.AddModelError("Name", "Please add a valid Name");
-            //}
-            //else if (string.IsNullOrEmpty(cbt.PhoneNumber))
-            //{
-            //    ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
-            //}
-            //else if (string.IsNullOrEmpty(cbt.Email))
-            //{
-            //    ModelState.AddModelError("Email", "Please Enter Valid Email Address");
-            //}
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
             if (string.IsNullOrEmpty(cbt.Name))
             {

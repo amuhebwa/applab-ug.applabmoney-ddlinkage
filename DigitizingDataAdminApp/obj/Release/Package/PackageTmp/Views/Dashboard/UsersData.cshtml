@@ -9,12 +9,11 @@
 <hr />
 <p>
     <a href="@Url.Action("AddUser", "Dashboard")">
-        <img  src="@Url.Content("~/Content/Images/system_user.png")"/>
         <strong>Add System User </strong></a>
 </p>
 
-<div style="width: auto; min-width: 1000px; margin: 0 auto;">
-    @Html.Grid(Model.AllUsersList).Columns(columns =>
+<div style="width: auto; min-width: 900px; margin: 0 auto;">
+    @* @Html.Grid(Model.AllUsersList).Columns(columns =>
                     {
                         columns.Add(c => c.Id).Titled("UserId");
                         columns.Add(c => c.Username).Titled("Username");
@@ -27,5 +26,37 @@
                             <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
                         columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteUser", "Dashboard", new { id = c.Id })">
                             <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
-                    }).WithPaging(30).Sortable(true)
+                    }).WithPaging(30).Sortable(true)*@
+    <table class="display" style="width: 100%;" id="data-table">
+        <thead>
+            <tr>
+                <th>UserId</th>
+                <th>Username</th>
+                <th>Full  Name</th>
+                <th>Email</th>
+                <th>User  Level</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AllUsersList)
+            { 
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Username</td>
+                    <td>@item.Fullname</td>
+                    <td>@item.Email</td>
+                    <td>@item.UserLevel</td>
+                    <td><a href="@Url.Action("UserDetails", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                    <td><a href="@Url.Action("EditUser", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
+                    <td><a href="@Url.Action("DeleteUser", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

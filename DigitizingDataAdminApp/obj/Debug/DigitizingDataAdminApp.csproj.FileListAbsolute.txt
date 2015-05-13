@@ -8,7 +8,6 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.dll
-C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\GridMvc.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.WebPages.OAuth.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.dll
@@ -45,6 +44,6 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OAuth.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
-C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.pdb
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Debug\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
