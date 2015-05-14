@@ -351,8 +351,6 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Email = user.Email;
                 query.UserLevel = Level_Id;
                 database.SaveChanges();
-                string action = "Edited information for " + user.Fullname;
-                // dataLogging.writeLogsToFile(action);
                 return RedirectToAction("UsersData");
             }
             List<UserPermission> permissions = new List<UserPermission>();
@@ -397,8 +395,6 @@ namespace DigitizingDataAdminApp.Controllers
                 Email = userDetails.db_users.Email,
                 UserLevel = userDetails.db_permissions.UserType
             };
-            string action = "Deleted information for " + userDetails.db_users.Fullname;
-            // dataLogging.writeLogsToFile(action);
             return View(userData);
         }
 
@@ -633,7 +629,6 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             { //! All fields are valid
-                // ledgerlinkEntities database = new ledgerlinkEntities();
                 /**
                  * Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy)
                  * */
@@ -1194,9 +1189,13 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(new_cbt.Name))
+            if (string.IsNullOrEmpty(new_cbt.FirstName))
             {
-                ModelState.AddModelError("Name", "Please add a valid Name");
+                ModelState.AddModelError("FirstName", "First Name cannot be left empty");
+            }
+            else if (string.IsNullOrEmpty(new_cbt.LastName))
+            {
+                ModelState.AddModelError("LastName", "Last Name cannot be left empty");
             }
             else if (RegionId == 0)
             {
@@ -1229,9 +1228,13 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             { // All are valid
+                string fullName = new_cbt.FirstName + " " + new_cbt.LastName;
                 Cbt_info _cbt = new Cbt_info
                 {
-                    Name = new_cbt.Name,
+
+                    Name = fullName,
+                    FirstName = new_cbt.FirstName,
+                    LastName = new_cbt.LastName,
                     Region = RegionId,
                     PhoneNumber = new_cbt.PhoneNumber,
                     Email = new_cbt.Email,
@@ -1337,7 +1340,9 @@ namespace DigitizingDataAdminApp.Controllers
             CbtInformation cbtData = new CbtInformation
             {
                 Id = allInformation.dt_cbt.Id,
-                Name = allInformation.dt_cbt.Name,
+                // Name = allInformation.dt_cbt.Name,
+                FirstName = allInformation.dt_cbt.FirstName,
+                LastName = allInformation.dt_cbt.LastName,
                 VslaRegionsModel = regionsList,
                 PhoneNumber = allInformation.dt_cbt.PhoneNumber,
                 Email = allInformation.dt_cbt.Email,
@@ -1352,9 +1357,10 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(cbt.Name))
-            {
-                ModelState.AddModelError("Name", "Please add a valid Name");
+            if (string.IsNullOrEmpty(cbt.FirstName)) {
+                ModelState.AddModelError("FirstName", "Please Enter a valid First Name");
+            } else if (string.IsNullOrEmpty(cbt.LastName)) {
+                ModelState.AddModelError("LastName","Please Enter a valid Last Name");
             }
             else if (RegionId == 0)
             {
@@ -1387,8 +1393,11 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             {
+                string fullname = cbt.FirstName + " " + cbt.LastName;
                 var query = database.Cbt_info.Find(id);
-                query.Name = cbt.Name;
+                query.Name = fullname;
+                query.FirstName = cbt.FirstName;
+                query.LastName = cbt.LastName;
                 query.Region = RegionId;
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
@@ -1455,7 +1464,8 @@ namespace DigitizingDataAdminApp.Controllers
             CbtInformation cbtData = new CbtInformation
             {
                 Id = allInformation.dt_cbt.Id,
-                Name = allInformation.dt_cbt.Name,
+                FirstName = allInformation.dt_cbt.FirstName,
+                LastName = allInformation.dt_cbt.LastName,
                 Region = allInformation.dt_region.RegionName,
                 PhoneNumber = allInformation.dt_cbt.PhoneNumber,
                 Email = allInformation.dt_cbt.Email,
