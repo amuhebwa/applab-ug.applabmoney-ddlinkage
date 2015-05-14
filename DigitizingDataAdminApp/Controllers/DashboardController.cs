@@ -1631,6 +1631,8 @@ namespace DigitizingDataAdminApp.Controllers
                 {
                     Id = item.dt_cbt.Id,
                     Name = item.dt_cbt.Name,
+                    FirstName = item.dt_cbt.FirstName,
+                    LastName = item.dt_cbt.LastName,
                     Region = item.dt_region.RegionName,
                     PhoneNumber = item.dt_cbt.PhoneNumber,
                     Email = item.dt_cbt.Email,
