@@ -420,6 +420,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
+    <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <EntityDeploy Include="Models\ledgerlink.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ledgerlink.Designer.cs</LastGenOutput>
@@ -437,8 +439,6 @@
       <DependentUpon>ledgerlink.edmx</DependentUpon>
       <LastGenOutput>ledgerlink.cs</LastGenOutput>
     </Content>
-    <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
-    <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <None Include="Properties\PublishProfiles\ledgerlink-manager.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

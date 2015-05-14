@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="eac96739b21d4cecbeab3cd418070f3d" Name="Diagram1">
+      <Diagram DiagramId="dc4e32d2431c43259568980c6c6c30ae" Name="Diagram1">
         <EntityTypeShape EntityType="ledgerlinkModel.Attendance" Width="1.5" PointX="12" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Audit_Log" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="3" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113_2" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />

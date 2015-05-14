@@ -138,6 +138,8 @@
     <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
     <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="LastName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
     <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
   </EntityType>
