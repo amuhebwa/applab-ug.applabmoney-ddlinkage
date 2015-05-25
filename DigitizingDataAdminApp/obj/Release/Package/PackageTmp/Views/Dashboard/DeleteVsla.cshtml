@@ -22,11 +22,11 @@
 
     <tr>
         <td><strong>@Html.DisplayName("Date Registered")</strong></td>
-        <td>@Html.DisplayFor(model => model.DateRegistered)</td>
+        <td>@(Model.DateRegistered.HasValue ? Model.DateRegistered.Value.ToString("dd/MM/yyyy") : "---")</td>
     </tr>
     <tr>
         <td><strong>@Html.DisplayName("Date linked")</strong></td>
-        <td>@Html.DisplayFor(model => model.DateLinked)</td>
+        <td>@(Model.DateLinked.HasValue ? Model.DateLinked.Value.ToString("dd/MM/yyyy") : "---")</td>
     </tr>
     <tr>
         <td><strong>@Html.DisplayName("Physical Address")</strong></td>

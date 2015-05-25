@@ -7,7 +7,7 @@
 <hr />
 
 <p>
-    <a href="@Url.Action("AddVsla", "Dashboard")"> <strong>Add New VSLA</strong></a>
+    <a href="@Url.Action("AddVsla", "Dashboard")"><strong>Add New VSLA</strong></a>
     |
     <a href="@Url.Action("ExportVSLAsToCSV", "Dashboard")"><strong>Export to CSV</strong></a>
 </p>
@@ -34,7 +34,7 @@
                     <td>@item.VslaId </td>
                     <td>@item.VslaName </td>
                     <td>@item.VslaCode </td>
-                    <td>@item.formattedDateRegistered </td>
+                    <td>@(item.DateRegistered.HasValue ? item.DateRegistered.Value.ToString("dd/MM/yyyy") : "---")</td>
                     <td>@Html.ActionLink("Meetings", "VslaMeetings", new { id = item.VslaId })</td>
                     <td>@Html.ActionLink("Members", "VslaMembers", new { id = item.VslaId }) </td>
                     <td><a href="@Url.Action("VslaDetails", "Dashboard", new { id = item.VslaId })">

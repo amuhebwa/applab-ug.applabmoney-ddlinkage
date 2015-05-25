@@ -452,8 +452,8 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
                 VslaName = vsla_info.db_vsla.VslaName ?? "--",
                 RegionId = vsla_info.db_regions.RegionName,
-                DateRegistered = vsla_info.db_vsla.DateRegistered.HasValue ? vsla_info.db_vsla.DateRegistered : System.DateTime.Now,
-                DateLinked = vsla_info.db_vsla.DateLinked.HasValue ? vsla_info.db_vsla.DateLinked : System.DateTime.Now,
+                DateRegistered = vsla_info.db_vsla.DateRegistered,
+                DateLinked = vsla_info.db_vsla.DateLinked,
                 PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
                 VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
                 GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
@@ -801,8 +801,8 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaCode = vslaInformation.db_vsla.VslaCode ?? "--",
                 VslaName = vslaInformation.db_vsla.VslaName ?? "--",
                 RegionId = vslaInformation.db_regions.RegionName,
-                DateRegistered = vslaInformation.db_vsla.DateRegistered.HasValue ? vslaInformation.db_vsla.DateRegistered : System.DateTime.Now,
-                DateLinked = vslaInformation.db_vsla.DateLinked.HasValue ? vslaInformation.db_vsla.DateLinked : System.DateTime.Now,
+                DateRegistered = vslaInformation.db_vsla.DateRegistered,
+                DateLinked = vslaInformation.db_vsla.DateLinked,
                 PhysicalAddress = vslaInformation.db_vsla.PhysicalAddress ?? "--",
                 VslaPhoneMsisdn = vslaInformation.db_vsla.VslaPhoneMsisdn ?? "--",
                 GpsLocation = vslaInformation.db_vsla.GpsLocation ?? "--",
@@ -1356,10 +1356,13 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(cbt.FirstName)) {
+            if (string.IsNullOrEmpty(cbt.FirstName))
+            {
                 ModelState.AddModelError("FirstName", "Please Enter a valid First Name");
-            } else if (string.IsNullOrEmpty(cbt.LastName)) {
-                ModelState.AddModelError("LastName","Please Enter a valid Last Name");
+            }
+            else if (string.IsNullOrEmpty(cbt.LastName))
+            {
+                ModelState.AddModelError("LastName", "Please Enter a valid Last Name");
             }
             else if (RegionId == 0)
             {
@@ -1538,8 +1541,8 @@ namespace DigitizingDataAdminApp.Controllers
                     VslaCode = item.VslaCode ?? "--",
                     VslaName = item.VslaName ?? "--",
                     RegionId = item.RegionId.ToString(),
-                    DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
-                    DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
+                    DateRegistered = item.DateRegistered,
+                    DateLinked = item.DateLinked,
                     PhysicalAddress = item.PhysicalAddress ?? "--",
                     VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
                     GpsLocation = item.GpsLocation ?? "--",
