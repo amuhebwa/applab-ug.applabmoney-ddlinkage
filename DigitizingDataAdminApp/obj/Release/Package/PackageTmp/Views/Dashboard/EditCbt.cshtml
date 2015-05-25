@@ -13,9 +13,14 @@
     <table class="table table-bordered">
         @Html.HiddenFor(model => model.Id)
         <tr>
-            <td><strong>@Html.DisplayName("Full Name")</strong></td>
-            <td>@Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)</td>
+            <td><strong>@Html.DisplayName("First Name")</strong></td>
+            <td>@Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Last Name")</strong></td>
+            <td>@Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)</td>
         </tr>
         <tr>
             <td><strong>@Html.DisplayName("District")</strong></td>

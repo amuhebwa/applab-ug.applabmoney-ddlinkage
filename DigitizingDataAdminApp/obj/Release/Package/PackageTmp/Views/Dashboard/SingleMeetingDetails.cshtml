@@ -1,5 +1,4 @@
 ﻿@model DigitizingDataAdminApp.Models.AllSingleMeetingProcedures
-@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "SingleMeetingDetails";
@@ -13,28 +12,17 @@
     <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>
 </p>
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
-    @* @Html.Grid(this.Model.allMeetingData).Columns(columns =>
-                    {
-                        columns.Add(c => c.memberName).Titled("Name").Sanitized(false).Encoded(false).RenderValueAs(c => @Html.ActionLink(c.memberName, "MemberDetails", new { id = c.memberId, vslaId = @Model.vslaId }));
-                        columns.Add(c => c.isPresent).Titled("Attended");
-                        columns.Add(c => c.amountSaved).Titled("Amount Saved");
-                        columns.Add(c => c.loanNumber).Titled("Loan Number");
-                        columns.Add(c => c.principleAmount).Titled("Loan Amount");
-                        columns.Add(c => c.finedAmount).Titled("Fines");
-                        columns.Add(c => c.loanRepaymentAmount).Titled("Loan Cleared");
-                        columns.Add(c => c.remainingBalanceOnLoan).Titled("Loan Outstanding");
-                    }).WithPaging(30).Sortable(true)*@
     <table class="display" style="width: 100%;" id="data-table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Attended</th>
-                <th>Amount Saved</th>
-                <th>Loan Number</th>
-                <th>Loan Amount</th>
+                <th>Amount  Saved</th>
+                <th>Loan  Number</th>
+                <th>Loan  Amount</th>
                 <th>Fines</th>
-                <th>Loan Cleared</th>
+                <th>Loan  Cleared</th>
                 <th>Loan Outstanding</th>
             </tr>
         </thead>

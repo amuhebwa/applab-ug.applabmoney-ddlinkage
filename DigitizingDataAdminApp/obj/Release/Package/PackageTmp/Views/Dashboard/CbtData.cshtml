@@ -1,5 +1,4 @@
 ﻿@model DigitizingDataAdminApp.Models.AllCbtInformation
-@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "CbtData";
@@ -12,25 +11,11 @@
 </p>
 
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
-    @* @Html.Grid(Model.AllCbtList).Columns(columns =>
-                    {
-                        columns.Add(c => c.Name).Titled("Name");
-                        columns.Add(c => c.Region).Titled("District");
-                        columns.Add(c => c.PhoneNumber).Titled("Phone Number");
-                        columns.Add(c => c.Email).Titled("Email");
-                        columns.Add(c => c.Status).Titled("Status");
-                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("CbtDetails", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
-                        columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
-                        columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteCbt", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
-                    }).WithPaging(30).Sortable(true)*@
     <table class="display" style="width: 100%;" id="data-table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>FullName</th>
                 <th>District</th>
                 <th>PhoneNumber</th>
                 <th>Email</th>

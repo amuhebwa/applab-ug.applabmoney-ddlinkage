@@ -1,5 +1,4 @@
 ﻿@model DigitizingDataAdminApp.Models.AllUsersInformation
-@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "UsersData";
@@ -13,20 +12,6 @@
 </p>
 
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
-    @* @Html.Grid(Model.AllUsersList).Columns(columns =>
-                    {
-                        columns.Add(c => c.Id).Titled("UserId");
-                        columns.Add(c => c.Username).Titled("Username");
-                        columns.Add(c => c.Fullname).Titled("Full Name");
-                        columns.Add(c => c.Email).Titled("Email");
-                        columns.Add(c => c.UserLevel).Titled("User Level");
-                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("UserDetails", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
-                        columns.Add().Titled("Edit").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("EditUser", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/edit.png")"/></a>);
-                        columns.Add().Titled("Delete").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("DeleteUser", "Dashboard", new { id = c.Id })">
-                            <img  src="@Url.Content("~/Content/Images/delete.png")"/></a>);
-                    }).WithPaging(30).Sortable(true)*@
     <table class="display" style="width: 100%;" id="data-table">
         <thead>
             <tr>

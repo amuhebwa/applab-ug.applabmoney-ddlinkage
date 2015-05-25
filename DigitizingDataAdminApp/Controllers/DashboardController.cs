@@ -203,7 +203,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult AddUser(User user, int Level_Id)
         {
             PasswordHashing _password = new PasswordHashing();
-            string _hashedPassword = _password.hashedPassword(user.Password); // Hash the password
+            string _hashedPassword = _password.hashedPassword(user.Password.Trim()); // Hash the password
             if (string.IsNullOrEmpty(user.Username))
             {
                 ModelState.AddModelError("Username", "Please Add a valid Username");
@@ -723,11 +723,11 @@ namespace DigitizingDataAdminApp.Controllers
             var vsla = (from tb_vsla in database.Vslas
                         join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
                         where tb_vsla.VslaId == id
-                        select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).Single();
+                        select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).FirstOrDefault();
 
             // Get a list of all vsla regions to populate in the dropdown list
             List<VslaRegion> regions = new List<VslaRegion>();
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
             foreach (var region in databaseRegions)
             {
                 regions.Add(new VslaRegion
@@ -737,10 +737,9 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
-
             // Get the list of all cbts to populate in the dropdown list
             List<Cbt_info> cbts = new List<Cbt_info>();
-            var database_cbts = database.Cbt_info.OrderBy(a => a.Name);
+            var database_cbts = database.Cbt_info.OrderBy(a => a.Name).ToList();
             foreach (var cbt in database_cbts)
             {
                 cbts.Add(new Cbt_info
@@ -753,7 +752,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Get the status type ie active/inactive
             List<StatusType> statusTypes = new List<StatusType>();
-            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id);
+            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
             foreach (var statusType in databaseStatusTypes)
             {
                 statusTypes.Add(new StatusType

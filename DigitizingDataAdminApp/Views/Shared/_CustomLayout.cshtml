@@ -10,10 +10,10 @@
     @Scripts.Render("~/bundles/knockout")
     <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
     @Scripts.Render("~/bundles/jqueryui")
-     <script src="@Url.Content("~/Scripts/DataTables/jquery.dataTables.min.js")"></script>
-    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css">
+    <script src="@Url.Content("~/Scripts/DataTables/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/DataTables/dataTables.jqueryui.js")"></script>
+    @Styles.Render("~/Content/DataTables/css/jquery-ui.css")
+    @Styles.Render("~/Content/DataTables/css/dataTables.jqueryui.css")
     @Styles.Render("~/Content/themes/base/css", "/Content/css")
     @RenderSection("scripts", required: false)
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
@@ -64,7 +64,7 @@
 
                 </div>
             </div>
-            <div class="col-md-8" style="margin-left:50px;">
+            <div class="col-md-8" style="margin-left: 50px;">
                 @RenderBody()
             </div>
         </div>

@@ -314,6 +314,7 @@
     <Content Include="Content\DataTables\css\dataTables.scroller.min.css" />
     <Content Include="Content\DataTables\css\dataTables.tableTools.css" />
     <Content Include="Content\DataTables\css\dataTables.tableTools.min.css" />
+    <Content Include="Content\DataTables\css\jquery-ui.css" />
     <Content Include="Content\DataTables\css\jquery.dataTables.css" />
     <Content Include="Content\DataTables\css\jquery.dataTables.min.css" />
     <Content Include="Content\DataTables\css\jquery.dataTables_themeroller.css" />
@@ -421,7 +422,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
-    <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <EntityDeploy Include="Models\ledgerlink.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ledgerlink.Designer.cs</LastGenOutput>
@@ -580,7 +580,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57504</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59084/</IISUrl>
+          <IISUrl>http://localhost:59083/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

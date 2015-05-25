@@ -9,7 +9,8 @@
     @Scripts.Render("~/bundles/modernizr")
     <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
-
+    @Styles.Render("~/Content/themes/base/css", "/Content/css")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
 
@@ -32,6 +33,5 @@
 
     </div>
     @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

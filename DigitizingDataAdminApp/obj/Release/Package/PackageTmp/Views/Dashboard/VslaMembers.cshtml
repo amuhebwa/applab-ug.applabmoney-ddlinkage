@@ -1,5 +1,4 @@
 ﻿@model DigitizingDataAdminApp.Models.AllVslaMemberInformation
-@using GridMvc.Html
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "VslaMembers";
@@ -14,16 +13,6 @@
     <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>
 </div>
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
-    @* @Html.Grid(Model.allVslaMembers).Columns(columns =>
-                    {
-                        columns.Add(c => c.memberNumber).Titled("Member No.");
-                        columns.Add(c => c.surname).Titled("Surname");
-                        columns.Add(c => c.otherNames).Titled("Other Names");
-                        columns.Add(c => c.gender).Titled("Gender");
-                        columns.Add(c => c.occupation).Titled("Occupation");
-                        columns.Add().Titled("Details").Encoded(false).Sanitized(false).RenderValueAs(c => @<a href="@Url.Action("MemberDetails", "Dashboard", new { id = c.memberId, vslaId = @Model.vslaId })">
-                            <img  src="@Url.Content("~/Content/Images/details.png")"/></a>);
-                    }).WithPaging(30).Sortable(true)*@
     <table class="display" style="width: 100%;" id="data-table">
         <thead>
             <tr>

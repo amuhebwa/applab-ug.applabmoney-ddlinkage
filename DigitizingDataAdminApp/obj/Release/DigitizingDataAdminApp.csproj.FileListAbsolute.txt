@@ -8,7 +8,6 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.dll
-C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\GridMvc.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.WebPages.OAuth.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.dll
