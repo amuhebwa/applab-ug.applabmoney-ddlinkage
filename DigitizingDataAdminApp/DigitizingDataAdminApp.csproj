@@ -214,7 +214,6 @@
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DashboardSummary.cs" />
-    <Compile Include="Models\DataLogging.cs" />
     <Compile Include="Models\DataSubmission.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

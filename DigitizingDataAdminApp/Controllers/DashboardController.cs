@@ -314,11 +314,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditUser(UserInformation user, int id, int Level_Id)
         {
-            if (string.IsNullOrEmpty(user.Username))
-            {
-                ModelState.AddModelError("Username", "Username cannot be empty");
-            }
-            else if (string.IsNullOrEmpty(user.Fullname))
+            if (string.IsNullOrEmpty(user.Fullname))
             {
                 ModelState.AddModelError("Fullname", "Fullname cannot be empty");
             }

@@ -13,12 +13,12 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
-        // DataLogging dataLogging;
+        // ActivityLogging activityLogging;
         ledgerlinkEntities database;
         PasswordHashing passwordHashing;
         public LoginController()
         {
-            // dataLogging = new DataLogging();
+           // activityLogging = new ActivityLogging();
             database = new ledgerlinkEntities();
             passwordHashing = new PasswordHashing();
         }
@@ -46,8 +46,8 @@ namespace DigitizingDataAdminApp.Controllers
                     Session["UserId"] = current_user.Id.ToString();
                     Session["Username"] = current_user.Username;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
-                   //  action = "Logged in as " + user.Username;
-                   // dataLogging.writeLogsToFile(action);
+                   action = "Logged in as " + user.Username;
+                   // activityLogging.addLogIfnormation(action);
 
                     return RedirectToAction("Dashboard", "Dashboard");
                 }
