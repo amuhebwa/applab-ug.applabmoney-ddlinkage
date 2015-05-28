@@ -1,0 +1,4 @@
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.dll
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.pdb
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.dll
+C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.pdb
