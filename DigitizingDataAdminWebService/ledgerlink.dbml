@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ledgerlink" Class="ledgerlinkDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=AGGREY-PC;Initial Catalog=ledgerlink;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ledgerlinkConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Attendance" Member="Attendances">
+    <Type Name="Attendance">
+      <Column Name="AttendanceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AttendanceIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsPresent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Meeting_Attendance" Member="Meeting" ThisKey="MeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Member_Attendance" Member="Member" ThisKey="MemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Audit_Log" Member="Audit_Logs">
+    <Type Name="Audit_Log">
+      <Column Name="LogId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LogDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ActionPerformed" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Audit_Log" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Cbt_info" Member="Cbt_infos">
+    <Type Name="Cbt_info">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Region" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="Cbt_info_Vsla" Member="Vslas" ThisKey="Id" OtherKey="CBT" Type="Vsla" />
+      <Association Name="VslaRegion_Cbt_info" Member="VslaRegion" ThisKey="Region" OtherKey="RegionId" Type="VslaRegion" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DataSubmission" Member="DataSubmissions">
+    <Type Name="DataSubmission">
+      <Column Name="SubmissionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SourceVslaCode" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourcePhoneImei" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourceNetworkOperator" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SourceNetworkType" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SubmissionTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ProcessedFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DataSubmission_20140113" Member="DataSubmission_20140113s">
+    <Type Name="DataSubmission_20140113">
+      <Column Name="SubmissionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SourceVslaCode" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourcePhoneImei" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourceNetworkOperator" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SourceNetworkType" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SubmissionTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ProcessedFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DataSubmission_20140113_2" Member="DataSubmission_20140113_2s">
+    <Type Name="DataSubmission_20140113_2">
+      <Column Name="SubmissionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SourceVslaCode" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourcePhoneImei" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SourceNetworkOperator" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SourceNetworkType" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SubmissionTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ProcessedFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fine" Member="Fines">
+    <Type Name="Fine">
+      <Column Name="FineId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FineIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ExpectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsCleared" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DateCleared" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IssuedInMeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaidInMeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Meeting_Fine" Member="Meeting" ThisKey="IssuedInMeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Meeting_Fine1" Member="Meeting1" ThisKey="PaidInMeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Meeting_Fine2" Member="Meeting2" ThisKey="MeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Member_Fine" Member="Member" ThisKey="MemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoanIssue" Member="LoanIssues">
+    <Type Name="LoanIssue">
+      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LoanIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoanNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PrincipalAmount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="InterestAmount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Balance" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DateCleared" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateDue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsCleared" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsDefaulted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TotalRepaid" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="IsWrittenOff" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LoanIssue_LoanRepayment" Member="LoanRepayments" ThisKey="LoanId" OtherKey="LoanId" Type="LoanRepayment" />
+      <Association Name="Meeting_LoanIssue" Member="Meeting" ThisKey="MeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Member_LoanIssue" Member="Member" ThisKey="MemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoanRepayment" Member="LoanRepayments">
+    <Type Name="LoanRepayment">
+      <Column Name="RepaymentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RepaymentIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BalanceAfter" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BalanceBefore" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LastDateDue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NextDateDue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="InterestAmount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="RolloverAmount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoanId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LoanIssue_LoanRepayment" Member="LoanIssue" ThisKey="LoanId" OtherKey="LoanId" Type="LoanIssue" IsForeignKey="true" />
+      <Association Name="Meeting_LoanRepayment" Member="Meeting" ThisKey="MeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Member_LoanRepayment" Member="Member" ThisKey="MemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Meeting" Member="Meetings">
+    <Type Name="Meeting">
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MeetingIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CashExpenses" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashFines" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashFromBank" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashFromBox" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashSavedBank" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashSavedBox" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CashWelfare" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="DateSent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsCurrent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsDataSent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MeetingDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CountOfMembersPresent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SumOfSavings" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SumOfLoanIssues" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SumOfLoanRepayments" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CycleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Meeting_Attendance" Member="Attendances" ThisKey="MeetingId" OtherKey="MeetingId" Type="Attendance" />
+      <Association Name="Meeting_Fine" Member="Fines" ThisKey="MeetingId" OtherKey="IssuedInMeetingId" Type="Fine" />
+      <Association Name="Meeting_Fine1" Member="Fines1" ThisKey="MeetingId" OtherKey="PaidInMeetingId" Type="Fine" />
+      <Association Name="Meeting_Fine2" Member="Fines2" ThisKey="MeetingId" OtherKey="MeetingId" Type="Fine" />
+      <Association Name="Meeting_LoanIssue" Member="LoanIssues" ThisKey="MeetingId" OtherKey="MeetingId" Type="LoanIssue" />
+      <Association Name="Meeting_LoanRepayment" Member="LoanRepayments" ThisKey="MeetingId" OtherKey="MeetingId" Type="LoanRepayment" />
+      <Association Name="Meeting_Saving" Member="Savings" ThisKey="MeetingId" OtherKey="MeetingId" Type="Saving" />
+      <Association Name="VslaCycle_Meeting" Member="VslaCycle" ThisKey="CycleId" OtherKey="CycleId" Type="VslaCycle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Member" Member="Members">
+    <Type Name="Member">
+      <Column Name="MemberId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MemberIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CyclesCompleted" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Surname" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="OtherNames" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Gender" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Occupation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DateArchived" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsArchived" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PhoneNo" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="VslaId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Member_Attendance" Member="Attendances" ThisKey="MemberId" OtherKey="MemberId" Type="Attendance" />
+      <Association Name="Member_Fine" Member="Fines" ThisKey="MemberId" OtherKey="MemberId" Type="Fine" />
+      <Association Name="Member_LoanIssue" Member="LoanIssues" ThisKey="MemberId" OtherKey="MemberId" Type="LoanIssue" />
+      <Association Name="Member_LoanRepayment" Member="LoanRepayments" ThisKey="MemberId" OtherKey="MemberId" Type="LoanRepayment" />
+      <Association Name="Member_Saving" Member="Savings" ThisKey="MemberId" OtherKey="MemberId" Type="Saving" />
+      <Association Name="Vsla_Member" Member="Vsla" ThisKey="VslaId" OtherKey="VslaId" Type="Vsla" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Saving" Member="Savings">
+    <Type Name="Saving">
+      <Column Name="SavingId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SavingIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="MeetingId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Meeting_Saving" Member="Meeting" ThisKey="MeetingId" OtherKey="MeetingId" Type="Meeting" IsForeignKey="true" />
+      <Association Name="Member_Saving" Member="Member" ThisKey="MemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StatusType" Member="StatusTypes">
+    <Type Name="StatusType">
+      <Column Name="Status_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CurrentStatus" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserPermissions" Member="UserPermissions">
+    <Type Name="UserPermission">
+      <Column Name="Level_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="UserPermission_User" Member="Users" ThisKey="Level_Id" OtherKey="UserLevel" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Fullname" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UserLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_Audit_Log" Member="Audit_Logs" ThisKey="Id" OtherKey="UserId" Type="Audit_Log" />
+      <Association Name="UserPermission_User" Member="UserPermission" ThisKey="UserLevel" OtherKey="Level_Id" Type="UserPermission" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vsla" Member="Vslas">
+    <Type Name="Vsla">
+      <Column Name="VslaId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="VslaCode" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="VslaName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="VslaPhoneMsisdn" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="PhysicalAddress" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="GpsLocation" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="DateRegistered" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateLinked" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RegionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContactPerson" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="PositionInVsla" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CBT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Vsla_Member" Member="Members" ThisKey="VslaId" OtherKey="VslaId" Type="Member" />
+      <Association Name="Vsla_VslaCycle" Member="VslaCycles" ThisKey="VslaId" OtherKey="VslaId" Type="VslaCycle" />
+      <Association Name="Vsla_VslaDdActivation" Member="VslaDdActivations" ThisKey="VslaId" OtherKey="VslaId" Type="VslaDdActivation" />
+      <Association Name="Cbt_info_Vsla" Member="Cbt_info" ThisKey="CBT" OtherKey="Id" Type="Cbt_info" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VslaCycle" Member="VslaCycles">
+    <Type Name="VslaCycle">
+      <Column Name="CycleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CycleIdEx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DateEnded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CycleCode" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="InterestRate" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="IsEnded" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MaxShareQuantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MaxStartShare" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SharedAmount" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SharePrice" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="VslaId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MigratedInterest" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="MigratedFines" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Association Name="VslaCycle_Meeting" Member="Meetings" ThisKey="CycleId" OtherKey="CycleId" Type="Meeting" />
+      <Association Name="Vsla_VslaCycle" Member="Vsla" ThisKey="VslaId" OtherKey="VslaId" Type="Vsla" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VslaDdActivation" Member="VslaDdActivations">
+    <Type Name="VslaDdActivation">
+      <Column Name="ActivationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ActivationDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PassKey" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="PhoneImei01" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="PhoneImei02" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimImsiNo01" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimImsiNo02" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimNetworkOperator01" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimNetworkOperator02" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimSerialNo01" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SimSerialNo02" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="VslaId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Vsla_VslaDdActivation" Member="Vsla" ThisKey="VslaId" OtherKey="VslaId" Type="Vsla" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VslaRegion" Member="VslaRegions">
+    <Type Name="VslaRegion">
+      <Column Name="RegionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RegionCode" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="RegionName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="VslaRegion_Cbt_info" Member="Cbt_infos" ThisKey="RegionId" OtherKey="Region" Type="Cbt_info" />
+    </Type>
+  </Table>
+</Database>

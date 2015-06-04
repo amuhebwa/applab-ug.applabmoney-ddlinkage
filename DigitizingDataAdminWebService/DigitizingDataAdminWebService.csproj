@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -63,21 +64,42 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContracts.cs" />
     <Compile Include="DigitizingDataRestfulWebService.svc.cs">
       <DependentUpon>DigitizingDataRestfulWebService.svc</DependentUpon>
     </Compile>
     <Compile Include="IDigitizingDataRestfulWebService.cs" />
+    <Compile Include="ledgerlink.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ledgerlink.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="PasswordHashing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ledgerlink.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>ledgerlink.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\PublishProfiles\ledgerlinkmanager_webservices.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ledgerlink.dbml.layout">
+      <DependentUpon>ledgerlink.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <PropertyGroup>

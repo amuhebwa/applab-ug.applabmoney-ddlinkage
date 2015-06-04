@@ -8,13 +8,37 @@ using System.Text;
 
 namespace DigitizingDataAdminWebService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class DigitizingDataRestfulWebService : IDigitizingDataRestfulWebService
     {
-        public string GetData(string value)
+        /**
+         * Get all users
+         */
+        public List<UsersDetails> getRegisteredUsers()
         {
-            return string.Format("You entered: {0}", value);
+            ledgerlinkDataContext database = new ledgerlinkDataContext();
+            List<UsersDetails> results = new List<UsersDetails>();
+            foreach (var user in database.Users)
+            {
+                results.Add(new UsersDetails()
+                {
+                    UserId = user.Id,
+                    Username = user.Username,
+                    Fullname = user.Fullname,
+                    // Password = user.Password,
+                    Email = user.Email,
+                    DateCreated = user.DateCreated,
+                    UserLevel = user.UserLevel
+                });
+            }
+            return results;
+        }
+        /**
+         * Get the list of all VSLAs
+         */
+        public List<VslaDetails> getAllVslas() {
+            List<VslaDetails> results = new List<VslaDetails>();
+
+            return results;
         }
     }
 }
