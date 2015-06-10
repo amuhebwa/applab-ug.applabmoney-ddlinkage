@@ -5,15 +5,18 @@ using System.Web;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace DigitizingDataAdminApp.Models
+namespace DigitizingDataAdminWebService
 {
-    public class PasswordHashing
+    public class PasswordHash
     {
-        public PasswordHashing(){ 
+        // constructor
+        public PasswordHash()
+        {
         }
         public string hashedPassword(string password)
         {
-            if (password == null) {
+            if (password == null)
+            {
                 return null;
             }
             MD5CryptoServiceProvider cryptography = new MD5CryptoServiceProvider();

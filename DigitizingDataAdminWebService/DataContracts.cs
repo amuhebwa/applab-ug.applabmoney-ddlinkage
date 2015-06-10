@@ -69,11 +69,11 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string GpsLocation { get; set; }
         [DataMember]
-        public DateTime? DateRegistered { get; set; }
+        public string DateRegistered { get; set; }
         [DataMember]
-        public DateTime? DateLinked { get; set; }
+        public string DateLinked { get; set; }
         [DataMember]
-        public int RegionId { get; set; }
+        public string RegionName { get; set; }
         [DataMember]
         public string ContactPerson { get; set; }
         [DataMember]
@@ -81,8 +81,8 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string PhoneNumber { get; set; }
         [DataMember]
-        public int CbtId { get; set; }
+        public string CbtName { get; set; }
         [DataMember]
-        public int StatusId { get; set; }
+        public string Status { get; set; }
     }
 }

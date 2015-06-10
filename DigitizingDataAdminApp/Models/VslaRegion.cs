@@ -17,6 +17,7 @@ namespace DigitizingDataAdminApp.Models
         public VslaRegion()
         {
             this.Cbt_info = new HashSet<Cbt_info>();
+            this.Vslas = new HashSet<Vsla>();
         }
     
         public int RegionId { get; set; }
@@ -24,5 +25,6 @@ namespace DigitizingDataAdminApp.Models
         public string RegionName { get; set; }
     
         public virtual ICollection<Cbt_info> Cbt_info { get; set; }
+        public virtual ICollection<Vsla> Vslas { get; set; }
     }
 }

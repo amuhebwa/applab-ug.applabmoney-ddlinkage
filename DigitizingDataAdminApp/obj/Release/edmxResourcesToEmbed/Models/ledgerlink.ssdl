@@ -118,6 +118,10 @@
       <End Role="Cbt_info" EntitySet="Cbt_info" />
       <End Role="Vsla" EntitySet="Vsla" />
     </AssociationSet>
+    <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.Store.FK_Vsla_Region">
+      <End Role="VslaRegion" EntitySet="VslaRegion" />
+      <End Role="Vsla" EntitySet="Vsla" />
+    </AssociationSet>
     <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.Store.FK_VslaCycle_Vsla">
       <End Role="Vsla" EntitySet="Vsla" />
       <End Role="VslaCycle" EntitySet="VslaCycle" />
@@ -626,6 +630,18 @@
       </Principal>
       <Dependent Role="Vsla">
         <PropertyRef Name="CBT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vsla_Region">
+    <End Role="VslaRegion" Type="ledgerlinkModel.Store.VslaRegion" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VslaRegion">
+        <PropertyRef Name="RegionId" />
+      </Principal>
+      <Dependent Role="Vsla">
+        <PropertyRef Name="RegionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

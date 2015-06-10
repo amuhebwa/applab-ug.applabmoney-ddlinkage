@@ -100,6 +100,10 @@
       <End Role="Vsla" EntitySet="Vslas" />
       <End Role="VslaDdActivation" EntitySet="VslaDdActivations" />
     </AssociationSet>
+    <AssociationSet Name="FK_Vsla_Region" Association="ledgerlinkModel.FK_Vsla_Region">
+      <End Role="VslaRegion" EntitySet="VslaRegions" />
+      <End Role="Vsla" EntitySet="Vslas" />
+    </AssociationSet>
     <AssociationSet Name="FK_VslaCycle_Vsla" Association="ledgerlinkModel.FK_VslaCycle_Vsla">
       <End Role="Vsla" EntitySet="Vslas" />
       <End Role="VslaCycle" EntitySet="VslaCycles" />
@@ -363,6 +367,7 @@
     <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
     <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
     <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
+    <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="Vsla" ToRole="VslaRegion" />
     <NavigationProperty Name="VslaCycles" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="Vsla" ToRole="VslaCycle" />
   </EntityType>
   <EntityType Name="VslaCycle">
@@ -414,6 +419,7 @@
     <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
     <Property Name="RegionName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
     <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="VslaRegion" ToRole="Cbt_info" />
+    <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="VslaRegion" ToRole="Vsla" />
   </EntityType>
   <Association Name="FK_Attendance_Meeting">
     <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="0..1" />
@@ -652,6 +658,18 @@
       </Principal>
       <Dependent Role="VslaDdActivation">
         <PropertyRef Name="VslaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vsla_Region">
+    <End Role="VslaRegion" Type="ledgerlinkModel.VslaRegion" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VslaRegion">
+        <PropertyRef Name="RegionId" />
+      </Principal>
+      <Dependent Role="Vsla">
+        <PropertyRef Name="RegionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
