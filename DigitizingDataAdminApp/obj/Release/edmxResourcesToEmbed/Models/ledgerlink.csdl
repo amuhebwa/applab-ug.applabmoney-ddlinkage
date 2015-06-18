@@ -12,8 +12,10 @@
     <EntitySet Name="LoanRepayments" EntityType="ledgerlinkModel.LoanRepayment" />
     <EntitySet Name="Meetings" EntityType="ledgerlinkModel.Meeting" />
     <EntitySet Name="Members" EntityType="ledgerlinkModel.Member" />
+    <EntitySet Name="PhoneDeliveries" EntityType="ledgerlinkModel.PhoneDelivery" />
     <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
     <EntitySet Name="StatusTypes" EntityType="ledgerlinkModel.StatusType" />
+    <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.sysdiagram" />
     <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.UserPermission" />
     <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
     <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
@@ -144,6 +146,8 @@
     <Property Name="Status" Type="Int32" Nullable="false" />
     <Property Name="FirstName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
     <Property Name="LastName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Passkey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
     <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
   </EntityType>
@@ -305,6 +309,21 @@
     <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Member" ToRole="Vsla" />
     <NavigationProperty Name="Savings" Relationship="ledgerlinkModel.FK_Saving_Member" FromRole="Member" ToRole="Saving" />
   </EntityType>
+  <EntityType Name="PhoneDelivery">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="PhoneImei" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="PhoneImeiDual" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="SerialNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Manufacturer" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="Model" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="RecipientName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="RecipientPost" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="DateDelivered" Type="DateTime" Precision="3" />
+  </EntityType>
   <EntityType Name="Saving">
     <Key>
       <PropertyRef Name="SavingId" />
@@ -323,6 +342,16 @@
     </Key>
     <Property Name="Status_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="UserPermission">
     <Key>
@@ -364,6 +393,7 @@
     <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="CBT" Type="Int32" />
     <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="BranchName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
     <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
     <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />

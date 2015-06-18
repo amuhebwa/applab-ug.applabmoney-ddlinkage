@@ -93,6 +93,5 @@ C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDat
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OAuth.xml
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.xml
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
-C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.dll
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.pdb

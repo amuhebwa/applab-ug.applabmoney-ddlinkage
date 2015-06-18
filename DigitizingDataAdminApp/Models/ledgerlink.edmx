@@ -39,8 +39,10 @@
           <EntitySet Name="LoanRepayment" EntityType="ledgerlinkModel.Store.LoanRepayment" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Member" EntityType="ledgerlinkModel.Store.Member" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PhoneDelivery" EntityType="ledgerlinkModel.Store.PhoneDelivery" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StatusType" EntityType="ledgerlinkModel.Store.StatusType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.Store.UserPermissions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Vsla" EntityType="ledgerlinkModel.Store.Vsla" store:Type="Tables" Schema="dbo" />
@@ -168,6 +170,8 @@
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="250" />
           <Property Name="LastName" Type="varchar" MaxLength="250" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Passkey" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="DataSubmission">
           <Key>
@@ -309,6 +313,21 @@
           <Property Name="PhoneNo" Type="nvarchar" MaxLength="20" />
           <Property Name="VslaId" Type="int" />
         </EntityType>
+        <EntityType Name="PhoneDelivery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="PhoneImei" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneImeiDual" Type="varchar" MaxLength="50" />
+          <Property Name="SerialNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Manufacturer" Type="varchar" MaxLength="100" />
+          <Property Name="Model" Type="varchar" MaxLength="50" />
+          <Property Name="RecipientName" Type="varchar" MaxLength="250" />
+          <Property Name="RecipientPost" Type="varchar" MaxLength="250" />
+          <Property Name="DateDelivered" Type="datetime" />
+        </EntityType>
         <EntityType Name="Saving">
           <Key>
             <PropertyRef Name="SavingId" />
@@ -325,6 +344,16 @@
           </Key>
           <Property Name="Status_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CurrentStatus" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="UserPermissions">
           <Key>
@@ -363,6 +392,7 @@
           <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
           <Property Name="CBT" Type="int" />
           <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="BranchName" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="VslaCycle">
           <Key>
@@ -691,8 +721,10 @@
           <EntitySet Name="LoanRepayments" EntityType="ledgerlinkModel.LoanRepayment" />
           <EntitySet Name="Meetings" EntityType="ledgerlinkModel.Meeting" />
           <EntitySet Name="Members" EntityType="ledgerlinkModel.Member" />
+          <EntitySet Name="PhoneDeliveries" EntityType="ledgerlinkModel.PhoneDelivery" />
           <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
           <EntitySet Name="StatusTypes" EntityType="ledgerlinkModel.StatusType" />
+          <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.sysdiagram" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.UserPermission" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
           <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
@@ -823,6 +855,8 @@
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
           <Property Name="LastName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Passkey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
           <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
         </EntityType>
@@ -984,6 +1018,21 @@
           <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Member" ToRole="Vsla" />
           <NavigationProperty Name="Savings" Relationship="ledgerlinkModel.FK_Saving_Member" FromRole="Member" ToRole="Saving" />
         </EntityType>
+        <EntityType Name="PhoneDelivery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PhoneImei" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PhoneImeiDual" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="SerialNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Manufacturer" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Model" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="RecipientName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="RecipientPost" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="DateDelivered" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Saving">
           <Key>
             <PropertyRef Name="SavingId" />
@@ -1002,6 +1051,16 @@
           </Key>
           <Property Name="Status_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="UserPermission">
           <Key>
@@ -1043,6 +1102,7 @@
           <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="CBT" Type="Int32" />
           <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="BranchName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
           <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
           <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
@@ -1403,6 +1463,8 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Passkey" ColumnName="Passkey" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1548,6 +1610,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PhoneDeliveries">
+            <EntityTypeMapping TypeName="ledgerlinkModel.PhoneDelivery">
+              <MappingFragment StoreEntitySet="PhoneDelivery">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneImei" ColumnName="PhoneImei" />
+                <ScalarProperty Name="PhoneImeiDual" ColumnName="PhoneImeiDual" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="RecipientName" ColumnName="RecipientName" />
+                <ScalarProperty Name="RecipientPost" ColumnName="RecipientPost" />
+                <ScalarProperty Name="DateDelivered" ColumnName="DateDelivered" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Savings">
             <EntityTypeMapping TypeName="ledgerlinkModel.Saving">
               <MappingFragment StoreEntitySet="Saving">
@@ -1564,6 +1642,17 @@
               <MappingFragment StoreEntitySet="StatusType">
                 <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
                 <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ledgerlinkModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1605,6 +1694,7 @@
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="CBT" ColumnName="CBT" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

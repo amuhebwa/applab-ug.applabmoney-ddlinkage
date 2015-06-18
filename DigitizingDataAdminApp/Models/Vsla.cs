@@ -35,6 +35,7 @@ namespace DigitizingDataAdminApp.Models
         public string PhoneNumber { get; set; }
         public Nullable<int> CBT { get; set; }
         public int Status { get; set; }
+        public string BranchName { get; set; }
     
         public virtual Cbt_info Cbt_info { get; set; }
         public virtual ICollection<Member> Members { get; set; }

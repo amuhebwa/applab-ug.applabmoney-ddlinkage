@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.IO;
 
 namespace DigitizingDataAdminWebService
 {
@@ -24,6 +25,11 @@ namespace DigitizingDataAdminWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchForVsla/{VslaName}")]
         List<VslaDetails> searchForVsla(string VslaName);
 
+        /**
+         * Create a new VSLA
+         */
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "createNewVsla/{groupInfo}/{phoneInfo}/{locationInfo}")]
+        string createNewVsla(string groupInfo, string phoneInfo, string locationInfo);
 
 
         /**
@@ -48,6 +54,11 @@ namespace DigitizingDataAdminWebService
          */
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getSingleVslaDetails/{VslaId}")]
         VslaDetails getSingleVslaDetails(string VslaId);
+
+        // Sample implementation of a test method to create a new vsla into the database
+        [OperationContract]
+        [WebInvoke(Method = "POST",ResponseFormat = WebMessageFormat.Json, UriTemplate = "createVslaTestMethod")]
+        string createVslaTestMethod(Stream jsonStream);
     }
 
 }

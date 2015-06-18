@@ -5,6 +5,9 @@ C:\Users\AGGREY\Documents\GitHub\Grameen-Foundation-AllWork\applab-ug.applabmone
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.dll
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.pdb
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\EntityFramework.dll
+C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Newtonsoft.Json.dll
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\EntityFramework.xml
+C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Newtonsoft.Json.xml
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.dll
 C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.pdb
+C:\Users\AMuhebwa\Documents\GitHub\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.csprojResolveAssemblyReference.cache

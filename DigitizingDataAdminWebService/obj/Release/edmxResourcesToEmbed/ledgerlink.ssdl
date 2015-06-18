@@ -34,6 +34,7 @@
     <EntitySet Name="LoanRepayment" EntityType="ledgerlinkModel.Store.LoanRepayment" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Member" EntityType="ledgerlinkModel.Store.Member" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PhoneDelivery" EntityType="ledgerlinkModel.Store.PhoneDelivery" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StatusType" EntityType="ledgerlinkModel.Store.StatusType" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
@@ -164,6 +165,8 @@
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="FirstName" Type="varchar" MaxLength="250" />
     <Property Name="LastName" Type="varchar" MaxLength="250" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Passkey" Type="varchar" Nullable="false" MaxLength="50" />
   </EntityType>
   <EntityType Name="DataSubmission">
     <Key>
@@ -305,6 +308,21 @@
     <Property Name="PhoneNo" Type="nvarchar" MaxLength="20" />
     <Property Name="VslaId" Type="int" />
   </EntityType>
+  <EntityType Name="PhoneDelivery">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="PhoneImei" Type="varchar" MaxLength="50" />
+    <Property Name="PhoneImeiDual" Type="varchar" MaxLength="50" />
+    <Property Name="SerialNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Manufacturer" Type="varchar" MaxLength="100" />
+    <Property Name="Model" Type="varchar" MaxLength="50" />
+    <Property Name="RecipientName" Type="varchar" MaxLength="250" />
+    <Property Name="RecipientPost" Type="varchar" MaxLength="250" />
+    <Property Name="DateDelivered" Type="datetime" />
+  </EntityType>
   <EntityType Name="Saving">
     <Key>
       <PropertyRef Name="SavingId" />
@@ -369,6 +387,7 @@
     <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
     <Property Name="CBT" Type="int" />
     <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="BranchName" Type="varchar" MaxLength="250" />
   </EntityType>
   <EntityType Name="VslaCycle">
     <Key>

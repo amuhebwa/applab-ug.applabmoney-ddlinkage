@@ -59,7 +59,7 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public int VslaId { get; set; }
         [DataMember]
-        public string VslaCode { get; set; }
+        public string VslaCode { get; set; } // This is auto-generated
         [DataMember]
         public string VslaName { get; set; }
         [DataMember]
@@ -84,5 +84,63 @@ namespace DigitizingDataAdminWebService
         public string CbtName { get; set; }
         [DataMember]
         public string Status { get; set; }
+    }
+    /**
+     *--- Data Submitted From the phone to register a new phone ---
+     * 1. Group information
+     */
+    [DataContract]
+    class GroupInformation
+    {
+        [DataMember]
+        public string GroupName { get; set; }
+        [DataMember]
+        public string GroupPasskey { get; set; }
+        [DataMember]
+        public string ContactPerson { get; set; }
+        [DataMember]
+        public string PositionInVsla { get; set; }
+        [DataMember]
+        public string MemberPhoneNumber { get; set; }
+        [DataMember]
+        public string GroupBankAccount { get; set; }
+    }
+    /**
+     * 2. Phone information
+     */
+    [DataContract]
+    public class PhoneInformation
+    {
+        [DataMember]
+        public string PhoneNumber { get; set; }
+        [DataMember]
+        public string PhoneImei01 { get; set; }
+        [DataMember]
+        public string PhoneImei02 { get; set; }
+        [DataMember]
+        public string SerialNumber { get; set; }
+        [DataMember]
+        public string Manufacturer { get; set; }
+        [DataMember]
+        public string Model { get; set; }
+        [DataMember]
+        public string RecepientName { get; set; }
+        [DataMember]
+        public string RecipientPost { get; set; }
+        [DataMember]
+        public string DateDelivered { get; set; }
+    }
+    /**
+     * 3. Location information
+     */
+    [DataContract]
+    public class LocationInformation
+    {
+        [DataMember]
+        public string PhysicalAddress { get; set; }
+        [DataMember]
+        public string RegionName { get; set; }
+        [DataMember]
+        public string GpsLocation { get; set; }
     }
 }

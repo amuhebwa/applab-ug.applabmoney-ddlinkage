@@ -5,6 +5,10 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Web.Script.Serialization;
 
 namespace DigitizingDataAdminWebService
 {
@@ -77,9 +81,66 @@ namespace DigitizingDataAdminWebService
         /**
          * Create  a new VSLA
          */
-        public string createNewVsla()
+        public string createNewVsla(string groupInfo, string phoneInfo, string locationInfo)
         {
+            string groupinfoTest = "{\"GroupName\":\"Grameen Mobile Test\",\"GroupPasskey\":12345,\"ContactPerson\":\"julius Matovu\",\"PositionInVsla\":\"Mobile secretary\",\"MemberPhoneNumber\":\"0774561760\",\"GroupBankAccount\":\"45647787777877\"}";
+            string phoneinfoTest = "{\"PhoneNumber\":\"1234567\",\"PhoneImei01\":\"2561234567\",\"PhoneImei02\":\"null\",\"SerialNumber\":\"tjyj355657f\",\"Manufacturer\":\"ZTE\",\"Model\":\"ZTE870\",\"RecepientName\":\"Julie Nantege\",\"RecipientPost\":\"Analog Secretary\",\"DateDelivered\":\"2015-07-20T21:00:00.000Z\"}";
+            string locationinfoTest = "{\"PhysicalAddress\":\"Near the Cassava patch\",\"RegionName\":8,\"GpsLocation\":\"32.6599765865987, 0.5787878334\"}";
+
+            // deserialize the json strings
+
             return "";
+        }
+        /**
+         * Sample Testing method for creating  
+         */
+        public string createVslaTestMethod(Stream jsonStream)
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
+            string getYear = DateTime.Now.Year.ToString().Substring(2);
+            string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
+
+            string _sampleString = "{\"VslaName\": \"Admin Web services Test\",\"VslaPhoneMsisdn\": \"123456789\",\"PhysicalAddress\": \"Near the mango tree\",\"GpsLocation\": \"4567.566, 746666\",\"DateRegistered\": \"2015-06-24T00:00:00.000Z\",\"DateLinked\": \"2015-07-12T00:00:00.000Z\",\"RegionId\": 8,\"ContactPerson\": \"Julius Matovu\",\"PositionInVsla\": \"Mobile Secretary\",\"PhoneNumber\": \"0774561760\",\"CBT\": 8,\"Status\": 2}";
+            VslaDetails request = JsonConvert.DeserializeObject<VslaDetails>(_sampleString);
+            //if (null != request)
+            //{
+            //    Vsla newVsla = new Vsla
+            //    {
+            //        VslaCode = generatedVslaCode,
+            //        VslaName = request.VslaName,
+            //        RegionId = 9,
+            //        DateRegistered = Convert.ToDateTime(request.DateRegistered),
+            //        DateLinked = Convert.ToDateTime(request.DateLinked),
+            //        PhysicalAddress = request.PhysicalAddress ?? "--",
+            //        VslaPhoneMsisdn = request.VslaPhoneMsisdn ?? "--",
+            //        GpsLocation = request.GpsLocation ?? "--",
+            //        ContactPerson = request.ContactPerson,
+            //        PositionInVsla = request.PositionInVsla,
+            //        PhoneNumber = request.PhoneNumber,
+            //        CBT = 9,
+            //        Status = 2
+
+            //    };
+            //    database.Vslas.Add(newVsla);
+            //    database.SaveChanges();
+            //    // string result = "VSLA Name is " + request.VslaName;
+            //    return "Done. New group has been added to the DB";
+            //}
+            //else
+            //{
+            //    string result = "Group could not be added to the DB";
+            //    return result;
+            //}
+            StreamReader reader = new StreamReader(jsonStream);
+            string data = reader.ReadToEnd();
+            if (string.IsNullOrEmpty(data))
+            {
+                return "Nothing to show";
+            }
+            else {
+                return data;
+            }
         }
 
         /**
