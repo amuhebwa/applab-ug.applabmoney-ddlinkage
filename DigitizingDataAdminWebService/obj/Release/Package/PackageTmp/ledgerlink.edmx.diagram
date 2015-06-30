@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5759de45a9da4298aae9afe13af41711" Name="Diagram1">
+        <EntityTypeShape EntityType="ledgerlinkModel.Attendance" Width="1.5" PointX="12" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Audit_Log" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.DataSubmission_20140113_2" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Fine" Width="1.5" PointX="15" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.LoanIssue" Width="1.5" PointX="12" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.LoanRepayment" Width="1.5" PointX="17.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Meeting" Width="1.5" PointX="9.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Member" Width="1.5" PointX="7.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.PhoneDelivery" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Saving" Width="1.5" PointX="12" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.StatusType" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.UserPermission" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.Vsla" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.VslaCycle" Width="1.5" PointX="7.5" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.VslaDdActivation" Width="1.5" PointX="7.5" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ledgerlinkModel.VslaRegion" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Attendance_Meeting" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Attendance_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Audit_Log_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Cbt_info_VslaRegion" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Cbt_info" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Fine_Meeting_Issued" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Fine_Meeting_Paid" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Fine_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FKA66C912E75B3F070" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_LoanIssue_Meeting" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_LoanIssue_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_LoanRepayment_LoanIssue" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_LoanRepayment_Meeting" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_LoanRepayment_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Meeting_VslaCycle" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Saving_Meeting" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Member_Vsla" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Saving_Member" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Users_UserPermissions" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_DdActivation_Vsla" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_Vsla_Region" ManuallyRouted="false" />
+        <AssociationConnector Association="ledgerlinkModel.FK_VslaCycle_Vsla" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

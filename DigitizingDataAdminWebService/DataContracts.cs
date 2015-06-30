@@ -30,6 +30,19 @@ namespace DigitizingDataAdminWebService
 
     }
     /**
+     * CBT Logs in
+     */
+    [DataContract]
+    public class CBTLoginDetails 
+    {
+        [DataMember]
+        public int result { get; set; } // 1 for success, 0 for failed login
+        [DataMember]
+        public int CbtId { get; set; } // User Id of the CBT
+        [DataMember]
+        public string Username { get; set; }
+    }
+    /**
      * Users field models
      */
     [DataContract]

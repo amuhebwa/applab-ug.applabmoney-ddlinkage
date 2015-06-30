@@ -7,8 +7,8 @@ namespace DigitizingDataAdminWebService
 {
     public class Constants
     {
-        public string successful = "1";
-        public string unsuccessful = "-1";
-        public string errorOccured = "-2";
+        public int successful = 1;
+        public int unsuccessful = 0;
+        public int errorOccured = -1;
     }
 }

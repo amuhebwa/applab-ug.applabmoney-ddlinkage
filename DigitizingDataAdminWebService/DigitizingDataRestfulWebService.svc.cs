@@ -18,26 +18,32 @@ namespace DigitizingDataAdminWebService
          * Login for the cbt
          */
         Constants constants = new Constants();
-        public string loginCBT(String Username, String PassKey)
+        public CBTLoginDetails loginCBT(String Username, String PassKey)
         {
-            if (string.IsNullOrEmpty(Username.Trim()) || string.IsNullOrEmpty(PassKey.Trim()))
-            {
-                return constants.errorOccured;
-            }
             PasswordHash passwordHashing = new PasswordHash();
-            string password = passwordHashing.hashedPassword(PassKey);
+            string passkey = passwordHashing.hashedPassword(PassKey);
+
             ledgerlinkEntities database = new ledgerlinkEntities();
-            var login = (from table_users in database.Users
-                         where table_users.Username == Username && table_users.Password == password
-                         select new { table_users }).SingleOrDefault();
+            var login = (from table_cbt in database.Cbt_info
+                         where table_cbt.Username == Username && table_cbt.Passkey == passkey
+                         select new { table_cbt }).SingleOrDefault();
+
+            CBTLoginDetails loginResult = new CBTLoginDetails();
+
+
             if (login != null)
             {
-                return constants.successful;
+                loginResult.CbtId = login.table_cbt.Id;
+                loginResult.result = constants.successful;
+                loginResult.Username = login.table_cbt.Username;
             }
             else
             {
-                return constants.unsuccessful;
+                loginResult.CbtId = -1;
+                loginResult.result = constants.unsuccessful;
+                loginResult.Username = null;
             }
+            return loginResult;
         }
         /**
          * Search for a given VSLA
@@ -83,12 +89,6 @@ namespace DigitizingDataAdminWebService
          */
         public string createNewVsla(string groupInfo, string phoneInfo, string locationInfo)
         {
-            string groupinfoTest = "{\"GroupName\":\"Grameen Mobile Test\",\"GroupPasskey\":12345,\"ContactPerson\":\"julius Matovu\",\"PositionInVsla\":\"Mobile secretary\",\"MemberPhoneNumber\":\"0774561760\",\"GroupBankAccount\":\"45647787777877\"}";
-            string phoneinfoTest = "{\"PhoneNumber\":\"1234567\",\"PhoneImei01\":\"2561234567\",\"PhoneImei02\":\"null\",\"SerialNumber\":\"tjyj355657f\",\"Manufacturer\":\"ZTE\",\"Model\":\"ZTE870\",\"RecepientName\":\"Julie Nantege\",\"RecipientPost\":\"Analog Secretary\",\"DateDelivered\":\"2015-07-20T21:00:00.000Z\"}";
-            string locationinfoTest = "{\"PhysicalAddress\":\"Near the Cassava patch\",\"RegionName\":8,\"GpsLocation\":\"32.6599765865987, 0.5787878334\"}";
-
-            // deserialize the json strings
-
             return "";
         }
         /**

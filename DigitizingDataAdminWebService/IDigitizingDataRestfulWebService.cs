@@ -16,8 +16,7 @@ namespace DigitizingDataAdminWebService
          * Login for a given CBT
          */
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "loginCBT/{Username}/{PassKey}")]
-        string loginCBT(String Username, String PassKey);
-
+        CBTLoginDetails loginCBT(String Username, String PassKey);
 
         /**
          * Search for a given VSLA
