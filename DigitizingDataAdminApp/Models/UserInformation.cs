@@ -33,7 +33,10 @@ namespace DigitizingDataAdminApp.Models
 
         public string UserLevel { get; set; }
 
-        public SelectList UserTypes { get; set; }
+        public DateTime? DateCreated { get; set; }
+
+        // Short Date Format ie yy/mm/dd
+        public string FormattedDateCreated { get { return DateCreated.HasValue ? DateCreated.Value.ToShortDateString() : "-NA-"; } }
 
         public SelectList AccessLevel { get; set; }
     }

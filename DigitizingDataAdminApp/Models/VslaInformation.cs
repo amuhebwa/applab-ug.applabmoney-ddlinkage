@@ -29,13 +29,11 @@ namespace DigitizingDataAdminApp.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateRegistered { get; set; }
-        //public string formattedDateRegistered { get { return DateRegistered.Value.ToShortDateString(); } }
 
         [Required(ErrorMessage = "Date Linked is a require field", AllowEmptyStrings = false)]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateLinked { get; set; }
-        //public string formattedDateLinked { get { return DateLinked.Value.ToShortDateString(); } }
 
         [Required(ErrorMessage = "Physical is a require field", AllowEmptyStrings = false)]
         public string PhysicalAddress { get; set; }

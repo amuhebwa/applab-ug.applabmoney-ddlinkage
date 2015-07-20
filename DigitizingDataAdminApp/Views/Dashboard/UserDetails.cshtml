@@ -5,7 +5,7 @@
     ViewBag.Title = "UserDetails";
 }
 
-<h4 style="text-align: center;"><strong>Add New User</strong></h4>
+<h4 style="text-align: center;"><strong>User Details for @Html.DisplayFor(model => model.Fullname) </strong></h4>
 <hr />
 <table class="table table-bordered">
     <tr>
@@ -22,8 +22,8 @@
         <td>@Html.DisplayFor(model => model.Email)</td>
     </tr>
     <tr>
-        <td><strong>@Html.DisplayName("Password")</strong></td>
-        <td>@Html.DisplayFor(model => model.Password)</td>
+        <td><strong>@Html.DisplayName("Date Registered")</strong></td>
+        <td>@Html.DisplayFor(model => model.FormattedDateCreated)</td>
     </tr>
     <tr>
         <td><strong>@Html.DisplayName("Access Level")</strong></td>

@@ -240,6 +240,7 @@ namespace DigitizingDataAdminApp.Controllers
                     Fullname = user.Fullname,
                     Password = _hashedPassword,
                     Email = user.Email,
+                    DateCreated = System.DateTime.Today,
                     UserLevel = Level_Id
                 };
                 database.Users.Add(_user);
@@ -306,7 +307,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Password = userDetails.db_user.Password,
                 Fullname = userDetails.db_user.Fullname,
                 Email = userDetails.db_user.Email,
-                UserTypes = acccessPermissions,
+                DateCreated = userDetails.db_user.DateCreated,
+                AccessLevel = acccessPermissions,
             };
             return View(user_data);
 
@@ -367,7 +369,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Password = user.Password,
                 Fullname = user.Fullname,
                 Email = user.Email,
-                UserTypes = acccessPermissions,
+                AccessLevel = acccessPermissions,
             };
             return View(user_data);
         }
@@ -389,6 +391,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Password = userDetails.db_users.Password,
                 Fullname = userDetails.db_users.Fullname,
                 Email = userDetails.db_users.Email,
+                DateCreated = userDetails.db_users.DateCreated,
                 UserLevel = userDetails.db_permissions.UserType
             };
             return View(userData);
@@ -426,6 +429,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Password = user_details.db_users.Password,
                 Fullname = user_details.db_users.Fullname,
                 Email = user_details.db_users.Email,
+                DateCreated = user_details.db_users.DateCreated,
                 UserLevel = user_details.db_permissions.UserType
             };
             return View(userData);
