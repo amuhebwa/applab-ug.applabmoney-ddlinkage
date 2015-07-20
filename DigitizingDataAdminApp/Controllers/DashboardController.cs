@@ -316,6 +316,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpPost]
         public ActionResult EditUser(UserInformation user, int id, int Level_Id)
         {
+            PasswordHashing passwordHashing = new PasswordHashing();
             if (string.IsNullOrEmpty(user.Fullname))
             {
                 ModelState.AddModelError("Fullname", "Fullname cannot be empty");
@@ -342,9 +343,10 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             {
+                string hashedPassword = passwordHashing.hashedPassword(user.Password);
                 var query = database.Users.Find(id);
                 query.Username = user.Username;
-                query.Password = user.Password;
+                query.Password = hashedPassword;
                 query.Fullname = user.Fullname;
                 query.Email = user.Email;
                 query.UserLevel = Level_Id;
