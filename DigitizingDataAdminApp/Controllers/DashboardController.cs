@@ -914,6 +914,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.End();
         }
+
         /**
          * Get details for a particular meeting held on a partuclar day by a VSLA
          * */
@@ -924,6 +925,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Get the date when the meeting was held
             var meetingDate = database.Meetings.Find(id);
+
             // Get the all the meeting details
             meetingsList = MeetingDetails(id);
             allInformation.allMeetingData = meetingsList;
@@ -931,6 +933,7 @@ namespace DigitizingDataAdminApp.Controllers
             allInformation.vslaId = id;
             return View(allInformation);
         }
+
         /**
          * Helper class for getting information concerned with all meetings in the whole system
          * */
@@ -979,6 +982,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return meetings;
         }
+
         /**
          * Export details of a single meeting to a csv file
          * */
@@ -1051,7 +1055,7 @@ namespace DigitizingDataAdminApp.Controllers
             Response.End();
 
 
-        } // EOF
+        }
 
         /**
          *  View all members attached to a given vsla
@@ -1069,6 +1073,7 @@ namespace DigitizingDataAdminApp.Controllers
             memberData.vslaId = id; // passing the id of the vsla on whch members are attached
             return View(memberData);
         }
+
         /**
          * Helper method to query the database and get a list of all members attached to a 
          * particular vsla
@@ -1093,6 +1098,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             return allMembers;
         }
+
         /**
          * Export the list of members to a csv file
          * */
@@ -1138,6 +1144,7 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(sw.ToString());
             Response.End();
         }
+
         /**
          * Get all information for a given user attached to a particular vsla
          * */
@@ -1235,11 +1242,13 @@ namespace DigitizingDataAdminApp.Controllers
             CbtInformation dropDownOptions = getCbtDropDownOptions();
             return View(dropDownOptions);
         }
+
         /** 
          * Get the regions and status(Active/Inactive) for populating in the drop down list
          * */
         public CbtInformation getCbtDropDownOptions()
         {
+
             // Regions
             List<VslaRegion> allRegionsList = new List<VslaRegion>();
             allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
@@ -1267,7 +1276,6 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
-
             CbtInformation dropDownOptions = new CbtInformation
             {
                 VslaRegionsModel = regionsList,
@@ -1284,6 +1292,7 @@ namespace DigitizingDataAdminApp.Controllers
             CbtInformation cbtData = getCbtInformationForEditing(id);
             return View(cbtData);
         }
+
         /**
          * Edit information for a particular CBT
          * */
@@ -1426,7 +1435,6 @@ namespace DigitizingDataAdminApp.Controllers
             }
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
-
             // Create a cbt object
             CbtInformation cbtData = new CbtInformation
             {
@@ -1439,6 +1447,7 @@ namespace DigitizingDataAdminApp.Controllers
             };
             return View(cbtData);
         }
+
         /**
          * Function to query the database and get Information related to a particular CBT for editing
          * */
@@ -1461,7 +1470,6 @@ namespace DigitizingDataAdminApp.Controllers
             };
             return cbtData;
         }
-
 
         /**
          * Delete a particular CBT from the system
@@ -1618,8 +1626,6 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(stringWriter.ToString());
 
             Response.End();
-
-
         }
 
         /**

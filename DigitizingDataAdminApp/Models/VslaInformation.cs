@@ -18,9 +18,11 @@ namespace DigitizingDataAdminApp.Models
         public int VslaId { get; set; }
 
         [Required(ErrorMessage = "VSLA Code is a required field", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid VSLA Code Format")]
         public string VslaCode { get; set; }
 
         [Required(ErrorMessage = "VSLA Name is a required field", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid VSLA Name")]
         public string VslaName { get; set; }
 
         public string RegionId { get; set; }
@@ -46,6 +48,7 @@ namespace DigitizingDataAdminApp.Models
         public string GpsLocation { get; set; }
 
         [Required(ErrorMessage = "Contact Person is a require field", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid Name format")]
         public string ContactPerson { get; set; }
 
         [Required(ErrorMessage = "Position of Contact Person is a require field", AllowEmptyStrings = false)]

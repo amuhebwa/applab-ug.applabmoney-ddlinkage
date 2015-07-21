@@ -19,9 +19,11 @@ namespace DigitizingDataAdminApp.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Username is a required field", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid Username Format")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Full name is a required field", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid Fullname Format")]
         public string Fullname { get; set; }
 
         [Required(ErrorMessage="Email is a required field", AllowEmptyStrings=false)]

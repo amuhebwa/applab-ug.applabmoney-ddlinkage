@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please Enter Username", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid Username")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Please Enter Password", AllowEmptyStrings = false)]
