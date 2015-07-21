@@ -19,6 +19,7 @@ namespace DigitizingDataAdminApp.Controllers
         public DashboardController()
         {
             database = new ledgerlinkEntities();
+
         }
 
         [Authorize]
@@ -133,10 +134,12 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult UsersData()
         {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             AllUsersInformation allUsers = new AllUsersInformation();
             List<UserInformation> singleUser = new List<UserInformation>();
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
+            allUsers.SessionUserLevel = sessionUserLevel;
 
             return View(allUsers);
         }
@@ -159,23 +162,14 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult CbtData()
         {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
             AllCbtInformation allCbts = new AllCbtInformation();
             List<CbtInformation> getCbtData = new List<CbtInformation>();
             getCbtData = getCbtInformation();
             allCbts.AllCbtList = getCbtData;
+            allCbts.SessionUserLevel = sessionUserLevel;
 
             return View(allCbts);
-        }
-        /**
-         * Display all the log information
-         * */
-        public ActionResult LogsData()
-        {
-            AllLogsInformation loggedInformation = new AllLogsInformation();
-            List<LogsInformation> loggedData = new List<LogsInformation>();
-            loggedData = getAllLogInformation();
-            loggedInformation.AllLogsList = loggedData;
-            return View(loggedInformation);
         }
         /**
          * Logout
@@ -344,12 +338,13 @@ namespace DigitizingDataAdminApp.Controllers
             else
             {
                 string hashedPassword = passwordHashing.hashedPassword(user.Password);
+                int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
                 var query = database.Users.Find(id);
                 query.Username = user.Username;
                 query.Password = hashedPassword;
                 query.Fullname = user.Fullname;
                 query.Email = user.Email;
-                query.UserLevel = Level_Id;
+                query.UserLevel = sessionUserLevel == 1 ? Level_Id : 2; // If the user level == 2, don't allow them to change it
                 database.SaveChanges();
                 return RedirectToAction("UsersData");
             }
@@ -1508,9 +1503,28 @@ namespace DigitizingDataAdminApp.Controllers
         public List<UserInformation> usersInformation()
         {
             List<UserInformation> users = new List<UserInformation>();
-            var user_details = (from table_users in database.Users
+            
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
+            string sessionUsername = Convert.ToString(Session["Username"]);
+
+            dynamic user_details = null;
+            /**
+             * Session Level 1 : admin
+             * Session Level 2 : user               
+             */
+            if (sessionUserLevel == 1)
+            {
+
+                user_details = (from table_users in database.Users
                                 join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 select new { db_user = table_users, db_permissions = table_permissions });
+            }
+            else {
+                user_details = (from table_users in database.Users
+                                join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
+                                where table_users.UserLevel == sessionUserLevel && table_users.Username == sessionUsername
+                                select new { db_user = table_users, db_permissions = table_permissions });
+            }
             foreach (var item in user_details)
             {
                 users.Add(
@@ -1623,6 +1637,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public List<CbtInformation> getCbtInformation()
         {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             List<CbtInformation> cbts = new List<CbtInformation>();
             var data = (from table_cbt in database.Cbt_info
                         join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
@@ -1647,29 +1662,7 @@ namespace DigitizingDataAdminApp.Controllers
             return cbts;
         }
 
-        /**
-         * Get all the log information
-         * */
-        public List<LogsInformation> getAllLogInformation()
-        {
-            List<LogsInformation> logs = new List<LogsInformation>();
-            var logsInformation = (from database_logs in database.Audit_Log
-                                   join database_users in database.Users on
-                                       database_logs.UserId equals database_users.Id
-                                   select new { db_logs = database_logs, db_users = database_users });
-
-            foreach (var data in logsInformation)
-            {
-                logs.Add(new LogsInformation
-                {
-                    LogId = data.db_logs.LogId,
-                    userId = data.db_users.Username,
-                    LogTime = data.db_logs.LogDate,
-                    ActionPerformed = data.db_logs.ActionPerformed
-                });
-            }
-            return logs;
-        }
+        
 
     }
 }

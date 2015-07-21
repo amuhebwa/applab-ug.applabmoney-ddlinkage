@@ -4,12 +4,19 @@
     ViewBag.Title = "UsersData";
 }
 
-<h4><strong>Registered Users Information</strong></h4>
-<hr />
-<p>
-    <a href="@Url.Action("AddUser", "Dashboard")">
-        <strong>Add System User </strong></a>
-</p>
+@if (@Model.SessionUserLevel == 1)
+{
+    <h4><strong>Registered Users Information</strong></h4>
+    <hr />
+    <p>
+        <a href="@Url.Action("AddUser", "Dashboard")">
+            <strong>Add System User </strong></a>
+    </p>
+}
+else
+{
+    <h4><strong>Below Is Your User Information</strong></h4>
+}
 
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
     <table class="display" style="width: 100%;" id="data-table">

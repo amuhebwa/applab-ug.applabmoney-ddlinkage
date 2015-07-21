@@ -45,6 +45,7 @@ namespace DigitizingDataAdminApp.Controllers
                 {
                     Session["UserId"] = current_user.Id.ToString();
                     Session["Username"] = current_user.Username;
+                    Session["UserLevel"] = current_user.UserLevel;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
                    action = "Logged in as " + user.Username;
                    // activityLogging.addLogIfnormation(action);

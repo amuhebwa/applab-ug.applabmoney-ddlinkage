@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<CbtInformation> AllCbtList { get; set; }
         public CbtInformation cbtDetails { get; set; }
+        public int SessionUserLevel { get; set; }
     }
     public class CbtInformation
     {
