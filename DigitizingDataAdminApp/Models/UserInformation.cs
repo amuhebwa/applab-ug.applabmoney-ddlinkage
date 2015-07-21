@@ -29,7 +29,7 @@ namespace DigitizingDataAdminApp.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is a required field", AllowEmptyStrings = false)]
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public string UserLevel { get; set; }

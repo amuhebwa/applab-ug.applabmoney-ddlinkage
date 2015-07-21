@@ -1,0 +1,39 @@
+﻿@model DigitizingDataAdminApp.Models.CbtInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "CbtDetails";
+}
+<h4 style="text-align: center;"><strong>Details for @Html.DisplayFor(model => model.Name)</strong></h4>
+<hr />
+<table class="table table-bordered">
+     <tr>
+        <td><strong>@Html.DisplayName("First Name")</strong></td>
+        <td>@Html.DisplayFor(model => model.FirstName)</td>
+    </tr>
+     <tr>
+        <td><strong>@Html.DisplayName("Last Name")</strong></td>
+        <td>@Html.DisplayFor(model => model.LastName)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("District")</strong></td>
+        <td>@Html.DisplayFor(model => model.Region)</td>
+    </tr>
+
+    <tr>
+        <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+        <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Email")</strong></td>
+        <td>@Html.DisplayFor(model => model.Email)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Status")</strong></td>
+        <td>@Html.DisplayFor(model => model.Status)</td>
+    </tr>
+</table>
+<p>
+    @*@Html.ActionLink("Edit", "EditCbt", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "CbtData")
+</p>

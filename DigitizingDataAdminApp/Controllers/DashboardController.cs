@@ -298,7 +298,7 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 Id = userDetails.db_user.Id,
                 Username = userDetails.db_user.Username,
-                Password = userDetails.db_user.Password,
+                // Password = userDetails.db_user.Password,
                 Fullname = userDetails.db_user.Fullname,
                 Email = userDetails.db_user.Email,
                 DateCreated = userDetails.db_user.DateCreated,
@@ -319,18 +319,6 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("Email", "Email cannot be empty");
             }
-            else if (string.IsNullOrEmpty(user.Password))
-            {
-                ModelState.AddModelError("Password", "Password cannot be empty");
-            }
-            else if (user.Password.ToString().Trim().Length > 30)
-            {
-                ModelState.AddModelError("Password", "Max : 30 characters");
-            }
-            else if (user.Password.ToString().Trim().Length < 6)
-            {
-                ModelState.AddModelError("Password", "Min : 6 characters");
-            }
             else if (Level_Id == 0)
             {
                 ModelState.AddModelError("AccessLevel", "Please select Access Level");
@@ -340,11 +328,12 @@ namespace DigitizingDataAdminApp.Controllers
                 string hashedPassword = passwordHashing.hashedPassword(user.Password);
                 int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
                 var query = database.Users.Find(id);
+
+                if (user.Password != null) { query.Password = hashedPassword; }
+                query.UserLevel = sessionUserLevel == 1 ? Level_Id : 2; // If the user level == 2, don't allow them to change it
                 query.Username = user.Username;
-                query.Password = hashedPassword;
                 query.Fullname = user.Fullname;
                 query.Email = user.Email;
-                query.UserLevel = sessionUserLevel == 1 ? Level_Id : 2; // If the user level == 2, don't allow them to change it
                 database.SaveChanges();
                 return RedirectToAction("UsersData");
             }
@@ -1503,7 +1492,7 @@ namespace DigitizingDataAdminApp.Controllers
         public List<UserInformation> usersInformation()
         {
             List<UserInformation> users = new List<UserInformation>();
-            
+
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             string sessionUsername = Convert.ToString(Session["Username"]);
 
@@ -1519,7 +1508,8 @@ namespace DigitizingDataAdminApp.Controllers
                                 join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 select new { db_user = table_users, db_permissions = table_permissions });
             }
-            else {
+            else
+            {
                 user_details = (from table_users in database.Users
                                 join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
                                 where table_users.UserLevel == sessionUserLevel && table_users.Username == sessionUsername
@@ -1662,7 +1652,7 @@ namespace DigitizingDataAdminApp.Controllers
             return cbts;
         }
 
-        
+
 
     }
 }
