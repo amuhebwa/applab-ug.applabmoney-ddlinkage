@@ -779,7 +779,7 @@ namespace DigitizingDataAdminApp.Controllers
                                    join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
                                    join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
                                    where table_vsla.VslaId == id
-                                   select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).Single();
+                                   select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).SingleOrDefault();
 
             VslaInformation vslaData = new VslaInformation
             {
