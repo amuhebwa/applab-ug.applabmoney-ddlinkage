@@ -1230,7 +1230,9 @@ namespace DigitizingDataAdminApp.Controllers
                     Region = RegionId,
                     PhoneNumber = new_cbt.PhoneNumber,
                     Email = new_cbt.Email,
-                    Status = Status_Id
+                    Status = Status_Id,
+                    Username = new_cbt.Username,
+                    Passkey = new_cbt.Passkey
                 };
 
                 database.Cbt_info.Add(_cbt);
@@ -1340,7 +1342,9 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaRegionsModel = regionsList,
                 PhoneNumber = allInformation.dt_cbt.PhoneNumber,
                 Email = allInformation.dt_cbt.Email,
-                StatusType = statusTypes
+                StatusType = statusTypes,
+                Username = allInformation.dt_cbt.Username,
+                Passkey = allInformation.dt_cbt.Passkey
             };
 
             string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
@@ -1399,6 +1403,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.PhoneNumber = cbt.PhoneNumber;
                 query.Email = cbt.Email;
                 query.Status = Status_Id;
+                query.Username = cbt.Username;
+                query.Passkey = cbt.Passkey;
                 database.SaveChanges();
                 return RedirectToAction("CbtData");
             }
@@ -1466,7 +1472,9 @@ namespace DigitizingDataAdminApp.Controllers
                 Region = allInformation.dt_region.RegionName,
                 PhoneNumber = allInformation.dt_cbt.PhoneNumber,
                 Email = allInformation.dt_cbt.Email,
-                Status = allInformation.dt_status.CurrentStatus
+                Status = allInformation.dt_status.CurrentStatus,
+                Username = allInformation.dt_cbt.Username,
+                Passkey = allInformation.dt_cbt.Passkey
             };
             return cbtData;
         }

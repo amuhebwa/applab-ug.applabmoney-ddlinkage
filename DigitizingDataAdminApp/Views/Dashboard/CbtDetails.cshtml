@@ -4,16 +4,24 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "CbtDetails";
 }
-<h4 style="text-align: center;"><strong>Details for @Html.DisplayFor(model => model.Name)</strong></h4>
+<h4 style="text-align: center;"><strong>Details for @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</strong></h4>
 <hr />
 <table class="table table-bordered">
-     <tr>
+    <tr>
         <td><strong>@Html.DisplayName("First Name")</strong></td>
         <td>@Html.DisplayFor(model => model.FirstName)</td>
     </tr>
-     <tr>
+    <tr>
         <td><strong>@Html.DisplayName("Last Name")</strong></td>
         <td>@Html.DisplayFor(model => model.LastName)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Username")</strong></td>
+        <td>@Html.DisplayFor(model => model.Username)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Pass Key")</strong></td>
+        <td>@Html.DisplayFor(model => model.Passkey)</td>
     </tr>
     <tr>
         <td><strong>@Html.DisplayName("District")</strong></td>

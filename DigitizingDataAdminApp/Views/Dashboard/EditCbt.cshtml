@@ -23,6 +23,16 @@
                 @Html.ValidationMessageFor(model => model.LastName)</td>
         </tr>
         <tr>
+            <td><strong>@Html.DisplayName("Username")</strong></td>
+            <td>@Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Pass Key")</strong></td>
+            <td>@Html.EditorFor(model => model.Passkey)
+                @Html.ValidationMessageFor(model => model.Passkey)</td>
+        </tr>
+        <tr>
             <td><strong>@Html.DisplayName("District")</strong></td>
             <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:250px; height:30px;" })
                 @Html.ValidationMessageFor(model => model.Region)

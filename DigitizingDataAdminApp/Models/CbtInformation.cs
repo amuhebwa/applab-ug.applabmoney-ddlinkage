@@ -26,6 +26,12 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage="LastName is a required field", AllowEmptyStrings=false)]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "Username is a required field", AllowEmptyStrings = false)]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "Passkey is a required field", AllowEmptyStrings = false)]
+        public string Passkey { get; set; }
+
         public string Region { get; set; }
 
         [Required(ErrorMessage = "Phone Number is a required field", AllowEmptyStrings = false)]
