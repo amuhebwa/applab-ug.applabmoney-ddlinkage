@@ -9,16 +9,18 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]
 namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
-        // ActivityLogging activityLogging;
+        ActivityLoggingSystem activityLoggingSystem;
         ledgerlinkEntities database;
         PasswordHashing passwordHashing;
+        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public LoginController()
         {
-           // activityLogging = new ActivityLogging();
+            activityLoggingSystem = new ActivityLoggingSystem();
             database = new ledgerlinkEntities();
             passwordHashing = new PasswordHashing();
         }
@@ -37,7 +39,6 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                string action;
                 string password = passwordHashing.hashedPassword(user.Password);
                 var current_user = database.Users.Where(a => a.Username.Equals(user.Username)
                     && a.Password.Equals(password)).FirstOrDefault();
@@ -47,16 +48,15 @@ namespace DigitizingDataAdminApp.Controllers
                     Session["Username"] = current_user.Username;
                     Session["UserLevel"] = current_user.UserLevel;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
-                   action = "Logged in as " + user.Username;
-                   // activityLogging.addLogIfnormation(action);
-
+                    String logString = current_user.Username + " Logged In Successfully";
+                    activityLoggingSystem.logActivity(logString, 0);
                     return RedirectToAction("Dashboard", "Dashboard");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The Username or Password provided is wrong!!");
-                    action = "Failed to login with " + " " + user.Username + " and " + user.Password;
-                   // dataLogging.writeLogsToFile(action);
+                    ModelState.AddModelError("", "The Username or Password provided is wrong!");
+                    String logString = "Failed to login with Username : " + " " + user.Username + " and Password : " + user.Password;
+                    activityLoggingSystem.logActivity(logString, 1);
                 }
             }
 

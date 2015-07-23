@@ -23,6 +23,7 @@ namespace DigitizingDataAdminApp
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(Server.MapPath("~/Web.config")));
         }
         // For clearing cache
         protected void Application_BeginRequest()

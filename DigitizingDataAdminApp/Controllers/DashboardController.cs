@@ -15,9 +15,11 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
     {
+        ActivityLoggingSystem activityLoggingSystem;
         ledgerlinkEntities database;
         public DashboardController()
         {
+            activityLoggingSystem = new ActivityLoggingSystem();
             database = new ledgerlinkEntities();
 
         }
@@ -27,7 +29,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (Session["UserId"] != null)
             {
-                // Generate overview of the statistics
+
                 // Total VSLAs
                 long totalVslas = database.Vslas.Select(x => x.VslaName).Count();
                 // Total Members
@@ -140,7 +142,6 @@ namespace DigitizingDataAdminApp.Controllers
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
             allUsers.SessionUserLevel = sessionUserLevel;
-
             return View(allUsers);
         }
         /**
@@ -180,6 +181,8 @@ namespace DigitizingDataAdminApp.Controllers
          **/
         public ActionResult Logout()
         {
+            String logString = Convert.ToString(Session["Username"]) + " Logged out";
+            activityLoggingSystem.logActivity(logString, 0);
             FormsAuthentication.SignOut();
             return RedirectToAction("Index");
 
@@ -241,6 +244,8 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 ModelState.Clear();
                 user = null;
+                String logString = Convert.ToString(Session["Username"]) + " Added a new User";
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("UsersData");
             }
             UserInformation permissionLevels = getAccessPermissions();
@@ -335,6 +340,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Fullname = user.Fullname;
                 query.Email = user.Email;
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Edited User with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("UsersData");
             }
             List<UserPermission> permissions = new List<UserPermission>();
@@ -392,8 +399,12 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Users.Attach(user);
                 database.Users.Remove(user);
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Deleted User with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("UsersData");
             }
+            String logStringError = Convert.ToString(Session["Username"]) + "Failed to delete User with ID : " + Convert.ToString(id);
+            activityLoggingSystem.logActivity(logStringError, 1);
             return View();
         }
 
@@ -529,6 +540,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.CBT = Id;
                 query.Status = Status_Id;
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("VslaData");
             }
             // If one of the validations fails, reload the form and repopulate the dropdown list
@@ -640,6 +653,8 @@ namespace DigitizingDataAdminApp.Controllers
                 };
                 database.Vslas.Add(newVsla);
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + generatedVslaCode;
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("VslaData");
             }
             // If one of the fields are not valid, reload the form and re-populate the dropdown list
@@ -809,6 +824,8 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Vslas.Attach(vsla);
                 database.Vslas.Remove(vsla);
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("VslaData");
             }
             return View();
@@ -1237,6 +1254,8 @@ namespace DigitizingDataAdminApp.Controllers
 
                 database.Cbt_info.Add(_cbt);
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("CbtData");
             }
 
@@ -1406,6 +1425,8 @@ namespace DigitizingDataAdminApp.Controllers
                 query.Username = cbt.Username;
                 query.Passkey = cbt.Passkey;
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Edited CBT called : " + cbt.FirstName + " " + cbt.LastName;
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("CbtData");
             }
 
@@ -1497,6 +1518,8 @@ namespace DigitizingDataAdminApp.Controllers
                 database.Cbt_info.Attach(cbt);
                 database.Cbt_info.Remove(cbt);
                 database.SaveChanges();
+                String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
+                activityLoggingSystem.logActivity(logString, 0);
                 return RedirectToAction("CbtData");
             }
             return View();

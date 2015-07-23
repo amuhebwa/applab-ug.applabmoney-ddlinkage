@@ -1,0 +1,56 @@
+﻿@model DigitizingDataAdminApp.Models.VslaMembersInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+<h4 style="text-align: center;"><strong>Member Information for  @Html.DisplayFor(model => model.surname) @Html.DisplayFor(model => model.otherNames)</strong></h4>
+<hr />
+<table class="table table-bordered">
+    <tr>
+        <td><strong>@Html.DisplayName("Member Number")</strong></td>
+        <td>@Html.DisplayFor(model => model.memberNumber)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Surname ")</strong></td>
+        <td>@Html.DisplayFor(model => model.surname)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Other Names")</strong></td>
+        <td>@Html.DisplayFor(model => model.otherNames)</td>
+    </tr>
+
+    <tr>
+        <td><strong>@Html.DisplayName("Gender ")</strong></td>
+        <td>@Html.DisplayFor(model => model.gender)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Occupation ")</strong></td>
+        <td>@Html.DisplayFor(model => model.occupation)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Date of Birth")</strong></td>
+        <td>@Html.DisplayFor(model => model.formattedDateOfBirth)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Date Archive")</strong></td>
+        <td>@Html.DisplayFor(model => model.formattedDateArchived)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Number of Cycles Completed")</strong></td>
+        <td>@Html.DisplayFor(model => model.cyclesCompleted)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Is Member Active")</strong></td>
+        <td>@Html.DisplayFor(model => model.isActive)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Is Member Archived")</strong></td>
+        <td>@Html.DisplayFor(model => model.isArchive)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+        <td>@Html.DisplayFor(model => model.phoneNumber)</td>
+    </tr>
+</table>
+<p><strong>@Html.ActionLink("Back to Members List", "VslaMembers", new { id = @Model.vslaId })</strong></p>
+

@@ -105,6 +105,7 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.dll
+C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\log4net.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.WebPages.OAuth.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.dll
@@ -121,6 +122,7 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebGrease.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebMatrix.Data.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebMatrix.WebData.dll
+C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\log4net.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Net.Http.Formatting.xml
