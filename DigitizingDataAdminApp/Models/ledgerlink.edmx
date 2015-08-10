@@ -42,7 +42,6 @@
           <EntitySet Name="PhoneDelivery" EntityType="ledgerlinkModel.Store.PhoneDelivery" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StatusType" EntityType="ledgerlinkModel.Store.StatusType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.Store.UserPermissions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Vsla" EntityType="ledgerlinkModel.Store.Vsla" store:Type="Tables" Schema="dbo" />
@@ -345,16 +344,6 @@
           <Property Name="Status_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CurrentStatus" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="UserPermissions">
           <Key>
             <PropertyRef Name="Level_Id" />
@@ -453,7 +442,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Attendance_Member">
-          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Attendance" Type="ledgerlinkModel.Store.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -489,7 +480,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DdActivation_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="VslaDdActivation" Type="ledgerlinkModel.Store.VslaDdActivation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -525,7 +518,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Fine_Member">
-          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -549,7 +544,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LoanIssue_Member">
-          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LoanIssue" Type="ledgerlinkModel.Store.LoanIssue" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -585,7 +582,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LoanRepayment_Member">
-          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LoanRepayment" Type="ledgerlinkModel.Store.LoanRepayment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -597,7 +596,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Meeting_VslaCycle">
-          <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="0..1" />
+          <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VslaCycle">
@@ -609,7 +610,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Member_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -633,7 +636,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Saving_Member">
-          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Saving" Type="ledgerlinkModel.Store.Saving" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -681,7 +686,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VslaCycle_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -724,7 +731,6 @@
           <EntitySet Name="PhoneDeliveries" EntityType="ledgerlinkModel.PhoneDelivery" />
           <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
           <EntitySet Name="StatusTypes" EntityType="ledgerlinkModel.StatusType" />
-          <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.sysdiagram" />
           <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.UserPermission" />
           <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
           <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
@@ -1052,16 +1058,6 @@
           <Property Name="Status_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="UserPermission">
           <Key>
             <PropertyRef Name="Level_Id" />
@@ -1173,7 +1169,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Attendance_Member">
-          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Attendance" Type="ledgerlinkModel.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -1245,7 +1243,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Fine_Member">
-          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Fine" Type="ledgerlinkModel.Fine" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -1281,7 +1281,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LoanIssue_Member">
-          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LoanIssue" Type="ledgerlinkModel.LoanIssue" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -1317,7 +1319,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LoanRepayment_Member">
-          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="LoanRepayment" Type="ledgerlinkModel.LoanRepayment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -1329,7 +1333,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Meeting_VslaCycle">
-          <End Role="VslaCycle" Type="ledgerlinkModel.VslaCycle" Multiplicity="0..1" />
+          <End Role="VslaCycle" Type="ledgerlinkModel.VslaCycle" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Meeting" Type="ledgerlinkModel.Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VslaCycle">
@@ -1353,7 +1359,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Member_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -1365,7 +1373,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Saving_Member">
-          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1" />
+          <End Role="Member" Type="ledgerlinkModel.Member" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Saving" Type="ledgerlinkModel.Saving" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Member">
@@ -1389,7 +1399,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DdActivation_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="VslaDdActivation" Type="ledgerlinkModel.VslaDdActivation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -1413,7 +1425,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VslaCycle_Vsla">
-          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1" />
+          <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="VslaCycle" Type="ledgerlinkModel.VslaCycle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vsla">
@@ -1642,17 +1656,6 @@
               <MappingFragment StoreEntitySet="StatusType">
                 <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
                 <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ledgerlinkModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

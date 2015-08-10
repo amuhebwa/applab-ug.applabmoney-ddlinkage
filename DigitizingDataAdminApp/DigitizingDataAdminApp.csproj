@@ -269,9 +269,6 @@
     <Compile Include="Models\StatusType.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

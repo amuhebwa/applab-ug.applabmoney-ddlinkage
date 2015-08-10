@@ -39,7 +39,6 @@ namespace DigitizingDataAdminApp.Models
         public DbSet<PhoneDelivery> PhoneDeliveries { get; set; }
         public DbSet<Saving> Savings { get; set; }
         public DbSet<StatusType> StatusTypes { get; set; }
-        public DbSet<sysdiagram> sysdiagrams { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vsla> Vslas { get; set; }

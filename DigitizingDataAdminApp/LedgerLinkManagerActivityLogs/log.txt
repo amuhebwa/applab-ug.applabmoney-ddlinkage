@@ -1,0 +1,9 @@
+INFO  2015-07-28 11:36:27,592 41969ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-07-28 11:37:36,568 110945ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 42
+INFO  2015-07-28 11:38:41,413 175790ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 41
+INFO  2015-07-28 11:38:45,218 179596ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-07-28 11:39:00,766 195143ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-07-28 11:39:35,745 230122ms ActivityLoggingSystem  logActivity        - test Logged out
+INFO  2015-07-28 11:39:42,934 237312ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-07-28 11:40:18,500 272877ms ActivityLoggingSystem  logActivity        - admin Edited CBT called : Test Test Account
+INFO  2015-07-28 11:40:55,050 309427ms ActivityLoggingSystem  logActivity        - admin Edited CBT called : Admin Account

@@ -145,4 +145,3 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.pdb
-C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
