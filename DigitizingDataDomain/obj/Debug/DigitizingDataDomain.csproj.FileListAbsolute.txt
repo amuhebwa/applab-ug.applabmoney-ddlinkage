@@ -1,0 +1,16 @@
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\DigitizingDataDomain.dll.config
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\DigitizingDataDomain.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\DigitizingDataDomain.pdb
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\FluentNHibernate.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\HibernatingRhinos.Profiler.Appender.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\Iesi.Collections.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernate.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernate.Linq.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\WebActivator.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\FluentNHibernate.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\Iesi.Collections.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernate.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\bin\Debug\NHibernate.Linq.xml
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.dll
+D:\MUHAHALA\VS2012_PROJECTS\VslaLinkage\DigitizingDataDomain\obj\Debug\DigitizingDataDomain.pdb
