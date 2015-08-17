@@ -44,3 +44,5 @@ INFO  2015-08-14 12:50:04,171  6341ms ActivityLoggingSystem  logActivity        
 INFO  2015-08-14 12:52:53,245  4031ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-14 12:56:38,914 229700ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-14 12:59:08,932 379718ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-17 10:48:19,761 28500ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-17 10:59:14,928  3805ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

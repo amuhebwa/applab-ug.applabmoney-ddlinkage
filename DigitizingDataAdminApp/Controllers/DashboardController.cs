@@ -1732,7 +1732,80 @@ namespace DigitizingDataAdminApp.Controllers
             allMeetingsSummary.meetingsSummary = summary;
             return View(allMeetingsSummary);
         }
+        /**
+         * Export weekly meetings summary to a csv file
+         */
+        public void ExportWeeklySummary()
+        {
+            string dateString = @"29/07/2014";
+            DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+            var results = (from table_meetings in database.Meetings
+                           join table_cycles in database.VslaCycles
+                               on table_meetings.CycleId equals table_cycles.CycleId
+                           join tables_vsla in database.Vslas on table_cycles.VslaId equals
+                        tables_vsla.VslaId
+                           where table_meetings.MeetingDate >= startDate
+                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
+            List<WeeklyMeetingsSummary> summary = new List<WeeklyMeetingsSummary>();
+            // AllMeeetingsSummary allMeetingsSummary = new AllMeeetingsSummary();
+            foreach (var item in results)
+            {
+                summary.Add(new WeeklyMeetingsSummary
+                {
+                    meetingId = item.table_meetings.MeetingId,
+                    cashExpenses = item.table_meetings.CashExpenses,
+                    cashFines = item.table_meetings.CashFines,
+                    cashFromBank = item.table_meetings.CashFromBank,
+                    cashFromBox = item.table_meetings.CashFromBox,
+                    cashSavedBank = item.table_meetings.CashSavedBank,
+                    cashSavedBox = item.table_meetings.CashSavedBox,
+                    cashWelfare = item.table_meetings.CashWelfare,
+                    dateSent = item.table_meetings.DateSent,
+                    meetingDate = item.table_meetings.MeetingDate,
+                    countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
+                    sumOfSavings = item.table_meetings.SumOfSavings,
+                    sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
+                    sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
+                    vslaName = item.tables_vsla.VslaName,
+                    vslaId = item.table_cycles.VslaId,
+                    VslaCode = item.tables_vsla.VslaCode
+                });
 
+            }
+            StringWriter stringWriter = new StringWriter();
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Meeting Id\",\"Cash Expenses\",\"Cash Fines\",\"Cash From Bank\",\"Cash From Box\",\"Cash Saved Bank\",\"Cash Saved Box\",\"Date Sent\",\"Meeting Date \",\"Members Present\", \"Savings\",\"Loans Issued\", \"Loan Repayment\"");
+
+            Response.ClearContent();
+            String attachment = "attachment;filename=Weekly_Summary_Meetings.csv";
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "text/csv";
+
+            foreach (var line in summary)
+            {
+
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\",\"{13}\",\"{14}\"",
+                                           line.VslaCode,
+                                           line.vslaName,
+                                           line.meetingId,
+                                           line.cashExpenses,
+                                           line.cashFines,
+                                           line.cashFromBank,
+                                           line.cashFromBox,
+                                           line.cashSavedBank,
+                                           line.cashSavedBox,
+                                           line.dateSent.Value.ToShortDateString(),
+                                           line.meetingDate.Value.ToShortDateString(),
+                                           line.countOfMembersPresent,
+                                           line.sumOfSavings,
+                                           line.sumOfLoansIssued,
+                                           line.sumOfLoanRepayments
+                                           ));
+
+            }
+            Response.Write(stringWriter.ToString());
+
+            Response.End();
+        }
 
     }
 }
