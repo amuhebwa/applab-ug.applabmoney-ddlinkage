@@ -1689,6 +1689,49 @@ namespace DigitizingDataAdminApp.Controllers
             return cbts;
         }
 
+        /**
+         * View the weekly meeting information
+         */
+        public ActionResult DatabaseScriptedInformation()
+        {
+            string dateString = @"29/07/2014";
+            DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+            var results = (from table_meetings in database.Meetings
+                           join table_cycles in database.VslaCycles
+                               on table_meetings.CycleId equals table_cycles.CycleId
+                           join tables_vsla in database.Vslas on table_cycles.VslaId equals
+                        tables_vsla.VslaId
+                           where table_meetings.MeetingDate >= startDate
+                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
+            List<WeeklyMeetingsSummary> summary = new List<WeeklyMeetingsSummary>();
+            AllMeeetingsSummary allMeetingsSummary = new AllMeeetingsSummary();
+            foreach (var item in results)
+            {
+                summary.Add(new WeeklyMeetingsSummary
+                {
+                    meetingId = item.table_meetings.MeetingId,
+                    cashExpenses = item.table_meetings.CashExpenses,
+                    cashFines = item.table_meetings.CashFines,
+                    cashFromBank = item.table_meetings.CashFromBank,
+                    cashFromBox = item.table_meetings.CashFromBox,
+                    cashSavedBank = item.table_meetings.CashSavedBank,
+                    cashSavedBox = item.table_meetings.CashSavedBox,
+                    cashWelfare = item.table_meetings.CashWelfare,
+                    dateSent = item.table_meetings.DateSent,
+                    meetingDate = item.table_meetings.MeetingDate,
+                    countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
+                    sumOfSavings = item.table_meetings.SumOfSavings,
+                    sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
+                    sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
+                    vslaName = item.tables_vsla.VslaName,
+                    vslaId = item.table_cycles.VslaId,
+                    VslaCode = item.tables_vsla.VslaCode
+                });
+
+            }
+            allMeetingsSummary.meetingsSummary = summary;
+            return View(allMeetingsSummary);
+        }
 
 
     }
