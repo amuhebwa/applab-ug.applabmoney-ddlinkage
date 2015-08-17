@@ -1747,7 +1747,6 @@ namespace DigitizingDataAdminApp.Controllers
                            where table_meetings.MeetingDate >= startDate
                            select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
             List<WeeklyMeetingsSummary> summary = new List<WeeklyMeetingsSummary>();
-            // AllMeeetingsSummary allMeetingsSummary = new AllMeeetingsSummary();
             foreach (var item in results)
             {
                 summary.Add(new WeeklyMeetingsSummary

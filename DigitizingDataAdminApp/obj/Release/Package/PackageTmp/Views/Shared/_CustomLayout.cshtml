@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @*    @Styles.Render("~/Content/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/knockout")
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    @Scripts.Render("~/bundles/jqueryui")
+    <script src="@Url.Content("~/Scripts/DataTables/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/DataTables/dataTables.jqueryui.js")"></script>
+    @Styles.Render("~/Content/DataTables/css/jquery-ui.css")
+    @Styles.Render("~/Content/DataTables/css/dataTables.jqueryui.css")
+    @Styles.Render("~/Content/themes/base/css", "/Content/css")
+    @RenderSection("scripts", required: false)
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#data-table').dataTable();
+        });
+    </script>
+
+    <style type="text/css">
+        .vertical-align, .col-md-2 {
+            min-height: 450px;
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+        #side-navigation li {
+            margin-top: 20px;
+            border-color: #fff;
+        }
+
+            #side-navigation li a {
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container wrap sidebar-right">
+        <div class="container-fluid" style="margin-top: 40px; margin-bottom: 20px;">
+            <div class="row">
+                <div class="navbar-header col-mod-12">
+                    <img src="~/Content/Images/logo.jpeg" style="height: 40px; padding-left: 40px;" />
+                </div>
+            </div>
+        </div>
+
+        <div class="model-body row-fluid">
+            <div class="col-md-2">
+                <div class="well sidebar-offcanvas vertical-align">
+                    <ul class="nav  nav-pills nav-stacked" role="navigation" id="side-navigation">
+                        <li><strong>@Html.ActionLink("Home", "Dashboard", "Dashboard") </strong></li>
+                        <li><strong>@Html.ActionLink("VSLA Groups", "VslaData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("CBTs", "CbtData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("System Users", "UsersData", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("Meeting Stats", "DatabaseScriptedInformation", "Dashboard")</strong></li>
+                        <li><strong>@Html.ActionLink("Logout", "Logout")</strong></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col-md-8" style="margin-left: 50px;">
+                @RenderBody()
+            </div>
+        </div>
+
+        <div class="panel-footer col-md-12" style="padding: 20px; margin-top: 10px; height: 50px; background-color: #fff;">
+
+            <p style="text-align: center;">&copy; @DateTime.Now.Year - LedgerLink Manager</p>
+
+        </div>
+    </div>
+
+
+</body>
+</html>
