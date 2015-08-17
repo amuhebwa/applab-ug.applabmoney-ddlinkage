@@ -138,9 +138,6 @@
     <Compile Include="StatusType.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

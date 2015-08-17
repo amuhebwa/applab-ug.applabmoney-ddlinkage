@@ -37,7 +37,6 @@
     <EntitySet Name="PhoneDelivery" EntityType="ledgerlinkModel.Store.PhoneDelivery" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Saving" EntityType="ledgerlinkModel.Store.Saving" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StatusType" EntityType="ledgerlinkModel.Store.StatusType" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="sysdiagrams" EntityType="ledgerlinkModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.Store.UserPermissions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Users" EntityType="ledgerlinkModel.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Vsla" EntityType="ledgerlinkModel.Store.Vsla" store:Type="Tables" Schema="dbo" />
@@ -340,16 +339,6 @@
     <Property Name="Status_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="CurrentStatus" Type="varchar" Nullable="false" MaxLength="50" />
   </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="UserPermissions">
     <Key>
       <PropertyRef Name="Level_Id" />
@@ -387,7 +376,7 @@
     <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
     <Property Name="CBT" Type="int" />
     <Property Name="Status" Type="int" Nullable="false" />
-    <Property Name="BranchName" Type="varchar" MaxLength="250" />
+    <Property Name="AccountNumber" Type="varchar" MaxLength="250" />
   </EntityType>
   <EntityType Name="VslaCycle">
     <Key>
@@ -448,7 +437,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Attendance_Member">
-    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Attendance" Type="ledgerlinkModel.Store.Attendance" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -484,7 +475,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_DdActivation_Vsla">
-    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="VslaDdActivation" Type="ledgerlinkModel.Store.VslaDdActivation" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Vsla">
@@ -520,7 +513,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Fine_Member">
-    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Fine" Type="ledgerlinkModel.Store.Fine" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -544,7 +539,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LoanIssue_Member">
-    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="LoanIssue" Type="ledgerlinkModel.Store.LoanIssue" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -580,7 +577,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LoanRepayment_Member">
-    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="LoanRepayment" Type="ledgerlinkModel.Store.LoanRepayment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -592,7 +591,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Meeting_VslaCycle">
-    <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="0..1" />
+    <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Meeting" Type="ledgerlinkModel.Store.Meeting" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="VslaCycle">
@@ -604,7 +605,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Member_Vsla">
-    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Vsla">
@@ -628,7 +631,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Saving_Member">
-    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1" />
+    <End Role="Member" Type="ledgerlinkModel.Store.Member" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Saving" Type="ledgerlinkModel.Store.Saving" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Member">
@@ -676,7 +681,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_VslaCycle_Vsla">
-    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="VslaCycle" Type="ledgerlinkModel.Store.VslaCycle" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Vsla">
