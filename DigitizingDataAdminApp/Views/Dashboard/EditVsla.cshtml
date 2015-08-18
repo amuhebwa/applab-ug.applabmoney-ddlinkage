@@ -81,6 +81,11 @@
                 @Html.ValidationMessageFor(model => model.StatusType)
             </td>
         </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Group Acount Number")</strong></td>
+            <td>@Html.EditorFor(model => model.GroupAccountNumber)
+                @Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+        </tr>
     </table>
     <p>
         <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d5ce249ed3ea44cc8200e67b954b174d" Name="Diagram1">
+      <Diagram DiagramId="6d7ea199709b499398b8457276cfe91d" Name="Diagram1">
         <EntityTypeShape EntityType="ledgerlinkModel.Attendance" Width="1.5" PointX="12" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Audit_Log" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ledgerlinkModel.Cbt_info" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />

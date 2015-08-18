@@ -47,3 +47,24 @@ INFO  2015-08-14 12:59:08,932 379718ms ActivityLoggingSystem  logActivity       
 INFO  2015-08-17 10:48:19,761 28500ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-17 10:59:14,928  3805ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-17 14:45:56,002  3948ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 09:10:35,640  4436ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 09:27:12,581 122781ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 09:59:00,822  5919ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 10:01:15,097 140194ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1577
+INFO  2015-08-18 10:08:30,441  3558ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 10:09:44,818  3388ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 10:10:46,201  4768ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 10:12:47,387  3445ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-18 10:13:39,718 55776ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 77
+INFO  2015-08-18 10:13:53,468 69526ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 77
+INFO  2015-08-18 10:14:19,360 95418ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 77
+INFO  2015-08-18 10:14:24,976 101034ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 77
+INFO  2015-08-18 10:15:22,670 158728ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 77
+INFO  2015-08-18 10:18:53,839 369897ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1577
+INFO  2015-08-18 10:20:05,615 441673ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 78
+INFO  2015-08-18 10:21:32,264 528322ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1577
+INFO  2015-08-18 10:23:29,465 645523ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1580
+INFO  2015-08-18 10:24:59,314 735372ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1581
+INFO  2015-08-18 10:26:01,286 797343ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 79
+INFO  2015-08-18 10:26:08,949 805007ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 80
+INFO  2015-08-18 10:26:14,845 810902ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 81

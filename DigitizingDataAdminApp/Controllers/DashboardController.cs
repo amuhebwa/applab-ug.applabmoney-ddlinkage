@@ -458,7 +458,8 @@ namespace DigitizingDataAdminApp.Controllers
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
                 CBT = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_status.CurrentStatus ?? "--"
+                Status = vsla_info.db_status.CurrentStatus ?? "--",
+                GroupAccountNumber = "A/C " + vsla_info.db_vsla.GroupAccountNumber ?? "--"
             };
             return View(vslaData);
         }
@@ -525,6 +526,10 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("StatusType", "Select Status Type");
             }
+            else if (string.IsNullOrEmpty(vsla.GroupAccountNumber))
+            {
+                ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
+            }
             else
             {
                 var query = database.Vslas.Find(VslaId);
@@ -539,6 +544,7 @@ namespace DigitizingDataAdminApp.Controllers
                 query.PhoneNumber = vsla.PhoneNumber;
                 query.CBT = Id;
                 query.Status = Status_Id;
+                query.GroupAccountNumber = vsla.GroupAccountNumber;
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
                 activityLoggingSystem.logActivity(logString, 0);
@@ -626,6 +632,10 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("Status", "Select the VSLA status");
             }
+            else if (string.IsNullOrEmpty(vsla.GroupAccountNumber))
+            {
+                ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
+            }
             else
             { //! All fields are valid
                 /**
@@ -649,7 +659,8 @@ namespace DigitizingDataAdminApp.Controllers
                     PositionInVsla = vsla.PositionInVsla,
                     PhoneNumber = vsla.PhoneNumber,
                     CBT = Id,
-                    Status = Status_Id
+                    Status = Status_Id,
+                    GroupAccountNumber = vsla.GroupAccountNumber
                 };
                 database.Vslas.Add(newVsla);
                 database.SaveChanges();
@@ -779,7 +790,8 @@ namespace DigitizingDataAdminApp.Controllers
                 PositionInVsla = vsla.db_vsla.PositionInVsla,
                 PhoneNumber = vsla.db_vsla.PhoneNumber,
                 CbtModel = allCbts,
-                StatusType = statusTypesList
+                StatusType = statusTypesList,
+                GroupAccountNumber = vsla.db_vsla.GroupAccountNumber
             };
             return vslaData;
         }
@@ -811,7 +823,8 @@ namespace DigitizingDataAdminApp.Controllers
                 PositionInVsla = vslaInformation.db_vsla.PositionInVsla,
                 PhoneNumber = vslaInformation.db_vsla.PhoneNumber,
                 CBT = vslaInformation.db_cbt.Name ?? "--",
-                Status = vslaInformation.db_status.CurrentStatus
+                Status = vslaInformation.db_status.CurrentStatus,
+                GroupAccountNumber = "A/C " + vslaInformation.db_vsla.GroupAccountNumber
             };
             return View(vslaData);
         }

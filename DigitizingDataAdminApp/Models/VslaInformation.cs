@@ -41,7 +41,7 @@ namespace DigitizingDataAdminApp.Models
         public string PhysicalAddress { get; set; }
 
         [Required(ErrorMessage = "Phone MSISDN is a require field", AllowEmptyStrings = false)]
-        [StringLength(20, ErrorMessage = "Must be under 20 characters")]
+        [RegularExpression(@"^[0-9]{10,20}$", ErrorMessage = "Minimum of 10 characters ")]
         public string VslaPhoneMsisdn { get; set; }
 
         [Required(ErrorMessage = "GPS Location is a require field", AllowEmptyStrings = false)]
@@ -55,7 +55,7 @@ namespace DigitizingDataAdminApp.Models
         public string PositionInVsla { get; set; }
 
         [Required(ErrorMessage = "Phone Number is a require field", AllowEmptyStrings = false)]
-        [StringLength(20,ErrorMessage="Must be under 20 characters")]
+        [RegularExpression(@"^[0-9]{10,14}$", ErrorMessage = "Minimum of 10 characters ")]
         public string PhoneNumber { get; set; }
 
         public string CBT { get; set; }
@@ -68,5 +68,9 @@ namespace DigitizingDataAdminApp.Models
         public string Status { get; set; }
 
         public SelectList StatusType { get; set; }
+
+        [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
+        [RegularExpression(@"^[0-9]{10,15}$", ErrorMessage = "Minimum of 10 characters ")]
+        public string GroupAccountNumber { get; set; }
     }
 }

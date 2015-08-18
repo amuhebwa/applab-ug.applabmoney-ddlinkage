@@ -75,6 +75,11 @@
                 @Html.ValidationMessageFor(model => model.Status)
             </td>
         </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Group Account Number")</strong></td>
+            <td>@Html.TextBoxFor(model => model.GroupAccountNumber)
+                @Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+        </tr>
     </table>
     <p>
         <input class="btn btn-small btn-primary" type="submit" value=" Create " style="width: 100px;" />
