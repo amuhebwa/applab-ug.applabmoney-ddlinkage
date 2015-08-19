@@ -68,3 +68,7 @@ INFO  2015-08-18 10:24:59,314 735372ms ActivityLoggingSystem  logActivity       
 INFO  2015-08-18 10:26:01,286 797343ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 79
 INFO  2015-08-18 10:26:08,949 805007ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 80
 INFO  2015-08-18 10:26:14,845 810902ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 81
+INFO  2015-08-19 13:07:33,247 37606ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-19 14:01:25,248 16668ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-19 14:19:28,607 73794ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-19 14:23:46,652 331840ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

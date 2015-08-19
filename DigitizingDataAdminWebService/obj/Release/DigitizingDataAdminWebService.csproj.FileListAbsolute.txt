@@ -6,3 +6,4 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Newtonsoft.Json.xml
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.pdb
+C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.csprojResolveAssemblyReference.cache

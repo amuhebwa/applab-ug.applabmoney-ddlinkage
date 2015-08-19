@@ -254,7 +254,7 @@
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="CBT" ColumnName="CBT" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+          <ScalarProperty Name="GroupAccountNumber" ColumnName="GroupAccountNumber" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

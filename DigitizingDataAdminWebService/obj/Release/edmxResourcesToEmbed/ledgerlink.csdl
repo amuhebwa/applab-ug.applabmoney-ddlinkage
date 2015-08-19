@@ -382,7 +382,7 @@
     <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="CBT" Type="Int32" />
     <Property Name="Status" Type="Int32" Nullable="false" />
-    <Property Name="AccountNumber" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="GroupAccountNumber" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
     <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
     <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
