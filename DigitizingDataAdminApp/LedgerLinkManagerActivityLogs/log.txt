@@ -72,3 +72,23 @@ INFO  2015-08-19 13:07:33,247 37606ms ActivityLoggingSystem  logActivity        
 INFO  2015-08-19 14:01:25,248 16668ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-19 14:19:28,607 73794ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-19 14:23:46,652 331840ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-20 12:48:51,467 12690ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-20 12:50:53,930 135154ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 41
+INFO  2015-08-20 12:51:16,893 158117ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 41
+INFO  2015-08-20 12:51:36,131 177355ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-08-20 12:51:44,639 185863ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-08-20 14:37:29,487 98186ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-08-20 14:38:35,553 164252ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-08-20 14:41:54,734 363434ms ActivityLoggingSystem  logActivity        - test Logged out
+INFO  2015-08-20 14:41:58,970 367670ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-24 08:03:32,719 354863ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-24 08:04:47,660 429804ms ActivityLoggingSystem  logActivity        - admin Logged out
+ERROR 2015-08-24 08:05:06,917 449061ms ActivityLoggingSystem  logActivity        - Failed to login with Username :  test and Password : 123456
+INFO  2015-08-24 08:05:15,583 457727ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-24 08:05:26,456 468600ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 41
+INFO  2015-08-24 08:05:33,540 475684ms ActivityLoggingSystem  logActivity        - admin Logged out
+ERROR 2015-08-24 08:05:41,708 483852ms ActivityLoggingSystem  logActivity        - Failed to login with Username :  test and Password : 123
+INFO  2015-08-24 08:05:51,080 493224ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-08-24 08:06:38,644 540788ms ActivityLoggingSystem  logActivity        - test Logged out
+INFO  2015-08-24 13:05:15,533 11452ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-08-26 17:37:53,563 21639ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

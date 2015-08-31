@@ -15,22 +15,39 @@
 <div style="width: auto; min-width: 900px; margin: 0 auto;">
     <table class="display" style="width: 100%;" id="data-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>VSLA Name</th>
-                <th>VSLACode</th>
-                <th>DateRegistered</th>
-                <th>Meetings</th>
-                <th>Members</th>
-                <th>Details</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
+            @if (@Model.sessionUserLevel == 1)
+            { 
+                <tr>
+                    <th>ID</th>
+                    <th>VSLA Name</th>
+                    <th>VSLACode</th>
+                    <th>DateRegistered</th>
+                    <th>Meetings</th>
+                    <th>Members</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>ID</th>
+                    <th>VSLA Name</th>
+                    <th>VSLACode</th>
+                    <th>DateRegistered</th>
+                    <th>Meetings</th>
+                    <th>Members</th>
+                    <th>Details</th>
+                </tr>
+            }
         </thead>
         <tbody>
             @foreach (var item in Model.AllVslaList)
             { 
-                <tr>
+                if(@Model.sessionUserLevel == 1)
+                {
+                    <tr>
                     <td>@item.VslaId </td>
                     <td>@item.VslaName </td>
                     <td>@item.VslaCode </td>
@@ -43,8 +60,21 @@
                         <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
                     <td><a href="@Url.Action("DeleteVsla", "Dashboard", new { id = item.VslaId })">
                         <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
-
                 </tr>
+                }
+                else
+                {
+                    <tr>
+                    <td>@item.VslaId </td>
+                    <td>@item.VslaName </td>
+                    <td>@item.VslaCode </td>
+                    <td>@(item.DateRegistered.HasValue ? item.DateRegistered.Value.ToString("dd/MM/yyyy") : "---")</td>
+                    <td>@Html.ActionLink("Meetings", "VslaMeetings", new { id = item.VslaId })</td>
+                    <td>@Html.ActionLink("Members", "VslaMembers", new { id = item.VslaId }) </td>
+                    <td><a href="@Url.Action("VslaDetails", "Dashboard", new { id = item.VslaId })">
+                        <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                </tr>
+                }
             }
         </tbody>
     </table>

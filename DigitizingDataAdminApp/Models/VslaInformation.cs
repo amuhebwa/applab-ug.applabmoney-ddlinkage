@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<VslaInformation> AllVslaList { get; set; }
         public VslaInformation VslaDetails { get; set; }
+        public int sessionUserLevel { get; set; }
 
     }
     public class VslaInformation
@@ -70,7 +71,7 @@ namespace DigitizingDataAdminApp.Models
         public SelectList StatusType { get; set; }
 
         [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
-        [RegularExpression(@"^[0-9]{10,15}$", ErrorMessage = "Minimum of 10 characters ")]
+        [RegularExpression(@"^[0-9]{10,10}$", ErrorMessage = "A/C is 10 characters ")]
         public string GroupAccountNumber { get; set; }
     }
 }

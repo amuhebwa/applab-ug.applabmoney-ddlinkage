@@ -149,10 +149,12 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult VslaData()
         {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
             AllVslaInformation allVslas = new AllVslaInformation();
             List<VslaInformation> getVslaData = new List<VslaInformation>();
             getVslaData = getVslaInformation();
             allVslas.AllVslaList = getVslaData;
+            allVslas.sessionUserLevel = sessionUserLevel;
 
             return View(allVslas);
         }

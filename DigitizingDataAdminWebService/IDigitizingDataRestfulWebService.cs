@@ -27,8 +27,8 @@ namespace DigitizingDataAdminWebService
         /**
          * Create a new VSLA
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "createNewVsla/{groupInfo}/{phoneInfo}/{locationInfo}")]
-        string createNewVsla(string groupInfo, string phoneInfo, string locationInfo);
+        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "createNewVsla/{groupInfo}/{phoneInfo}/{locationInfo}")]
+        //string createNewVsla(string groupInfo, string phoneInfo, string locationInfo);
 
 
         /**

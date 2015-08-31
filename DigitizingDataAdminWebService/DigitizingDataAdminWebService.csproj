@@ -134,6 +134,7 @@
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawContentTypeMapper.cs" />
     <Compile Include="Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
