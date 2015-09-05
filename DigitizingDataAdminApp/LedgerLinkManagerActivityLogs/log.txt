@@ -92,3 +92,4 @@ INFO  2015-08-24 08:05:51,080 493224ms ActivityLoggingSystem  logActivity       
 INFO  2015-08-24 08:06:38,644 540788ms ActivityLoggingSystem  logActivity        - test Logged out
 INFO  2015-08-24 13:05:15,533 11452ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-08-26 17:37:53,563 21639ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-02 16:16:52,482 230375ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

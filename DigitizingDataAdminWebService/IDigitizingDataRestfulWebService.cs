@@ -15,21 +15,14 @@ namespace DigitizingDataAdminWebService
         /**
          * Login for a given CBT
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "loginCBT/{Username}/{PassKey}")]
-        CBTLoginDetails loginCBT(String Username, String PassKey);
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "technicalTrainerLogin/{Username}/{PassKey}")]
+        CBTLoginDetails technicalTrainerLogin(String Username, String PassKey);
 
         /**
          * Search for a given VSLA
          */
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchForVsla/{VslaName}")]
         List<VslaDetails> searchForVsla(string VslaName);
-
-        /**
-         * Create a new VSLA
-         */
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "createNewVsla/{groupInfo}/{phoneInfo}/{locationInfo}")]
-        //string createNewVsla(string groupInfo, string phoneInfo, string locationInfo);
-
 
         /**
          * Get all registered users
@@ -54,10 +47,15 @@ namespace DigitizingDataAdminWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getSingleVslaDetails/{VslaId}")]
         VslaDetails getSingleVslaDetails(string VslaId);
 
-        // Sample implementation of a test method to create a new vsla into the database
+        // Create a new VSLA and add it into the database
         [OperationContract]
-        [WebInvoke(Method = "POST",ResponseFormat = WebMessageFormat.Json, UriTemplate = "createVslaTestMethod")]
-        string createVslaTestMethod(Stream jsonStream);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "createNewVsla")]
+        RegistrationResult createNewVsla(Stream jsonStream);
+
+        // Edit an exisiting VSLA
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "editExistingVsla")]
+        RegistrationResult editExistingVsla(Stream jsonStreamObject);
     }
 
 }

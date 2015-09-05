@@ -18,14 +18,12 @@ namespace DigitizingDataAdminWebService
          * Login for the cbt
          */
         Constants constants = new Constants();
-        public CBTLoginDetails loginCBT(String Username, String PassKey)
+        public CBTLoginDetails technicalTrainerLogin(String Username, String PassKey)
         {
-            PasswordHash passwordHashing = new PasswordHash();
-            string passkey = passwordHashing.hashedPassword(PassKey);
 
             ledgerlinkEntities database = new ledgerlinkEntities();
             var login = (from table_cbt in database.Cbt_info
-                         where table_cbt.Username == Username && table_cbt.Passkey == passkey
+                         where table_cbt.Username == Username && table_cbt.Passkey == PassKey
                          select new { table_cbt }).SingleOrDefault();
 
             CBTLoginDetails loginResult = new CBTLoginDetails();
@@ -33,13 +31,13 @@ namespace DigitizingDataAdminWebService
 
             if (login != null)
             {
-                loginResult.CbtId = login.table_cbt.Id;
+                loginResult.TechnicalTrainerId = login.table_cbt.Id;
                 loginResult.result = constants.successful;
                 loginResult.Username = login.table_cbt.Username;
             }
             else
             {
-                loginResult.CbtId = -1;
+                loginResult.TechnicalTrainerId = -1;
                 loginResult.result = constants.unsuccessful;
                 loginResult.Username = null;
             }
@@ -72,80 +70,129 @@ namespace DigitizingDataAdminWebService
                     DateRegistered = string.IsNullOrEmpty(vsla.table_vsla.DateRegistered.ToString()) ? "---" : vsla.table_vsla.DateRegistered.ToString(),
                     DateLinked = string.IsNullOrEmpty(vsla.table_vsla.DateLinked.ToString()) ? "---" : vsla.table_vsla.DateLinked.ToString(),
                     RegionName = vsla.table_regions.RegionName,
-                    ContactPerson = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
-                    PositionInVsla = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
-                    PhoneNumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
-                    CbtName = vsla.table_cbt.Name,
-                    Status = vsla.table_status.CurrentStatus
+                    GroupRepresentativeName = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
+                    GroupRepresentativePosition = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
+                    GroupRepresentativePhonenumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
+                    TechnicalTTrainerName = vsla.table_cbt.Name,
+                    Status = vsla.table_status.CurrentStatus,
+                    GroupAccountNumber = string.IsNullOrEmpty(vsla.table_vsla.GroupAccountNumber) ? "--" : vsla.table_vsla.GroupAccountNumber,
+                    TechnicalTrainerId = vsla.table_vsla.CBT
                 });
             }
 
             return results;
-
         }
 
         /**
-         * Create  a new VSLA
-         */
-        public string createNewVsla(string groupInfo, string phoneInfo, string locationInfo)
-        {
-            return "";
-        }
-        /**
-         * Sample Testing method for creating  
-         */
-        public string createVslaTestMethod(Stream jsonStream)
+         * Create new VSLA
+         **/
+        public RegistrationResult createNewVsla(Stream jsonStream)
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
             int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
             string getYear = DateTime.Now.Year.ToString().Substring(2);
             string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
+            String result = String.Empty;
+            RegistrationResult registrationResults = new RegistrationResult();
 
-            string _sampleString = "{\"VslaName\": \"Admin Web services Test\",\"VslaPhoneMsisdn\": \"123456789\",\"PhysicalAddress\": \"Near the mango tree\",\"GpsLocation\": \"4567.566, 746666\",\"DateRegistered\": \"2015-06-24T00:00:00.000Z\",\"DateLinked\": \"2015-07-12T00:00:00.000Z\",\"RegionId\": 8,\"ContactPerson\": \"Julius Matovu\",\"PositionInVsla\": \"Mobile Secretary\",\"PhoneNumber\": \"0774561760\",\"CBT\": 8,\"Status\": 2}";
-            VslaDetails request = JsonConvert.DeserializeObject<VslaDetails>(_sampleString);
-            //if (null != request)
-            //{
-            //    Vsla newVsla = new Vsla
-            //    {
-            //        VslaCode = generatedVslaCode,
-            //        VslaName = request.VslaName,
-            //        RegionId = 9,
-            //        DateRegistered = Convert.ToDateTime(request.DateRegistered),
-            //        DateLinked = Convert.ToDateTime(request.DateLinked),
-            //        PhysicalAddress = request.PhysicalAddress ?? "--",
-            //        VslaPhoneMsisdn = request.VslaPhoneMsisdn ?? "--",
-            //        GpsLocation = request.GpsLocation ?? "--",
-            //        ContactPerson = request.ContactPerson,
-            //        PositionInVsla = request.PositionInVsla,
-            //        PhoneNumber = request.PhoneNumber,
-            //        CBT = 9,
-            //        Status = 2
-
-            //    };
-            //    database.Vslas.Add(newVsla);
-            //    database.SaveChanges();
-            //    // string result = "VSLA Name is " + request.VslaName;
-            //    return "Done. New group has been added to the DB";
-            //}
-            //else
-            //{
-            //    string result = "Group could not be added to the DB";
-            //    return result;
-            //}
             StreamReader reader = new StreamReader(jsonStream);
             string data = reader.ReadToEnd();
             if (string.IsNullOrEmpty(data))
             {
-                return "Nothing to show";
+                registrationResults.result = "-1";
             }
-            else {
-                return data;
+            else
+            {
+                VslaDetails request = JsonConvert.DeserializeObject<VslaDetails>(data);
+                if (null != request)
+                {
+                    Vsla newVsla = new Vsla
+                    {
+                        VslaCode = generatedVslaCode,
+                        VslaName = request.VslaName != null ? request.VslaName : "--",
+                        RegionId = request.RegionName != null ? Convert.ToInt32(request.RegionName) : 9,
+                        DateRegistered = Convert.ToDateTime(DateTime.Today),
+                        DateLinked = Convert.ToDateTime(DateTime.Today),
+                        PhysicalAddress = request.PhysicalAddress != null ? request.PhysicalAddress : "--",
+                        VslaPhoneMsisdn = request.VslaPhoneMsisdn != null ? request.VslaPhoneMsisdn : "--",
+                        GpsLocation = request.GpsLocation != null ? request.GpsLocation : "--",
+                        ContactPerson = request.GroupRepresentativeName != null ? request.GroupRepresentativeName : "--",
+                        PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--",
+                        PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--",
+                        CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1,
+                        Status = 2
+                    };
+                    database.Vslas.Add(newVsla);
+                    database.SaveChanges();
+                    registrationResults.result = "1";
+                    registrationResults.VslaCode = generatedVslaCode;
+                    registrationResults.operation = "create";
+                }
+                else
+                {
+                    registrationResults.result = "-1";
+                }
             }
+            return registrationResults;
         }
 
         /**
-         * Get all users
-         */
+         * Edit an existing VSLA
+         **/
+        public RegistrationResult editExistingVsla(Stream jsonStreamObject)
+        {
+            StreamReader reader = new StreamReader(jsonStreamObject);
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            string data = reader.ReadToEnd();
+            string result = string.Empty;
+            RegistrationResult registrationResults = new RegistrationResult();
+            if (string.IsNullOrEmpty(data))
+            {
+                registrationResults.result = "-1";
+            }
+            else
+            {
+                VslaDetails request = JsonConvert.DeserializeObject<VslaDetails>(data);
+                if (null != request)
+                {
+                    int VslaId = request.VslaId;
+                    var query = from vsla in database.Vslas where vsla.VslaId == VslaId select vsla;
+                    foreach (var row in query)
+                    {
+                        row.RegionId = request.RegionName != null ? Convert.ToInt32(request.RegionName) : 9;
+                        row.DateRegistered = Convert.ToDateTime(DateTime.Today);
+                        row.DateLinked = Convert.ToDateTime(DateTime.Today);
+                        row.PhysicalAddress = request.PhysicalAddress != null ? request.PhysicalAddress : "--";
+                        row.VslaPhoneMsisdn = request.VslaPhoneMsisdn != null ? request.VslaPhoneMsisdn : "--";
+                        row.GpsLocation = request.GpsLocation != null ? request.GpsLocation : "--";
+                        row.ContactPerson = request.GroupRepresentativeName != null ? request.GroupRepresentativeName : "--";
+                        row.PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--";
+                        row.PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--";
+                        row.CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1;
+                        row.Status = 2;
+                    }
+                    // save the dataa to the database
+                    try
+                    {
+                        database.SaveChanges();
+                        registrationResults.result = "1";
+                        registrationResults.operation = "edit";
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+                else
+                {
+                    registrationResults.result = "-1";
+                }
+            }
+            return registrationResults;
+        }
+
+        /** * Get all users  */
         public List<UsersDetails> getRegisteredUsers()
         {
             ledgerlinkEntities database = new ledgerlinkEntities();
@@ -157,7 +204,6 @@ namespace DigitizingDataAdminWebService
                     UserId = user.Id,
                     Username = user.Username,
                     Fullname = user.Fullname,
-                    // Password = user.Password,
                     Email = user.Email,
                     DateCreated = user.DateCreated,
                     UserLevel = user.UserLevel
@@ -192,11 +238,13 @@ namespace DigitizingDataAdminWebService
                         DateRegistered = string.IsNullOrEmpty(vsla.table_vsla.DateRegistered.ToString()) ? "---" : vsla.table_vsla.DateRegistered.ToString(),
                         DateLinked = string.IsNullOrEmpty(vsla.table_vsla.DateLinked.ToString()) ? "---" : vsla.table_vsla.DateLinked.ToString(),
                         RegionName = vsla.table_regions.RegionName,
-                        ContactPerson = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
-                        PositionInVsla = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
-                        PhoneNumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
-                        CbtName = vsla.table_cbt.Name,
-                        Status = vsla.table_status.CurrentStatus
+                        GroupRepresentativeName = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
+                        GroupRepresentativePosition = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
+                        GroupRepresentativePhonenumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
+                        TechnicalTTrainerName = vsla.table_cbt.Name,
+                        Status = vsla.table_status.CurrentStatus,
+                        GroupAccountNumber = string.IsNullOrEmpty(vsla.table_vsla.GroupAccountNumber) ? "--" : vsla.table_vsla.GroupAccountNumber,
+                        TechnicalTrainerId = vsla.table_vsla.CBT
                     });
                 }
 
@@ -236,11 +284,14 @@ namespace DigitizingDataAdminWebService
                         DateRegistered = string.IsNullOrEmpty(vsla.table_vsla.DateRegistered.ToString()) ? "---" : vsla.table_vsla.DateRegistered.ToString(),
                         DateLinked = string.IsNullOrEmpty(vsla.table_vsla.DateLinked.ToString()) ? "---" : vsla.table_vsla.DateLinked.ToString(),
                         RegionName = vsla.table_regions.RegionName,
-                        ContactPerson = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
-                        PositionInVsla = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
-                        PhoneNumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
-                        CbtName = vsla.table_cbt.Name,
-                        Status = vsla.table_status.CurrentStatus
+                        GroupRepresentativeName = string.IsNullOrEmpty(vsla.table_vsla.ContactPerson) ? "---" : vsla.table_vsla.ContactPerson,
+                        GroupRepresentativePosition = string.IsNullOrEmpty(vsla.table_vsla.PositionInVsla) ? "---" : vsla.table_vsla.PositionInVsla,
+                        GroupRepresentativePhonenumber = string.IsNullOrEmpty(vsla.table_vsla.PhoneNumber) ? "---" : vsla.table_vsla.PhoneNumber,
+                        TechnicalTTrainerName = vsla.table_cbt.Name,
+                        Status = vsla.table_status.CurrentStatus,
+                        GroupAccountNumber = string.IsNullOrEmpty(vsla.table_vsla.GroupAccountNumber) ? "--" : vsla.table_vsla.GroupAccountNumber,
+                        TechnicalTrainerId = vsla.table_vsla.CBT
+
                     });
                 }
                 return results;
@@ -275,13 +326,13 @@ namespace DigitizingDataAdminWebService
                     DateRegistered = string.IsNullOrEmpty(vslaData.table_vsla.DateRegistered.ToString()) ? "---" : vslaData.table_vsla.DateRegistered.ToString(),
                     DateLinked = string.IsNullOrEmpty(vslaData.table_vsla.DateLinked.ToString()) ? "---" : vslaData.table_vsla.DateLinked.ToString(),
                     RegionName = vslaData.table_regions.RegionName,
-                    ContactPerson = string.IsNullOrEmpty(vslaData.table_vsla.ContactPerson) ? "---" : vslaData.table_vsla.ContactPerson,
-                    PositionInVsla = string.IsNullOrEmpty(vslaData.table_vsla.PositionInVsla) ? "---" : vslaData.table_vsla.PositionInVsla,
-                    PhoneNumber = string.IsNullOrEmpty(vslaData.table_vsla.PhoneNumber) ? "---" : vslaData.table_vsla.PhoneNumber,
-                    CbtName = vslaData.table_cbt.Name,
-                    Status = vslaData.table_status.CurrentStatus
-
-
+                    GroupRepresentativeName = string.IsNullOrEmpty(vslaData.table_vsla.ContactPerson) ? "---" : vslaData.table_vsla.ContactPerson,
+                    GroupRepresentativePosition = string.IsNullOrEmpty(vslaData.table_vsla.PositionInVsla) ? "---" : vslaData.table_vsla.PositionInVsla,
+                    GroupRepresentativePhonenumber = string.IsNullOrEmpty(vslaData.table_vsla.PhoneNumber) ? "---" : vslaData.table_vsla.PhoneNumber,
+                    TechnicalTTrainerName = vslaData.table_cbt.Name,
+                    Status = vslaData.table_status.CurrentStatus,
+                    GroupAccountNumber = string.IsNullOrEmpty(vslaData.table_vsla.GroupAccountNumber) ? "--" : vslaData.table_vsla.GroupAccountNumber,
+                    TechnicalTrainerId = vslaData.table_vsla.CBT
                 };
                 return results;
             }

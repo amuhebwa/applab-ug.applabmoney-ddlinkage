@@ -38,7 +38,7 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public int result { get; set; } // 1 for success, 0 for failed login
         [DataMember]
-        public int CbtId { get; set; } // User Id of the CBT
+        public int TechnicalTrainerId { get; set; } // User Id of the CBT
         [DataMember]
         public string Username { get; set; }
     }
@@ -88,72 +88,31 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string RegionName { get; set; }
         [DataMember]
-        public string ContactPerson { get; set; }
+        public string GroupRepresentativeName { get; set; }
         [DataMember]
-        public string PositionInVsla { get; set; }
+        public string GroupRepresentativePosition { get; set; }
         [DataMember]
-        public string PhoneNumber { get; set; }
+        public string GroupRepresentativePhonenumber { get; set; }
         [DataMember]
-        public string CbtName { get; set; }
+        public int? TechnicalTrainerId { get; set; }
+        [DataMember]
+        public string TechnicalTTrainerName { get; set; }
         [DataMember]
         public string Status { get; set; }
+        [DataMember]
+        public string GroupAccountNumber { get; set; }
     }
+
     /**
-     *--- Data Submitted From the phone to register a new phone ---
-     * 1. Group information
+     *  
      */
     [DataContract]
-    class GroupInformation
-    {
+    public class RegistrationResult {
         [DataMember]
-        public string GroupName { get; set; }
+        public string result { get; set; }
         [DataMember]
-        public string GroupPasskey { get; set; }
+        public string VslaCode { get; set; } // returned on sucessful vsla registration
         [DataMember]
-        public string ContactPerson { get; set; }
-        [DataMember]
-        public string PositionInVsla { get; set; }
-        [DataMember]
-        public string MemberPhoneNumber { get; set; }
-        [DataMember]
-        public string GroupBankAccount { get; set; }
-    }
-    /**
-     * 2. Phone information
-     */
-    [DataContract]
-    public class PhoneInformation
-    {
-        [DataMember]
-        public string PhoneNumber { get; set; }
-        [DataMember]
-        public string PhoneImei01 { get; set; }
-        [DataMember]
-        public string PhoneImei02 { get; set; }
-        [DataMember]
-        public string SerialNumber { get; set; }
-        [DataMember]
-        public string Manufacturer { get; set; }
-        [DataMember]
-        public string Model { get; set; }
-        [DataMember]
-        public string RecepientName { get; set; }
-        [DataMember]
-        public string RecipientPost { get; set; }
-        [DataMember]
-        public string DateDelivered { get; set; }
-    }
-    /**
-     * 3. Location information
-     */
-    [DataContract]
-    public class LocationInformation
-    {
-        [DataMember]
-        public string PhysicalAddress { get; set; }
-        [DataMember]
-        public string RegionName { get; set; }
-        [DataMember]
-        public string GpsLocation { get; set; }
+        public string operation { get; set; } // Creating/Editing
     }
 }
