@@ -100,6 +100,7 @@ namespace DigitizingDataAdminWebService
             if (string.IsNullOrEmpty(data))
             {
                 registrationResults.result = "-1";
+                return registrationResults;
             }
             else
             {
@@ -120,20 +121,23 @@ namespace DigitizingDataAdminWebService
                         PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--",
                         PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--",
                         CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1,
-                        Status = 2
+                        GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "00000000", 
+                        Status = 1
                     };
                     database.Vslas.Add(newVsla);
                     database.SaveChanges();
                     registrationResults.result = "1";
                     registrationResults.VslaCode = generatedVslaCode;
                     registrationResults.operation = "create";
+                    return registrationResults;
                 }
                 else
                 {
                     registrationResults.result = "-1";
+                    return registrationResults;
                 }
             }
-            return registrationResults;
+            
         }
 
         /**
@@ -149,6 +153,7 @@ namespace DigitizingDataAdminWebService
             if (string.IsNullOrEmpty(data))
             {
                 registrationResults.result = "-1";
+                return registrationResults;
             }
             else
             {
@@ -159,17 +164,19 @@ namespace DigitizingDataAdminWebService
                     var query = from vsla in database.Vslas where vsla.VslaId == VslaId select vsla;
                     foreach (var row in query)
                     {
+                        row.VslaName = request.VslaName != null ? request.VslaName : "-NA-";
                         row.RegionId = request.RegionName != null ? Convert.ToInt32(request.RegionName) : 9;
-                        row.DateRegistered = Convert.ToDateTime(DateTime.Today);
-                        row.DateLinked = Convert.ToDateTime(DateTime.Today);
+                        // row.DateRegistered = Convert.ToDateTime(DateTime.Today);
+                        // row.DateLinked = Convert.ToDateTime(DateTime.Today);
                         row.PhysicalAddress = request.PhysicalAddress != null ? request.PhysicalAddress : "--";
                         row.VslaPhoneMsisdn = request.VslaPhoneMsisdn != null ? request.VslaPhoneMsisdn : "--";
                         row.GpsLocation = request.GpsLocation != null ? request.GpsLocation : "--";
                         row.ContactPerson = request.GroupRepresentativeName != null ? request.GroupRepresentativeName : "--";
                         row.PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--";
                         row.PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--";
-                        row.CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1;
-                        row.Status = 2;
+                        // row.CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1;
+                        row.GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "0000000000"; 
+                        // row.Status = 1;
                     }
                     // save the dataa to the database
                     try
@@ -177,6 +184,7 @@ namespace DigitizingDataAdminWebService
                         database.SaveChanges();
                         registrationResults.result = "1";
                         registrationResults.operation = "edit";
+                        return registrationResults;
                     }
                     catch (Exception)
                     {
@@ -187,9 +195,9 @@ namespace DigitizingDataAdminWebService
                 else
                 {
                     registrationResults.result = "-1";
+                    return registrationResults;
                 }
             }
-            return registrationResults;
         }
 
         /** * Get all users  */
