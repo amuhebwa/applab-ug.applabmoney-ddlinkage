@@ -30,7 +30,15 @@
       FROM [dbo].[DataSubmission_20140113_2] AS [DataSubmission_20140113_2]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="Fine" EntityType="ledgerlinkModel.Store.Fine" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="GroupSupport" EntityType="ledgerlinkModel.Store.GroupSupport" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupSupport" EntityType="ledgerlinkModel.Store.GroupSupport" store:Type="Tables" store:Schema="dbo" store:Name="GroupSupport">
+      <DefiningQuery>SELECT 
+      [GroupSupport].[SupportId] AS [SupportId], 
+      [GroupSupport].[SupportType] AS [SupportType], 
+      [GroupSupport].[VslaId] AS [VslaId], 
+      [GroupSupport].[TrainerId] AS [TrainerId], 
+      [GroupSupport].[SupportDate] AS [SupportDate]
+      FROM [dbo].[GroupSupport] AS [GroupSupport]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="LoanIssue" EntityType="ledgerlinkModel.Store.LoanIssue" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LoanRepayment" EntityType="ledgerlinkModel.Store.LoanRepayment" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
@@ -236,9 +244,16 @@
     <Property Name="MemberId" Type="int" />
     <Property Name="MeetingId" Type="int" />
   </EntityType>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'ledgerlink.dbo.GroupSupport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
   <EntityType Name="GroupSupport">
     <Key>
       <PropertyRef Name="SupportId" />
+      <PropertyRef Name="SupportType" />
+      <PropertyRef Name="VslaId" />
+      <PropertyRef Name="TrainerId" />
+      <PropertyRef Name="SupportDate" />
     </Key>
     <Property Name="SupportId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="SupportType" Type="varchar" Nullable="false" MaxLength="250" />

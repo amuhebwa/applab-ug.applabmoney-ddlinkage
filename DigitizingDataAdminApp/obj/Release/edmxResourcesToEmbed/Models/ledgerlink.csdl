@@ -8,6 +8,7 @@
     <EntitySet Name="DataSubmission_20140113" EntityType="ledgerlinkModel.DataSubmission_20140113" />
     <EntitySet Name="DataSubmission_20140113_2" EntityType="ledgerlinkModel.DataSubmission_20140113_2" />
     <EntitySet Name="Fines" EntityType="ledgerlinkModel.Fine" />
+    <EntitySet Name="GroupSupports" EntityType="ledgerlinkModel.GroupSupport" />
     <EntitySet Name="LoanIssues" EntityType="ledgerlinkModel.LoanIssue" />
     <EntitySet Name="LoanRepayments" EntityType="ledgerlinkModel.LoanRepayment" />
     <EntitySet Name="Meetings" EntityType="ledgerlinkModel.Meeting" />
@@ -37,6 +38,10 @@
       <End Role="VslaRegion" EntitySet="VslaRegions" />
       <End Role="Cbt_info" EntitySet="Cbt_info" />
     </AssociationSet>
+    <AssociationSet Name="FK_GroupSupport_Cbt_info" Association="ledgerlinkModel.FK_GroupSupport_Cbt_info">
+      <End Role="Cbt_info" EntitySet="Cbt_info" />
+      <End Role="GroupSupport" EntitySet="GroupSupports" />
+    </AssociationSet>
     <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.FK_Vsla_Cbt_info">
       <End Role="Cbt_info" EntitySet="Cbt_info" />
       <End Role="Vsla" EntitySet="Vslas" />
@@ -56,6 +61,10 @@
     <AssociationSet Name="FKA66C912E75B3F070" Association="ledgerlinkModel.FKA66C912E75B3F070">
       <End Role="Meeting" EntitySet="Meetings" />
       <End Role="Fine" EntitySet="Fines" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupSupport_Vsla" Association="ledgerlinkModel.FK_GroupSupport_Vsla">
+      <End Role="Vsla" EntitySet="Vslas" />
+      <End Role="GroupSupport" EntitySet="GroupSupports" />
     </AssociationSet>
     <AssociationSet Name="FK_LoanIssue_Meeting" Association="ledgerlinkModel.FK_LoanIssue_Meeting">
       <End Role="Meeting" EntitySet="Meetings" />
@@ -148,6 +157,7 @@
     <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="Passkey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
+    <NavigationProperty Name="GroupSupports" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="Cbt_info" ToRole="GroupSupport" />
     <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
   </EntityType>
   <EntityType Name="DataSubmission">
@@ -207,6 +217,18 @@
     <NavigationProperty Name="Meeting1" Relationship="ledgerlinkModel.FK_Fine_Meeting_Paid" FromRole="Fine" ToRole="Meeting" />
     <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Fine_Member" FromRole="Fine" ToRole="Member" />
     <NavigationProperty Name="Meeting2" Relationship="ledgerlinkModel.FKA66C912E75B3F070" FromRole="Fine" ToRole="Meeting" />
+  </EntityType>
+  <EntityType Name="GroupSupport">
+    <Key>
+      <PropertyRef Name="SupportId" />
+    </Key>
+    <Property Name="SupportId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="SupportType" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="VslaId" Type="Int32" Nullable="false" />
+    <Property Name="TrainerId" Type="Int32" Nullable="false" />
+    <Property Name="SupportDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="GroupSupport" ToRole="Cbt_info" />
+    <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_GroupSupport_Vsla" FromRole="GroupSupport" ToRole="Vsla" />
   </EntityType>
   <EntityType Name="LoanIssue">
     <Key>
@@ -384,6 +406,7 @@
     <Property Name="Status" Type="Int32" Nullable="false" />
     <Property Name="GroupAccountNumber" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
+    <NavigationProperty Name="GroupSupports" Relationship="ledgerlinkModel.FK_GroupSupport_Vsla" FromRole="Vsla" ToRole="GroupSupport" />
     <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
     <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
     <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="Vsla" ToRole="VslaRegion" />
@@ -490,6 +513,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_GroupSupport_Cbt_info">
+    <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="1" />
+    <End Role="GroupSupport" Type="ledgerlinkModel.GroupSupport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cbt_info">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GroupSupport">
+        <PropertyRef Name="TrainerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Vsla_Cbt_info">
     <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="0..1" />
     <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="*" />
@@ -549,6 +584,20 @@
       </Principal>
       <Dependent Role="Fine">
         <PropertyRef Name="MeetingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupSupport_Vsla">
+    <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="GroupSupport" Type="ledgerlinkModel.GroupSupport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vsla">
+        <PropertyRef Name="VslaId" />
+      </Principal>
+      <Dependent Role="GroupSupport">
+        <PropertyRef Name="VslaId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

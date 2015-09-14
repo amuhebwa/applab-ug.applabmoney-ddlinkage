@@ -221,6 +221,10 @@
   <EntityType Name="GroupSupport">
     <Key>
       <PropertyRef Name="SupportId" />
+      <PropertyRef Name="SupportType" />
+      <PropertyRef Name="VslaId" />
+      <PropertyRef Name="TrainerId" />
+      <PropertyRef Name="SupportDate" />
     </Key>
     <Property Name="SupportId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="SupportType" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />

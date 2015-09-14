@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
@@ -21,9 +22,11 @@ namespace DigitizingDataAdminApp.Models
         public decimal? cashSavedBox { get; set; }
         public decimal? cashWelfare { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? dateSent { get; set; }
         public string formattedDateSent { get { return dateSent.Value.ToShortDateString(); } }
 
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? meetingDate { get; set; }
         public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
         public int? countOfMembersPresent { get; set; }

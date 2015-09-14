@@ -16,6 +16,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public Cbt_info()
         {
+            this.GroupSupports = new HashSet<GroupSupport>();
             this.Vslas = new HashSet<Vsla>();
         }
     
@@ -31,6 +32,7 @@ namespace DigitizingDataAdminApp.Models
         public string Passkey { get; set; }
     
         public virtual VslaRegion VslaRegion { get; set; }
+        public virtual ICollection<GroupSupport> GroupSupports { get; set; }
         public virtual ICollection<Vsla> Vslas { get; set; }
     }
 }

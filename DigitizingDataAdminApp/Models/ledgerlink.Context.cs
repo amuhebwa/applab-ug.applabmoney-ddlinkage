@@ -32,6 +32,7 @@ namespace DigitizingDataAdminApp.Models
         public DbSet<DataSubmission_20140113> DataSubmission_20140113 { get; set; }
         public DbSet<DataSubmission_20140113_2> DataSubmission_20140113_2 { get; set; }
         public DbSet<Fine> Fines { get; set; }
+        public DbSet<GroupSupport> GroupSupports { get; set; }
         public DbSet<LoanIssue> LoanIssues { get; set; }
         public DbSet<LoanRepayment> LoanRepayments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }

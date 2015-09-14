@@ -16,6 +16,7 @@ namespace DigitizingDataAdminWebService
     {
         public Vsla()
         {
+            this.GroupSupports = new HashSet<GroupSupport>();
             this.Members = new HashSet<Member>();
             this.VslaDdActivations = new HashSet<VslaDdActivation>();
             this.VslaCycles = new HashSet<VslaCycle>();
@@ -38,6 +39,7 @@ namespace DigitizingDataAdminWebService
         public string GroupAccountNumber { get; set; }
     
         public virtual Cbt_info Cbt_info { get; set; }
+        public virtual ICollection<GroupSupport> GroupSupports { get; set; }
         public virtual ICollection<Member> Members { get; set; }
         public virtual ICollection<VslaDdActivation> VslaDdActivations { get; set; }
         public virtual VslaRegion VslaRegion { get; set; }

@@ -30,6 +30,7 @@
       FROM [dbo].[DataSubmission_20140113_2] AS [DataSubmission_20140113_2]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="Fine" EntityType="ledgerlinkModel.Store.Fine" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupSupport" EntityType="ledgerlinkModel.Store.GroupSupport" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LoanIssue" EntityType="ledgerlinkModel.Store.LoanIssue" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LoanRepayment" EntityType="ledgerlinkModel.Store.LoanRepayment" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Meeting" EntityType="ledgerlinkModel.Store.Meeting" store:Type="Tables" Schema="dbo" />
@@ -74,6 +75,14 @@
     <AssociationSet Name="FK_Fine_Member" Association="ledgerlinkModel.Store.FK_Fine_Member">
       <End Role="Member" EntitySet="Member" />
       <End Role="Fine" EntitySet="Fine" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupSupport_Cbt_info" Association="ledgerlinkModel.Store.FK_GroupSupport_Cbt_info">
+      <End Role="Cbt_info" EntitySet="Cbt_info" />
+      <End Role="GroupSupport" EntitySet="GroupSupport" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupSupport_Vsla" Association="ledgerlinkModel.Store.FK_GroupSupport_Vsla">
+      <End Role="Vsla" EntitySet="Vsla" />
+      <End Role="GroupSupport" EntitySet="GroupSupport" />
     </AssociationSet>
     <AssociationSet Name="FK_LoanIssue_Meeting" Association="ledgerlinkModel.Store.FK_LoanIssue_Meeting">
       <End Role="Meeting" EntitySet="Meeting" />
@@ -226,6 +235,16 @@
     <Property Name="PaidInMeetingId" Type="int" />
     <Property Name="MemberId" Type="int" />
     <Property Name="MeetingId" Type="int" />
+  </EntityType>
+  <EntityType Name="GroupSupport">
+    <Key>
+      <PropertyRef Name="SupportId" />
+    </Key>
+    <Property Name="SupportId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SupportType" Type="varchar" Nullable="false" MaxLength="250" />
+    <Property Name="VslaId" Type="int" Nullable="false" />
+    <Property Name="TrainerId" Type="int" Nullable="false" />
+    <Property Name="SupportDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="LoanIssue">
     <Key>
@@ -523,6 +542,32 @@
       </Principal>
       <Dependent Role="Fine">
         <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupSupport_Cbt_info">
+    <End Role="Cbt_info" Type="ledgerlinkModel.Store.Cbt_info" Multiplicity="1" />
+    <End Role="GroupSupport" Type="ledgerlinkModel.Store.GroupSupport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cbt_info">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GroupSupport">
+        <PropertyRef Name="TrainerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupSupport_Vsla">
+    <End Role="Vsla" Type="ledgerlinkModel.Store.Vsla" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="GroupSupport" Type="ledgerlinkModel.Store.GroupSupport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vsla">
+        <PropertyRef Name="VslaId" />
+      </Principal>
+      <Dependent Role="GroupSupport">
+        <PropertyRef Name="VslaId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

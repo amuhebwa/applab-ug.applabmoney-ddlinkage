@@ -97,6 +97,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="GroupSupports">
+      <EntityTypeMapping TypeName="ledgerlinkModel.GroupSupport">
+        <MappingFragment StoreEntitySet="GroupSupport">
+          <ScalarProperty Name="SupportId" ColumnName="SupportId" />
+          <ScalarProperty Name="SupportType" ColumnName="SupportType" />
+          <ScalarProperty Name="VslaId" ColumnName="VslaId" />
+          <ScalarProperty Name="TrainerId" ColumnName="TrainerId" />
+          <ScalarProperty Name="SupportDate" ColumnName="SupportDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="LoanIssues">
       <EntityTypeMapping TypeName="ledgerlinkModel.LoanIssue">
         <MappingFragment StoreEntitySet="LoanIssue">

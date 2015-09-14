@@ -230,6 +230,9 @@
     <Compile Include="Models\Fine.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GroupSupport.cs">
+      <DependentUpon>ledgerlink.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ledgerlink.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

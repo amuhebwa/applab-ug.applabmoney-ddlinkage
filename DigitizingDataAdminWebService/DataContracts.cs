@@ -33,7 +33,7 @@ namespace DigitizingDataAdminWebService
      * CBT Logs in
      */
     [DataContract]
-    public class CBTLoginDetails 
+    public class CBTLoginDetails
     {
         [DataMember]
         public int result { get; set; } // 1 for success, 0 for failed login
@@ -101,18 +101,36 @@ namespace DigitizingDataAdminWebService
         public string Status { get; set; }
         [DataMember]
         public string GroupAccountNumber { get; set; }
+        [DataMember]
+        public string GroupSupport { get; set; }
     }
 
     /**
-     *  
+     *  Json object keys on regestering a new VSLA
      */
     [DataContract]
-    public class RegistrationResult {
+    public class RegistrationResult
+    {
         [DataMember]
         public string result { get; set; }
         [DataMember]
         public string VslaCode { get; set; } // returned on sucessful vsla registration
         [DataMember]
         public string operation { get; set; } // Creating/Editing
+    }
+
+    /**
+     * Add type of support rendered to aa group
+     */
+    [DataContract]
+    public class GroupSupportType
+    {
+        [DataMember]
+        public string SupportType { get; set; }
+        [DataMember]
+        public int VslaId { get; set; }
+        [DataMember]
+        public int TrainerId { get; set; }
+        public DateTime SupportDate { get; set; }
     }
 }

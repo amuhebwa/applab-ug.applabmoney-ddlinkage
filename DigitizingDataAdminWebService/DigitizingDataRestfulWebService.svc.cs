@@ -121,7 +121,7 @@ namespace DigitizingDataAdminWebService
                         PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--",
                         PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--",
                         CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1,
-                        GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "00000000", 
+                        GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "00000000",
                         Status = 1
                     };
                     database.Vslas.Add(newVsla);
@@ -137,7 +137,7 @@ namespace DigitizingDataAdminWebService
                     return registrationResults;
                 }
             }
-            
+
         }
 
         /**
@@ -175,15 +175,25 @@ namespace DigitizingDataAdminWebService
                         row.PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--";
                         row.PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--";
                         // row.CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1;
-                        row.GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "0000000000"; 
+                        row.GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "0000000000";
                         // row.Status = 1;
+
+
+                        // Then update the group training type
+                        DateTime _dtime = DateTime.Today;
+                        int _vslaId = VslaId;
+                        int _trainerId = (Int32)request.TechnicalTrainerId;
+                        String _supportType = request.GroupSupport != null ? request.GroupSupport : "--";
+                        saveGroupSupportType(_dtime, _vslaId, _trainerId, _supportType);
                     }
-                    // save the dataa to the database
+                    // save the data to the database
                     try
                     {
                         database.SaveChanges();
                         registrationResults.result = "1";
                         registrationResults.operation = "edit";
+
+                        // Then return the results
                         return registrationResults;
                     }
                     catch (Exception)
@@ -349,6 +359,26 @@ namespace DigitizingDataAdminWebService
                 return null;
             }
 
+        }
+        /**
+         * Save group support to the database
+         * saveGroupSupportType(_dtime, _vslaId, _trainerId, _supportType);
+         */
+        public void saveGroupSupportType(DateTime _dtime, int _vslaId, int _trainerId, string _supportType)
+        {
+            ledgerlinkEntities database = new ledgerlinkEntities();
+            if (!string.IsNullOrEmpty(_supportType))
+            {
+                GroupSupport support = new GroupSupport
+                {
+                    SupportType = _supportType,
+                    VslaId = _vslaId,
+                    TrainerId = _trainerId,
+                    SupportDate = _dtime
+                };
+                database.GroupSupports.Add(support);
+                database.SaveChanges();
+            }
         }
     }
 }

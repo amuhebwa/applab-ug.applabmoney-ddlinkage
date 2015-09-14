@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="MSSQL2012-Web.config Connection String" description="MSSQL2012 Connection String used in web.config by the application to access the database." defaultValue="Server=.\MSSQL2012;Database=ledgerlink_test;User Id=barclays;Password=ledgerlink;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\AGGREY\\Documents\\GitHub\\Grameen\ Foundation\ Web\ Applications\\applab-ug\.applabmoney-ddlinkage\\DigitizingDataWebService\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MSSQL2012']/@connectionString" />
-  </parameter>
-</parameters>

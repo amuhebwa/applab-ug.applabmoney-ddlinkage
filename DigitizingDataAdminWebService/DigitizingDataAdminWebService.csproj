@@ -101,6 +101,9 @@
     <Compile Include="Fine.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="GroupSupport.cs">
+      <DependentUpon>ledgerlink.tt</DependentUpon>
+    </Compile>
     <Compile Include="IDigitizingDataRestfulWebService.cs" />
     <Compile Include="ledgerlink.Context.cs">
       <AutoGen>True</AutoGen>
