@@ -124,6 +124,7 @@ namespace DigitizingDataAdminWebService
                         GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "00000000",
                         Status = 1
                     };
+
                     database.Vslas.Add(newVsla);
                     database.SaveChanges();
                     registrationResults.result = "1";
@@ -166,18 +167,13 @@ namespace DigitizingDataAdminWebService
                     {
                         row.VslaName = request.VslaName != null ? request.VslaName : "-NA-";
                         row.RegionId = request.RegionName != null ? Convert.ToInt32(request.RegionName) : 9;
-                        // row.DateRegistered = Convert.ToDateTime(DateTime.Today);
-                        // row.DateLinked = Convert.ToDateTime(DateTime.Today);
                         row.PhysicalAddress = request.PhysicalAddress != null ? request.PhysicalAddress : "--";
                         row.VslaPhoneMsisdn = request.VslaPhoneMsisdn != null ? request.VslaPhoneMsisdn : "--";
                         row.GpsLocation = request.GpsLocation != null ? request.GpsLocation : "--";
                         row.ContactPerson = request.GroupRepresentativeName != null ? request.GroupRepresentativeName : "--";
                         row.PositionInVsla = request.GroupRepresentativePosition != null ? request.GroupRepresentativePosition : "--";
                         row.PhoneNumber = request.GroupRepresentativePhonenumber != null ? request.GroupRepresentativePhonenumber : "--";
-                        // row.CBT = request.TechnicalTrainerId != null ? request.TechnicalTrainerId : 1;
                         row.GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "0000000000";
-                        // row.Status = 1;
-
 
                         // Then update the group training type
                         DateTime _dtime = DateTime.Today;
@@ -362,7 +358,6 @@ namespace DigitizingDataAdminWebService
         }
         /**
          * Save group support to the database
-         * saveGroupSupportType(_dtime, _vslaId, _trainerId, _supportType);
          */
         public void saveGroupSupportType(DateTime _dtime, int _vslaId, int _trainerId, string _supportType)
         {
