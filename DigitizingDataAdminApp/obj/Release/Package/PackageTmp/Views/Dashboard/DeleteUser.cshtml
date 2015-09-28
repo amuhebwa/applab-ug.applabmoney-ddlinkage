@@ -1,0 +1,44 @@
+﻿@model DigitizingDataAdminApp.Models.UserInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "DeleteUser";
+}
+
+<h4 style="text-align: center;"><strong>@Html.DisplayFor(model => model.Fullname)</strong></h4>
+<hr />
+<table class="table table-bordered">
+    <tr>
+        <td><strong>@Html.DisplayName("Username")</strong></td>
+        <td>@Html.DisplayFor(model => model.Username)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Fullname")</strong></td>
+        <td>@Html.DisplayFor(model => model.Fullname)</td>
+    </tr>
+
+    <tr>
+        <td><strong>@Html.DisplayName("Email")</strong></td>
+        <td>@Html.DisplayFor(model => model.Email)</td>
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Date Registered")</strong></td>
+        <td>@Html.DisplayFor(model => model.FormattedDateCreated)
+    </tr>
+    <tr>
+        <td><strong>@Html.DisplayName("Access Level")</strong></td>
+        <td>@Html.DisplayFor(model => model.UserLevel)</td>
+    </tr>
+</table>
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <p>
+            <input class="btn btn-small btn-danger" type="submit" value=" Delete " style="width: 100px;" />
+            |
+            <label>OR</label>
+            |
+        @Html.ActionLink("Back to List", "UsersData")
+        </p>
+    </div>
+}

@@ -1,0 +1,42 @@
+﻿@model DigitizingDataAdminApp.Models.DashboardSummary
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+
+<h4><strong>Dashboard | Summary</strong></h4>
+<hr />
+<table>
+    <tr style="margin-bottom:10px;">
+        <td>
+            <h6><strong>VSLAs : @Html.DisplayFor(model => model.totalVslas)<br />
+                Total Submissions : @Html.DisplayFor(model => model.totalSubmissions)<br />
+                Total Meetings Held : @Html.DisplayFor(model => model.totalMeeetings)
+            </strong></h6>
+        </td>
+        <td>
+            <h6><strong>Total Members : @Html.DisplayFor(model => model.totalMembers)
+                <br />
+                Males : @Html.DisplayFor(model => model.maleMembers)
+                <br />
+                Females : @Html.DisplayFor(model => model.femaleMembers)
+            </strong></h6>
+        </td>
+        <td>
+            <h6><strong>Total Savings : Shs @Html.DisplayFor(model => model.totalSavings)<br />
+                Total Loans given : Shs @Html.DisplayFor(model => model.totalLoans)<br />
+                Loan Repayments : Shs @Html.DisplayFor(model => model.totalLoanRepayment)
+            </strong></h6>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Dashboard/showMembersByGender" />
+        </td>
+        <td>
+            <img src="~/Dashboard/showAttendance" />
+        </td>
+        <td>
+            <img src="~/Dashboard/showSavingsLoansAndRepayments" />
+        </td>
+</table>

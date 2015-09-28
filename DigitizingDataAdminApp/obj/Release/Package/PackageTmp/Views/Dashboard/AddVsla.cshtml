@@ -1,0 +1,93 @@
+﻿@model DigitizingDataAdminApp.Models.VslaInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "AddVsla";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <h4 style="text-align: center; min-width: 800px;"><strong>Add New VSLA</strong></h4>
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>@Html.DisplayName("VSLA Name")</strong></td>
+            <td>@Html.TextBoxFor(model => model.VslaName)
+                @Html.ValidationMessageFor(model => model.VslaName)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Region")</strong></td>
+            <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:175px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.RegionName)
+            </td>
+        </tr>
+
+        <tr>
+            <td><strong>@Html.DisplayName("Date Registered")</strong></td>
+            <td>@Html.TextBoxFor(model => model.DateRegistered, new { @Value = @DateTime.Now.ToShortDateString() })
+                @Html.ValidationMessageFor(model => model.DateRegistered)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Date linked to the Bank")</strong></td>
+            <td>@Html.TextBoxFor(model => model.DateLinked, new { @Value = @DateTime.Now.ToShortDateString() })
+                @Html.ValidationMessageFor(model => model.DateLinked)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Physical Address")</strong></td>
+            <td>@Html.TextBoxFor(model => model.PhysicalAddress)
+                @Html.ValidationMessageFor(model => model.PhysicalAddress)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Phone MSISDN")</strong></td>
+            <td>@Html.TextBoxFor(model => model.VslaPhoneMsisdn, new { @Placeholder = "e.g 256774123456" })
+                @Html.ValidationMessageFor(model => model.VslaPhoneMsisdn)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("GPS Location")</strong></td>
+            <td>@Html.TextBoxFor(model => model.GpsLocation, new { @Placeholder = " eg 0.2345566,34.234567" })
+                @Html.ValidationMessageFor(model => model.GpsLocation)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Contact Person")</strong></td>
+            <td>@Html.TextBoxFor(model => model.ContactPerson)
+                @Html.ValidationMessageFor(model => model.ContactPerson)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Position of Contact Person in VSLA")</strong></td>
+            <td>@Html.TextBoxFor(model => model.PositionInVsla, new { @Placeholder = "eg Mobile Secretary" })
+                @Html.ValidationMessageFor(model => model.PositionInVsla)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Phone Number of Contact Person")</strong></td>
+            <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })
+                @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Responsible Technology Trainer")</strong></td>
+            <td>@Html.DropDownList("Id", Model.CbtModel, new { @style = "width:175px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.CBT)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Status of VSLA")</strong></td>
+            <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:175px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.Status)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Group Account Number")</strong></td>
+            <td>@Html.TextBoxFor(model => model.GroupAccountNumber)
+                @Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+        </tr>
+    </table>
+    <p>
+        <input class="btn btn-small btn-primary" type="submit" value=" Create " style="width: 100px;" />
+        | 
+          @Html.ActionLink("Back to List", "VslaData")
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

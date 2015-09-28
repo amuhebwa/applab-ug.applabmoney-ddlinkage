@@ -640,9 +640,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             { //! All fields are valid
-                /**
-                 * Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy)
-                 * */
+                /** Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy) */
                 int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
                 string getYear = DateTime.Now.Year.ToString().Substring(2);
                 string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
@@ -1807,8 +1805,8 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.cashFromBox,
                                            line.cashSavedBank,
                                            line.cashSavedBox,
-                                           line.dateSent.Value.ToShortDateString(),
-                                           line.meetingDate.Value.ToShortDateString(),
+                                           line.formattedDateSent,
+                                           line.formattedMeetingDate,
                                            line.countOfMembersPresent,
                                            line.sumOfSavings,
                                            line.sumOfLoansIssued,

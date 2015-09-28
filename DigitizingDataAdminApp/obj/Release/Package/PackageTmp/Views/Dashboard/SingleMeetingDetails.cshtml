@@ -1,0 +1,45 @@
+﻿@model DigitizingDataAdminApp.Models.AllSingleMeetingProcedures
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "SingleMeetingDetails";
+}
+<h4><strong>Details for the Meeting held on @Model.meetingDate.Value.ToShortDateString() </strong></h4>
+<p>
+    <a href="@Url.Action("ExportSingleMeetingDetailsCSV", "Dashboard", new { id = @Model.vslaId })">
+        <strong>Export to CSV</strong>
+    </a>
+    |
+    <strong>@Html.ActionLink("Back to VSLAs", "VslaData")</strong>
+</p>
+<div style="width: auto; min-width: 900px; margin: 0 auto;">
+    <table class="display" style="width: 100%;" id="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Attended</th>
+                <th>Amount  Saved</th>
+                <th>Loan  Number</th>
+                <th>Loan  Amount</th>
+                <th>Fines</th>
+                <th>Loan  Cleared</th>
+                <th>Loan Outstanding</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.allMeetingData) { 
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.memberName</td>
+                <td>@item.isPresent</td>
+                <td>@item.amountSaved</td>
+                <td>@item.loanNumber</td>
+                <td>@item.principleAmount</td>
+                <td>@item.finedAmount</td>
+                <td>@item.loanRepaymentAmount</td>
+                <td>@item.remainingBalanceOnLoan</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

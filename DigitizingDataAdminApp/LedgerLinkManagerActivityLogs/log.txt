@@ -99,3 +99,8 @@ INFO  2015-09-10 11:18:51,704  5676ms ActivityLoggingSystem  logActivity        
 INFO  2015-09-10 12:51:15,841 122529ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-09-10 17:08:45,647  6809ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-09-13 11:28:58,189  9176ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-21 15:13:44,877 19455ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-21 15:20:38,957  9829ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-22 15:04:50,044 12883ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-23 10:33:13,420 15734ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-28 17:44:21,764 15579ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
