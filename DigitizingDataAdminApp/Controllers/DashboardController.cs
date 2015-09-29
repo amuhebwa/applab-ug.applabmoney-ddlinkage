@@ -134,7 +134,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information concerning registered information
          * */
-        public ActionResult UsersData()
+        public ActionResult SystemUsers()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             AllUsersInformation allUsers = new AllUsersInformation();
@@ -163,7 +163,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information concerned with CBTs
          * */
-        public ActionResult CbtData()
+        public ActionResult TechnicalTrainers()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
             AllCbtInformation allCbts = new AllCbtInformation();
@@ -1702,10 +1702,8 @@ namespace DigitizingDataAdminApp.Controllers
             return cbts;
         }
 
-        /**
-         * View the weekly meeting information
-         */
-        public ActionResult DatabaseScriptedInformation()
+        // Generating reports
+        public ActionResult VslaReporting()
         {
             string dateString = @"29/07/2014";
             DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
@@ -1818,6 +1816,5 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.End();
         }
-
     }
 }

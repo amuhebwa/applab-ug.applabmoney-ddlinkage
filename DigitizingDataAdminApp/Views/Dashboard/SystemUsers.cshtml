@@ -1,0 +1,54 @@
+﻿@model DigitizingDataAdminApp.Models.AllUsersInformation
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "UsersData";
+}
+
+@if (@Model.SessionUserLevel == 1)
+{
+    <h4><strong>Registered Users Information</strong></h4>
+    <hr />
+    <p>
+        <a href="@Url.Action("AddUser", "Dashboard")">
+            <strong>Add System User </strong></a>
+    </p>
+}
+else
+{
+    <h4><strong>Below Is Your User Information</strong></h4>
+}
+
+<div style="width: auto; min-width: 900px; margin: 0 auto;">
+    <table class="display" style="width: 100%;font-size: small;" id="data-table">
+        <thead>
+            <tr>
+                <th>UserId</th>
+                <th>Username</th>
+                <th>Full  Name</th>
+                <th>Email</th>
+                <th>User  Level</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AllUsersList)
+            { 
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Username</td>
+                    <td>@item.Fullname</td>
+                    <td>@item.Email</td>
+                    <td>@item.UserLevel</td>
+                    <td><a href="@Url.Action("UserDetails", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                    <td><a href="@Url.Action("EditUser", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
+                    <td><a href="@Url.Action("DeleteUser", "Dashboard", new { id = item.Id })">
+                        <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

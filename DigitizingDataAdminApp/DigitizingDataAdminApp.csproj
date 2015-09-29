@@ -539,9 +539,9 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_CustomLayout.cshtml" />
     <Content Include="Views\Shared\_SideMenu.cshtml" />
-    <Content Include="Views\Dashboard\UsersData.cshtml" />
+    <Content Include="Views\Dashboard\SystemUsers.cshtml" />
     <Content Include="Views\Dashboard\VslaData.cshtml" />
-    <Content Include="Views\Dashboard\CbtData.cshtml" />
+    <Content Include="Views\Dashboard\TechnicalTrainers.cshtml" />
     <Content Include="Views\Dashboard\EditUser.cshtml" />
     <Content Include="Views\Dashboard\DeleteUser.cshtml" />
     <Content Include="Views\Dashboard\UserDetails.cshtml" />
@@ -562,7 +562,7 @@
     <Content Include="Views\Dashboard\MemberDetails.cshtml" />
     <Content Include="Views\Dashboard\SingleMeetingDetails.cshtml" />
     <Content Include="Views\Shared\Date.cshtml" />
-    <Content Include="Views\Dashboard\DatabaseScriptedInformation.cshtml" />
+    <Content Include="Views\Dashboard\VslaReporting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
