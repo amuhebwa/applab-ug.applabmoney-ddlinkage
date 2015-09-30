@@ -1,54 +1,111 @@
-﻿@model DigitizingDataAdminApp.Models.AllUsersInformation
+﻿@model DigitizingDataAdminApp.Models.SystemUsersInformation
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
     ViewBag.Title = "UsersData";
 }
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
 
-@if (@Model.SessionUserLevel == 1)
-{
-    <h4><strong>Registered Users Information</strong></h4>
-    <hr />
-    <p>
-        <a href="@Url.Action("AddUser", "Dashboard")">
-            <strong>Add System User </strong></a>
-    </p>
-}
-else
-{
-    <h4><strong>Below Is Your User Information</strong></h4>
-}
+    <ul>
+        <li><a href="#systemuserstab">System Users</a></li>
+         @if (@Model.SessionUserLevel == 1) {
+        <li><a href="#addusertab">Add System User</a></li>
+         }
 
-<div style="width: auto; min-width: 900px; margin: 0 auto;">
-    <table class="display" style="width: 100%;font-size: small;" id="data-table">
-        <thead>
-            <tr>
-                <th>UserId</th>
-                <th>Username</th>
-                <th>Full  Name</th>
-                <th>Email</th>
-                <th>User  Level</th>
-                <th>Details</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.AllUsersList)
-            { 
+    </ul>
+
+    <div id="systemuserstab">
+        @if (@Model.SessionUserLevel == 1)
+        {
+            <h6 style="text-align: center;"><strong>Registered Users Information</strong></h6>
+        }
+        else
+        {
+            <h4><strong>Below Is Your User Information</strong></h4>
+        }
+
+        <div style="width: auto; min-width: 900px; margin: 0 auto;">
+            <table class="display" style="width: 100%; font-size: small;" id="data-table">
+                <thead>
+                    <tr>
+                        <th>UserId</th>
+                        <th>Username</th>
+                        <th>Full  Name</th>
+                        <th>Email</th>
+                        <th>User  Level</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllUsersList)
+                    { 
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Username</td>
+                            <td>@item.Fullname</td>
+                            <td>@item.Email</td>
+                            <td>@item.UserLevel</td>
+                            <td><a href="@Url.Action("UserDetails", "Dashboard", new { id = item.Id })">
+                                <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                            <td><a href="@Url.Action("EditUser", "Dashboard", new { id = item.Id })">
+                                <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
+                            <td><a href="@Url.Action("DeleteUser", "Dashboard", new { id = item.Id })">
+                                <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+     @if (@Model.SessionUserLevel == 1) {
+    <div id="addusertab">
+        @using (Html.BeginForm("AddUser", "Dashboard", FormMethod.Post, new { id = "adduserform" }))
+        {
+            @Html.ValidationSummary(true)
+            <h5><strong>Add New User</strong></h5>
+            <table class="table table-bordered">
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Username</td>
-                    <td>@item.Fullname</td>
-                    <td>@item.Email</td>
-                    <td>@item.UserLevel</td>
-                    <td><a href="@Url.Action("UserDetails", "Dashboard", new { id = item.Id })">
-                        <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
-                    <td><a href="@Url.Action("EditUser", "Dashboard", new { id = item.Id })">
-                        <img  src="@Url.Content("~/Content/Images/edit.png")"/></a></td>
-                    <td><a href="@Url.Action("DeleteUser", "Dashboard", new { id = item.Id })">
-                        <img  src="@Url.Content("~/Content/Images/delete.png")"/></a></td>
+                    <td><strong>@Html.DisplayName("Username")</strong></td>
+                    <td>@Html.EditorFor(model => model.Username)
+                        @Html.ValidationMessageFor(model => model.Username)</td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                <tr>
+                    <td><strong>@Html.DisplayName("Fullname")</strong></td>
+                    <td>@Html.EditorFor(model => model.Fullname)
+                        @Html.ValidationMessageFor(model => model.Fullname)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Email")</strong></td>
+                    <td>@Html.EditorFor(model => model.Email)
+                        @Html.ValidationMessageFor(model => model.Email)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Password")</strong></td>
+                    <td>@Html.EditorFor(model => model.Password)
+                        @Html.ValidationMessageFor(model => model.Password)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Access Level")</strong></td>
+                    <td>@Html.DropDownList("Level_Id", Model.UserPermission, new { @style = "width:250px; height:30px;" })
+                        @Html.ValidationMessageFor(model => model.UserPermission)</td>
+                </tr>
+            </table>
+            <p>
+                <input class="btn btn-small btn-primary" type="submit" name="AddUser" value="Add new User" style="width: 150px;" />
+            </p>
+        }
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+    </div>
+     }
 </div>

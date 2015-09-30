@@ -7,11 +7,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
-    public class AllUsersInformation
+    public class SystemUsersInformation : UserInformation
     {
         public List<UserInformation> AllUsersList { get; set; }
         public UserInformation userDetails { get; set; }
-        public int SessionUserLevel {get;set;}
+        public int SessionUserLevel { get; set; }
+        public SelectList UserPermission { get; set; }
     }
 
     public class UserInformation
@@ -26,12 +27,13 @@ namespace DigitizingDataAdminApp.Models
         [RegularExpression("^([a-zA-Z0-9 .&'-]+)$", ErrorMessage = "Invalid Fullname Format")]
         public string Fullname { get; set; }
 
-        [Required(ErrorMessage="Email is a required field", AllowEmptyStrings=false)]
+        [Required(ErrorMessage = "Email is a required field", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is a required field", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
+        [StringLength(50, ErrorMessage = "Minimum 6 Characters", MinimumLength = 6)]
         public string Password { get; set; }
 
         public string UserLevel { get; set; }
@@ -43,4 +45,5 @@ namespace DigitizingDataAdminApp.Models
 
         public SelectList AccessLevel { get; set; }
     }
+
 }

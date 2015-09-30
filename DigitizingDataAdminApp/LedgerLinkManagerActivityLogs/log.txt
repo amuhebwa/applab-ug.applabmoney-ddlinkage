@@ -134,3 +134,60 @@ INFO  2015-09-29 16:51:22,809 752259ms ActivityLoggingSystem  logActivity       
 INFO  2015-09-29 17:03:47,475 1496925ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-09-29 17:20:13,999 189262ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-09-29 17:37:03,984 220284ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-29 18:12:21,355 2337655ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:02:55,209  4073ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:18:30,406 15455ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:21:44,136 209186ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:37:51,568 1176618ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:38:42,284 1227334ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 11:39:20,645 1265694ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 11:48:20,811 26001ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:51:13,657 198846ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:52:20,903 266093ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:52:55,279 300469ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 11:56:09,837  5170ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 11:56:38,763 34096ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 11:56:48,149 43482ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 44
+INFO  2015-09-30 11:56:51,824 47157ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 45
+INFO  2015-09-30 11:56:54,896 50230ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 46
+INFO  2015-09-30 11:56:58,056 53389ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 47
+INFO  2015-09-30 11:58:49,714 165047ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 12:00:26,337 261671ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 12:00:30,485 265819ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 48
+INFO  2015-09-30 12:24:19,298  5520ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 12:29:32,256  3814ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 12:32:27,761  3554ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 12:47:19,547 895340ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 12:48:41,595 977388ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 12:53:36,711 1272504ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 49
+INFO  2015-09-30 12:57:43,964 22527ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 13:02:04,037  6518ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 13:06:00,901  3425ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 13:06:35,650 38174ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 13:06:43,292 45816ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 50
+INFO  2015-09-30 13:08:16,857  6643ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 13:09:12,238 62024ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 13:09:17,947 67732ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 51
+INFO  2015-09-30 13:58:01,884  4962ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 14:52:58,667 3301744ms ActivityLoggingSystem  logActivity        -  Logged out
+INFO  2015-09-30 14:53:02,157 3305235ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 14:53:58,940 13190ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:06:40,471  3970ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:06:41,641  5139ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:08:01,609 85107ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 15:08:11,926 95424ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 52
+INFO  2015-09-30 15:13:18,656 402154ms ActivityLoggingSystem  logActivity        - admin Logged out
+ERROR 2015-09-30 15:13:26,072 409570ms ActivityLoggingSystem  logActivity        - Failed to login with Username :  test and Password : 123
+INFO  2015-09-30 15:13:36,873 420371ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:13:49,869 433367ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 41
+INFO  2015-09-30 15:13:52,670 436168ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-09-30 15:14:02,424 445923ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-09-30 15:37:02,593 11671ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-09-30 15:37:27,546 36624ms ActivityLoggingSystem  logActivity        - test Logged out
+INFO  2015-09-30 15:37:32,077 41155ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:40:58,858 247936ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-09-30 15:53:26,527  6433ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-09-30 15:53:44,382 24288ms ActivityLoggingSystem  logActivity        - test Logged out
+INFO  2015-09-30 15:53:48,762 28668ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 15:57:35,691 255597ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 53
+INFO  2015-09-30 15:57:40,797 260703ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 53

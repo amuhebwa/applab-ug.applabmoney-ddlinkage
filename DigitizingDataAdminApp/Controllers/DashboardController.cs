@@ -137,12 +137,32 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult SystemUsers()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
-            AllUsersInformation allUsers = new AllUsersInformation();
+            SystemUsersInformation allUsers = new SystemUsersInformation();
             List<UserInformation> singleUser = new List<UserInformation>();
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
             allUsers.SessionUserLevel = sessionUserLevel;
+            allUsers.UserPermission = getAccessPermissions();
             return View(allUsers);
+        }
+        /**
+         * Get the user level permissions to populate in the drop down list 
+         **/
+        public SelectList getAccessPermissions()
+        {
+            List<UserPermission> permissions = new List<UserPermission>();
+            permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
+            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
+            foreach (var permission in databasePermissions)
+            {
+                permissions.Add(new UserPermission
+                {
+                    Level_Id = permission.Level_Id,
+                    UserType = permission.UserType
+                });
+            }
+            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", 0);
+            return acccessPermissions;
         }
         /**
          * Get all information concerning VSLAs
@@ -189,47 +209,16 @@ namespace DigitizingDataAdminApp.Controllers
             return RedirectToAction("Index");
 
         }
-        /**
-         * Register a new user annd add them into the system
-         * */
-        public ActionResult AddUser()
-        {
-            UserInformation permissionLevels = getAccessPermissions();
-            return View(permissionLevels);
-        }
 
         [HttpPost]
         public ActionResult AddUser(User user, int Level_Id)
         {
             PasswordHashing _password = new PasswordHashing();
             string _hashedPassword = _password.hashedPassword(user.Password.Trim()); // Hash the password
-            if (string.IsNullOrEmpty(user.Username))
-            {
-                ModelState.AddModelError("Username", "Please Add a valid Username");
-            }
-            else if (string.IsNullOrEmpty(user.Fullname))
-            {
-                ModelState.AddModelError("Fullname", "Please Add a valid Fullname");
-            }
-            else if (string.IsNullOrEmpty(user.Email))
-            {
-                ModelState.AddModelError("Email", "Please Add a valid Email");
-            }
-            else if (string.IsNullOrEmpty(_hashedPassword))
-            {
-                ModelState.AddModelError("Password", "Please Enter Valid Password");
-            }
-            else if (user.Password.ToString().Trim().Length > 30)
-            {
-                ModelState.AddModelError("Password", "Max : 30 characters");
-            }
-            else if (user.Password.ToString().Trim().Length < 6)
-            {
-                ModelState.AddModelError("Password", "Min : 6 characters");
-            }
-            else if (Level_Id == 0)
+            if (Level_Id == 0)
             {
                 ModelState.AddModelError("AccessLevel", "Please select Access Level");
+                return Redirect(Url.Action("SystemUsers") + "#addusertab");
             }
             else
             { // All fields have been validated
@@ -248,34 +237,8 @@ namespace DigitizingDataAdminApp.Controllers
                 user = null;
                 String logString = Convert.ToString(Session["Username"]) + " Added a new User";
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("UsersData");
+                return RedirectToAction("SystemUsers");
             }
-            UserInformation permissionLevels = getAccessPermissions();
-            return View(permissionLevels);
-        }
-
-        /**
-         * Get the user level permissions to populate in the drop down list 
-         **/
-        public UserInformation getAccessPermissions()
-        {
-            List<UserPermission> permissions = new List<UserPermission>();
-            permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
-            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
-            foreach (var permission in databasePermissions)
-            {
-                permissions.Add(new UserPermission
-                {
-                    Level_Id = permission.Level_Id,
-                    UserType = permission.UserType
-                });
-            }
-            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", 0);
-            UserInformation data = new UserInformation
-            {
-                AccessLevel = acccessPermissions
-            };
-            return data;
         }
 
         /**
@@ -344,7 +307,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Edited User with ID : " + Convert.ToString(id);
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("UsersData");
+                return RedirectToAction("SystemUsers");
             }
             List<UserPermission> permissions = new List<UserPermission>();
             var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
@@ -403,7 +366,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Deleted User with ID : " + Convert.ToString(id);
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("UsersData");
+                return RedirectToAction("SystemUsers");
             }
             String logStringError = Convert.ToString(Session["Username"]) + "Failed to delete User with ID : " + Convert.ToString(id);
             activityLoggingSystem.logActivity(logStringError, 1);
