@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
-    public class AllVslaInformation
+    public class VslaGroupsInformation : VslaInformation
     {
-        public List<VslaInformation> AllVslaList { get; set; }
-        public VslaInformation VslaDetails { get; set; }
+        public List<VslaInformation> AllGroupsList { get; set; }
+        public VslaInformation GroupDetails { get; set; }
         public int sessionUserLevel { get; set; }
 
     }
@@ -59,16 +59,17 @@ namespace DigitizingDataAdminApp.Models
         [RegularExpression(@"^[0-9]{10,14}$", ErrorMessage = "Minimum of 10 characters ")]
         public string PhoneNumber { get; set; }
 
-        public string CBT { get; set; }
+        public string TechnicalTrainer { get; set; }
 
-        public SelectList CbtModel { get; set; }
+        public SelectList AllTechnicalTrainers { get; set; }
 
-        public SelectList VslaRegionsModel { get; set; }
+        public SelectList VslaRegions { get; set; }
+
+        public SelectList StatusType { get; set; }
+
         public string RegionName { get; set; }
 
         public string Status { get; set; }
-
-        public SelectList StatusType { get; set; }
 
         [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
         [RegularExpression(@"^[0-9]{10,10}$", ErrorMessage = "A/C is 10 characters ")]

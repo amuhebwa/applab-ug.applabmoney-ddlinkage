@@ -1,6 +1,6 @@
 ﻿@model DigitizingDataAdminApp.Models.AllMeeetingsSummary
 @{
-    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "VslaReporting";
 }
 <script type="text/javascript">
@@ -16,7 +16,6 @@
     </ul>
     <div id="meetings-tabs">
         <div>
-            <h6 style="text-align: center;"><strong>Weeky Information on meetings</strong></h6>
             <a style="text-align:right; text-decoration-color:#0026ff;" href="@Url.Action("ExportWeeklySummary", "Dashboard")"><strong>Export to CSV</strong></a>
         </div>
         <div style="width: 100%; min-width: 900px; margin: 0 auto;">
@@ -52,14 +51,7 @@
     </div>
 
     <div id="savings-tabs">
-        Content for Tab 2 goes here.<br />
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
     </div>
-
     <div id="visualization-tabs">
-        Content for Tab 3 goes here.<br />
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
     </div>
 </div>

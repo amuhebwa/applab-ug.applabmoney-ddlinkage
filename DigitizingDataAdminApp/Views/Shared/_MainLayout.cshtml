@@ -26,7 +26,7 @@
         }
 
         #side-navigation li {
-            margin-top: 20px;
+            margin-bottom: 20px;
             border-color: #fff;
         }
 
@@ -42,6 +42,10 @@
         #data-table {
             font-size: small;
         }
+
+        #tabs li {
+            font-weight: bold;
+        }
     </style>
 
     <script type="text/javascript">
@@ -56,7 +60,7 @@
     <div class="container wrap sidebar-right">
         <div class="container-fluid" style="margin-top: 40px;">
             <div class="navbar-header col-mod-12">
-                <img src="~/Content/Images/logo.jpeg" style="height: 40px; padding-left: 40px;" />
+                <img src="~/Content/Images/logo.jpeg" style="height: 40px; padding-left:10px;" />
             </div>
         </div>
 
@@ -64,7 +68,7 @@
             <div class="well sidebar-offcanvas vertical-align col-md-2">
                 <ul class="nav  nav-pills nav-stacked" role="navigation" id="side-navigation">
                     <li><strong>@Html.ActionLink("Dashboard", "Dashboard", "Dashboard") </strong></li>
-                    <li><strong>@Html.ActionLink("VSLA Groups", "VslaData", "Dashboard")</strong></li>
+                    <li><strong>@Html.ActionLink("VSLA Groups", "VslaGroupInformation", "Dashboard")</strong></li>
                     <li><strong>@Html.ActionLink("Technical Trainers", "TechnicalTrainers", "Dashboard")</strong></li>
                     <li><strong>@Html.ActionLink("System Users", "SystemUsers", "Dashboard")</strong></li>
                     <li><strong>@Html.ActionLink("Data Reporting", "VslaReporting", "Dashboard")</strong></li>

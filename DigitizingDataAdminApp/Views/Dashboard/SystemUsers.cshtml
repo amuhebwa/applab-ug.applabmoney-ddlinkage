@@ -1,6 +1,6 @@
 ﻿@model DigitizingDataAdminApp.Models.SystemUsersInformation
 @{
-    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "UsersData";
 }
 <script type="text/javascript">
@@ -20,15 +20,10 @@
     </ul>
 
     <div id="systemuserstab">
-        @if (@Model.SessionUserLevel == 1)
+        @if (@Model.SessionUserLevel != 1)
         {
-            <h6 style="text-align: center;"><strong>Registered Users Information</strong></h6>
+            <h6><strong>Below Is Your User Information</strong></h6>
         }
-        else
-        {
-            <h4><strong>Below Is Your User Information</strong></h4>
-        }
-
         <div style="width: auto; min-width: 900px; margin: 0 auto;">
             <table class="display" style="width: 100%; font-size: small;" id="data-table">
                 <thead>
@@ -71,7 +66,6 @@
             @using (Html.BeginForm("AddUser", "Dashboard", FormMethod.Post, new { id = "adduserform" }))
             {
                 @Html.ValidationSummary(true)
-                <h5><strong>Add New User</strong></h5>
                 <table class="table table-bordered">
                     <tr>
                         <td><strong>@Html.DisplayName("Username")</strong></td>

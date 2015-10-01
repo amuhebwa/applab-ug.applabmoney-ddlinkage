@@ -1,6 +1,6 @@
 ﻿@model DigitizingDataAdminApp.Models.AllTrainersInformation
 @{
-    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "CbtData";
 }
 <script type="text/javascript">
@@ -17,7 +17,6 @@
     </ul>
 
     <div id="viewtrainers">
-        <h5><strong>Technical Trainers</strong></h5>
         <div style="width: auto; min-width: 900px; margin: 0 auto;">
             <table class="display" style="width: 100%; font-size: small;" id="data-table">
                 <thead>
@@ -91,7 +90,6 @@
         @using (Html.BeginForm("AddTechnicalTrainer", "Dashboard", FormMethod.Post, new { id = "addnewtrainer" }))
         {
             @Html.ValidationSummary(true)
-            <h6 style="text-align: center;"><strong>Add New Technology Trainer </strong></h6>
             <table class="table table-bordered">
                 <tr>
                     <td><strong>@Html.DisplayName("First Name")</strong></td>
@@ -115,7 +113,7 @@
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Region")</strong></td>
-                    <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:175px; height:30px;" })
+                    <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:185px;" })
                         @Html.ValidationMessageFor(model => model.Region)
                     </td>
                 </tr>
@@ -132,7 +130,7 @@
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Status")</strong></td>
-                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })
+                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:185px;" })
                         @Html.ValidationMessageFor(model => model.Status)
                     </td>
                 </tr>

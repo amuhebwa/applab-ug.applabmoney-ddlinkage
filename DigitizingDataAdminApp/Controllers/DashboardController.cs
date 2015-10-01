@@ -165,23 +165,27 @@ namespace DigitizingDataAdminApp.Controllers
             return acccessPermissions;
         }
         /**
-         * Get all information concerning VSLAs
+         * Get all information concerning VSLA Groups
          * */
-        public ActionResult VslaData()
+        public ActionResult VslaGroupInformation()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-            AllVslaInformation allVslas = new AllVslaInformation();
+            VslaGroupsInformation allGroups = new VslaGroupsInformation();
             List<VslaInformation> getVslaData = new List<VslaInformation>();
             getVslaData = getVslaInformation();
-            allVslas.AllVslaList = getVslaData;
-            allVslas.sessionUserLevel = sessionUserLevel;
+            allGroups.AllGroupsList = getVslaData;
+            allGroups.sessionUserLevel = sessionUserLevel;
+            allGroups.AllTechnicalTrainers = getAllTrainers();
+            allGroups.VslaRegions = getVslaRegions();
+            allGroups.StatusType = getStatusTypes();
 
-            return View(allVslas);
+
+            return View(allGroups);
         }
 
 
         /**
-         * Get all information concerned with CBTs
+         * Get all information concerned with CTechnical Trainers
          * */
         public ActionResult TechnicalTrainers()
         {
@@ -191,14 +195,14 @@ namespace DigitizingDataAdminApp.Controllers
             getTrainersData = getCbtInformation();
             allTrainers.AllTrainersList = getTrainersData;
             allTrainers.SessionUserLevel = sessionUserLevel;
-            allTrainers.VslaRegionsModel = vslaRegions();
-            allTrainers.StatusType = statusTypes();
+            allTrainers.VslaRegionsModel = getVslaRegions();
+            allTrainers.StatusType = getStatusTypes();
 
             return View(allTrainers);
         }
 
-        // Get he list of regions
-        public SelectList vslaRegions()
+        // Get the list of regions
+        public SelectList getVslaRegions()
         {
             List<VslaRegion> allRegionsList = new List<VslaRegion>();
             allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
@@ -217,7 +221,7 @@ namespace DigitizingDataAdminApp.Controllers
 
 
         // List of status types ie active/inactive
-        public SelectList statusTypes()
+        public SelectList getStatusTypes()
         {
             List<StatusType> statusOptions = new List<StatusType>();
             statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
@@ -232,6 +236,24 @@ namespace DigitizingDataAdminApp.Controllers
             }
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
             return statusTypes;
+
+        }
+        // list of all Technical trainers
+        public SelectList getAllTrainers()
+        {
+            List<Cbt_info> trainers = new List<Cbt_info>();
+            trainers.Add(new Cbt_info { Id = 0, Name = "-Select Trainer" });
+            var database_trainers = database.Cbt_info.OrderBy(a => a.Name);
+            foreach (var trainer in database_trainers)
+            {
+                trainers.Add(new Cbt_info
+                {
+                    Id = trainer.Id,
+                    Name = trainer.Name
+                });
+            }
+            SelectList allTrainers = new SelectList(trainers, "Id", "Name", 0);
+            return allTrainers;
 
         }
 
@@ -444,7 +466,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Display information for a particular VSLA
          * */
-        public ActionResult VslaDetails(int id)
+        public ActionResult VslaGroupDetails(int id)
         {
             var vsla_info = (from tb_vsla in database.Vslas
                              join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
@@ -467,7 +489,7 @@ namespace DigitizingDataAdminApp.Controllers
                 ContactPerson = vsla_info.db_vsla.ContactPerson ?? "--",
                 PositionInVsla = vsla_info.db_vsla.PositionInVsla,
                 PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
-                CBT = vsla_info.db_cbt.Name ?? "--",
+                TechnicalTrainer = vsla_info.db_cbt.Name ?? "--",
                 Status = vsla_info.db_status.CurrentStatus ?? "--",
                 GroupAccountNumber = "A/C " + vsla_info.db_vsla.GroupAccountNumber ?? "--"
             };
@@ -477,18 +499,18 @@ namespace DigitizingDataAdminApp.Controllers
          * Edit a given VSLA
          * */
         [HttpGet]
-        public ActionResult EditVsla(int id)
+        public ActionResult EditVslaGroup(int id)
         {
-            VslaInformation vslaData = getVslaEditInformation(id);
+            VslaInformation vslaData = getGroupEditInformation(id);
             return View(vslaData);
         }
         /**
          * Edit details for a particular VSLA
          * */
         [HttpPost]
-        public ActionResult EditVsla(VslaInformation vsla, int VslaId, int Id, int RegionId, int Status_Id)
+        public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
         {
-            if (string.IsNullOrEmpty(vsla.VslaName))
+            if (string.IsNullOrEmpty(vslaGroup.VslaName))
             {
                 ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
             }
@@ -496,35 +518,35 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("RegionName", "Please select a region");
             }
-            else if (string.IsNullOrEmpty(vsla.DateRegistered.ToString()))
+            else if (string.IsNullOrEmpty(vslaGroup.DateRegistered.ToString()))
             {
                 ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
             }
-            else if (string.IsNullOrEmpty(vsla.DateLinked.ToString()))
+            else if (string.IsNullOrEmpty(vslaGroup.DateLinked.ToString()))
             {
                 ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
             }
-            else if (string.IsNullOrEmpty(vsla.PhysicalAddress))
+            else if (string.IsNullOrEmpty(vslaGroup.PhysicalAddress))
             {
                 ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
             }
-            else if (string.IsNullOrEmpty(vsla.VslaPhoneMsisdn))
+            else if (string.IsNullOrEmpty(vslaGroup.VslaPhoneMsisdn))
             {
                 ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
             }
-            else if (string.IsNullOrEmpty(vsla.GpsLocation))
+            else if (string.IsNullOrEmpty(vslaGroup.GpsLocation))
             {
                 ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
             }
-            else if (string.IsNullOrEmpty(vsla.ContactPerson))
+            else if (string.IsNullOrEmpty(vslaGroup.ContactPerson))
             {
                 ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
             }
-            else if (string.IsNullOrEmpty(vsla.PositionInVsla))
+            else if (string.IsNullOrEmpty(vslaGroup.PositionInVsla))
             {
                 ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
             }
-            else if (string.IsNullOrEmpty(vsla.PhoneNumber))
+            else if (string.IsNullOrEmpty(vslaGroup.PhoneNumber))
             {
                 ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
             }
@@ -536,115 +558,55 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 ModelState.AddModelError("StatusType", "Select Status Type");
             }
-            else if (string.IsNullOrEmpty(vsla.GroupAccountNumber))
+            else if (string.IsNullOrEmpty(vslaGroup.GroupAccountNumber))
             {
                 ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
             }
             else
             {
                 var query = database.Vslas.Find(VslaId);
-                query.VslaName = vsla.VslaName;
-                query.VslaPhoneMsisdn = vsla.VslaPhoneMsisdn;
-                query.GpsLocation = vsla.GpsLocation;
-                query.DateRegistered = vsla.DateRegistered;
-                query.DateLinked = vsla.DateLinked;
+                query.VslaName = vslaGroup.VslaName;
+                query.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn;
+                query.GpsLocation = vslaGroup.GpsLocation;
+                query.DateRegistered = vslaGroup.DateRegistered;
+                query.DateLinked = vslaGroup.DateLinked;
                 query.RegionId = (int)RegionId;
-                query.ContactPerson = vsla.ContactPerson;
-                query.PositionInVsla = vsla.PositionInVsla;
-                query.PhoneNumber = vsla.PhoneNumber;
+                query.ContactPerson = vslaGroup.ContactPerson;
+                query.PositionInVsla = vslaGroup.PositionInVsla;
+                query.PhoneNumber = vslaGroup.PhoneNumber;
                 query.CBT = Id;
                 query.Status = Status_Id;
-                query.GroupAccountNumber = vsla.GroupAccountNumber;
+                query.GroupAccountNumber = vslaGroup.GroupAccountNumber;
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaData");
+                return RedirectToAction("VslaGroupInformation");
             }
             // If one of the validations fails, reload the form and repopulate the dropdown list
-            VslaInformation vslaData = getVslaEditInformation(VslaId);
+            VslaInformation vslaData = getGroupEditInformation(VslaId);
             return View(vslaData);
 
         }
         /**
          * Add a new Village savings and lending association (VSLA) to the system
-         * */
-        public ActionResult AddVsla()
-        {
-            VslaInformation vslaDropDownOptions = this.getVslaDropDownOptions();
-            return View(vslaDropDownOptions);
-        }
+         **/
         [HttpPost]
-        public ActionResult AddVsla(Vsla vsla, int RegionId, int Id, int Status_Id)
+        public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
         {
-            Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-
-            if (string.IsNullOrEmpty(vsla.VslaName))
-            {
-                ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
-            }
-            else if (RegionId == 0)
+            if (RegionId == 0)
             {
                 ModelState.AddModelError("RegionName", "Please select a region");
-            }
-            else if (string.IsNullOrEmpty(vsla.DateRegistered.ToString()))
-            {
-                ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
-            }
-            else if (string.IsNullOrEmpty(vsla.DateLinked.ToString()))
-            {
-                ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
-            }
-            else if (string.IsNullOrEmpty(vsla.PhysicalAddress))
-            {
-                ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
-            }
-            else if (string.IsNullOrEmpty(vsla.VslaPhoneMsisdn))
-            {
-                ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
-            }
-            else if (!phoneRegex.IsMatch(vsla.VslaPhoneMsisdn))
-            {
-                ModelState.AddModelError("VslaPhoneMsisdn", "Please Enter Numbers Only");
-            }
-            else if (vsla.VslaPhoneMsisdn.ToString().Trim().Length > 20)
-            {
-                ModelState.AddModelError("VslaPhoneMsisdn", "Maximum : 20 Characters");
-            }
-            else if (string.IsNullOrEmpty(vsla.GpsLocation))
-            {
-                ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
-            }
-            else if (string.IsNullOrEmpty(vsla.ContactPerson))
-            {
-                ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
-            }
-            else if (string.IsNullOrEmpty(vsla.PositionInVsla))
-            {
-                ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
-            }
-            else if (string.IsNullOrEmpty(vsla.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
-            }
-            else if (vsla.PhoneNumber.ToString().Trim().Length > 20)
-            {
-                ModelState.AddModelError("PhoneNumber", "Maximum : 20 Characters");
-            }
-            else if (!phoneRegex.IsMatch(vsla.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Please Enter Numbers Only");
+                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
             }
             else if (Id == 0)
             {
-                ModelState.AddModelError("CBT", "Please Select CBT in charge");
+                ModelState.AddModelError("TechnicalTrainer", "Select Trainer in charge");
+                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
             }
             else if (Status_Id == 0)
             {
                 ModelState.AddModelError("Status", "Select the VSLA status");
-            }
-            else if (string.IsNullOrEmpty(vsla.GroupAccountNumber))
-            {
-                ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
+                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
             }
             else
             { //! All fields are valid
@@ -656,89 +618,31 @@ namespace DigitizingDataAdminApp.Controllers
                 Vsla newVsla = new Vsla
                 {
                     VslaCode = generatedVslaCode,
-                    VslaName = vsla.VslaName,
+                    VslaName = vslaGroup.VslaName,
                     RegionId = RegionId,
-                    DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Now,
-                    DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Now,
-                    PhysicalAddress = vsla.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = vsla.GpsLocation ?? "--",
-                    ContactPerson = vsla.ContactPerson,
-                    PositionInVsla = vsla.PositionInVsla,
-                    PhoneNumber = vsla.PhoneNumber,
+                    DateRegistered = vslaGroup.DateRegistered.HasValue ? vslaGroup.DateRegistered : System.DateTime.Now,
+                    DateLinked = vslaGroup.DateLinked.HasValue ? vslaGroup.DateLinked : System.DateTime.Now,
+                    PhysicalAddress = vslaGroup.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = vslaGroup.GpsLocation ?? "--",
+                    ContactPerson = vslaGroup.ContactPerson,
+                    PositionInVsla = vslaGroup.PositionInVsla,
+                    PhoneNumber = vslaGroup.PhoneNumber,
                     CBT = Id,
                     Status = Status_Id,
-                    GroupAccountNumber = vsla.GroupAccountNumber
+                    GroupAccountNumber = vslaGroup.GroupAccountNumber
                 };
                 database.Vslas.Add(newVsla);
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + generatedVslaCode;
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaData");
+                return RedirectToAction("VslaGroupInformation");
             }
-            // If one of the fields are not valid, reload the form and re-populate the dropdown list
-            VslaInformation vslaDropDownOptions = this.getVslaDropDownOptions();
-            return View(vslaDropDownOptions);
-        }
-        /**
-         * Get the list of regions, cbts, and status to populate in the dropdown list
-         * Note : There is default value(with Id 0) as a place holder in case there are not elements in the database to populate the list
-         **/
-        public VslaInformation getVslaDropDownOptions()
-        {
-            // Get all CBTs and populate them in a dropdown list
-            List<Cbt_info> cbts = new List<Cbt_info>();
-            cbts.Add(new Cbt_info { Id = 0, Name = "-Select CBT" });
-            var database_cbts = database.Cbt_info.OrderBy(a => a.Name);
-            foreach (var cbt in database_cbts)
-            {
-                cbts.Add(new Cbt_info
-                {
-                    Id = cbt.Id,
-                    Name = cbt.Name
-                });
-            }
-            SelectList allCbts = new SelectList(cbts, "Id", "Name", 0);
-
-            // Get all Regions in which VSLAs are operating and populate them in a dropdown list
-            List<VslaRegion> regions = new List<VslaRegion>();
-            regions.Add(new VslaRegion { RegionId = 0, RegionName = "-Select Region-" });
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-            foreach (var region in databaseRegions)
-            {
-                regions.Add(new VslaRegion
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", 0);
-
-            // Get all status types(active/inactive) and populate them in a dropdown list
-            List<StatusType> statusTypes = new List<StatusType>();
-            statusTypes.Add(new StatusType { Status_Id = 0, CurrentStatus = "-Select Status-" });
-            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id);
-            foreach (var statusType in databaseStatusTypes)
-            {
-                statusTypes.Add(new StatusType
-                {
-                    Status_Id = statusType.Status_Id,
-                    CurrentStatus = statusType.CurrentStatus
-                });
-            }
-            SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", 0);
-            VslaInformation vslaListOptions = new VslaInformation
-            {
-                VslaRegionsModel = allRegions,
-                CbtModel = allCbts,
-                StatusType = statusTypesList
-            };
-            return vslaListOptions;
         }
         /**
          * Get the options for re-populating the edit VSLA form, in case of the forms fails
          **/
-        public VslaInformation getVslaEditInformation(int id)
+        public VslaInformation getGroupEditInformation(int id)
         {
             var vsla = (from tb_vsla in database.Vslas
                         join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
@@ -768,7 +672,7 @@ namespace DigitizingDataAdminApp.Controllers
                     Name = cbt.Name
                 });
             }
-            SelectList allCbts = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
+            SelectList allTrainers = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
 
             // Get the status type ie active/inactive
             List<StatusType> statusTypes = new List<StatusType>();
@@ -788,7 +692,7 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaId = vsla.db_vsla.VslaId,
                 VslaCode = vsla.db_vsla.VslaCode ?? "--",
                 VslaName = vsla.db_vsla.VslaName ?? "--",
-                VslaRegionsModel = allRegions,
+                VslaRegions = allRegions,
                 DateRegistered = vsla.db_vsla.DateRegistered.HasValue ? vsla.db_vsla.DateRegistered : System.DateTime.Now,
                 DateLinked = vsla.db_vsla.DateLinked.HasValue ? vsla.db_vsla.DateLinked : System.DateTime.Now,
                 PhysicalAddress = vsla.db_vsla.PhysicalAddress ?? "--",
@@ -797,7 +701,7 @@ namespace DigitizingDataAdminApp.Controllers
                 ContactPerson = vsla.db_vsla.ContactPerson,
                 PositionInVsla = vsla.db_vsla.PositionInVsla,
                 PhoneNumber = vsla.db_vsla.PhoneNumber,
-                CbtModel = allCbts,
+                AllTechnicalTrainers = allTrainers,
                 StatusType = statusTypesList,
                 GroupAccountNumber = vsla.db_vsla.GroupAccountNumber
             };
@@ -807,7 +711,7 @@ namespace DigitizingDataAdminApp.Controllers
          * Delete a particular VSLA from the system
          * */
         [HttpGet]
-        public ActionResult DeleteVsla(int id)
+        public ActionResult DeleteVslaGroup(int id)
         {
             var vslaInformation = (from table_vsla in database.Vslas
                                    join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
@@ -830,37 +734,35 @@ namespace DigitizingDataAdminApp.Controllers
                 ContactPerson = vslaInformation.db_vsla.ContactPerson,
                 PositionInVsla = vslaInformation.db_vsla.PositionInVsla,
                 PhoneNumber = vslaInformation.db_vsla.PhoneNumber,
-                CBT = vslaInformation.db_cbt.Name ?? "--",
+                TechnicalTrainer = vslaInformation.db_cbt.Name ?? "--",
                 Status = vslaInformation.db_status.CurrentStatus,
                 GroupAccountNumber = "A/C " + vslaInformation.db_vsla.GroupAccountNumber
             };
             return View(vslaData);
         }
         [HttpPost]
-        public ActionResult DeleteVsla(Vsla vsla, int id)
+        public ActionResult DeleteVslaGroup(Vsla vslaGroup, int id)
         {
-            if (ModelState.IsValid && vsla != null)
+            if (ModelState.IsValid && vslaGroup != null)
             {
-                vsla.VslaId = id;
-                database.Vslas.Attach(vsla);
-                database.Vslas.Remove(vsla);
+                vslaGroup.VslaId = id;
+                database.Vslas.Attach(vslaGroup);
+                database.Vslas.Remove(vslaGroup);
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaData");
+                return RedirectToAction("VslaGroupInformation");
             }
             return View();
         }
         /**
          * View all meetings attached to a particular VSLA
          * */
-        public ActionResult VslaMeetings(int id)
+        public ActionResult VslaGroupMeetings(int id)
         {
             AllVslaMeetingInformation totalMeetings = new AllVslaMeetingInformation();
             List<VslaMeetingInformation> singleMeeting = new List<VslaMeetingInformation>();
-            // Get the vsla name
             var vslaName = database.Vslas.Find(id);
-            // Get all meetings attached to a given vsla
             singleMeeting = getMeetingData(id);
             totalMeetings.allVslaMeetings = singleMeeting;
             totalMeetings.vslaName = vslaName.VslaName;
@@ -965,7 +867,7 @@ namespace DigitizingDataAdminApp.Controllers
             var meetingDate = database.Meetings.Find(id);
 
             // Get the all the meeting details
-            meetingsList = MeetingDetails(id);
+            meetingsList = groupMeetingDetails(id);
             allInformation.allMeetingData = meetingsList;
             allInformation.meetingDate = meetingDate.MeetingDate;
             allInformation.vslaId = id;
@@ -975,7 +877,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Helper class for getting information concerned with all meetings in the whole system
          * */
-        public List<SingleMeetingProcedures> MeetingDetails(int id)
+        public List<SingleMeetingProcedures> groupMeetingDetails(int id)
         {
             List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
             var meeting = (from db_attendance in database.Attendances
@@ -1098,7 +1000,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          *  View all members attached to a given vsla
          * */
-        public ActionResult VslaMembers(int id)
+        public ActionResult VslaGroupMembers(int id)
         {
             AllVslaMemberInformation memberData = new AllVslaMemberInformation();
             List<VslaMembersInformation> membersList = new List<VslaMembersInformation>();
@@ -1186,7 +1088,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information for a given user attached to a particular vsla
          * */
-        public ActionResult MemberDetails(int id, int vslaId)
+        public ActionResult GroupMemberDetails(int id, int vslaId)
         {
             var member = (from db_members in database.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
             VslaMembersInformation memberInfo = new VslaMembersInformation
@@ -1533,7 +1435,7 @@ namespace DigitizingDataAdminApp.Controllers
                     ContactPerson = item.ContactPerson ?? "--",
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
-                    CBT = "--",
+                    TechnicalTrainer = "--",
                     Status = item.Status.ToString() ?? "--"
                 });
             }
@@ -1563,7 +1465,7 @@ namespace DigitizingDataAdminApp.Controllers
                     ContactPerson = item.ContactPerson ?? "--",
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
-                    CBT = "--",
+                    TechnicalTrainer = "--",
                     Status = item.Status.ToString() ?? "--"
                 });
             }
@@ -1588,7 +1490,7 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.ContactPerson,
                                            line.PositionInVsla,
                                            line.PhoneNumber,
-                                           line.CBT,
+                                           line.TechnicalTrainer,
                                            line.Status.Equals("1") ? "Active" : "Inactive"
                                            ));
 

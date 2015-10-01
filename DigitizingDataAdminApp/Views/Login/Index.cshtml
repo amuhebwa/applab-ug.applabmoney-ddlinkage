@@ -1,7 +1,7 @@
 ﻿@model DigitizingDataAdminApp.Models.UserLogin
 
 @{
-    Layout = "~/Views/Shared/_CustomLoginPage.cshtml";
+    Layout = "~/Views/Shared/_LoginPage.cshtml";
     ViewBag.Title = "Index";
 }
 <div style="width: auto; margin-left: auto; margin-right: auto;">
@@ -13,14 +13,14 @@
        
         if (!@ViewData.ModelState.IsValid)
         { 
-        <div style="font-family: inherit; color: red; font-size: 1.125em; font-weight: bold;">
+        <div style="font-family: inherit; color: red; font-weight: bold;">
             @Html.ValidationSummary(true)
         </div>
         
         }
         <fieldset>
-            <legend style="margin-left:60px;"><strong>Enter your Login Credentials </strong></legend>
-
+            @*<legend style="margin-left:110px; font-size: 14px; width:auto;"><strong>Enter your Login Credentials </strong></legend>*@
+            <legend></legend>
             <div class="login-form" style="margin-left: 20%; width: auto;">
                 <div class="form-group">
                     <div class="editor-label">
