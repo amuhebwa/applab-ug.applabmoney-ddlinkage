@@ -1,0 +1,72 @@
+﻿@model DigitizingDataAdminApp.Models.TrainerInformation
+
+@{
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewBag.Title = "EditCbt";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <h4 style="text-align: center;"><strong>Edit information for @Html.DisplayFor(model => model.FirstName)</strong></h4>
+    <hr />
+    <table class="table table-bordered">
+        @Html.HiddenFor(model => model.Id)
+        <tr>
+            <td><strong>@Html.DisplayName("First Name")</strong></td>
+            <td>@Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Last Name")</strong></td>
+            <td>@Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Username")</strong></td>
+            <td>@Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Pass Key")</strong></td>
+            <td>@Html.EditorFor(model => model.Passkey)
+                @Html.ValidationMessageFor(model => model.Passkey)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("District")</strong></td>
+            <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:250px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.Region)
+            </td>
+        </tr>
+
+        <tr>
+            <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+            <td>@Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Email")</strong></td>
+            <td>@Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)</td>
+        </tr>
+        <tr>
+            <td><strong>@Html.DisplayName("Status")</strong></td>
+            <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:250px; height:30px;" })
+                @Html.ValidationMessageFor(model => model.Status)
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />
+        | 
+          @Html.ActionLink("Back to List", "TechnicalTrainers")
+    </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "TechnicalTrainers")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

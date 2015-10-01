@@ -213,7 +213,7 @@
     <Compile Include="Models\Audit_Log.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CbtInformation.cs" />
+    <Compile Include="Models\TrainerInformation.cs" />
     <Compile Include="Models\Cbt_info.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -545,15 +545,13 @@
     <Content Include="Views\Dashboard\EditUser.cshtml" />
     <Content Include="Views\Dashboard\DeleteUser.cshtml" />
     <Content Include="Views\Dashboard\UserDetails.cshtml" />
-    <Content Include="Views\Dashboard\AddUser.cshtml" />
     <Content Include="Views\Dashboard\VslaDetails.cshtml" />
     <Content Include="Views\Dashboard\EditVsla.cshtml" />
     <Content Include="Views\Dashboard\AddVsla.cshtml" />
     <Content Include="Views\Dashboard\DeleteVsla.cshtml" />
-    <Content Include="Views\Dashboard\AddCbt.cshtml" />
-    <Content Include="Views\Dashboard\CbtDetails.cshtml" />
-    <Content Include="Views\Dashboard\DeleteCbt.cshtml" />
-    <Content Include="Views\Dashboard\EditCbt.cshtml" />
+    <Content Include="Views\Dashboard\TrainersDetails.cshtml" />
+    <Content Include="Views\Dashboard\DeleteTrainer.cshtml" />
+    <Content Include="Views\Dashboard\EditTrainerDetails.cshtml" />
     <Content Include="Views\Shared\_CustomLoginPage.cshtml" />
     <Content Include="Views\Dashboard\LogsData.cshtml" />
     <Content Include="Views\Dashboard\Dashboard.cshtml" />

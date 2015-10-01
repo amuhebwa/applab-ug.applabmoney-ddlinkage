@@ -191,3 +191,29 @@ INFO  2015-09-30 15:53:44,382 24288ms ActivityLoggingSystem  logActivity        
 INFO  2015-09-30 15:53:48,762 28668ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-09-30 15:57:35,691 255597ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 53
 INFO  2015-09-30 15:57:40,797 260703ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 53
+INFO  2015-09-30 16:13:32,739 43206ms ActivityLoggingSystem  logActivity        -  Logged out
+INFO  2015-09-30 16:13:34,656 45123ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 16:34:51,566 1322034ms ActivityLoggingSystem  logActivity        -  Logged out
+INFO  2015-09-30 16:34:55,616 1326084ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-09-30 16:47:09,323 2059791ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-09-30 16:49:24,624 2195091ms ActivityLoggingSystem  logActivity        - test Logged In Successfully
+INFO  2015-09-30 17:04:57,393 20590ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 08:53:40,548 37089ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 08:54:30,341 86883ms ActivityLoggingSystem  logActivity        - admin Added a new User
+INFO  2015-10-01 08:55:52,866 169407ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 54
+INFO  2015-10-01 08:56:00,420 176961ms ActivityLoggingSystem  logActivity        - admin Deleted User with ID : 54
+INFO  2015-10-01 09:16:48,641  7711ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:18:28,039 107109ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:21:52,643 311712ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:34:01,220 1040290ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:35:45,351 1144420ms ActivityLoggingSystem  logActivity        - admin Added a new CBT called : Muhebwa Aggrey
+INFO  2015-10-01 09:38:55,125 1334195ms ActivityLoggingSystem  logActivity        - admin Deleted CBT 
+INFO  2015-10-01 09:42:38,263  4453ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:45:44,941 191131ms ActivityLoggingSystem  logActivity        - admin Added a new CBT called : Aggyr Muhebwa
+INFO  2015-10-01 09:47:29,889 49183ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 09:47:38,869 58163ms ActivityLoggingSystem  logActivity        - admin Deleted CBT 
+INFO  2015-10-01 09:48:03,439 82733ms ActivityLoggingSystem  logActivity        - admin Added a new CBT called : rwttrrte rtrttre rtr
+INFO  2015-10-01 09:48:08,408 87702ms ActivityLoggingSystem  logActivity        - admin Deleted CBT 
+INFO  2015-10-01 09:54:50,232 10079ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 10:29:38,500  7613ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-01 10:32:39,870 188983ms ActivityLoggingSystem  logActivity        - admin Edited CBT called : Test Test Account

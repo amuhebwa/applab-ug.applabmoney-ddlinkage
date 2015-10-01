@@ -12,7 +12,6 @@ namespace DigitizingDataAdminApp.Models
         public List<UserInformation> AllUsersList { get; set; }
         public UserInformation userDetails { get; set; }
         public int SessionUserLevel { get; set; }
-        public SelectList UserPermission { get; set; }
     }
 
     public class UserInformation

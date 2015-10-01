@@ -12,9 +12,10 @@
 
     <ul>
         <li><a href="#systemuserstab">System Users</a></li>
-         @if (@Model.SessionUserLevel == 1) {
-        <li><a href="#addusertab">Add System User</a></li>
-         }
+        @if (@Model.SessionUserLevel == 1)
+        {
+            <li><a href="#addusertab">Add System User</a></li>
+        }
 
     </ul>
 
@@ -64,48 +65,49 @@
         </div>
 
     </div>
-     @if (@Model.SessionUserLevel == 1) {
-    <div id="addusertab">
-        @using (Html.BeginForm("AddUser", "Dashboard", FormMethod.Post, new { id = "adduserform" }))
-        {
-            @Html.ValidationSummary(true)
-            <h5><strong>Add New User</strong></h5>
-            <table class="table table-bordered">
-                <tr>
-                    <td><strong>@Html.DisplayName("Username")</strong></td>
-                    <td>@Html.EditorFor(model => model.Username)
-                        @Html.ValidationMessageFor(model => model.Username)</td>
-                </tr>
-                <tr>
-                    <td><strong>@Html.DisplayName("Fullname")</strong></td>
-                    <td>@Html.EditorFor(model => model.Fullname)
-                        @Html.ValidationMessageFor(model => model.Fullname)</td>
-                </tr>
+    @if (@Model.SessionUserLevel == 1)
+    {
+        <div id="addusertab">
+            @using (Html.BeginForm("AddUser", "Dashboard", FormMethod.Post, new { id = "adduserform" }))
+            {
+                @Html.ValidationSummary(true)
+                <h5><strong>Add New User</strong></h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <td><strong>@Html.DisplayName("Username")</strong></td>
+                        <td>@Html.EditorFor(model => model.Username)
+                            @Html.ValidationMessageFor(model => model.Username)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>@Html.DisplayName("Fullname")</strong></td>
+                        <td>@Html.EditorFor(model => model.Fullname)
+                            @Html.ValidationMessageFor(model => model.Fullname)</td>
+                    </tr>
 
-                <tr>
-                    <td><strong>@Html.DisplayName("Email")</strong></td>
-                    <td>@Html.EditorFor(model => model.Email)
-                        @Html.ValidationMessageFor(model => model.Email)</td>
-                </tr>
-                <tr>
-                    <td><strong>@Html.DisplayName("Password")</strong></td>
-                    <td>@Html.EditorFor(model => model.Password)
-                        @Html.ValidationMessageFor(model => model.Password)</td>
-                </tr>
-                <tr>
-                    <td><strong>@Html.DisplayName("Access Level")</strong></td>
-                    <td>@Html.DropDownList("Level_Id", Model.UserPermission, new { @style = "width:250px; height:30px;" })
-                        @Html.ValidationMessageFor(model => model.UserPermission)</td>
-                </tr>
-            </table>
-            <p>
-                <input class="btn btn-small btn-primary" type="submit" name="AddUser" value="Add new User" style="width: 150px;" />
-            </p>
-        }
+                    <tr>
+                        <td><strong>@Html.DisplayName("Email")</strong></td>
+                        <td>@Html.EditorFor(model => model.Email)
+                            @Html.ValidationMessageFor(model => model.Email)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>@Html.DisplayName("Password")</strong></td>
+                        <td>@Html.EditorFor(model => model.Password)
+                            @Html.ValidationMessageFor(model => model.Password)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>@Html.DisplayName("Access Level")</strong></td>
+                        <td>@Html.DropDownList("Level_Id", Model.AccessLevel, new { @style = "width:250px; height:30px;" })
+                            @Html.ValidationMessageFor(model => model.AccessLevel)</td>
+                    </tr>
+                </table>
+                <p>
+                    <input class="btn btn-small btn-primary" type="submit" name="AddUser" value="Add new User" style="width: 150px;" />
+                </p>
+            }
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
-    </div>
-     }
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+        </div>
+    }
 </div>

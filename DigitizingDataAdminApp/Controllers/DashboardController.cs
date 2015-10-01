@@ -142,7 +142,7 @@ namespace DigitizingDataAdminApp.Controllers
             singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
             allUsers.SessionUserLevel = sessionUserLevel;
-            allUsers.UserPermission = getAccessPermissions();
+            allUsers.AccessLevel = getAccessPermissions();
             return View(allUsers);
         }
         /**
@@ -186,14 +186,59 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult TechnicalTrainers()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-            AllCbtInformation allCbts = new AllCbtInformation();
-            List<CbtInformation> getCbtData = new List<CbtInformation>();
-            getCbtData = getCbtInformation();
-            allCbts.AllCbtList = getCbtData;
-            allCbts.SessionUserLevel = sessionUserLevel;
+            AllTrainersInformation allTrainers = new AllTrainersInformation();
+            List<TrainerInformation> getTrainersData = new List<TrainerInformation>();
+            getTrainersData = getCbtInformation();
+            allTrainers.AllTrainersList = getTrainersData;
+            allTrainers.SessionUserLevel = sessionUserLevel;
+            allTrainers.VslaRegionsModel = vslaRegions();
+            allTrainers.StatusType = statusTypes();
 
-            return View(allCbts);
+            return View(allTrainers);
         }
+
+        // Get he list of regions
+        public SelectList vslaRegions()
+        {
+            List<VslaRegion> allRegionsList = new List<VslaRegion>();
+            allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
+            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+            foreach (var region in databaseRegions)
+            {
+                allRegionsList.Add(new VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
+            return regionsList;
+        }
+
+
+        // List of status types ie active/inactive
+        public SelectList statusTypes()
+        {
+            List<StatusType> statusOptions = new List<StatusType>();
+            statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
+            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
+            foreach (var status in databaseStatuses)
+            {
+                statusOptions.Add(new StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
+            return statusTypes;
+
+        }
+
+
+
+
+
         /**
          * Logout
          * Note : The user-activity logging function should be called
@@ -1164,52 +1209,19 @@ namespace DigitizingDataAdminApp.Controllers
         }
         /**
          * Add a new community based trainer (CBT) to the system
-         * */
-        public ActionResult AddCbt()
-        {
-            CbtInformation dropDownOptions = getCbtDropDownOptions();
-            return View(dropDownOptions);
-        }
+         **/
         [HttpPost]
-        public ActionResult AddCbt(Cbt_info new_cbt, int RegionId, int Status_Id)
+        public ActionResult AddTechnicalTrainer(Cbt_info new_cbt, int RegionId, int Status_Id)
         {
-            Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(new_cbt.FirstName))
+            if (Status_Id == 0)
             {
-                ModelState.AddModelError("FirstName", "First Name cannot be left empty");
-            }
-            else if (string.IsNullOrEmpty(new_cbt.LastName))
-            {
-                ModelState.AddModelError("LastName", "Last Name cannot be left empty");
+                ModelState.AddModelError("Status", "Please select status");
+                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
             }
             else if (RegionId == 0)
             {
-                ModelState.AddModelError("Region", "Please Select a region");
-            }
-            else if (string.IsNullOrEmpty(new_cbt.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
-            }
-            else if (!phoneRegex.IsMatch(new_cbt.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Please Enter only digits");
-            }
-            else if (new_cbt.PhoneNumber.ToString().Trim().Length > 20)
-            {
-                ModelState.AddModelError("PhoneNumber", "Max : 20 Characters");
-            }
-            else if (new_cbt.PhoneNumber.ToString().Trim().Length < 10)
-            {
-                ModelState.AddModelError("PhoneNumber", "Min : 10 Characters");
-            }
-            else if (string.IsNullOrEmpty(new_cbt.Email))
-            {
-                ModelState.AddModelError("Email", "Please Enter Valid Email Address");
-            }
-
-            else if (Status_Id == 0)
-            {
-                ModelState.AddModelError("Status", "Please select status");
+                ModelState.AddModelError("Region", "Please select Region");
+                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
             }
             else
             { // All are valid
@@ -1232,61 +1244,16 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("CbtData");
+                return RedirectToAction("TechnicalTrainers");
             }
-
-            // If validation is not done properly, re-create the drop down list
-            CbtInformation dropDownOptions = getCbtDropDownOptions();
-            return View(dropDownOptions);
-        }
-
-        /** 
-         * Get the regions and status(Active/Inactive) for populating in the drop down list
-         * */
-        public CbtInformation getCbtDropDownOptions()
-        {
-
-            // Regions
-            List<VslaRegion> allRegionsList = new List<VslaRegion>();
-            allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-            foreach (var region in databaseRegions)
-            {
-                allRegionsList.Add(new VslaRegion()
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
-
-            // Status types
-            List<StatusType> statusOptions = new List<StatusType>();
-            statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
-            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-            foreach (var status in databaseStatuses)
-            {
-                statusOptions.Add(new StatusType
-                {
-                    Status_Id = status.Status_Id,
-                    CurrentStatus = status.CurrentStatus
-                });
-            }
-            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
-            CbtInformation dropDownOptions = new CbtInformation
-            {
-                VslaRegionsModel = regionsList,
-                StatusType = statusTypes
-            };
-            return dropDownOptions;
         }
 
         /**
          * View all information for a particular CBT
          * */
-        public ActionResult CbtDetails(int id)
+        public ActionResult TrainersDetails(int id)
         {
-            CbtInformation cbtData = getCbtInformationForEditing(id);
+            TrainerInformation cbtData = getCbtInformationForEditing(id);
             return View(cbtData);
         }
 
@@ -1294,7 +1261,7 @@ namespace DigitizingDataAdminApp.Controllers
          * Edit information for a particular CBT
          * */
         [HttpGet]
-        public ActionResult EditCbt(int id)
+        public ActionResult EditTrainerDetails(int id)
         {
             var allInformation = (from table_cbt in database.Cbt_info
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
@@ -1328,10 +1295,9 @@ namespace DigitizingDataAdminApp.Controllers
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
             // Create a cbt object
-            CbtInformation cbtData = new CbtInformation
+            TrainerInformation cbtData = new TrainerInformation
             {
                 Id = allInformation.dt_cbt.Id,
-                // Name = allInformation.dt_cbt.Name,
                 FirstName = allInformation.dt_cbt.FirstName,
                 LastName = allInformation.dt_cbt.LastName,
                 VslaRegionsModel = regionsList,
@@ -1341,13 +1307,10 @@ namespace DigitizingDataAdminApp.Controllers
                 Username = allInformation.dt_cbt.Username,
                 Passkey = allInformation.dt_cbt.Passkey
             };
-
-            string action = "Edited CBT information for  " + allInformation.dt_cbt.Name;
-            // dataLogging.writeLogsToFile(action);
             return View(cbtData);
         }
         [HttpPost]
-        public ActionResult EditCbt(Cbt_info cbt, int id, int RegionId, int Status_Id)
+        public ActionResult EditTrainerDetails(Cbt_info cbt, int id, int RegionId, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
             if (string.IsNullOrEmpty(cbt.FirstName))
@@ -1403,7 +1366,7 @@ namespace DigitizingDataAdminApp.Controllers
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Edited CBT called : " + cbt.FirstName + " " + cbt.LastName;
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("CbtData");
+                return RedirectToAction("TechnicalTrainers");
             }
 
             // In case validation fails, recreate the form with pre-populated data
@@ -1439,7 +1402,7 @@ namespace DigitizingDataAdminApp.Controllers
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
             // Create a cbt object
-            CbtInformation cbtData = new CbtInformation
+            TrainerInformation cbtData = new TrainerInformation
             {
                 Id = allInformation.dt_cbt.Id,
                 Name = allInformation.dt_cbt.Name,
@@ -1454,14 +1417,14 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Function to query the database and get Information related to a particular CBT for editing
          * */
-        public CbtInformation getCbtInformationForEditing(int id)
+        public TrainerInformation getCbtInformationForEditing(int id)
         {
             var allInformation = (from table_cbt in database.Cbt_info
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
                                   where table_cbt.Id == id
                                   select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
-            CbtInformation cbtData = new CbtInformation
+            TrainerInformation cbtData = new TrainerInformation
             {
                 Id = allInformation.dt_cbt.Id,
                 FirstName = allInformation.dt_cbt.FirstName,
@@ -1480,23 +1443,23 @@ namespace DigitizingDataAdminApp.Controllers
          * Delete a particular CBT from the system
          * */
         [HttpGet]
-        public ActionResult DeleteCbt(int id)
+        public ActionResult DeleteTrainer(int id)
         {
-            CbtInformation cbtData = getCbtInformationForEditing(id);
-            return View(cbtData);
+            TrainerInformation trainerData = getCbtInformationForEditing(id);
+            return View(trainerData);
         }
         [HttpPost]
-        public ActionResult DeleteCbt(Cbt_info cbt, int id)
+        public ActionResult DeleteTrainer(Cbt_info trainer, int id)
         {
-            if (ModelState.IsValid && cbt != null)
+            if (ModelState.IsValid && trainer != null)
             {
-                cbt.Id = id;
-                database.Cbt_info.Attach(cbt);
-                database.Cbt_info.Remove(cbt);
+                trainer.Id = id;
+                database.Cbt_info.Attach(trainer);
+                database.Cbt_info.Remove(trainer);
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
                 activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("CbtData");
+                return RedirectToAction("TechnicalTrainers");
             }
             return View();
         }
@@ -1638,10 +1601,10 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Helper method to get the list of all CBTS that have been added to a system
          * */
-        public List<CbtInformation> getCbtInformation()
+        public List<TrainerInformation> getCbtInformation()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
-            List<CbtInformation> cbts = new List<CbtInformation>();
+            List<TrainerInformation> cbts = new List<TrainerInformation>();
             var data = (from table_cbt in database.Cbt_info
                         join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                         join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
@@ -1649,7 +1612,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             foreach (var item in data)
             {
-                cbts.Add(new CbtInformation
+                cbts.Add(new TrainerInformation
                 {
                     Id = item.dt_cbt.Id,
                     Name = item.dt_cbt.Name,
