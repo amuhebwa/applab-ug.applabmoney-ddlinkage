@@ -16,6 +16,7 @@
     </ul>
 
     <div id="details">
+        <p style="text-align: right;"><strong>@Html.ActionLink("Back", "TechnicalTrainers")</strong></p>
         <table class="table table-bordered">
             <tr>
                 <td><strong>@Html.DisplayName("First Name")</strong></td>
@@ -51,8 +52,5 @@
                 <td>@Html.DisplayFor(model => model.Status)</td>
             </tr>
         </table>
-        <p>
-            @Html.ActionLink("Back", "TechnicalTrainers")
-        </p>
     </div>
 </div>

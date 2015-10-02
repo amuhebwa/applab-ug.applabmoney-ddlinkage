@@ -17,7 +17,7 @@
     </ul>
 
     <div id="edit">
-
+        <p style="text-align: right;"><strong>@Html.ActionLink("Back", "TechnicalTrainers")</strong></p>
         @using (Html.BeginForm())
         {
             @Html.ValidationSummary(true)
@@ -69,10 +69,7 @@
                 </tr>
             </table>
             <p>
-                <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />
-                | 
-          @Html.ActionLink("Back", "TechnicalTrainers")
-            </p>
+                <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" /></p>
         }
 
         @section Scripts {
