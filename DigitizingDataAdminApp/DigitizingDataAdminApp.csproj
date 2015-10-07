@@ -295,7 +295,7 @@
     <Compile Include="Models\VslaRegion.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WeeklyMeetingsSummary.cs" />
+    <Compile Include="Models\WeeklyMeetings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

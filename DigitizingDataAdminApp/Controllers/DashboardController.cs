@@ -1542,31 +1542,33 @@ namespace DigitizingDataAdminApp.Controllers
                         tables_vsla.VslaId
                            where table_meetings.MeetingDate >= startDate
                            select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
-            List<WeeklyMeetingsSummary> summary = new List<WeeklyMeetingsSummary>();
-            AllMeeetingsSummary allMeetingsSummary = new AllMeeetingsSummary();
-            foreach (var item in results)
-            {
-                summary.Add(new WeeklyMeetingsSummary
+            List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
+            AllMeetingsData allMeetingsSummary = new AllMeetingsData();
+            if (null != results) {
+                foreach (var item in results)
                 {
-                    meetingId = item.table_meetings.MeetingId,
-                    cashExpenses = item.table_meetings.CashExpenses,
-                    cashFines = item.table_meetings.CashFines,
-                    cashFromBank = item.table_meetings.CashFromBank,
-                    cashFromBox = item.table_meetings.CashFromBox,
-                    cashSavedBank = item.table_meetings.CashSavedBank,
-                    cashSavedBox = item.table_meetings.CashSavedBox,
-                    cashWelfare = item.table_meetings.CashWelfare,
-                    dateSent = item.table_meetings.DateSent,
-                    meetingDate = item.table_meetings.MeetingDate,
-                    countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
-                    sumOfSavings = item.table_meetings.SumOfSavings,
-                    sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
-                    sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
-                    vslaName = item.tables_vsla.VslaName,
-                    vslaId = item.table_cycles.VslaId,
-                    VslaCode = item.tables_vsla.VslaCode
-                });
+                    summary.Add(new WeeklyMeetingsData
+                    {
+                        meetingId = item.table_meetings.MeetingId,
+                        cashExpenses = item.table_meetings.CashExpenses,
+                        cashFines = item.table_meetings.CashFines,
+                        cashFromBank = item.table_meetings.CashFromBank,
+                        cashFromBox = item.table_meetings.CashFromBox,
+                        cashSavedBank = item.table_meetings.CashSavedBank,
+                        cashSavedBox = item.table_meetings.CashSavedBox,
+                        cashWelfare = item.table_meetings.CashWelfare,
+                        dateSent = item.table_meetings.DateSent,
+                        meetingDate = item.table_meetings.MeetingDate,
+                        countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
+                        sumOfSavings = item.table_meetings.SumOfSavings,
+                        sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
+                        sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
+                        vslaName = item.tables_vsla.VslaName,
+                        vslaId = item.table_cycles.VslaId,
+                        VslaCode = item.tables_vsla.VslaCode
+                    });
 
+                }
             }
             allMeetingsSummary.meetingsSummary = summary;
             return View(allMeetingsSummary);
@@ -1585,10 +1587,10 @@ namespace DigitizingDataAdminApp.Controllers
                         tables_vsla.VslaId
                            where table_meetings.MeetingDate >= startDate
                            select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
-            List<WeeklyMeetingsSummary> summary = new List<WeeklyMeetingsSummary>();
+            List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
             foreach (var item in results)
             {
-                summary.Add(new WeeklyMeetingsSummary
+                summary.Add(new WeeklyMeetingsData
                 {
                     meetingId = item.table_meetings.MeetingId,
                     cashExpenses = item.table_meetings.CashExpenses,

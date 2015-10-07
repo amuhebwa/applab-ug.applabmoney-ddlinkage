@@ -1,4 +1,4 @@
-﻿@model DigitizingDataAdminApp.Models.AllMeeetingsSummary
+﻿@model DigitizingDataAdminApp.Models.AllMeetingsData
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "VslaReporting";
@@ -7,16 +7,15 @@
     $(function () {
         $("#tabs").tabs();
     });
+
 </script>
 <div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
     <ul>
         <li><a href="#meetings-tabs">Weekly Meetings</a></li>
-        <li><a href="#savings-tabs">Group Savings</a></li>
-        <li><a href="#visualization-tabs">Visualizations</a></li>
     </ul>
     <div id="meetings-tabs">
         <div>
-            <a style="text-align:right; text-decoration-color:#0026ff;" href="@Url.Action("ExportWeeklySummary", "Dashboard")"><strong>Export to CSV</strong></a>
+            <a href="@Url.Action("ExportWeeklySummary", "Dashboard")"><strong>Export to CSV</strong></a>
         </div>
         <div style="width: 100%; min-width: 900px; margin: 0 auto;">
             <table class="display" style="width: 100%;" id="data-table">
@@ -48,10 +47,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <div id="savings-tabs">
-    </div>
-    <div id="visualization-tabs">
     </div>
 </div>

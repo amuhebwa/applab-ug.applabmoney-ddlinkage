@@ -16,25 +16,23 @@
     <div id="dashboard">
         <table>
             <tr style="margin-bottom: 10px;">
-                <td>
-                    <h6><strong>VSLAs : @Html.DisplayFor(model => model.totalVslas)<br />
-                        Total Submissions : @Html.DisplayFor(model => model.totalSubmissions)<br />
-                        Total Meetings Held : @Html.DisplayFor(model => model.totalMeeetings)
-                    </strong></h6>
+                <td><strong>VSLAs : @Html.DisplayFor(model => model.totalVslas)<br />
+                    Total Submissions : @Html.DisplayFor(model => model.totalSubmissions)<br />
+                    Total Meetings Held : @Html.DisplayFor(model => model.totalMeeetings)
+                </strong>
+                </td>
+                <td><strong>Total Members : @Html.DisplayFor(model => model.totalMembers)
+                    <br />
+                    MALES : @Html.DisplayFor(model => model.maleMembers)
+                    <br />
+                    FEMALES : @Html.DisplayFor(model => model.femaleMembers)
+                </strong>
                 </td>
                 <td>
-                    <h6><strong>Total Members : @Html.DisplayFor(model => model.totalMembers)
-                        <br />
-                        Males : @Html.DisplayFor(model => model.maleMembers)
-                        <br />
-                        Females : @Html.DisplayFor(model => model.femaleMembers)
-                    </strong></h6>
-                </td>
-                <td>
-                    <h6><strong>Total Savings : Shs @Html.DisplayFor(model => model.totalSavings)<br />
-                        Total Loans given : Shs @Html.DisplayFor(model => model.totalLoans)<br />
-                        Loan Repayments : Shs @Html.DisplayFor(model => model.totalLoanRepayment)
-                    </strong></h6>
+                    <strong>Total Savings : UGX @Html.DisplayFor(model => model.totalSavings)<br />
+                        Total Loans given : UGX @Html.DisplayFor(model => model.totalLoans)<br />
+                        Loan Repayments : UGX @Html.DisplayFor(model => model.totalLoanRepayment)
+                    </strong>
                 </td>
 
             </tr>

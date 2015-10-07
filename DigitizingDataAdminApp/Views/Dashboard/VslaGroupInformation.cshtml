@@ -12,8 +12,8 @@
 <div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
 
     <ul>
-        <li><a href="#allgroups">Vsla Groups</a></li>
-        <li><a href="#addnewgroup">Add New Vsla Group</a></li>
+        <li><a href="#allgroups">VSLA Groups</a></li>
+        <li><a href="#addnewgroup">Add New VSLA Group</a></li>
     </ul>
 
     <div id="allgroups">
@@ -149,7 +149,7 @@
                         @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
                 </tr>
                 <tr>
-                    <td><strong>@Html.DisplayName("Responsible Technology Trainer")</strong></td>
+                    <td><strong>@Html.DisplayName("Responsible Technical Trainer")</strong></td>
                     <td>@Html.DropDownList("Id", Model.AllTechnicalTrainers, new { @style = "width:185px;" })
                         @Html.ValidationMessageFor(model => model.TechnicalTrainer)
                     </td>

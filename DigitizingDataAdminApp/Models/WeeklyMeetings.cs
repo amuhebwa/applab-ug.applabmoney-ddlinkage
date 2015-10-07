@@ -6,11 +6,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DigitizingDataAdminApp.Models
 {
-    public class AllMeeetingsSummary
+    public class AllMeetingsData
     {
-        public List<WeeklyMeetingsSummary> meetingsSummary { get; set; }
+        public List<WeeklyMeetingsData> meetingsSummary { get; set; }
     }
-    public class WeeklyMeetingsSummary
+    public class WeeklyMeetingsData
     {
         public int meetingId { get; set; }
         public int? vslaId { get; set; }
