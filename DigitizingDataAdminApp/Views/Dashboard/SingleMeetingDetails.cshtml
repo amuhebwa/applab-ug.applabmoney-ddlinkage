@@ -1,4 +1,4 @@
-﻿@model DigitizingDataAdminApp.Models.AllSingleMeetingProcedures
+﻿@model DigitizingDataAdminApp.Models.AllSingleMeetingInfo
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "SingleMeetingDetails";
@@ -44,12 +44,12 @@
                             <td>@item.Id</td>
                             <td>@item.memberName</td>
                             <td>@item.isPresent</td>
-                            <td>@item.amountSaved</td>
+                            <td>@item.fAmountSaved</td>
                             <td>@item.loanNumber</td>
-                            <td>@item.principleAmount</td>
-                            <td>@item.finedAmount</td>
-                            <td>@item.loanRepaymentAmount</td>
-                            <td>@item.remainingBalanceOnLoan</td>
+                            <td>@item.fPrincipleAmount</td>
+                            <td>@item.fFinedAmount</td>
+                            <td>@item.fLoanRepayment</td>
+                            <td>@item.fRemainingBalance</td>
                         </tr>
                     }
                 </tbody>

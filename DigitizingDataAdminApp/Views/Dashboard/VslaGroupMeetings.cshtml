@@ -44,10 +44,10 @@
                             <td>@item.MeetingId</td>
                             <td>@item.formattedMeetingDate</td>
                             <td>@item.membersPresent</td>
-                            <td>@item.cashFines</td>
-                            <td>@item.totalSavings</td>
-                            <td>@item.totalLoans</td>
-                            <td>@item.totalLoanRepayment</td>
+                            <td>@item.formattedCashFines</td>
+                            <td>@item.formattedTotalSavings</td>
+                            <td>@item.formattedTotalLoans</td>
+                            <td>@item.formattedLoanRepayment</td>
                             <td><a href="@Url.Action("SingleMeetingDetails", "Dashboard", new { id = item.MeetingId })">
                                 <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
                         </tr>

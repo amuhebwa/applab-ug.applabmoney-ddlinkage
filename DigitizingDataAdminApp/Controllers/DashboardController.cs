@@ -55,7 +55,7 @@ namespace DigitizingDataAdminApp.Controllers
                 int totalSubmissions = (int)database.DataSubmissions.Select(x => x.SourceVslaCode).Count();
                 // Total meetings
                 int totalMeeetings = (int)database.Meetings.Select(x => x.MeetingId).Count();
-                DashboardSummary summary = new DashboardSummary
+                DashboardData summary = new DashboardData
                 {
                     femaleMembers = femaleMMembers,
                     maleMembers = maleMembers,
@@ -860,8 +860,8 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public ActionResult SingleMeetingDetails(int id)
         {
-            AllSingleMeetingProcedures allInformation = new AllSingleMeetingProcedures();
-            List<SingleMeetingProcedures> meetingsList = new List<SingleMeetingProcedures>();
+            AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
+            List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
 
             // Get the date when the meeting was held
             var meetingDate = database.Meetings.Find(id);
@@ -877,9 +877,9 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Helper class for getting information concerned with all meetings in the whole system
          * */
-        public List<SingleMeetingProcedures> groupMeetingDetails(int id)
+        public List<SingleMeetingInfo> groupMeetingDetails(int id)
         {
-            List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
+            List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
             var meeting = (from db_attendance in database.Attendances
                            join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
                            join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
@@ -905,7 +905,7 @@ namespace DigitizingDataAdminApp.Controllers
                            });
             foreach (var item in meeting)
             {
-                meetings.Add(new SingleMeetingProcedures
+                meetings.Add(new SingleMeetingInfo
                 {
                     Id = item.db_attendance.AttendanceId,
                     memberId = item.db_member.MemberId,
@@ -928,7 +928,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public void ExportSingleMeetingDetailsCSV(int id)
         {
-            List<SingleMeetingProcedures> meetings = new List<SingleMeetingProcedures>();
+            List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
             var meeting = (from db_attendance in database.Attendances
                            join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
                            join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
@@ -954,7 +954,7 @@ namespace DigitizingDataAdminApp.Controllers
                            });
             foreach (var item in meeting)
             {
-                meetings.Add(new SingleMeetingProcedures
+                meetings.Add(new SingleMeetingInfo
                 {
                     Id = item.db_attendance.AttendanceId,
                     memberId = item.db_member.MemberId,

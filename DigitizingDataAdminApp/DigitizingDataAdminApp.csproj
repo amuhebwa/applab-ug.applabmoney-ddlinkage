@@ -217,7 +217,7 @@
     <Compile Include="Models\Cbt_info.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DashboardSummary.cs" />
+    <Compile Include="Models\DashboardData.cs" />
     <Compile Include="Models\DataSubmission.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -268,7 +268,7 @@
     <Compile Include="Models\Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SingleMeetingProcedures.cs" />
+    <Compile Include="Models\SingleMeetingInfo.cs" />
     <Compile Include="Models\StatusType.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

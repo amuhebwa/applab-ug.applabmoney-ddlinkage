@@ -1,4 +1,4 @@
-﻿@model DigitizingDataAdminApp.Models.DashboardSummary
+﻿@model DigitizingDataAdminApp.Models.DashboardData
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
@@ -16,22 +16,22 @@
     <div id="dashboard">
         <table>
             <tr style="margin-bottom: 10px;">
-                <td><strong>VSLAs : @Html.DisplayFor(model => model.totalVslas)<br />
-                    Total Submissions : @Html.DisplayFor(model => model.totalSubmissions)<br />
-                    Total Meetings Held : @Html.DisplayFor(model => model.totalMeeetings)
+                <td><strong>VSLAs : @Html.DisplayFor(model => model.fTotalVslas)<br />
+                    Total Submissions : @Html.DisplayFor(model => model.fTotalSubmissions)<br />
+                    Total Meetings Held : @Html.DisplayFor(model => model.fTotalMeetings)
                 </strong>
                 </td>
-                <td><strong>Total Members : @Html.DisplayFor(model => model.totalMembers)
+                <td><strong>Total Members : @Html.DisplayFor(model => model.fMembers)
                     <br />
-                    MALES : @Html.DisplayFor(model => model.maleMembers)
+                    MALES : @Html.DisplayFor(model => model.fMales)
                     <br />
-                    FEMALES : @Html.DisplayFor(model => model.femaleMembers)
+                    FEMALES : @Html.DisplayFor(model => model.fFemales)
                 </strong>
                 </td>
                 <td>
-                    <strong>Total Savings : UGX @Html.DisplayFor(model => model.totalSavings)<br />
-                        Total Loans given : UGX @Html.DisplayFor(model => model.totalLoans)<br />
-                        Loan Repayments : UGX @Html.DisplayFor(model => model.totalLoanRepayment)
+                    <strong>Total Savings : UGX @Html.DisplayFor(model => model.fTotalSavings)<br />
+                        Total Loans given : UGX @Html.DisplayFor(model => model.fLoans)<br />
+                        Loan Repayments : UGX @Html.DisplayFor(model => model.fLoanRepayment)
                     </strong>
                 </td>
 
