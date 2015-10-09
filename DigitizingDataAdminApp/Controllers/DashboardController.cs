@@ -1544,27 +1544,28 @@ namespace DigitizingDataAdminApp.Controllers
                            select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
             List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
             AllMeetingsData allMeetingsSummary = new AllMeetingsData();
-            if (null != results) {
+            if (null != results)
+            {
                 foreach (var item in results)
                 {
                     summary.Add(new WeeklyMeetingsData
                     {
                         meetingId = item.table_meetings.MeetingId,
-                        cashExpenses = item.table_meetings.CashExpenses,
-                        cashFines = item.table_meetings.CashFines,
-                        cashFromBank = item.table_meetings.CashFromBank,
-                        cashFromBox = item.table_meetings.CashFromBox,
-                        cashSavedBank = item.table_meetings.CashSavedBank,
-                        cashSavedBox = item.table_meetings.CashSavedBox,
-                        cashWelfare = item.table_meetings.CashWelfare,
+                        cashExpenses = (long)item.table_meetings.CashExpenses,
+                        cashFines = (long)item.table_meetings.CashFines,
+                        cashFromBank = (long)item.table_meetings.CashFromBank,
+                        cashFromBox = (long)item.table_meetings.CashFromBox,
+                        cashSavedBank = (long)item.table_meetings.CashSavedBank,
+                        cashSavedBox = (long)item.table_meetings.CashSavedBox,
+                        cashWelfare = (long)item.table_meetings.CashWelfare,
                         dateSent = item.table_meetings.DateSent,
                         meetingDate = item.table_meetings.MeetingDate,
-                        countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
-                        sumOfSavings = item.table_meetings.SumOfSavings,
-                        sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
-                        sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
+                        countOfMembersPresent = (int)item.table_meetings.CountOfMembersPresent,
+                        sumOfSavings = (long)item.table_meetings.SumOfSavings,
+                        sumOfLoansIssued = (long)item.table_meetings.SumOfLoanIssues,
+                        sumOfLoanRepayments = (long)item.table_meetings.SumOfLoanRepayments,
                         vslaName = item.tables_vsla.VslaName,
-                        vslaId = item.table_cycles.VslaId,
+                        vslaId = (int)item.table_cycles.VslaId,
                         VslaCode = item.tables_vsla.VslaCode
                     });
 
@@ -1593,21 +1594,21 @@ namespace DigitizingDataAdminApp.Controllers
                 summary.Add(new WeeklyMeetingsData
                 {
                     meetingId = item.table_meetings.MeetingId,
-                    cashExpenses = item.table_meetings.CashExpenses,
-                    cashFines = item.table_meetings.CashFines,
-                    cashFromBank = item.table_meetings.CashFromBank,
-                    cashFromBox = item.table_meetings.CashFromBox,
-                    cashSavedBank = item.table_meetings.CashSavedBank,
-                    cashSavedBox = item.table_meetings.CashSavedBox,
-                    cashWelfare = item.table_meetings.CashWelfare,
+                    cashExpenses = (long)item.table_meetings.CashExpenses,
+                    cashFines = (long)item.table_meetings.CashFines,
+                    cashFromBank = (long)item.table_meetings.CashFromBank,
+                    cashFromBox = (long)item.table_meetings.CashFromBox,
+                    cashSavedBank = (long)item.table_meetings.CashSavedBank,
+                    cashSavedBox = (long)item.table_meetings.CashSavedBox,
+                    cashWelfare = (long)item.table_meetings.CashWelfare,
                     dateSent = item.table_meetings.DateSent,
                     meetingDate = item.table_meetings.MeetingDate,
-                    countOfMembersPresent = item.table_meetings.CountOfMembersPresent,
-                    sumOfSavings = item.table_meetings.SumOfSavings,
-                    sumOfLoansIssued = item.table_meetings.SumOfLoanIssues,
-                    sumOfLoanRepayments = item.table_meetings.SumOfLoanRepayments,
+                    countOfMembersPresent = (int)item.table_meetings.CountOfMembersPresent,
+                    sumOfSavings = (long)item.table_meetings.SumOfSavings,
+                    sumOfLoansIssued = (long)item.table_meetings.SumOfLoanIssues,
+                    sumOfLoanRepayments = (long)item.table_meetings.SumOfLoanRepayments,
                     vslaName = item.tables_vsla.VslaName,
-                    vslaId = item.table_cycles.VslaId,
+                    vslaId = (int)item.table_cycles.VslaId,
                     VslaCode = item.tables_vsla.VslaCode
                 });
 

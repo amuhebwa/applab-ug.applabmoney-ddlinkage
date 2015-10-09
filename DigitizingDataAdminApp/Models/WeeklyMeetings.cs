@@ -14,21 +14,28 @@ namespace DigitizingDataAdminApp.Models
     {
         public int meetingId { get; set; }
 
-        public int? vslaId { get; set; }
+        public int vslaId { get; set; }
 
-        public decimal? cashExpenses { get; set; }
+        public long cashExpenses { get; set; }
+        public string fCashExpenses { get { return cashExpenses.ToString("#,##0"); } }
 
-        public decimal? cashFines { get; set; }
+        public long cashFines { get; set; }
+        public string fCashFines { get { return cashFines.ToString("#,##0"); } }
 
-        public decimal? cashFromBank { get; set; }
+        public long cashFromBank { get; set; }
+        public string fCashFromBank { get { return cashFromBank.ToString("#,##0"); } }
 
-        public decimal? cashFromBox { get; set; }
+        public long cashFromBox { get; set; }
+        public string fCashFromBox { get { return cashFromBox.ToString("#,##0"); } }
 
-        public decimal? cashSavedBank { get; set; }
+        public long cashSavedBank { get; set; }
+        public string fCashSavedBank { get { return cashSavedBank.ToString("#,##0"); } }
 
-        public decimal? cashSavedBox { get; set; }
+        public long cashSavedBox { get; set; }
+        public string fCashSavedBox { get { return cashSavedBox.ToString("#,##0"); } }
 
-        public decimal? cashWelfare { get; set; }
+        public long cashWelfare { get; set; }
+        public string fCashWelfare { get { return cashWelfare.ToString("#,##0"); } }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? dateSent { get; set; }
@@ -38,13 +45,16 @@ namespace DigitizingDataAdminApp.Models
         public DateTime? meetingDate { get; set; }
         public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
 
-        public int? countOfMembersPresent { get; set; }
+        public int countOfMembersPresent { get; set; }
 
-        public decimal? sumOfSavings { get; set; }
+        public long sumOfSavings { get; set; }
+        public string fSumOfSavings { get { return sumOfSavings.ToString("#,##0"); } }
 
-        public decimal? sumOfLoansIssued { get; set; }
+        public long sumOfLoansIssued { get; set; }
+        public string fSumOfLoansIssued { get { return sumOfLoansIssued.ToString("#,##0"); } }
 
-        public decimal? sumOfLoanRepayments { get; set; }
+        public long sumOfLoanRepayments { get; set; }
+        public string fLoanRepayment { get { return sumOfLoanRepayments.ToString("#,##0"); } }
 
         public string vslaName { get; set; }
 
