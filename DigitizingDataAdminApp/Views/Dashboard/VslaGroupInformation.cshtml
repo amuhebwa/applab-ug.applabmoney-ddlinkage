@@ -8,6 +8,11 @@
         $("#tabs").tabs();
     });
 </script>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker(); //Initialise any date pickers
+    });
+</script>
 
 <div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
 
@@ -106,12 +111,18 @@
                 </tr>
 
                 <tr>
-                    <td><strong>@Html.DisplayName("Date Registered")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.DateRegistered, new { @Value = @DateTime.Now.ToShortDateString() })</td>
+                    <td>
+                        <strong>@Html.DisplayName("Date Registered")</strong>
+                    </td>
+                    <td>
+                        <input type="date" id="DateRegistered" name="DateRegistered" class="datepicker" style="width: 185px; height: 30px;" />
+                    </td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Date linked to the Bank")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.DateLinked, new { @Value = @DateTime.Now.ToShortDateString() })</td>
+                    <td>
+                        <input type="date" id="DateLinked" name="DateLinked" class="datepicker" style="width: 185px; height: 30px;" />
+                    </td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Physical Address")</strong></td>
