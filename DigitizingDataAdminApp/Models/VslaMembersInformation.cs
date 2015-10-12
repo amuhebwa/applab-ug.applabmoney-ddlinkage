@@ -27,12 +27,12 @@ namespace DigitizingDataAdminApp.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? dateArchived { get; set; }
-        public string formattedDateArchived { get { return dateArchived.Value.ToShortDateString(); } }
+        public string formattedDateArchived { get { return dateArchived.Value.ToString("dd-MMM-yyyy"); } }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfBirth { get; set; }
-        public string formattedDateOfBirth { get { return DateOfBirth.Value.ToShortDateString(); } }
+        public string formattedDateOfBirth { get { return DateOfBirth.Value.ToString("dd-MMM-yyyy"); } }
 
         public string isActive { get; set; }
         public string isArchive { get; set; }

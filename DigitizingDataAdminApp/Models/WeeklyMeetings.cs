@@ -37,13 +37,13 @@ namespace DigitizingDataAdminApp.Models
         public long cashWelfare { get; set; }
         public string fCashWelfare { get { return cashWelfare.ToString("#,##0"); } }
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MMM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? dateSent { get; set; }
-        public string formattedDateSent { get { return dateSent.Value.ToShortDateString(); } }
+        public string formattedDateSent { get { return dateSent.Value.ToString("MMM-dd-yyyy"); } }
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MMM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? meetingDate { get; set; }
-        public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
+        public string formattedMeetingDate { get { return meetingDate.Value.ToString("MMM-dd-yyyy"); } }
 
         public int countOfMembersPresent { get; set; }
 

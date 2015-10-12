@@ -306,3 +306,10 @@ INFO  2015-10-12 09:38:56,709 2352816ms ActivityLoggingSystem  logActivity      
 INFO  2015-10-12 09:39:47,927 2404034ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 83
 INFO  2015-10-12 09:48:00,710 2896817ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-12 09:52:48,101 3184208ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 38
+INFO  2015-10-12 10:22:56,319  3568ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:26:15,071  3491ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:30:53,476  3354ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:33:04,169  4692ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:36:12,818 193341ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:38:54,010  3533ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:39:59,836  4962ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

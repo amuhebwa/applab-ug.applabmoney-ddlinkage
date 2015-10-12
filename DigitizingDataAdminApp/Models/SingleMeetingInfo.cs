@@ -10,6 +10,7 @@ namespace DigitizingDataAdminApp.Models
         public List<SingleMeetingInfo> allMeetingData { get; set; }
 
         public DateTime? meetingDate { get; set; }
+        public string fMeetingDate { get { return meetingDate.Value.ToString("dd-MMM-yyyy"); } }
 
         public int vslaId { get; set; }
 

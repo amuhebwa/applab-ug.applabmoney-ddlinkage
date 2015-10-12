@@ -48,7 +48,7 @@ namespace DigitizingDataAdminApp.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? meetingDate { get; set; }
-        public string formattedMeetingDate { get { return meetingDate.Value.ToShortDateString(); } }
+        public string formattedMeetingDate { get { return meetingDate.Value.ToString("dd-MMM-yyyy"); } }
 
         public int membersPresent { get; set; }
 
