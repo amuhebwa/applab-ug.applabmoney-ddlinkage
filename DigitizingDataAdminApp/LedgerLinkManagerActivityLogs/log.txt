@@ -313,3 +313,7 @@ INFO  2015-10-12 10:33:04,169  4692ms ActivityLoggingSystem  logActivity        
 INFO  2015-10-12 10:36:12,818 193341ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-12 10:38:54,010  3533ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-12 10:39:59,836  4962ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 10:55:56,300 35286ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 11:22:08,230 1607216ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-10-12 11:22:12,812 1611798ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 11:25:59,821 14241ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

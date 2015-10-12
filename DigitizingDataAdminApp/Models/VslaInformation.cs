@@ -30,12 +30,12 @@ namespace DigitizingDataAdminApp.Models
 
         [Required(ErrorMessage = "Date Registered is a require field", AllowEmptyStrings = false)]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DateRegistered { get; set; }
 
         [Required(ErrorMessage = "Date Linked is a require field", AllowEmptyStrings = false)]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DateLinked { get; set; }
 
         [Required(ErrorMessage = "Physical is a require field", AllowEmptyStrings = false)]
