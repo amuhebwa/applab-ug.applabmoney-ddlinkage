@@ -278,3 +278,31 @@ INFO  2015-10-08 12:49:43,020  3079ms ActivityLoggingSystem  logActivity        
 INFO  2015-10-08 13:00:01,182  3277ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-09 13:49:01,239  4161ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-09 14:08:22,949  6136ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-09 15:26:56,615 4719802ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-09 15:48:31,244 6014431ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:10:37,264 97659ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:23:01,803 842198ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:23:36,352 876747ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:31:55,874 1376269ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:33:22,347 1462742ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:35:02,066 1562461ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:37:09,394 1689789ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:52:58,044 2638439ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:57:54,321 2934716ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 08:58:36,983 2977378ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:00:01,828 17935ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:26:38,935 1615041ms ActivityLoggingSystem  logActivity        -  Edited User with ID : 38
+INFO  2015-10-12 09:33:59,175 2055282ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:35:27,457 2143564ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1577
+INFO  2015-10-12 09:35:50,432 2166539ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-10-12 09:35:55,115 2171222ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:36:20,047 2196154ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-10-12 09:36:24,108 2200215ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:36:45,569 2221676ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 38
+INFO  2015-10-12 09:36:50,016 2226123ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-10-12 09:36:53,594 2229701ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:37:15,047 2251154ms ActivityLoggingSystem  logActivity        - admin Logged out
+INFO  2015-10-12 09:38:56,709 2352816ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:39:47,927 2404034ms ActivityLoggingSystem  logActivity        - admin Deleted VSLA with ID : 83
+INFO  2015-10-12 09:48:00,710 2896817ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-12 09:52:48,101 3184208ms ActivityLoggingSystem  logActivity        - admin Edited User with ID : 38

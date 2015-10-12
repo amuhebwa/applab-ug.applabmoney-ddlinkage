@@ -32,7 +32,7 @@ namespace DigitizingDataAdminApp.Models
 
         [Required(ErrorMessage = "Password is a required field", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
-        [StringLength(50, ErrorMessage = "Minimum 6 Characters", MinimumLength = 6)]
+        [StringLength(50, ErrorMessage = "Password should be minimum 6 Characters", MinimumLength = 6)]
         public string Password { get; set; }
 
         public string UserLevel { get; set; }

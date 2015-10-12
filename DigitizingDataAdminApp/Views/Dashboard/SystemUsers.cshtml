@@ -69,34 +69,49 @@
                 <table class="table table-bordered">
                     <tr>
                         <td><strong>@Html.DisplayName("Username")</strong></td>
-                        <td>@Html.EditorFor(model => model.Username)
-                            @Html.ValidationMessageFor(model => model.Username)</td>
+                        <td>@Html.EditorFor(model => model.Username)</td>
                     </tr>
                     <tr>
                         <td><strong>@Html.DisplayName("Fullname")</strong></td>
-                        <td>@Html.EditorFor(model => model.Fullname)
-                            @Html.ValidationMessageFor(model => model.Fullname)</td>
+                        <td>@Html.EditorFor(model => model.Fullname)</td>
                     </tr>
 
                     <tr>
                         <td><strong>@Html.DisplayName("Email")</strong></td>
-                        <td>@Html.EditorFor(model => model.Email)
-                            @Html.ValidationMessageFor(model => model.Email)</td>
+                        <td>@Html.EditorFor(model => model.Email)</td>
                     </tr>
                     <tr>
                         <td><strong>@Html.DisplayName("Password")</strong></td>
-                        <td>@Html.EditorFor(model => model.Password)
-                            @Html.ValidationMessageFor(model => model.Password)</td>
+                        <td>@Html.EditorFor(model => model.Password)</td>
                     </tr>
                     <tr>
                         <td><strong>@Html.DisplayName("Access Level")</strong></td>
                         <td>@Html.DropDownList("Level_Id", Model.AccessLevel, new { @style = "width:250px; height:30px;" })
-                            @Html.ValidationMessageFor(model => model.AccessLevel)</td>
+                        </td>
                     </tr>
                 </table>
                 <p>
                     <input class="btn btn-small btn-primary" type="submit" name="AddUser" value="Add new User" style="width: 150px;" />
                 </p>
+                <div style="width: auto; height: auto; color:red;">
+                    <table>
+                        <tr>
+                            <td>@Html.ValidationMessageFor(model => model.Username) </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.ValidationMessageFor(model => model.Fullname) </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.ValidationMessageFor(model => model.Email) </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.ValidationMessageFor(model => model.Password)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.ValidationMessageFor(model => model.AccessLevel)</td>
+                        </tr>
+                    </table>
+                </div>
             }
 
             @section Scripts {

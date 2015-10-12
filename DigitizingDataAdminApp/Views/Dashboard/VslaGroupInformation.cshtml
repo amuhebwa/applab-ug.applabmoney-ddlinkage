@@ -7,8 +7,8 @@
     $(function () {
         $("#tabs").tabs();
     });
-
 </script>
+
 <div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
 
     <ul>
@@ -98,77 +98,104 @@
             <table class="table table-bordered">
                 <tr>
                     <td><strong>@Html.DisplayName("VSLA Name")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.VslaName)
-                        @Html.ValidationMessageFor(model => model.VslaName)</td>
+                    <td>@Html.TextBoxFor(model => model.VslaName)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Region")</strong></td>
-                    <td>@Html.DropDownList("RegionId", Model.VslaRegions, new { @style = "width:185px;" })
-                        @Html.ValidationMessageFor(model => model.RegionName)
-                    </td>
+                    <td>@Html.DropDownList("RegionId", Model.VslaRegions, new { @style = "width:185px;" }) </td>
                 </tr>
 
                 <tr>
                     <td><strong>@Html.DisplayName("Date Registered")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.DateRegistered, new { @Value = @DateTime.Now.ToShortDateString() })
-                        @Html.ValidationMessageFor(model => model.DateRegistered)</td>
+                    <td>@Html.TextBoxFor(model => model.DateRegistered, new { @Value = @DateTime.Now.ToShortDateString() })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Date linked to the Bank")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.DateLinked, new { @Value = @DateTime.Now.ToShortDateString() })
-                        @Html.ValidationMessageFor(model => model.DateLinked)</td>
+                    <td>@Html.TextBoxFor(model => model.DateLinked, new { @Value = @DateTime.Now.ToShortDateString() })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Physical Address")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.PhysicalAddress)
-                        @Html.ValidationMessageFor(model => model.PhysicalAddress)</td>
+                    <td>@Html.TextBoxFor(model => model.PhysicalAddress)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Phone MSISDN")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.VslaPhoneMsisdn, new { @Placeholder = "e.g 256774123456" })
-                        @Html.ValidationMessageFor(model => model.VslaPhoneMsisdn)</td>
+                    <td>@Html.TextBoxFor(model => model.VslaPhoneMsisdn, new { @Placeholder = "e.g 256774123456" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("GPS Location")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.GpsLocation, new { @Placeholder = " eg 0.2345566,34.234567" })
-                        @Html.ValidationMessageFor(model => model.GpsLocation)</td>
+                    <td>@Html.TextBoxFor(model => model.GpsLocation, new { @Placeholder = " eg 0.2345566,34.234567" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Contact Person")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.ContactPerson)
-                        @Html.ValidationMessageFor(model => model.ContactPerson)</td>
+                    <td>@Html.TextBoxFor(model => model.ContactPerson)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Position of Contact Person in VSLA")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.PositionInVsla, new { @Placeholder = "eg Mobile Secretary" })
-                        @Html.ValidationMessageFor(model => model.PositionInVsla)</td>
+                    <td>@Html.TextBoxFor(model => model.PositionInVsla, new { @Placeholder = "eg Mobile Secretary" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Phone Number of Contact Person")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })
-                        @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
+                    <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Responsible Technical Trainer")</strong></td>
-                    <td>@Html.DropDownList("Id", Model.AllTechnicalTrainers, new { @style = "width:185px;" })
-                        @Html.ValidationMessageFor(model => model.TechnicalTrainer)
-                    </td>
+                    <td>@Html.DropDownList("Id", Model.AllTechnicalTrainers, new { @style = "width:185px;" }) </td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Status of VSLA")</strong></td>
-                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:185px;" })
-                        @Html.ValidationMessageFor(model => model.Status)
-                    </td>
+                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:185px;" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Group Account Number")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.GroupAccountNumber)
-                        @Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+                    <td>@Html.TextBoxFor(model => model.GroupAccountNumber)</td>
                 </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" name="AddVslaGroup" value=" Create " style="width: 100px;" />
             </p>
+            <div style="width: auto; height: auto; color: red;">
+                <table>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.VslaName) </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.RegionName) </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.DateRegistered)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.DateLinked)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.PhysicalAddress)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.VslaPhoneMsisdn)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.GpsLocation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.ContactPerson)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.PositionInVsla) </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.PhoneNumber) </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.TechnicalTrainer)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Status)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+                    </tr>
+                </table>
+            </div>
         }
 
         @section Scripts {

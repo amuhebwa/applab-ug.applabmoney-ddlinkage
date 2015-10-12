@@ -93,51 +93,69 @@
             <table class="table table-bordered">
                 <tr>
                     <td><strong>@Html.DisplayName("First Name")</strong></td>
-                    <td>@Html.EditorFor(model => model.FirstName)
-                        @Html.ValidationMessageFor(model => model.FirstName)</td>
+                    <td>@Html.EditorFor(model => model.FirstName)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Last Name")</strong></td>
-                    <td>@Html.EditorFor(model => model.LastName)
-                        @Html.ValidationMessageFor(model => model.LastName)</td>
+                    <td>@Html.EditorFor(model => model.LastName)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Username")</strong></td>
-                    <td>@Html.EditorFor(model => model.Username)
-                        @Html.ValidationMessageFor(model => model.Username)</td>
+                    <td>@Html.EditorFor(model => model.Username)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Pass Key")</strong></td>
-                    <td>@Html.EditorFor(model => model.Passkey)
-                        @Html.ValidationMessageFor(model => model.Passkey)</td>
+                    <td>@Html.EditorFor(model => model.Passkey)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Region")</strong></td>
-                    <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:185px;" })
-                        @Html.ValidationMessageFor(model => model.Region)
-                    </td>
+                    <td>@Html.DropDownList("RegionId", Model.VslaRegionsModel, new { @style = "width:185px;" })</td>
                 </tr>
 
                 <tr>
                     <td><strong>@Html.DisplayName("Phone Number")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })
-                        @Html.ValidationMessageFor(model => model.PhoneNumber)</td>
+                    <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Email")</strong></td>
-                    <td>@Html.EditorFor(model => model.Email)
-                        @Html.ValidationMessageFor(model => model.Email)</td>
+                    <td>@Html.EditorFor(model => model.Email)</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Status")</strong></td>
-                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:185px;" })
-                        @Html.ValidationMessageFor(model => model.Status)
-                    </td>
+                    <td>@Html.DropDownList("Status_Id", Model.StatusType, new { @style = "width:185px;" })</td>
                 </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" name="AddTechnicalTrainer" value=" Create " style="width: 100px;" />
             </p>
+            <div style="width: auto; height: auto; color: red;">
+                <table>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.FirstName)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.LastName)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Username)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Passkey)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Region)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.PhoneNumber)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Email)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.Status)</td>
+                    </tr>
+                </table>
+            </div>
         }
 
         @section Scripts {
