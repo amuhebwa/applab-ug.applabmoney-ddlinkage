@@ -364,3 +364,10 @@ INFO  2015-10-12 16:15:33,095 4206115ms ActivityLoggingSystem  logActivity      
 INFO  2015-10-13 09:37:06,788 35399ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-13 09:48:57,206 745817ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-13 09:59:16,246 1364858ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 88
+INFO  2015-10-13 10:18:22,757 121455ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 11:43:47,680 51281ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 11:46:07,755 38962ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 11:51:42,381 12872ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 11:54:46,193 32673ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 11:56:41,345 16564ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-13 12:03:41,602  9675ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

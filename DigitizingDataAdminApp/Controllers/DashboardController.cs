@@ -1541,7 +1541,7 @@ namespace DigitizingDataAdminApp.Controllers
                            join tables_vsla in database.Vslas on table_cycles.VslaId equals
                         tables_vsla.VslaId
                            where table_meetings.MeetingDate >= startDate
-                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
+                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.MeetingId);
             List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
             AllMeetingsData allMeetingsSummary = new AllMeetingsData();
             if (null != results)
@@ -1587,7 +1587,7 @@ namespace DigitizingDataAdminApp.Controllers
                            join tables_vsla in database.Vslas on table_cycles.VslaId equals
                         tables_vsla.VslaId
                            where table_meetings.MeetingDate >= startDate
-                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.DateSent);
+                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.MeetingId);
             List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
             foreach (var item in results)
             {
