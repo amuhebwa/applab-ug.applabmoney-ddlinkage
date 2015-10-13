@@ -41,38 +41,37 @@
 
                 <tr>
                     <td><strong>@Html.DisplayName("Date Registered")</strong></td>
-                    <td>@Html.EditorFor(model => model.DateRegistered, new { @class = "datepicker form-control datefield"})</td>
+                    <td>@Html.EditorFor(model => model.DateRegistered, new { @class = "datepicker form-control datefield" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Date linked to the bank")</strong></td>
                     <td>
-                        @*@Html.TextBoxFor(model => model.DateLinked, new { @class = "date", @id = "DateLinked", @Placeholder = Model.DateLinked.Value.ToShortDateString() })*@
-                        @Html.EditorFor(model => model.DateLinked, new { @class = "datepicker form-control datefield"})
+                        @Html.EditorFor(model => model.DateLinked, new { @class = "datepicker form-control datefield" })
                     </td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Physical Address")</strong></td>
-                    <td>@Html.EditorFor(model => model.PhysicalAddress)</td>
+                    <td>@Html.TextBoxFor(model => model.PhysicalAddress, new { @Placeholder = "e.g Behind the grain mill" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Phone MSISDN")</strong></td>
-                    <td>@Html.EditorFor(model => model.VslaPhoneMsisdn)</td>
+                    <td>@Html.TextBoxFor(model => model.VslaPhoneMsisdn, new { @Placeholder = "e.g 256774123456" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("GPS Location")</strong></td>
-                    <td>@Html.EditorFor(model => model.GpsLocation)</td>
+                    <td>@Html.TextBoxFor(model => model.GpsLocation, new { @Placeholder = "e.g 256774123456" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Contact Person")</strong></td>
-                    <td>@Html.EditorFor(model => model.ContactPerson)</td>
+                    <td>@Html.TextBoxFor(model => model.ContactPerson, new { @placeholder="e.g John Doe"})</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Position of Contact Person in VSLA")</strong></td>
-                    <td>@Html.EditorFor(model => model.PositionInVsla)</td>
+                    <td>@Html.TextBoxFor(model => model.PositionInVsla, new { @Placeholder = "eg Mobile Secretary" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Phone Number of Contact Person")</strong></td>
-                    <td>@Html.EditorFor(model => model.PhoneNumber)</td>
+                    <td>@Html.TextBoxFor(model => model.PhoneNumber, new { @Placeholder = "e.g 0774123567" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Responsible TechnicalTrainer")</strong></td>
@@ -84,7 +83,7 @@
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Group Acount Number")</strong></td>
-                    <td>@Html.EditorFor(model => model.GroupAccountNumber)</td>
+                    <td>@Html.TextBoxFor(model => model.GroupAccountNumber, new { @placeholder = "1234567890" })</td>
                 </tr>
             </table>
             <p>
