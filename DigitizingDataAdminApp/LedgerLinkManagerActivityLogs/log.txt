@@ -371,3 +371,23 @@ INFO  2015-10-13 11:51:42,381 12872ms ActivityLoggingSystem  logActivity        
 INFO  2015-10-13 11:54:46,193 32673ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-13 11:56:41,345 16564ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-13 12:03:41,602  9675ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 12:46:31,603  4583ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 12:55:53,889 37002ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 13:06:13,762 656876ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 13:09:17,102 840215ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:06:10,304 4253417ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:08:25,852 4388966ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:10:05,356 4488469ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:16:25,525 4868638ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:23:47,003 5310116ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:30:29,420 5712533ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:31:50,778 5793892ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:32:55,007 5858120ms ActivityLoggingSystem  logActivity        - admin Added VSLA with ID : VS1589
+INFO  2015-10-14 14:33:47,494 5910607ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 89
+INFO  2015-10-14 14:35:47,771 6030884ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:36:15,039 6058152ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 89
+INFO  2015-10-14 14:36:25,236 6068349ms ActivityLoggingSystem  logActivity        - admin Edited VSLA with ID : 89
+INFO  2015-10-14 14:38:52,717  9685ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:43:29,230 13769ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:49:18,384  6773ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-14 14:50:13,336 61725ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

@@ -11,6 +11,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public List<VslaInformation> AllGroupsList { get; set; }
         public VslaInformation GroupDetails { get; set; }
+        public List<GroupSupportInfo> groupSupportProvided { get; set; }
         public int sessionUserLevel { get; set; }
 
     }
@@ -74,5 +75,13 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
         [RegularExpression(@"^[0-9]{10,10}$", ErrorMessage = "A/C is 10 characters ")]
         public string GroupAccountNumber { get; set; }
+    }
+
+    public class GroupSupportInfo {
+        public string TrainerName { get; set; }
+        public string GroupName { get; set; }
+        public string SupportType { get; set; }
+        public DateTime? supportDate { get; set; }
+        public string fSupportDate { get { return supportDate.Value.ToString("MMM-dd-yyyy"); } }
     }
 }

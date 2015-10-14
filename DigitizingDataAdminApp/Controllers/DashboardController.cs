@@ -178,9 +178,33 @@ namespace DigitizingDataAdminApp.Controllers
             allGroups.AllTechnicalTrainers = getAllTrainers();
             allGroups.VslaRegions = getVslaRegions();
             allGroups.StatusType = getStatusTypes();
+            allGroups.groupSupportProvided = getSupportType();
 
 
             return View(allGroups);
+        }
+        // Get the group support modules that have been provided to the group by technical trainers
+        public List<GroupSupportInfo> getSupportType()
+        {
+            var support = (from tb_support in database.GroupSupports
+                           join tb_vsla in database.Vslas
+                               on tb_support.VslaId equals tb_vsla.VslaId
+                           join tb_trainers in database.Cbt_info on
+                               tb_support.TrainerId equals tb_trainers.Id
+                           select new { tb_support, tb_vsla, tb_trainers });
+            List<GroupSupportInfo> supportGiven = new List<GroupSupportInfo>();
+            foreach (var sp in support)
+            {
+                supportGiven.Add(new GroupSupportInfo()
+                {
+                    GroupName = sp.tb_vsla.VslaName,
+                    TrainerName = sp.tb_trainers.Name,
+                    SupportType = sp.tb_support.SupportType,
+                    supportDate = sp.tb_support.SupportDate
+                });
+            }
+            return supportGiven;
+
         }
 
 
