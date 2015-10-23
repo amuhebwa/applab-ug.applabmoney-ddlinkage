@@ -120,7 +120,7 @@
             <table class="table table-bordered">
                 <tr>
                     <td><strong>@Html.DisplayName("VSLA Name")</strong></td>
-                    <td>@Html.TextBoxFor(model => model.VslaName)</td>
+                    <td>@Html.TextBoxFor(model => model.VslaName, new { @Placeholder = " e.g ABCD VSLA Group" })</td>
                 </tr>
                 <tr>
                     <td><strong>@Html.DisplayName("Region")</strong></td>
