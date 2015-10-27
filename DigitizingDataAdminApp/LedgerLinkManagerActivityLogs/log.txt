@@ -394,3 +394,8 @@ INFO  2015-10-14 14:50:13,336 61725ms ActivityLoggingSystem  logActivity        
 INFO  2015-10-15 12:10:03,471  8011ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-15 17:47:41,814 20266355ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-23 18:39:11,753 18632ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-23 19:02:08,520 1395399ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-23 19:05:57,506 1624385ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-23 19:08:36,821 1783700ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-23 19:10:56,844 1923723ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-10-23 19:13:04,717 2051596ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully

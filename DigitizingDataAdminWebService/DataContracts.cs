@@ -76,7 +76,7 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string VslaName { get; set; }
         [DataMember]
-        public string VslaPhoneMsisdn { get; set; }
+        public string grpPhoneNumber { get; set; }
         [DataMember]
         public string PhysicalAddress { get; set; }
         [DataMember]
@@ -88,15 +88,15 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string RegionName { get; set; }
         [DataMember]
-        public string GroupRepresentativeName { get; set; }
+        public string representativeName { get; set; }
         [DataMember]
-        public string GroupRepresentativePosition { get; set; }
+        public string representativePosition { get; set; }
         [DataMember]
-        public string GroupRepresentativePhonenumber { get; set; }
+        public string repPhoneNumber { get; set; }
         [DataMember]
-        public int? TechnicalTrainerId { get; set; }
+        public int? tTrainerId { get; set; }
         [DataMember]
-        public string TechnicalTTrainerName { get; set; }
+        public string tTrainerName { get; set; }
         [DataMember]
         public string Status { get; set; }
         [DataMember]
