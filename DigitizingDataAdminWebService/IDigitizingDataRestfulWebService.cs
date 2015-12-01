@@ -20,6 +20,8 @@ namespace DigitizingDataAdminWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchVsla/{vslaName}")]
         List<VslaDetails> searchVsla(string vslaName);
 
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "vslaInformation/{vslaId}")]
+        VslaDetails vslaInformation(string vslaId);
 
 
 
@@ -32,42 +34,13 @@ namespace DigitizingDataAdminWebService
 
 
 
-
-
-        /**
-         * Login for a given CBT
-         */
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "technicalTrainerLogin/{Username}/{PassKey}")]
-        //CBTLoginDetails technicalTrainerLogin(String Username, String PassKey);
-
-        /**
-         * Search for a given VSLA
-         */
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchForVsla/{VslaName}")]
-        //List<VslaDetails> searchForVsla(string VslaName);
-
-        /**
-         * Get all registered users
-         */
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getRegisteredUsers")]
-        //List<UsersDetails> getRegisteredUsers();
-
-        /**
-         * Get all VSLAs
-         */
-        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getAllVslas")]
-        //List<VslaDetails> getAllVslas();
 
         /**
          * Get VSLAs attached to a particular CBT
          */
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getVslaForParticularCBT/{id}")]
         List<VslaDetails> getVslaForParticularCBT(string id);
-        /**
-         * Get all information for a single VSLA
-         */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getSingleVslaDetails/{VslaId}")]
-        VslaDetails getSingleVslaDetails(string VslaId);
+       
 
         // Create a new VSLA and add it into the database
         [OperationContract]
