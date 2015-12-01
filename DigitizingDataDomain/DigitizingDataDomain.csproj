@@ -72,11 +72,13 @@
     <Compile Include="Mapping\AttendanceMap.cs" />
     <Compile Include="Mapping\DataSubmissionMap.cs" />
     <Compile Include="Mapping\FineMap.cs" />
+    <Compile Include="Mapping\GroupSupportMap.cs" />
     <Compile Include="Mapping\LoanIssueMap.cs" />
     <Compile Include="Mapping\LoanRepaymentMap.cs" />
     <Compile Include="Mapping\MeetingMap.cs" />
     <Compile Include="Mapping\MemberMap.cs" />
     <Compile Include="Mapping\SavingMap.cs" />
+    <Compile Include="Mapping\Cbt_infoMap.cs" />
     <Compile Include="Mapping\VslaCycleMap.cs" />
     <Compile Include="Mapping\VslaDdActivationMap.cs" />
     <Compile Include="Mapping\VslaMap.cs" />
@@ -86,11 +88,13 @@
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\DataSubmission.cs" />
     <Compile Include="Model\Fine.cs" />
+    <Compile Include="Model\GroupSupport.cs" />
     <Compile Include="Model\LoanIssue.cs" />
     <Compile Include="Model\LoanRepayment.cs" />
     <Compile Include="Model\Meeting.cs" />
     <Compile Include="Model\Member.cs" />
     <Compile Include="Model\Saving.cs" />
+    <Compile Include="Model\Cbt_info.cs" />
     <Compile Include="Model\Vsla.cs" />
     <Compile Include="Model\VslaCycle.cs" />
     <Compile Include="Model\VslaDdActivation.cs" />

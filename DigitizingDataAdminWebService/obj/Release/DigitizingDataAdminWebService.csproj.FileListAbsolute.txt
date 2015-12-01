@@ -7,3 +7,24 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.pdb
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.csprojResolveAssemblyReference.cache
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataAdminWebService.pdb
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataBizLayer.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataDomain.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\EntityFramework.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Newtonsoft.Json.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Oracle.DataAccess.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\NHibernate.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\FluentNHibernate.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\HibernatingRhinos.Profiler.Appender.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Iesi.Collections.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataBizLayer.pdb
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\DigitizingDataDomain.pdb
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\EntityFramework.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Newtonsoft.Json.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\NHibernate.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\FluentNHibernate.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\bin\Iesi.Collections.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.csprojResolveAssemblyReference.cache
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminWebService\obj\Release\DigitizingDataAdminWebService.pdb

@@ -197,6 +197,16 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigitizingDataBizLayer\DigitizingDataBizLayer.csproj">
+      <Project>{fa8a75d7-36d2-4a5a-aa7c-fe2e1e740d9b}</Project>
+      <Name>DigitizingDataBizLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitizingDataDomain\DigitizingDataDomain.csproj">
+      <Project>{d1e074dc-fe82-45fe-b8f3-e3d66e3ae91d}</Project>
+      <Name>DigitizingDataDomain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

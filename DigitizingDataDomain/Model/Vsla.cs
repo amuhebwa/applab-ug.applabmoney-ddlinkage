@@ -18,6 +18,12 @@ namespace DigitizingDataDomain.Model
         public virtual string PhysicalAddress { get; set; }
         public virtual string VslaPhoneMsisdn { get; set; }
         public virtual string GpsLocation { get; set; }
+        public virtual string ContactPerson { get; set; }
+        public virtual string PositionInVsla { get; set; }
+        public virtual string PhoneNumber { get; set; }
+        public virtual Cbt_info CBT { get; set; }
+        //  public virtual int Status { get; set; } This is an external class ref
+        public virtual string GroupAccountNumber { get; set; }
 
         //Collections: Hacked to allow for reporting
         public virtual IList<VslaDdActivation> VslaDdActivationList { get; set; }

@@ -20,7 +20,18 @@ namespace DigitizingDataDomain.Mapping
             Map(v => v.GpsLocation).Length(100);
             Map(v => v.DateRegistered);
             Map(v => v.DateLinked);
+            Map(v => v.ContactPerson);
+            Map(v => v.PositionInVsla);
+            Map(v => v.PhoneNumber);
+            Map(v => v.GroupAccountNumber);
 
+            // Reference for technical trainer
+            References(v => v.CBT)
+                .Column("CBT")
+                .Nullable()
+                .ForeignKey("default_cbt");
+            
+            // Reference for region
             References(v => v.VslaRegion)
                 .Column("RegionId")
                 .Nullable()

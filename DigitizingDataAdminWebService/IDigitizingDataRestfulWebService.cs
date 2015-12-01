@@ -12,29 +12,51 @@ namespace DigitizingDataAdminWebService
     [ServiceContract]
     public interface IDigitizingDataRestfulWebService
     {
+        // Login and validate the Technical Trainer username & pass key
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "validateTrainer/{username}/{passkey}")]
+        TechnicalTrainerCtx validateTrainer(string username, string passkey);
+
+        // search for vsla
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchVsla/{vslaName}")]
+        List<VslaDetails> searchVsla(string vslaName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * Login for a given CBT
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "technicalTrainerLogin/{Username}/{PassKey}")]
-        CBTLoginDetails technicalTrainerLogin(String Username, String PassKey);
+        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "technicalTrainerLogin/{Username}/{PassKey}")]
+        //CBTLoginDetails technicalTrainerLogin(String Username, String PassKey);
 
         /**
          * Search for a given VSLA
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchForVsla/{VslaName}")]
-        List<VslaDetails> searchForVsla(string VslaName);
+        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchForVsla/{VslaName}")]
+        //List<VslaDetails> searchForVsla(string VslaName);
 
         /**
          * Get all registered users
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getRegisteredUsers")]
-        List<UsersDetails> getRegisteredUsers();
+        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getRegisteredUsers")]
+        //List<UsersDetails> getRegisteredUsers();
 
         /**
          * Get all VSLAs
          */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getAllVslas")]
-        List<VslaDetails> getAllVslas();
+        //[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getAllVslas")]
+        //List<VslaDetails> getAllVslas();
 
         /**
          * Get VSLAs attached to a particular CBT
