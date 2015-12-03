@@ -48,61 +48,7 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public int UserLevel { get; set; }
     }
-    /**
-     * VSLA fields model
-     */
-    //[DataContract]
-    //public class VslaDetails
-    //{
-    //    [DataMember]
-    //    public int VslaId { get; set; }
-    //    [DataMember]
-    //    public string VslaCode { get; set; } // This is auto-generated
-    //    [DataMember]
-    //    public string VslaName { get; set; }
-    //    [DataMember]
-    //    public string grpPhoneNumber { get; set; }
-    //    [DataMember]
-    //    public string PhysicalAddress { get; set; }
-    //    [DataMember]
-    //    public string GpsLocation { get; set; }
-    //    [DataMember]
-    //    public string DateRegistered { get; set; }
-    //    [DataMember]
-    //    public string DateLinked { get; set; }
-    //    [DataMember]
-    //    public string RegionName { get; set; }
-    //    [DataMember]
-    //    public string representativeName { get; set; }
-    //    [DataMember]
-    //    public string representativePosition { get; set; }
-    //    [DataMember]
-    //    public string repPhoneNumber { get; set; }
-    //    [DataMember]
-    //    public int? tTrainerId { get; set; }
-    //    [DataMember]
-    //    public string tTrainerName { get; set; }
-    //    [DataMember]
-    //    public string Status { get; set; }
-    //    [DataMember]
-    //    public string GroupAccountNumber { get; set; }
-    //    [DataMember]
-    //    public string GroupSupport { get; set; }
-    //}
 
-    /**
-     *  Json object keys on regestering a new VSLA
-     */
-    [DataContract]
-    public class RegistrationResult
-    {
-        [DataMember]
-        public string result { get; set; }
-        [DataMember]
-        public string VslaCode { get; set; } // returned on sucessful vsla registration
-        [DataMember]
-        public string operation { get; set; } // Creating/Editing
-    }
 
     /**
      * Add type of support rendered to aa group
@@ -167,7 +113,7 @@ namespace DigitizingDataAdminWebService
         [DataMember]
         public string repPhoneNumber { get; set; }
         [DataMember]
-        public int? tTrainerId { get; set; }
+        public int tTrainerId { get; set; }
         [DataMember]
         public string tTrainerName { get; set; }
         [DataMember]
@@ -176,5 +122,20 @@ namespace DigitizingDataAdminWebService
         public string GroupAccountNumber { get; set; }
         [DataMember]
         public string GroupSupport { get; set; }
+    }
+
+    // REGISTRATION RESULT
+    /**
+     *  Json object keys on regestering a new VSLA
+     */
+    [DataContract]
+    public class RegResult
+    {
+        [DataMember]
+        public string result { get; set; }
+        [DataMember]
+        public string VslaCode { get; set; } // returned on sucessful vsla registration
+        [DataMember]
+        public string operation { get; set; } // Creating/Editing
     }
 }

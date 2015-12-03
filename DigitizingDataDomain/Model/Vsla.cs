@@ -22,7 +22,7 @@ namespace DigitizingDataDomain.Model
         public virtual string PositionInVsla { get; set; }
         public virtual string PhoneNumber { get; set; }
         public virtual Cbt_info CBT { get; set; }
-        //  public virtual int Status { get; set; } This is an external class ref
+        public virtual int Status { get; set; }
         public virtual string GroupAccountNumber { get; set; }
 
         //Collections: Hacked to allow for reporting

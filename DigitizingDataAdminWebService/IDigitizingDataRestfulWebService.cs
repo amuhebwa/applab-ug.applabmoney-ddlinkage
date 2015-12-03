@@ -20,37 +20,28 @@ namespace DigitizingDataAdminWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchVsla/{vslaName}")]
         List<VslaDetails> searchVsla(string vslaName);
 
+        // get all information for one vsla
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "vslaInformation/{vslaId}")]
         VslaDetails vslaInformation(string vslaId);
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /**
-         * Get VSLAs attached to a particular CBT
-         */
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getVslaForParticularCBT/{id}")]
-        List<VslaDetails> getVslaForParticularCBT(string id);
-       
-
-        // Create a new VSLA and add it into the database
+        // add a new vsla
         [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "createNewVsla")]
-        RegistrationResult createNewVsla(Stream jsonStream);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "addNewVsla")]
+        string addNewVsla(Stream jsonStream);
+
+
+
+
+
+
+
+
+
 
         // Edit an exisiting VSLA
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "editExistingVsla")]
-        RegistrationResult editExistingVsla(Stream jsonStreamObject);
+        RegResult editExistingVsla(Stream jsonStreamObject);
     }
 
 }

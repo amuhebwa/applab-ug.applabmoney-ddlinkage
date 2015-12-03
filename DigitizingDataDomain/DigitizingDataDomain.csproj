@@ -79,6 +79,7 @@
     <Compile Include="Mapping\MemberMap.cs" />
     <Compile Include="Mapping\SavingMap.cs" />
     <Compile Include="Mapping\Cbt_infoMap.cs" />
+    <Compile Include="Mapping\StatusTypeMap.cs" />
     <Compile Include="Mapping\VslaCycleMap.cs" />
     <Compile Include="Mapping\VslaDdActivationMap.cs" />
     <Compile Include="Mapping\VslaMap.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Model\Member.cs" />
     <Compile Include="Model\Saving.cs" />
     <Compile Include="Model\Cbt_info.cs" />
+    <Compile Include="Model\StatusType.cs" />
     <Compile Include="Model\Vsla.cs" />
     <Compile Include="Model\VslaCycle.cs" />
     <Compile Include="Model\VslaDdActivation.cs" />

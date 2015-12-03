@@ -28,12 +28,20 @@ namespace DigitizingDataBizLayer.Repositories
             return vsla;
         }
 
-        // Find VSLA by name
+        // Find vsla by name
         public List<Vsla> FindVslaByName(string vslaName)
         {
             var vsla = (from v in SessionProxy.Query<Vsla>()
                         where v.VslaName.ToLower() == vslaName.ToLower()
                         select v).ToList();
+            return vsla;
+        }
+
+        // get the last vsla from the table
+        public Vsla FindLastVsla()
+        {
+            var vsla = (from v in SessionProxy.Query<Vsla>()
+                        select v).Max();
             return vsla;
         }
     }
