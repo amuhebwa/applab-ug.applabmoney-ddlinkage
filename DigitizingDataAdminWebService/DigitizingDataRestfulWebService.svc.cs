@@ -102,14 +102,16 @@ namespace DigitizingDataAdminWebService
         }
 
         // add a new vsla
-        public String addNewVsla(Stream jsonStream)
+        public OperationResult addNewVsla(Stream jsonStream)
         {
             StreamReader reader = new StreamReader(jsonStream);
             string data = reader.ReadToEnd();
             VslaDetails request;
             String _vslaCode = string.Empty;
+            OperationResult operationResult = null;
             try
             {
+                operationResult = new OperationResult();
                 _vslaCode = genVslaCode();
                 request = JsonConvert.DeserializeObject<VslaDetails>(data);
                 DigitizingDataDomain.Model.Vsla vsla = new DigitizingDataDomain.Model.Vsla();
@@ -137,12 +139,25 @@ namespace DigitizingDataAdminWebService
 
                 VslaRepo vslaRepo = new VslaRepo();
                 Boolean result = vslaRepo.Insert(vsla);
-                return Convert.ToString(result);
+                if (result)
+                { // SUCCESS
+                    operationResult.operation = "create";
+                    operationResult.result = "1";
+                    operationResult.VslaCode = _vslaCode;
+                }
+                else
+                { // FAILED
+                    operationResult.operation = null;
+                    operationResult.result = "-1";
+                    operationResult.VslaCode = null;
+                }
+
             }
             catch (Exception e)
             {
-                return e.Message.ToString();
+
             }
+            return operationResult;
         }
 
         // generate vsla code vased on the last 4 characters of unix time stamp and last 2 digits of the current year
@@ -171,17 +186,17 @@ namespace DigitizingDataAdminWebService
 
 
 
-       
+
         /**
          * Edit an existing VSLA
          **/
-        public RegResult editExistingVsla(Stream jsonStreamObject)
+        public OperationResult editExistingVsla(Stream jsonStreamObject)
         {
             StreamReader reader = new StreamReader(jsonStreamObject);
             ledgerlinkEntities database = new ledgerlinkEntities();
             string data = reader.ReadToEnd();
             string result = string.Empty;
-            RegResult registrationResults = new RegResult();
+            OperationResult registrationResults = new OperationResult();
             if (string.IsNullOrEmpty(data))
             {
                 registrationResults.result = "-1";

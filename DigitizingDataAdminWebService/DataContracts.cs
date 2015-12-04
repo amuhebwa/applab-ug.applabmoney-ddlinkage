@@ -129,7 +129,7 @@ namespace DigitizingDataAdminWebService
      *  Json object keys on regestering a new VSLA
      */
     [DataContract]
-    public class RegResult
+    public class OperationResult
     {
         [DataMember]
         public string result { get; set; }
