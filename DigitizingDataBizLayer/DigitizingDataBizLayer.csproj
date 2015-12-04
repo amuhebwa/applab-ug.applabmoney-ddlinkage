@@ -66,6 +66,7 @@
     <Compile Include="Repositories\AttendanceRepo.cs" />
     <Compile Include="Repositories\DataSubmissionRepo.cs" />
     <Compile Include="Repositories\FineRepo.cs" />
+    <Compile Include="Repositories\GroupSupportRepo.cs" />
     <Compile Include="Repositories\LoanIssueRepo.cs" />
     <Compile Include="Repositories\LoanRepaymentRepo.cs" />
     <Compile Include="Repositories\MeetingRepo.cs" />

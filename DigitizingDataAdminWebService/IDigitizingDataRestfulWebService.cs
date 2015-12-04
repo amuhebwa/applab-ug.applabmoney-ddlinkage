@@ -29,19 +29,10 @@ namespace DigitizingDataAdminWebService
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "addNewVsla")]
         OperationResult addNewVsla(Stream jsonStream);
 
-
-
-
-
-
-
-
-
-
-        // Edit an exisiting VSLA
+        // edit an existing vsla
         [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "editExistingVsla")]
-        OperationResult editExistingVsla(Stream jsonStreamObject);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "editVsla")]
+        OperationResult editVsla(Stream jsonStream);
     }
 
 }

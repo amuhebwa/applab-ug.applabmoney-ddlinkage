@@ -170,106 +170,76 @@ namespace DigitizingDataAdminWebService
             return vslaCode;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /**
-         * Edit an existing VSLA
-         **/
-        public OperationResult editExistingVsla(Stream jsonStreamObject)
+        // edit an existing vsla
+        public OperationResult editVsla(Stream jsonStream)
         {
-            StreamReader reader = new StreamReader(jsonStreamObject);
-            ledgerlinkEntities database = new ledgerlinkEntities();
+            StreamReader reader = new StreamReader(jsonStream);
             string data = reader.ReadToEnd();
-            string result = string.Empty;
-            OperationResult registrationResults = new OperationResult();
-            if (string.IsNullOrEmpty(data))
+            VslaDetails request;
+            OperationResult operationResult = null;
+            VslaRepo vslaRepo = null;
+            try
             {
-                registrationResults.result = "-1";
-                return registrationResults;
-            }
-            else
-            {
-                VslaDetails request = JsonConvert.DeserializeObject<VslaDetails>(data);
-                if (null != request)
+                operationResult = new OperationResult();
+                vslaRepo = new VslaRepo();
+                request = JsonConvert.DeserializeObject<VslaDetails>(data);
+
+                // First check if the vsla exists
+                int _vslaId = Convert.ToInt32(request.VslaId);
+                DigitizingDataDomain.Model.Vsla vslaData = vslaRepo.FindVslaById(_vslaId);
+
+                if (vslaData != null)
                 {
-                    int VslaId = request.VslaId;
-                    var query = from vsla in database.Vslas where vsla.VslaId == VslaId select vsla;
-                    foreach (var row in query)
+                    DigitizingDataDomain.Model.Vsla vsla = new DigitizingDataDomain.Model.Vsla();
+                    vslaData.VslaName = Convert.ToString(request.VslaName);
+                    vslaData.PhoneNumber = Convert.ToString(request.repPhoneNumber);
+                    vslaData.ContactPerson = Convert.ToString(request.representativeName);
+                    vslaData.VslaPhoneMsisdn = Convert.ToString(request.grpPhoneNumber);
+                    vslaData.PositionInVsla = Convert.ToString(request.representativePosition);
+                    vslaData.PhysicalAddress = Convert.ToString(request.PhysicalAddress);
+                    vslaData.GpsLocation = Convert.ToString(request.GpsLocation);
+                    vslaData.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
+                    // region id
+                    DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                    vslaRegion.RegionId = Convert.ToInt32(request.RegionName);
+                    vslaData.VslaRegion = vslaRegion;
+                    Boolean updateResult = false;
+                    if (vslaData.VslaId > 0)
                     {
-                        row.VslaName = request.VslaName != null ? request.VslaName : "-NA-";
-                        row.RegionId = request.RegionName != null ? Convert.ToInt32(request.RegionName) : 9;
-                        row.PhysicalAddress = request.PhysicalAddress != null ? request.PhysicalAddress : "--";
-                        row.VslaPhoneMsisdn = request.grpPhoneNumber != null ? request.grpPhoneNumber : "--";
-                        row.GpsLocation = request.GpsLocation != null ? request.GpsLocation : "--";
-                        row.ContactPerson = request.representativeName != null ? request.representativeName : "--";
-                        row.PositionInVsla = request.representativePosition != null ? request.representativePosition : "--";
-                        row.PhoneNumber = request.repPhoneNumber != null ? request.repPhoneNumber : "--";
-                        row.GroupAccountNumber = request.GroupAccountNumber != null ? request.GroupAccountNumber : "0000000000";
+                        updateResult = vslaRepo.Update(vslaData);
+                        if (updateResult)
+                        {
+                            // if sucessfu, also add the support type
+                            addSupportType(_vslaId, request.tTrainerId, request.GroupSupport);
+                            // then construct a json feedback
+                            operationResult.result = "1";
+                            operationResult.operation = "edit";
+                            operationResult.VslaCode = null;
+                        }
+                        else
+                        {
+                            operationResult.result = "-1";
+                            operationResult.operation = null;
+                            operationResult.VslaCode = null;
 
-                        // Then update the group training type
-                        DateTime _dtime = DateTime.Today;
-                        int _vslaId = VslaId;
-                        int _trainerId = (Int32)request.tTrainerId;
-                        String _supportType = request.GroupSupport != null ? request.GroupSupport : "--";
-                        saveGroupSupportType(_dtime, _vslaId, _trainerId, _supportType);
-                    }
-                    // save the data to the database
-                    try
-                    {
-                        database.SaveChanges();
-                        registrationResults.result = "1";
-                        registrationResults.operation = "edit";
+                        }
 
-                        // Then return the results
-                        return registrationResults;
                     }
-                    catch (Exception)
-                    {
 
-                        throw;
-                    }
-                }
-                else
-                {
-                    registrationResults.result = "-1";
-                    return registrationResults;
                 }
             }
+            catch (Exception e)
+            {
+
+            }
+            return operationResult;
         }
 
-        /**
-         * Save group support to the database
-         */
-        public void saveGroupSupportType(DateTime _dtime, int _vslaId, int _trainerId, string _supportType)
+        // add support type delivered to the group
+        public void addSupportType(int vslaId, int trainerId, string supportType)
         {
-            ledgerlinkEntities database = new ledgerlinkEntities();
-            if (!string.IsNullOrEmpty(_supportType))
-            {
-                GroupSupport support = new GroupSupport
-                {
-                    SupportType = _supportType,
-                    VslaId = _vslaId,
-                    TrainerId = _trainerId,
-                    SupportDate = _dtime
-                };
-                database.GroupSupports.Add(support);
-                database.SaveChanges();
-            }
+            DateTime supportDate = DateTime.Now;
+
         }
     }
 }

@@ -36,13 +36,5 @@ namespace DigitizingDataBizLayer.Repositories
                         select v).ToList();
             return vsla;
         }
-
-        // get the last vsla from the table
-        public Vsla FindLastVsla()
-        {
-            var vsla = (from v in SessionProxy.Query<Vsla>()
-                        select v).Max();
-            return vsla;
-        }
     }
 }
