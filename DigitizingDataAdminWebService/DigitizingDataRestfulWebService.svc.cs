@@ -125,9 +125,12 @@ namespace DigitizingDataAdminWebService
                 vsla.GpsLocation = Convert.ToString(request.GpsLocation);
                 vsla.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
                 vsla.Status = 1;
-                // Add CBT-------->>>>>>>
+                // cbt 
+                DigitizingDataDomain.Model.Cbt_info cbt = new DigitizingDataDomain.Model.Cbt_info();
+                cbt.Id = Convert.ToInt32(request.tTrainerId);
+                vsla.CBT = cbt;
 
-
+                // region id
                 DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
                 vslaRegion.RegionId = Convert.ToInt32(request.RegionName);
                 vsla.VslaRegion = vslaRegion;
