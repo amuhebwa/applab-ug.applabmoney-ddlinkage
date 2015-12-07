@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-// using System.ServiceModel.Web;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -239,7 +238,36 @@ namespace DigitizingDataAdminWebService
         public void addSupportType(int vslaId, int trainerId, string supportType)
         {
             DateTime supportDate = DateTime.Now;
+            GroupSupportType gst;
+            GroupSupportRepo supportRepo = null;
+            string success = string.Empty;
 
+            DigitizingDataDomain.Model.GroupSupport groupSupport = null;
+            try
+            {
+                gst = new GroupSupportType();
+                supportRepo = new GroupSupportRepo();
+                groupSupport = new DigitizingDataDomain.Model.GroupSupport();
+                // vsla
+                DigitizingDataDomain.Model.Vsla vsla = new DigitizingDataDomain.Model.Vsla();
+                vsla.VslaId = Convert.ToInt32(vslaId);
+                groupSupport.VslaId = vsla;
+                // cbt
+                DigitizingDataDomain.Model.Cbt_info cbt = new DigitizingDataDomain.Model.Cbt_info();
+                cbt.Id = Convert.ToInt32(trainerId);
+                groupSupport.TrainerId = cbt;
+                // support date
+                groupSupport.SupportDate = supportDate;
+                // support type
+                groupSupport.SupportType = supportType;
+                // add support type attached to a group
+                supportRepo.Insert(groupSupport);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
         }
     }
 }
