@@ -3,7 +3,4 @@
   <parameter name="MSSQL2012-Web.config Connection String" description="MSSQL2012 Connection String used in web.config by the application to access the database." defaultValue="Server=192.168.1.157;Database=ledgerlink;User Id=aggrey;Password=gram33n1234$;" tags="SqlConnectionString">
     <parameterEntry kind="XmlFile" scope="C:\\Users\\AGGREY\\Documents\\GitHub\\GF_Web_Applications\\applab-ug\.applabmoney-ddlinkage\\DigitizingDataAdminWebService\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MSSQL2012']/@connectionString" />
   </parameter>
-  <parameter name="DigitizingDataAdminWebService.ledgerlinkEntities-Web.config Connection String" description="DigitizingDataAdminWebService.ledgerlinkEntities Connection String used in web.config by the application to access the database." defaultValue="DigitizingDataAdminWebService.ledgerlinkEntities_ConnectionString" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\AGGREY\\Documents\\GitHub\\GF_Web_Applications\\applab-ug\.applabmoney-ddlinkage\\DigitizingDataAdminWebService\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DigitizingDataAdminWebService.ledgerlinkEntities']/@connectionString" />
-  </parameter>
 </parameters>

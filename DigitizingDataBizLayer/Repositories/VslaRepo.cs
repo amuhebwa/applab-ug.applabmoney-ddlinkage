@@ -32,7 +32,7 @@ namespace DigitizingDataBizLayer.Repositories
         public List<Vsla> FindVslaByName(string vslaName)
         {
             var vsla = (from v in SessionProxy.Query<Vsla>()
-                        where v.VslaName.ToLower() == vslaName.ToLower()
+                        where v.VslaName.Contains(vslaName.ToLower())
                         select v).ToList();
             return vsla;
         }

@@ -75,116 +75,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attendance.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Audit_Log.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Cbt_info.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="DataContracts.cs" />
-    <Compile Include="DataSubmission.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataSubmission_20140113.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataSubmission_20140113_2.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="DigitizingDataRestfulWebService.svc.cs">
       <DependentUpon>DigitizingDataRestfulWebService.svc</DependentUpon>
     </Compile>
-    <Compile Include="Fine.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GroupSupport.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="IDigitizingDataRestfulWebService.cs" />
-    <Compile Include="ledgerlink.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ledgerlink.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ledgerlink.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="LoanIssue.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LoanRepayment.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Meeting.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Member.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="PasswordHash.cs" />
-    <Compile Include="PhoneDelivery.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawContentTypeMapper.cs" />
-    <Compile Include="Saving.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatusType.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserPermission.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Vsla.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VslaCycle.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VslaDdActivation.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VslaRegion.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <EntityDeploy Include="ledgerlink.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ledgerlink.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="ledgerlink.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-      <LastGenOutput>ledgerlink.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="ledgerlink.edmx.diagram">
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-    </Content>
-    <Content Include="ledgerlink.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-      <LastGenOutput>ledgerlink.cs</LastGenOutput>
-    </Content>
     <None Include="Properties\PublishProfiles\ledgerlinkmanager_webservices.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

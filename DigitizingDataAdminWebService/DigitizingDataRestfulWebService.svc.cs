@@ -16,9 +16,9 @@ namespace DigitizingDataAdminWebService
     public class DigitizingDataRestfulWebService : IDigitizingDataRestfulWebService
     {
         // Validate Technical Trainer's username and passkey
-        public TechnicalTrainerCtx validateTrainer(string username, string passkey)
+        public TechnicalTrainer validateTrainer(string username, string passkey)
         {
-            TechnicalTrainerCtx tt = new TechnicalTrainerCtx();
+            TechnicalTrainer tt = new TechnicalTrainer();
             Cbt_infoRepo trainerRepo = new Cbt_infoRepo();
             var trainerData = trainerRepo.checkIfTrainerExists(username, passkey);
             if (trainerData != null)
@@ -159,7 +159,7 @@ namespace DigitizingDataAdminWebService
             return operationResult;
         }
 
-        // generate vsla code vased on the last 4 characters of unix time stamp and last 2 digits of the current year
+        // generate vsla code based on the last 4 characters of unix time stamp and last 2 digits of the current year
         public string genVslaCode()
         {
             string year = DateTime.Now.Year.ToString().Substring(2);
@@ -265,7 +265,7 @@ namespace DigitizingDataAdminWebService
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }

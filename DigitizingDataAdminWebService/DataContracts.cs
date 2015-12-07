@@ -32,7 +32,7 @@ namespace DigitizingDataAdminWebService
 
     // TRAINER DATA
     [DataContract]
-    public class TechnicalTrainerCtx
+    public class TechnicalTrainer
     {
         [DataMember]
         public int resultId { get; set; } // 1-Sucess, 0-Failed

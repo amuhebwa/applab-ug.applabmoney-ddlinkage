@@ -14,7 +14,7 @@ namespace DigitizingDataAdminWebService
     {
         // Login and validate the Technical Trainer username & pass key
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "validateTrainer/{username}/{passkey}")]
-        TechnicalTrainerCtx validateTrainer(string username, string passkey);
+        TechnicalTrainer validateTrainer(string username, string passkey);
 
         // search for vsla
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "searchVsla/{vslaName}")]
