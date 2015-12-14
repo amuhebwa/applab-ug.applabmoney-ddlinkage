@@ -19,7 +19,7 @@ namespace DigitizingDataAdminWebService
         public TechnicalTrainer validateTrainer(string username, string passkey)
         {
             TechnicalTrainer tt = new TechnicalTrainer();
-            Cbt_infoRepo trainerRepo = new Cbt_infoRepo();
+            TechnicalTrainerRepo trainerRepo = new TechnicalTrainerRepo();
             var trainerData = trainerRepo.checkIfTrainerExists(username, passkey);
             if (trainerData != null)
             {
@@ -130,7 +130,7 @@ namespace DigitizingDataAdminWebService
                 vsla.Status = 1;
                 vsla.NumberOfCycles = Convert.ToInt32(request.numberOfCycles);
                 // cbt 
-                DigitizingDataDomain.Model.Cbt_info cbt = new DigitizingDataDomain.Model.Cbt_info();
+                DigitizingDataDomain.Model.TechnicalTrainer cbt = new DigitizingDataDomain.Model.TechnicalTrainer();
                 cbt.Id = Convert.ToInt32(request.tTrainerId);
                 vsla.CBT = cbt;
 
@@ -257,7 +257,7 @@ namespace DigitizingDataAdminWebService
                 vsla.VslaId = Convert.ToInt32(vslaId);
                 groupSupport.VslaId = vsla;
                 // cbt
-                DigitizingDataDomain.Model.Cbt_info cbt = new DigitizingDataDomain.Model.Cbt_info();
+                DigitizingDataDomain.Model.TechnicalTrainer cbt = new DigitizingDataDomain.Model.TechnicalTrainer();
                 cbt.Id = Convert.ToInt32(trainerId);
                 groupSupport.TrainerId = cbt;
                 // support date

@@ -7,9 +7,9 @@ using DigitizingDataDomain.Model;
 
 namespace DigitizingDataDomain.Mapping
 {
-    public class Cbt_infoMap : ClassMap<Cbt_info>
+    public class TechnicalTrainerMap : ClassMap<TechnicalTrainer>
     {
-        public Cbt_infoMap() {
+        public TechnicalTrainerMap() {
             Id(t => t.Id);
             Map(t => t.Name);
             Map(t => t.PhoneNumber);

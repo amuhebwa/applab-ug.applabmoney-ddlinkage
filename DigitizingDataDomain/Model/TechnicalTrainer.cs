@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DigitizingDataDomain.Model
 {
-    public class Cbt_info
+    public class TechnicalTrainer
     {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }

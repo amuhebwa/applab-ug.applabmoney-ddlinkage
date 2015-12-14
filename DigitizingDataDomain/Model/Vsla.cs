@@ -21,7 +21,7 @@ namespace DigitizingDataDomain.Model
         public virtual string ContactPerson { get; set; }
         public virtual string PositionInVsla { get; set; }
         public virtual string PhoneNumber { get; set; }
-        public virtual Cbt_info CBT { get; set; }
+        public virtual TechnicalTrainer CBT { get; set; }
         public virtual int Status { get; set; }
         public virtual string GroupAccountNumber { get; set; }
         public virtual int NumberOfCycles { get; set; }

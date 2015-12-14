@@ -9,11 +9,11 @@ using DigitizingDataDomain.Model;
 
 namespace DigitizingDataBizLayer.Repositories
 {
-    public class Cbt_infoRepo : RepositoryBase<Cbt_info>
+    public class TechnicalTrainerRepo : RepositoryBase<TechnicalTrainer>
     {
-        public Cbt_info checkIfTrainerExists(string Username, String Passkey)
+        public TechnicalTrainer checkIfTrainerExists(string Username, String Passkey)
         {
-            var trainer = (from t in SessionProxy.Query<Cbt_info>()
+            var trainer = (from t in SessionProxy.Query<TechnicalTrainer>()
                            where t.Username == Username && t.Passkey == Passkey
                            select t).FirstOrDefault();
             return trainer;
