@@ -210,14 +210,6 @@
     <Compile Include="Models\Attendance.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Audit_Log.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TrainerInformation.cs" />
-    <Compile Include="Models\Cbt_info.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DashboardData.cs" />
     <Compile Include="Models\DataSubmission.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -254,24 +246,29 @@
     <Compile Include="Models\LoanRepayment.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LogsInformation.cs" />
     <Compile Include="Models\Meeting.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Member.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PasswordHashing.cs" />
     <Compile Include="Models\PhoneDelivery.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Saving.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SingleMeetingInfo.cs" />
     <Compile Include="Models\StatusType.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TechnicalTrainer.cs">
+      <DependentUpon>ledgerlink.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrainerInformation.cs" />
+    <Compile Include="Models\DashboardData.cs" />
+    <Compile Include="Models\LogsInformation.cs" />
+    <Compile Include="Models\PasswordHashing.cs" />
+    <Compile Include="Models\SingleMeetingInfo.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>

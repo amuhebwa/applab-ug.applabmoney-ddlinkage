@@ -189,7 +189,7 @@ namespace DigitizingDataAdminApp.Controllers
             var support = (from tb_support in database.GroupSupports
                            join tb_vsla in database.Vslas
                                on tb_support.VslaId equals tb_vsla.VslaId
-                           join tb_trainers in database.Cbt_info on
+                           join tb_trainers in database.TechnicalTrainers on
                                tb_support.TrainerId equals tb_trainers.Id
                            select new { tb_support, tb_vsla, tb_trainers });
             List<GroupSupportInfo> supportGiven = new List<GroupSupportInfo>();
@@ -265,12 +265,12 @@ namespace DigitizingDataAdminApp.Controllers
         // list of all Technical trainers
         public SelectList getAllTrainers()
         {
-            List<Cbt_info> trainers = new List<Cbt_info>();
-            trainers.Add(new Cbt_info { Id = 0, Name = "-Select Trainer" });
-            var database_trainers = database.Cbt_info.OrderBy(a => a.Name);
+            List<TechnicalTrainer> trainers = new List<TechnicalTrainer>();
+            trainers.Add(new TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
+            var database_trainers = database.TechnicalTrainers.OrderBy(a => a.Name);
             foreach (var trainer in database_trainers)
             {
-                trainers.Add(new Cbt_info
+                trainers.Add(new TechnicalTrainer
                 {
                     Id = trainer.Id,
                     Name = trainer.Name
@@ -493,7 +493,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult VslaGroupDetails(int id)
         {
             var vsla_info = (from tb_vsla in database.Vslas
-                             join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
+                             join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
                              join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
                              join tb_status in database.StatusTypes on tb_vsla.Status equals tb_status.Status_Id
                              where tb_vsla.VslaId == id
@@ -669,7 +669,7 @@ namespace DigitizingDataAdminApp.Controllers
         public VslaInformation getGroupEditInformation(int id)
         {
             var vsla = (from tb_vsla in database.Vslas
-                        join tb_cbt in database.Cbt_info on tb_vsla.CBT equals tb_cbt.Id
+                        join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
                         where tb_vsla.VslaId == id
                         select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).FirstOrDefault();
 
@@ -686,11 +686,11 @@ namespace DigitizingDataAdminApp.Controllers
             }
             SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
             // Get the list of all cbts to populate in the dropdown list
-            List<Cbt_info> cbts = new List<Cbt_info>();
-            var database_cbts = database.Cbt_info.OrderBy(a => a.Name).ToList();
+            List<TechnicalTrainer> cbts = new List<TechnicalTrainer>();
+            var database_cbts = database.TechnicalTrainers.OrderBy(a => a.Name).ToList();
             foreach (var cbt in database_cbts)
             {
-                cbts.Add(new Cbt_info
+                cbts.Add(new TechnicalTrainer
                 {
                     Id = cbt.Id,
                     Name = cbt.Name
@@ -738,7 +738,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteVslaGroup(int id)
         {
             var vslaInformation = (from table_vsla in database.Vslas
-                                   join table_cbt in database.Cbt_info on table_vsla.CBT equals table_cbt.Id
+                                   join table_cbt in database.TechnicalTrainers on table_vsla.CBT equals table_cbt.Id
                                    join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
                                    join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
                                    where table_vsla.VslaId == id
@@ -1137,7 +1137,7 @@ namespace DigitizingDataAdminApp.Controllers
          * Add a new community based trainer (CBT) to the system
          **/
         [HttpPost]
-        public ActionResult AddTechnicalTrainer(Cbt_info new_cbt, int RegionId, int Status_Id)
+        public ActionResult AddTechnicalTrainer(TechnicalTrainer new_cbt, int RegionId, int Status_Id)
         {
             if (Status_Id == 0)
             {
@@ -1152,7 +1152,7 @@ namespace DigitizingDataAdminApp.Controllers
             else
             { // All are valid
                 string fullName = new_cbt.FirstName + " " + new_cbt.LastName;
-                Cbt_info _cbt = new Cbt_info
+                TechnicalTrainer _cbt = new TechnicalTrainer
                 {
 
                     Name = fullName,
@@ -1166,7 +1166,7 @@ namespace DigitizingDataAdminApp.Controllers
                     Passkey = new_cbt.Passkey
                 };
 
-                database.Cbt_info.Add(_cbt);
+                database.TechnicalTrainers.Add(_cbt);
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
                 activityLoggingSystem.logActivity(logString, 0);
@@ -1189,7 +1189,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult EditTrainerDetails(int id)
         {
-            var allInformation = (from table_cbt in database.Cbt_info
+            var allInformation = (from table_cbt in database.TechnicalTrainers
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   where table_cbt.Id == id
                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
@@ -1236,7 +1236,7 @@ namespace DigitizingDataAdminApp.Controllers
             return View(cbtData);
         }
         [HttpPost]
-        public ActionResult EditTrainerDetails(Cbt_info cbt, int id, int RegionId, int Status_Id)
+        public ActionResult EditTrainerDetails(TechnicalTrainer cbt, int id, int RegionId, int Status_Id)
         {
             Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
             if (string.IsNullOrEmpty(cbt.FirstName))
@@ -1279,7 +1279,7 @@ namespace DigitizingDataAdminApp.Controllers
             else
             {
                 string fullname = cbt.FirstName + " " + cbt.LastName;
-                var query = database.Cbt_info.Find(id);
+                var query = database.TechnicalTrainers.Find(id);
                 query.Name = fullname;
                 query.FirstName = cbt.FirstName;
                 query.LastName = cbt.LastName;
@@ -1296,7 +1296,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
 
             // In case validation fails, recreate the form with pre-populated data
-            var allInformation = (from table_cbt in database.Cbt_info
+            var allInformation = (from table_cbt in database.TechnicalTrainers
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   where table_cbt.Id == id
                                   select new { dt_cbt = table_cbt, db_region = table_region }).Single();
@@ -1345,7 +1345,7 @@ namespace DigitizingDataAdminApp.Controllers
          * */
         public TrainerInformation getCbtInformationForEditing(int id)
         {
-            var allInformation = (from table_cbt in database.Cbt_info
+            var allInformation = (from table_cbt in database.TechnicalTrainers
                                   join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                                   join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
                                   where table_cbt.Id == id
@@ -1375,13 +1375,13 @@ namespace DigitizingDataAdminApp.Controllers
             return View(trainerData);
         }
         [HttpPost]
-        public ActionResult DeleteTrainer(Cbt_info trainer, int id)
+        public ActionResult DeleteTrainer(TechnicalTrainer trainer, int id)
         {
             if (ModelState.IsValid && trainer != null)
             {
                 trainer.Id = id;
-                database.Cbt_info.Attach(trainer);
-                database.Cbt_info.Remove(trainer);
+                database.TechnicalTrainers.Attach(trainer);
+                database.TechnicalTrainers.Remove(trainer);
                 database.SaveChanges();
                 String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
                 activityLoggingSystem.logActivity(logString, 0);
@@ -1531,7 +1531,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             List<TrainerInformation> cbts = new List<TrainerInformation>();
-            var data = (from table_cbt in database.Cbt_info
+            var data = (from table_cbt in database.TechnicalTrainers
                         join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
                         join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
                         select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status });

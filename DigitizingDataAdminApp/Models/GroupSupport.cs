@@ -20,7 +20,7 @@ namespace DigitizingDataAdminApp.Models
         public int TrainerId { get; set; }
         public System.DateTime SupportDate { get; set; }
     
-        public virtual Cbt_info Cbt_info { get; set; }
+        public virtual TechnicalTrainer TechnicalTrainer { get; set; }
         public virtual Vsla Vsla { get; set; }
     }
 }

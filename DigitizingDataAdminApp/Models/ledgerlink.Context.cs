@@ -26,8 +26,6 @@ namespace DigitizingDataAdminApp.Models
         }
     
         public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<Audit_Log> Audit_Log { get; set; }
-        public DbSet<Cbt_info> Cbt_info { get; set; }
         public DbSet<DataSubmission> DataSubmissions { get; set; }
         public DbSet<DataSubmission_20140113> DataSubmission_20140113 { get; set; }
         public DbSet<DataSubmission_20140113_2> DataSubmission_20140113_2 { get; set; }
@@ -40,6 +38,7 @@ namespace DigitizingDataAdminApp.Models
         public DbSet<PhoneDelivery> PhoneDeliveries { get; set; }
         public DbSet<Saving> Savings { get; set; }
         public DbSet<StatusType> StatusTypes { get; set; }
+        public DbSet<TechnicalTrainer> TechnicalTrainers { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vsla> Vslas { get; set; }

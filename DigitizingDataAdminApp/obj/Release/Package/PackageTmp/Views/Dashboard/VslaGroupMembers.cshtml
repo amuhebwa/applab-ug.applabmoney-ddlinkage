@@ -1,0 +1,56 @@
+﻿@model DigitizingDataAdminApp.Models.AllVslaMemberInformation
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "VSLA Group Members";
+}
+
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
+
+    <ul>
+        <li><a href="#allmembers">All Members of @Model.vslaName</a></li>
+    </ul>
+
+    <div id="tallmembers">
+        <div style="text-align: right;">
+            <p>
+                <a href="@Url.Action("ExportMembersToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
+                    <strong>Export to CSV</strong>
+                </a>
+                |
+    <strong>@Html.ActionLink("Back", "VslaGroupInformation")</strong>
+            </p>
+        </div>
+        <div style="width: auto; min-width: 900px; margin: 0 auto;">
+            <table class="display" style="width: 100%; font-size: small;" id="data-table">
+                <thead>
+                    <tr>
+                        <th>Member No.</th>
+                        <th>Surname</th>
+                        <th>Other Names</th>
+                        <th>Gender</th>
+                        <th>Occupation</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.allVslaMembers)
+                    {
+                        <tr>
+                            <td>@item.memberNumber</td>
+                            <td>@item.surname</td>
+                            <td>@item.otherNames</td>
+                            <td>@item.gender</td>
+                            <td>@item.occupation</td>
+                            <td><a href="@Url.Action("GroupMemberDetails", "Dashboard", new { id = item.memberId, vslaId = @Model.vslaId })">
+                                <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

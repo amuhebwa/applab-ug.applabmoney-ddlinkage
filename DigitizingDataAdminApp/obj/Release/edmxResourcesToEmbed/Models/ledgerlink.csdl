@@ -2,8 +2,6 @@
 <Schema Namespace="ledgerlinkModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="ledgerlinkEntities" p1:LazyLoadingEnabled="true">
     <EntitySet Name="Attendances" EntityType="ledgerlinkModel.Attendance" />
-    <EntitySet Name="Audit_Log" EntityType="ledgerlinkModel.Audit_Log" />
-    <EntitySet Name="Cbt_info" EntityType="ledgerlinkModel.Cbt_info" />
     <EntitySet Name="DataSubmissions" EntityType="ledgerlinkModel.DataSubmission" />
     <EntitySet Name="DataSubmission_20140113" EntityType="ledgerlinkModel.DataSubmission_20140113" />
     <EntitySet Name="DataSubmission_20140113_2" EntityType="ledgerlinkModel.DataSubmission_20140113_2" />
@@ -16,6 +14,7 @@
     <EntitySet Name="PhoneDeliveries" EntityType="ledgerlinkModel.PhoneDelivery" />
     <EntitySet Name="Savings" EntityType="ledgerlinkModel.Saving" />
     <EntitySet Name="StatusTypes" EntityType="ledgerlinkModel.StatusType" />
+    <EntitySet Name="TechnicalTrainers" EntityType="ledgerlinkModel.TechnicalTrainer" />
     <EntitySet Name="UserPermissions" EntityType="ledgerlinkModel.UserPermission" />
     <EntitySet Name="Users" EntityType="ledgerlinkModel.User" />
     <EntitySet Name="Vslas" EntityType="ledgerlinkModel.Vsla" />
@@ -29,22 +28,6 @@
     <AssociationSet Name="FK_Attendance_Member" Association="ledgerlinkModel.FK_Attendance_Member">
       <End Role="Member" EntitySet="Members" />
       <End Role="Attendance" EntitySet="Attendances" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Audit_Log_Users" Association="ledgerlinkModel.FK_Audit_Log_Users">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="Audit_Log" EntitySet="Audit_Log" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.FK_Cbt_info_VslaRegion">
-      <End Role="VslaRegion" EntitySet="VslaRegions" />
-      <End Role="Cbt_info" EntitySet="Cbt_info" />
-    </AssociationSet>
-    <AssociationSet Name="FK_GroupSupport_Cbt_info" Association="ledgerlinkModel.FK_GroupSupport_Cbt_info">
-      <End Role="Cbt_info" EntitySet="Cbt_info" />
-      <End Role="GroupSupport" EntitySet="GroupSupports" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.FK_Vsla_Cbt_info">
-      <End Role="Cbt_info" EntitySet="Cbt_info" />
-      <End Role="Vsla" EntitySet="Vslas" />
     </AssociationSet>
     <AssociationSet Name="FK_Fine_Meeting_Issued" Association="ledgerlinkModel.FK_Fine_Meeting_Issued">
       <End Role="Meeting" EntitySet="Meetings" />
@@ -61,6 +44,10 @@
     <AssociationSet Name="FKA66C912E75B3F070" Association="ledgerlinkModel.FKA66C912E75B3F070">
       <End Role="Meeting" EntitySet="Meetings" />
       <End Role="Fine" EntitySet="Fines" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupSupport_Cbt_info" Association="ledgerlinkModel.FK_GroupSupport_Cbt_info">
+      <End Role="TechnicalTrainer" EntitySet="TechnicalTrainers" />
+      <End Role="GroupSupport" EntitySet="GroupSupports" />
     </AssociationSet>
     <AssociationSet Name="FK_GroupSupport_Vsla" Association="ledgerlinkModel.FK_GroupSupport_Vsla">
       <End Role="Vsla" EntitySet="Vslas" />
@@ -102,6 +89,14 @@
       <End Role="Member" EntitySet="Members" />
       <End Role="Saving" EntitySet="Savings" />
     </AssociationSet>
+    <AssociationSet Name="FK_Cbt_info_VslaRegion" Association="ledgerlinkModel.FK_Cbt_info_VslaRegion">
+      <End Role="VslaRegion" EntitySet="VslaRegions" />
+      <End Role="TechnicalTrainer" EntitySet="TechnicalTrainers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vsla_Cbt_info" Association="ledgerlinkModel.FK_Vsla_Cbt_info">
+      <End Role="TechnicalTrainer" EntitySet="TechnicalTrainers" />
+      <End Role="Vsla" EntitySet="Vslas" />
+    </AssociationSet>
     <AssociationSet Name="FK_Users_UserPermissions" Association="ledgerlinkModel.FK_Users_UserPermissions">
       <End Role="UserPermissions" EntitySet="UserPermissions" />
       <End Role="Users" EntitySet="Users" />
@@ -131,34 +126,6 @@
     <Property Name="MemberId" Type="Int32" />
     <NavigationProperty Name="Meeting" Relationship="ledgerlinkModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
     <NavigationProperty Name="Member" Relationship="ledgerlinkModel.FK_Attendance_Member" FromRole="Attendance" ToRole="Member" />
-  </EntityType>
-  <EntityType Name="Audit_Log">
-    <Key>
-      <PropertyRef Name="LogId" />
-    </Key>
-    <Property Name="LogId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ActionPerformed" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="User" Relationship="ledgerlinkModel.FK_Audit_Log_Users" FromRole="Audit_Log" ToRole="Users" />
-  </EntityType>
-  <EntityType Name="Cbt_info">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
-    <Property Name="Region" Type="Int32" Nullable="false" />
-    <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
-    <Property Name="Status" Type="Int32" Nullable="false" />
-    <Property Name="FirstName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
-    <Property Name="LastName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
-    <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="Passkey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="Cbt_info" ToRole="VslaRegion" />
-    <NavigationProperty Name="GroupSupports" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="Cbt_info" ToRole="GroupSupport" />
-    <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Cbt_info" ToRole="Vsla" />
   </EntityType>
   <EntityType Name="DataSubmission">
     <Key>
@@ -227,7 +194,7 @@
     <Property Name="VslaId" Type="Int32" Nullable="false" />
     <Property Name="TrainerId" Type="Int32" Nullable="false" />
     <Property Name="SupportDate" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="GroupSupport" ToRole="Cbt_info" />
+    <NavigationProperty Name="TechnicalTrainer" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="GroupSupport" ToRole="TechnicalTrainer" />
     <NavigationProperty Name="Vsla" Relationship="ledgerlinkModel.FK_GroupSupport_Vsla" FromRole="GroupSupport" ToRole="Vsla" />
   </EntityType>
   <EntityType Name="LoanIssue">
@@ -364,6 +331,24 @@
     <Property Name="Status_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
   </EntityType>
+  <EntityType Name="TechnicalTrainer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="Region" Type="Int32" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="LastName" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Passkey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="GroupSupports" Relationship="ledgerlinkModel.FK_GroupSupport_Cbt_info" FromRole="TechnicalTrainer" ToRole="GroupSupport" />
+    <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="TechnicalTrainer" ToRole="VslaRegion" />
+    <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="TechnicalTrainer" ToRole="Vsla" />
+  </EntityType>
   <EntityType Name="UserPermission">
     <Key>
       <PropertyRef Name="Level_Id" />
@@ -383,7 +368,6 @@
     <Property Name="Email" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
     <Property Name="DateCreated" Type="DateTime" Precision="3" />
     <Property Name="UserLevel" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Audit_Log" Relationship="ledgerlinkModel.FK_Audit_Log_Users" FromRole="Users" ToRole="Audit_Log" />
     <NavigationProperty Name="UserPermission" Relationship="ledgerlinkModel.FK_Users_UserPermissions" FromRole="Users" ToRole="UserPermissions" />
   </EntityType>
   <EntityType Name="Vsla">
@@ -405,9 +389,10 @@
     <Property Name="CBT" Type="Int32" />
     <Property Name="Status" Type="Int32" Nullable="false" />
     <Property Name="GroupAccountNumber" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="Cbt_info" />
+    <Property Name="NumberOfCycles" Type="Int32" />
     <NavigationProperty Name="GroupSupports" Relationship="ledgerlinkModel.FK_GroupSupport_Vsla" FromRole="Vsla" ToRole="GroupSupport" />
     <NavigationProperty Name="Members" Relationship="ledgerlinkModel.FK_Member_Vsla" FromRole="Vsla" ToRole="Member" />
+    <NavigationProperty Name="TechnicalTrainer" Relationship="ledgerlinkModel.FK_Vsla_Cbt_info" FromRole="Vsla" ToRole="TechnicalTrainer" />
     <NavigationProperty Name="VslaDdActivations" Relationship="ledgerlinkModel.FK_DdActivation_Vsla" FromRole="Vsla" ToRole="VslaDdActivation" />
     <NavigationProperty Name="VslaRegion" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="Vsla" ToRole="VslaRegion" />
     <NavigationProperty Name="VslaCycles" Relationship="ledgerlinkModel.FK_VslaCycle_Vsla" FromRole="Vsla" ToRole="VslaCycle" />
@@ -460,7 +445,7 @@
     <Property Name="RegionId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
     <Property Name="RegionName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-    <NavigationProperty Name="Cbt_info" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="VslaRegion" ToRole="Cbt_info" />
+    <NavigationProperty Name="TechnicalTrainers" Relationship="ledgerlinkModel.FK_Cbt_info_VslaRegion" FromRole="VslaRegion" ToRole="TechnicalTrainer" />
     <NavigationProperty Name="Vslas" Relationship="ledgerlinkModel.FK_Vsla_Region" FromRole="VslaRegion" ToRole="Vsla" />
   </EntityType>
   <Association Name="FK_Attendance_Meeting">
@@ -486,54 +471,6 @@
       </Principal>
       <Dependent Role="Attendance">
         <PropertyRef Name="MemberId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Audit_Log_Users">
-    <End Role="Users" Type="ledgerlinkModel.User" Multiplicity="1" />
-    <End Role="Audit_Log" Type="ledgerlinkModel.Audit_Log" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Audit_Log">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Cbt_info_VslaRegion">
-    <End Role="VslaRegion" Type="ledgerlinkModel.VslaRegion" Multiplicity="1" />
-    <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="VslaRegion">
-        <PropertyRef Name="RegionId" />
-      </Principal>
-      <Dependent Role="Cbt_info">
-        <PropertyRef Name="Region" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_GroupSupport_Cbt_info">
-    <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="1" />
-    <End Role="GroupSupport" Type="ledgerlinkModel.GroupSupport" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cbt_info">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="GroupSupport">
-        <PropertyRef Name="TrainerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Vsla_Cbt_info">
-    <End Role="Cbt_info" Type="ledgerlinkModel.Cbt_info" Multiplicity="0..1" />
-    <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cbt_info">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Vsla">
-        <PropertyRef Name="CBT" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -584,6 +521,18 @@
       </Principal>
       <Dependent Role="Fine">
         <PropertyRef Name="MeetingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupSupport_Cbt_info">
+    <End Role="TechnicalTrainer" Type="ledgerlinkModel.TechnicalTrainer" Multiplicity="1" />
+    <End Role="GroupSupport" Type="ledgerlinkModel.GroupSupport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TechnicalTrainer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GroupSupport">
+        <PropertyRef Name="TrainerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -716,6 +665,30 @@
       </Principal>
       <Dependent Role="Saving">
         <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Cbt_info_VslaRegion">
+    <End Role="VslaRegion" Type="ledgerlinkModel.VslaRegion" Multiplicity="1" />
+    <End Role="TechnicalTrainer" Type="ledgerlinkModel.TechnicalTrainer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VslaRegion">
+        <PropertyRef Name="RegionId" />
+      </Principal>
+      <Dependent Role="TechnicalTrainer">
+        <PropertyRef Name="Region" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vsla_Cbt_info">
+    <End Role="TechnicalTrainer" Type="ledgerlinkModel.TechnicalTrainer" Multiplicity="0..1" />
+    <End Role="Vsla" Type="ledgerlinkModel.Vsla" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TechnicalTrainer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vsla">
+        <PropertyRef Name="CBT" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

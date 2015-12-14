@@ -16,7 +16,7 @@ namespace DigitizingDataAdminApp.Models
     {
         public VslaRegion()
         {
-            this.Cbt_info = new HashSet<Cbt_info>();
+            this.TechnicalTrainers = new HashSet<TechnicalTrainer>();
             this.Vslas = new HashSet<Vsla>();
         }
     
@@ -24,7 +24,7 @@ namespace DigitizingDataAdminApp.Models
         public string RegionCode { get; set; }
         public string RegionName { get; set; }
     
-        public virtual ICollection<Cbt_info> Cbt_info { get; set; }
+        public virtual ICollection<TechnicalTrainer> TechnicalTrainers { get; set; }
         public virtual ICollection<Vsla> Vslas { get; set; }
     }
 }

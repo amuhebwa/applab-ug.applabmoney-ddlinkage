@@ -37,10 +37,11 @@ namespace DigitizingDataAdminApp.Models
         public Nullable<int> CBT { get; set; }
         public int Status { get; set; }
         public string GroupAccountNumber { get; set; }
+        public Nullable<int> NumberOfCycles { get; set; }
     
-        public virtual Cbt_info Cbt_info { get; set; }
         public virtual ICollection<GroupSupport> GroupSupports { get; set; }
         public virtual ICollection<Member> Members { get; set; }
+        public virtual TechnicalTrainer TechnicalTrainer { get; set; }
         public virtual ICollection<VslaDdActivation> VslaDdActivations { get; set; }
         public virtual VslaRegion VslaRegion { get; set; }
         public virtual ICollection<VslaCycle> VslaCycles { get; set; }

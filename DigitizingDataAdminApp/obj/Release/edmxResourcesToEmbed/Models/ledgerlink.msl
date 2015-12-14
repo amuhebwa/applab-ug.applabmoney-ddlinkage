@@ -13,32 +13,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Audit_Log">
-      <EntityTypeMapping TypeName="ledgerlinkModel.Audit_Log">
-        <MappingFragment StoreEntitySet="Audit_Log">
-          <ScalarProperty Name="LogId" ColumnName="LogId" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="LogDate" ColumnName="LogDate" />
-          <ScalarProperty Name="ActionPerformed" ColumnName="ActionPerformed" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Cbt_info">
-      <EntityTypeMapping TypeName="ledgerlinkModel.Cbt_info">
-        <MappingFragment StoreEntitySet="Cbt_info">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Region" ColumnName="Region" />
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="Username" ColumnName="Username" />
-          <ScalarProperty Name="Passkey" ColumnName="Passkey" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="DataSubmissions">
       <EntityTypeMapping TypeName="ledgerlinkModel.DataSubmission">
         <MappingFragment StoreEntitySet="DataSubmission">
@@ -227,6 +201,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TechnicalTrainers">
+      <EntityTypeMapping TypeName="ledgerlinkModel.TechnicalTrainer">
+        <MappingFragment StoreEntitySet="TechnicalTrainer">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Passkey" ColumnName="Passkey" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="UserPermissions">
       <EntityTypeMapping TypeName="ledgerlinkModel.UserPermission">
         <MappingFragment StoreEntitySet="UserPermissions">
@@ -266,6 +256,7 @@
           <ScalarProperty Name="CBT" ColumnName="CBT" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="GroupAccountNumber" ColumnName="GroupAccountNumber" />
+          <ScalarProperty Name="NumberOfCycles" ColumnName="NumberOfCycles" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

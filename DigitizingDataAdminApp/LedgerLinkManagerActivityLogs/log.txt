@@ -400,3 +400,5 @@ INFO  2015-10-23 19:08:36,821 1783700ms ActivityLoggingSystem  logActivity      
 INFO  2015-10-23 19:10:56,844 1923723ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-10-23 19:13:04,717 2051596ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
 INFO  2015-12-07 12:02:54,247 20058ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-12-14 16:36:05,281 204705ms ActivityLoggingSystem  logActivity        - admin Logged In Successfully
+INFO  2015-12-14 16:36:50,451 249876ms ActivityLoggingSystem  logActivity        - admin Edited CBT called : Admin Admin Test
