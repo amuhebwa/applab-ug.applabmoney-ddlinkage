@@ -80,6 +80,9 @@ namespace DigitizingDataAdminWebService
         public string GroupAccountNumber { get; set; }
         [DataMember]
         public string GroupSupport { get; set; }
+        [DataMember]
+        public string numberOfCycles { get; set; } // Number of cycles with LedgerLink
+
     }
 
     // REGISTRATION RESULT

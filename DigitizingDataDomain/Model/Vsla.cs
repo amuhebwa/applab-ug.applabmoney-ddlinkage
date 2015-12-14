@@ -24,6 +24,7 @@ namespace DigitizingDataDomain.Model
         public virtual Cbt_info CBT { get; set; }
         public virtual int Status { get; set; }
         public virtual string GroupAccountNumber { get; set; }
+        public virtual int NumberOfCycles { get; set; }
 
         //Collections: Hacked to allow for reporting
         public virtual IList<VslaDdActivation> VslaDdActivationList { get; set; }

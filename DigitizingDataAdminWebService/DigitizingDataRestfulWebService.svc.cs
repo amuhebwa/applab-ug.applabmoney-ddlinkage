@@ -61,6 +61,7 @@ namespace DigitizingDataAdminWebService
                         tTrainerId = data.CBT.Id,
                         tTrainerName = data.CBT.Username,
                         GroupAccountNumber = data.GroupAccountNumber,
+                        numberOfCycles = Convert.ToString(data.NumberOfCycles)
                     });
                 }
             }
@@ -94,6 +95,7 @@ namespace DigitizingDataAdminWebService
                      tTrainerId = vslaData.CBT.Id,
                      tTrainerName = vslaData.CBT.Username,
                      GroupAccountNumber = vslaData.GroupAccountNumber,
+                     numberOfCycles = Convert.ToString(vslaData.NumberOfCycles)
                  };
                 return result;
             }
@@ -126,6 +128,7 @@ namespace DigitizingDataAdminWebService
                 vsla.GpsLocation = Convert.ToString(request.GpsLocation);
                 vsla.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
                 vsla.Status = 1;
+                vsla.NumberOfCycles = Convert.ToInt32(request.numberOfCycles);
                 // cbt 
                 DigitizingDataDomain.Model.Cbt_info cbt = new DigitizingDataDomain.Model.Cbt_info();
                 cbt.Id = Convert.ToInt32(request.tTrainerId);
@@ -198,6 +201,7 @@ namespace DigitizingDataAdminWebService
                     vslaData.PhysicalAddress = Convert.ToString(request.PhysicalAddress);
                     vslaData.GpsLocation = Convert.ToString(request.GpsLocation);
                     vslaData.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
+                    vslaData.NumberOfCycles = Convert.ToInt32(request.numberOfCycles);
                     // region id
                     DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
                     vslaRegion.RegionId = Convert.ToInt32(request.RegionName);
