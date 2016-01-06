@@ -16,21 +16,3 @@ C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.a
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.csprojResolveAssemblyReference.cache
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.dll
 C:\Users\AGGREY\Documents\GitHub\Grameen Foundation Web Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.pdb
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\DigitizingDataBizLayer.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\DigitizingDataBizLayer.pdb
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\DigitizingDataDomain.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\Iesi.Collections.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\Newtonsoft.Json.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\NHibernate.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\NHibernate.Linq.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\Oracle.DataAccess.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\FluentNHibernate.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\HibernatingRhinos.Profiler.Appender.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\DigitizingDataDomain.pdb
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\Iesi.Collections.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\NHibernate.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\NHibernate.Linq.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\bin\Release\FluentNHibernate.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.csprojResolveAssemblyReference.cache
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataBizLayer\obj\Release\DigitizingDataBizLayer.pdb

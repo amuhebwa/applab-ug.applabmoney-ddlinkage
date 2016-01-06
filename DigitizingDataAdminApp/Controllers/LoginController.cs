@@ -17,7 +17,7 @@ namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
-        UserRepo _userRepo = null;
+        UserRepo userRepo = null;
         ActivityLoggingSystem activityLoggingSystem;
         readonly log4net.ILog logger =null;  
 
@@ -25,7 +25,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             activityLoggingSystem = new ActivityLoggingSystem();
-            _userRepo = new UserRepo();
+            userRepo = new UserRepo();
         }
 
         public ActionResult Index()
@@ -39,15 +39,15 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Users _currentUser = _userRepo.checkIfUserExists(user.Username, user.Password);
-                if (_currentUser != null)
+                Users currentUser = userRepo.checkIfUserExists(user.Username, user.Password);
+                if (currentUser != null)
                 {
-                    Session["UserId"] = _currentUser.Id.ToString();
-                    Session["Username"] = _currentUser.Username;
-                    Session["UserLevel"] = _currentUser.UserLevel;
+                    Session["UserId"] = currentUser.Id.ToString();
+                    Session["Username"] = currentUser.Username;
+                    Session["UserLevel"] = currentUser.UserLevel;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
 
-                    String logString = _currentUser.Username + " Logged In Successfully";
+                    String logString = currentUser.Username + " Logged In Successfully";
                     activityLoggingSystem.logActivity(logString, 0);
                     return RedirectToAction("Dashboard", "Dashboard");
                 }
