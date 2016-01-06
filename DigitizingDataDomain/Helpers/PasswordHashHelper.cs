@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-namespace DigitizingDataAdminApp.Models
+
+namespace DigitizingDataDomain.Helpers
 {
-    public class PasswordHashing
+    public class PasswordHashHelper
     {
-        public PasswordHashing()
+        public PasswordHashHelper()
         {
 
         }

@@ -67,6 +67,7 @@
     <Compile Include="Collections\TypedIList.cs" />
     <Compile Include="Collections\TypedList.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
+    <Compile Include="Helpers\PasswordHashHelper.cs" />
     <Compile Include="Mapping\AddressInfoMap.cs" />
     <Compile Include="Mapping\AdminUserMap.cs" />
     <Compile Include="Mapping\AttendanceMap.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Mapping\SavingMap.cs" />
     <Compile Include="Mapping\TechnicalTrainerMap.cs" />
     <Compile Include="Mapping\StatusTypeMap.cs" />
+    <Compile Include="Mapping\UserMap.cs" />
     <Compile Include="Mapping\VslaCycleMap.cs" />
     <Compile Include="Mapping\VslaDdActivationMap.cs" />
     <Compile Include="Mapping\VslaMap.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Model\Saving.cs" />
     <Compile Include="Model\TechnicalTrainer.cs" />
     <Compile Include="Model\StatusType.cs" />
+    <Compile Include="Model\Users.cs" />
     <Compile Include="Model\Vsla.cs" />
     <Compile Include="Model\VslaCycle.cs" />
     <Compile Include="Model\VslaDdActivation.cs" />

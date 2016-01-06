@@ -8,47 +8,46 @@ using System.Web.Security;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+using System.Web.Script.Serialization;
+using DigitizingDataBizLayer.Repositories;
+using DigitizingDataDomain.Model;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]
 namespace DigitizingDataAdminApp.Controllers
 {
     public class LoginController : Controller
     {
+        UserRepo _userRepo = null;
         ActivityLoggingSystem activityLoggingSystem;
-        ledgerlinkEntities database;
-        PasswordHashing passwordHashing;
-        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        readonly log4net.ILog logger =null;  
+
         public LoginController()
         {
+            logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             activityLoggingSystem = new ActivityLoggingSystem();
-            database = new ledgerlinkEntities();
-            passwordHashing = new PasswordHashing();
+            _userRepo = new UserRepo();
         }
+
         public ActionResult Index()
         {
             return View();
         }
-        /**
-         * Queries the database and validates the submitted name against registered users
-         * logs in user if the registered cresential are right, and re-directs to the login
-         * page if they are wrong
-         **/
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(UserLogin user)
         {
             if (ModelState.IsValid)
             {
-                string password = passwordHashing.hashedPassword(user.Password);
-                var current_user = database.Users.Where(a => a.Username.Equals(user.Username)
-                    && a.Password.Equals(password)).FirstOrDefault();
-                if (current_user != null)
+                Users _currentUser = _userRepo.checkIfUserExists(user.Username, user.Password);
+                if (_currentUser != null)
                 {
-                    Session["UserId"] = current_user.Id.ToString();
-                    Session["Username"] = current_user.Username;
-                    Session["UserLevel"] = current_user.UserLevel;
+                    Session["UserId"] = _currentUser.Id.ToString();
+                    Session["Username"] = _currentUser.Username;
+                    Session["UserLevel"] = _currentUser.UserLevel;
                     FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
-                    String logString = current_user.Username + " Logged In Successfully";
+
+                    String logString = _currentUser.Username + " Logged In Successfully";
                     activityLoggingSystem.logActivity(logString, 0);
                     return RedirectToAction("Dashboard", "Dashboard");
                 }

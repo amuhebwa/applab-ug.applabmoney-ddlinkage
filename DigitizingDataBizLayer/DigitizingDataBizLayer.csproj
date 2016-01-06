@@ -74,6 +74,7 @@
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SavingRepo.cs" />
     <Compile Include="Repositories\TechnicalTrainerRepo.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Repositories\VslaCycleRepo.cs" />
     <Compile Include="Repositories\VslaDdActivationRepo.cs" />
     <Compile Include="Repositories\VslaRegionRepo.cs" />

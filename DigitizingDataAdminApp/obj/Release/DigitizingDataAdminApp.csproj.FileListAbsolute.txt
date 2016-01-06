@@ -1,6 +1,8 @@
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataAdminApp.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataAdminApp.pdb
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Antlr3.Runtime.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataBizLayer.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataDomain.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.AspNet.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.Core.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OAuth.Consumer.dll
@@ -25,6 +27,13 @@ C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlin
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebGrease.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebMatrix.Data.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\WebMatrix.WebData.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Oracle.DataAccess.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\NHibernate.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\FluentNHibernate.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\HibernatingRhinos.Profiler.Appender.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Iesi.Collections.dll
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataBizLayer.pdb
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DigitizingDataDomain.pdb
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\log4net.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.xml
@@ -46,6 +55,9 @@ C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlin
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OAuth.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\NHibernate.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\FluentNHibernate.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Iesi.Collections.xml
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.pdb
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\obj\Release\DigitizingDataAdminApp.csprojResolveAssemblyReference.cache

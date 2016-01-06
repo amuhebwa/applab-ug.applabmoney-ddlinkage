@@ -252,6 +252,7 @@
     <Compile Include="Models\Member.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PasswordHashing.cs" />
     <Compile Include="Models\PhoneDelivery.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
     </Compile>
@@ -267,7 +268,6 @@
     <Compile Include="Models\TrainerInformation.cs" />
     <Compile Include="Models\DashboardData.cs" />
     <Compile Include="Models\LogsInformation.cs" />
-    <Compile Include="Models\PasswordHashing.cs" />
     <Compile Include="Models\SingleMeetingInfo.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>ledgerlink.tt</DependentUpon>
@@ -615,6 +615,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigitizingDataBizLayer\DigitizingDataBizLayer.csproj">
+      <Project>{fa8a75d7-36d2-4a5a-aa7c-fe2e1e740d9b}</Project>
+      <Name>DigitizingDataBizLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitizingDataDomain\DigitizingDataDomain.csproj">
+      <Project>{d1e074dc-fe82-45fe-b8f3-e3d66e3ae91d}</Project>
+      <Name>DigitizingDataDomain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
