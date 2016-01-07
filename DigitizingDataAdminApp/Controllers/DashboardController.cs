@@ -11,16 +11,32 @@ using System.Data.Objects.SqlClient;
 using System.Web.Helpers;
 using System.IO;
 using System.Text.RegularExpressions;
+using DigitizingDataBizLayer.Repositories;
+using DigitizingDataDomain.Model;
 namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
     {
         ActivityLoggingSystem activityLoggingSystem;
         ledgerlinkEntities database;
+
+        VslaRepo vslaRepo;
+        MemberRepo memberRepo;
+        MeetingRepo meetingRepo;
+        AttendanceRepo attendanceRepo;
+        DataSubmissionRepo submssionRepo;
+
+
         public DashboardController()
         {
             activityLoggingSystem = new ActivityLoggingSystem();
             database = new ledgerlinkEntities();
+
+            vslaRepo = new VslaRepo();
+            memberRepo = new MemberRepo();
+            meetingRepo = new MeetingRepo();
+            attendanceRepo = new AttendanceRepo();
+            submssionRepo = new DataSubmissionRepo();
 
         }
 
@@ -31,33 +47,32 @@ namespace DigitizingDataAdminApp.Controllers
             {
 
                 // Total VSLAs
-                long totalVslas = database.Vslas.Select(x => x.VslaName).Count();
-                // Total Members
-                int femaleMMembers = (from db_members in database.Members
-                                      where db_members.Gender == "Female"
-                                      select new { db_members }).Count();
-                int maleMembers = (from db_members in database.Members
-                                   where db_members.Gender == "Male"
-                                   select new { db_members }).Count();
-                int totalMembers = (int)database.Members.Select(x => x.MemberId).Count();
-                // Savings, Loans and repayments
-                double totalSavings = (double)database.Meetings.Select(x => x.SumOfSavings).Sum();
-                double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
-                double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
+                long totalVslas = vslaRepo.countVslas();
+
+                // Total/Male/Female Members
+                int femaleMembers = (int)memberRepo.countFemaleMembers();
+                int maleMembers = (int)memberRepo.countMaleMembers();
+                int totalMembers = (maleMembers + femaleMembers);
+
+                // Savings, Loans, Repayments
+                double totalSavings = meetingRepo.findTotalSavings();
+                double totalLoans = meetingRepo.findTotalLoans();
+                double totalLoanRepayment = meetingRepo.findTotalLoanRepayment();
+
+
                 // Attendance
-                int totalPresent = (from db_present in database.Attendances
-                                    where db_present.IsPresent == true
-                                    select new { db_present }).Count();
-                int totalAbsent = (from db_present in database.Attendances
-                                   where db_present.IsPresent == false
-                                   select new { db_present }).Count();
-                // Total number of submissions
-                int totalSubmissions = (int)database.DataSubmissions.Select(x => x.SourceVslaCode).Count();
-                // Total meetings
-                int totalMeeetings = (int)database.Meetings.Select(x => x.MeetingId).Count();
+                int totalPresent = (int)attendanceRepo.totalMembersPresent();
+                int totalAbsent = (int)attendanceRepo.totalMembersAbsent();
+                
+                // Total Meetings
+                int totalMeetings = (int)meetingRepo.totalMeetingsHeld();
+                
+                // Total Submission
+                int totalSubmissions = (int)submssionRepo.findTotalSubmissions();
+                
                 DashboardData summary = new DashboardData
                 {
-                    femaleMembers = femaleMMembers,
+                    femaleMembers = femaleMembers,
                     maleMembers = maleMembers,
                     totalMembers = totalMembers,
                     totalAbsent = totalAbsent,
@@ -66,7 +81,7 @@ namespace DigitizingDataAdminApp.Controllers
                     totalLoans = totalLoans,
                     totalSavings = totalSavings,
                     totalSubmissions = totalSubmissions,
-                    totalMeeetings = totalMeeetings,
+                    totalMeeetings = totalMeetings,
                     totalVslas = totalVslas
 
 
@@ -78,35 +93,31 @@ namespace DigitizingDataAdminApp.Controllers
                 return RedirectToAction("Index", "Index");
             }
         }
+
         /**
          * Generate Graphs for Summary Data Visualization
          * */
-        // 1. Members by Gender
+
+        // Members by Gender
         public ActionResult showMembersByGender()
-        {
-            int femaleMMembers = (from db_members in database.Members
-                                  where db_members.Gender == "Female"
-                                  select new { db_members }).Count();
-            int maleMembers = (from db_members in database.Members
-                               where db_members.Gender == "Male"
-                               select new { db_members }).Count();
+        {       
+            int femaleMembers = (int)memberRepo.countFemaleMembers();
+            int maleMembers = (int)memberRepo.countMaleMembers();
+            
             new Chart(width: 300, height: 300)
             .AddTitle("Members By Gender")
             .AddSeries(chartType: "pie",
                 xValue: new[] { "Males", "Females" },
-                yValues: new[] { maleMembers.ToString(), femaleMMembers.ToString() }
+                yValues: new[] { maleMembers.ToString(), femaleMembers.ToString() }
                 ).AddLegend().Write("bmp");
             return null;
         }
-        // 2. Attendance (Absent/Present)
+        // Attendance (Absent/Present)
         public ActionResult showAttendance()
         {
-            long totalPresent = (from db_present in database.Attendances
-                                 where db_present.IsPresent == true
-                                 select new { db_present }).Count();
-            long totalAbsent = (from db_present in database.Attendances
-                                where db_present.IsPresent == false
-                                select new { db_present }).Count();
+            int totalPresent = (int)attendanceRepo.totalMembersPresent();
+            int totalAbsent = (int)attendanceRepo.totalMembersAbsent();
+
             new Chart(width: 300, height: 300)
             .AddTitle("Overall Attendance")
             .AddSeries(chartType: "pie",
@@ -115,12 +126,13 @@ namespace DigitizingDataAdminApp.Controllers
                ).AddLegend().Write("bmp");
             return null;
         }
-        // 3. Show total savings, loans given out and loan repayments
+        // Show total savings, loans given out and loan repayments
         public ActionResult showSavingsLoansAndRepayments()
         {
-            double totalSavings = (double)database.Meetings.Select(x => x.SumOfSavings).Sum();
-            double totalLoans = (double)database.Meetings.Select(x => x.SumOfLoanIssues).Sum();
-            double totalLoanRepayment = (double)database.Meetings.Select(x => x.SumOfLoanRepayments).Sum();
+
+            double totalSavings = meetingRepo.findTotalSavings();
+            double totalLoans = meetingRepo.findTotalLoans();
+            double totalLoanRepayment = meetingRepo.findTotalLoanRepayment();
 
             new Chart(width: 300, height: 300)
             .AddTitle("Financial Break down")
@@ -167,22 +179,22 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information concerning VSLA Groups
          * */
-        public ActionResult VslaGroupInformation()
-        {
-            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-            VslaGroupsInformation allGroups = new VslaGroupsInformation();
-            List<VslaInformation> getVslaData = new List<VslaInformation>();
-            getVslaData = getVslaInformation();
-            allGroups.AllGroupsList = getVslaData;
-            allGroups.sessionUserLevel = sessionUserLevel;
-            allGroups.AllTechnicalTrainers = getAllTrainers();
-            allGroups.VslaRegions = getVslaRegions();
-            allGroups.StatusType = getStatusTypes();
-            allGroups.groupSupportProvided = getSupportType();
+        //public ActionResult VslaGroupInformation()
+        //{
+        //    int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
+        //    VslaGroupsInformation allGroups = new VslaGroupsInformation();
+        //    List<VslaInformation> getVslaData = new List<VslaInformation>();
+        //    getVslaData = getVslaInformation();
+        //    allGroups.AllGroupsList = getVslaData;
+        //    allGroups.sessionUserLevel = sessionUserLevel;
+        //    allGroups.AllTechnicalTrainers = getAllTrainers();
+        //    allGroups.VslaRegions = getVslaRegions();
+        //    allGroups.StatusType = getStatusTypes();
+        //    allGroups.groupSupportProvided = getSupportType();
 
 
-            return View(allGroups);
-        }
+        //    return View(allGroups);
+        //}
         // Get the group support modules that have been provided to the group by technical trainers
         public List<GroupSupportInfo> getSupportType()
         {
@@ -211,75 +223,75 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Get all information concerned with CTechnical Trainers
          * */
-        public ActionResult TechnicalTrainers()
-        {
-            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-            AllTrainersInformation allTrainers = new AllTrainersInformation();
-            List<TrainerInformation> getTrainersData = new List<TrainerInformation>();
-            getTrainersData = getCbtInformation();
-            allTrainers.AllTrainersList = getTrainersData;
-            allTrainers.SessionUserLevel = sessionUserLevel;
-            allTrainers.VslaRegionsModel = getVslaRegions();
-            allTrainers.StatusType = getStatusTypes();
+        //public ActionResult TechnicalTrainers()
+        //{
+        //    int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
+        //    AllTrainersInformation allTrainers = new AllTrainersInformation();
+        //    List<TrainerInformation> getTrainersData = new List<TrainerInformation>();
+        //    getTrainersData = getCbtInformation();
+        //    allTrainers.AllTrainersList = getTrainersData;
+        //    allTrainers.SessionUserLevel = sessionUserLevel;
+        //    allTrainers.VslaRegionsModel = getVslaRegions();
+        //    allTrainers.StatusType = getStatusTypes();
 
-            return View(allTrainers);
-        }
+        //    return View(allTrainers);
+        //}
 
         // Get the list of regions
-        public SelectList getVslaRegions()
-        {
-            List<VslaRegion> allRegionsList = new List<VslaRegion>();
-            allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-            foreach (var region in databaseRegions)
-            {
-                allRegionsList.Add(new VslaRegion()
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
-            return regionsList;
-        }
+        //public SelectList getVslaRegions()
+        //{
+        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
+        //    allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
+        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+        //    foreach (var region in databaseRegions)
+        //    {
+        //        allRegionsList.Add(new VslaRegion()
+        //        {
+        //            RegionId = region.RegionId,
+        //            RegionName = region.RegionName
+        //        });
+        //    }
+        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
+        //    return regionsList;
+        //}
 
 
         // List of status types ie active/inactive
-        public SelectList getStatusTypes()
-        {
-            List<StatusType> statusOptions = new List<StatusType>();
-            statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
-            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-            foreach (var status in databaseStatuses)
-            {
-                statusOptions.Add(new StatusType
-                {
-                    Status_Id = status.Status_Id,
-                    CurrentStatus = status.CurrentStatus
-                });
-            }
-            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
-            return statusTypes;
+        //public SelectList getStatusTypes()
+        //{
+        //    List<StatusType> statusOptions = new List<StatusType>();
+        //    statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
+        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
+        //    foreach (var status in databaseStatuses)
+        //    {
+        //        statusOptions.Add(new StatusType
+        //        {
+        //            Status_Id = status.Status_Id,
+        //            CurrentStatus = status.CurrentStatus
+        //        });
+        //    }
+        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
+        //    return statusTypes;
 
-        }
+        //}
         // list of all Technical trainers
-        public SelectList getAllTrainers()
-        {
-            List<TechnicalTrainer> trainers = new List<TechnicalTrainer>();
-            trainers.Add(new TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
-            var database_trainers = database.TechnicalTrainers.OrderBy(a => a.Name);
-            foreach (var trainer in database_trainers)
-            {
-                trainers.Add(new TechnicalTrainer
-                {
-                    Id = trainer.Id,
-                    Name = trainer.Name
-                });
-            }
-            SelectList allTrainers = new SelectList(trainers, "Id", "Name", 0);
-            return allTrainers;
+        //public SelectList getAllTrainers()
+        //{
+        //    List<TechnicalTrainer> trainers = new List<TechnicalTrainer>();
+        //    trainers.Add(new TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
+        //    var database_trainers = database.TechnicalTrainers.OrderBy(a => a.Name);
+        //    foreach (var trainer in database_trainers)
+        //    {
+        //        trainers.Add(new TechnicalTrainer
+        //        {
+        //            Id = trainer.Id,
+        //            Name = trainer.Name
+        //        });
+        //    }
+        //    SelectList allTrainers = new SelectList(trainers, "Id", "Name", 0);
+        //    return allTrainers;
 
-        }
+        //}
 
 
 
@@ -490,247 +502,247 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Display information for a particular VSLA
          * */
-        public ActionResult VslaGroupDetails(int id)
-        {
-            var vsla_info = (from tb_vsla in database.Vslas
-                             join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
-                             join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
-                             join tb_status in database.StatusTypes on tb_vsla.Status equals tb_status.Status_Id
-                             where tb_vsla.VslaId == id
-                             select new { db_vsla = tb_vsla, db_cbt = tb_cbt, db_regions = tb_regions, db_status = tb_status }).Single();
+        //public ActionResult VslaGroupDetails(int id)
+        //{
+        //    var vsla_info = (from tb_vsla in database.Vslas
+        //                     join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
+        //                     join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
+        //                     join tb_status in database.StatusTypes on tb_vsla.Status equals tb_status.Status_Id
+        //                     where tb_vsla.VslaId == id
+        //                     select new { db_vsla = tb_vsla, db_cbt = tb_cbt, db_regions = tb_regions, db_status = tb_status }).Single();
 
-            VslaInformation vslaData = new VslaInformation
-            {
-                VslaId = vsla_info.db_vsla.VslaId,
-                VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-                VslaName = vsla_info.db_vsla.VslaName ?? "--",
-                RegionId = vsla_info.db_regions.RegionName,
-                DateRegistered = vsla_info.db_vsla.DateRegistered,
-                DateLinked = vsla_info.db_vsla.DateLinked,
-                PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla_info.db_vsla.ContactPerson ?? "--",
-                PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-                PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
-                TechnicalTrainer = vsla_info.db_cbt.Name ?? "--",
-                Status = vsla_info.db_status.CurrentStatus ?? "--",
-                GroupAccountNumber = "A/C " + vsla_info.db_vsla.GroupAccountNumber ?? "--"
-            };
-            return View(vslaData);
-        }
-        /**
-         * Edit a given VSLA
-         * */
-        [HttpGet]
-        public ActionResult EditVslaGroup(int id)
-        {
-            VslaInformation vslaData = getGroupEditInformation(id);
-            return View(vslaData);
-        }
-        /**
-         * Edit details for a particular VSLA
-         * */
-        [HttpPost]
-        public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
-        {
-            if (string.IsNullOrEmpty(vslaGroup.VslaName))
-            {
-                ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
-            }
-            else if (RegionId == 0)
-            {
-                ModelState.AddModelError("RegionName", "Please select a region");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.DateRegistered.ToString()))
-            {
-                ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.DateLinked.ToString()))
-            {
-                ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.PhysicalAddress))
-            {
-                ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.VslaPhoneMsisdn))
-            {
-                ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.GpsLocation))
-            {
-                ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.ContactPerson))
-            {
-                ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.PositionInVsla))
-            {
-                ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
-            }
-            else if (Id == 0)
-            {
-                ModelState.AddModelError("CbtModel", "Select Responsible CBT");
-            }
-            else if (Status_Id == 0)
-            {
-                ModelState.AddModelError("StatusType", "Select Status Type");
-            }
-            else if (string.IsNullOrEmpty(vslaGroup.GroupAccountNumber))
-            {
-                ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
-            }
-            else
-            {
-                var query = database.Vslas.Find(VslaId);
-                query.VslaName = vslaGroup.VslaName;
-                query.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn;
-                query.GpsLocation = vslaGroup.GpsLocation;
-                query.DateRegistered = vslaGroup.DateRegistered;
-                query.DateLinked = vslaGroup.DateLinked;
-                query.RegionId = (int)RegionId;
-                query.ContactPerson = vslaGroup.ContactPerson;
-                query.PositionInVsla = vslaGroup.PositionInVsla;
-                query.PhoneNumber = vslaGroup.PhoneNumber;
-                query.CBT = Id;
-                query.Status = Status_Id;
-                query.GroupAccountNumber = vslaGroup.GroupAccountNumber;
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaGroupInformation");
-            }
-            // If one of the validations fails, reload the form and repopulate the dropdown list
-            VslaInformation vslaData = getGroupEditInformation(VslaId);
-            return View(vslaData);
+        //    VslaInformation vslaData = new VslaInformation
+        //    {
+        //        VslaId = vsla_info.db_vsla.VslaId,
+        //        VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
+        //        VslaName = vsla_info.db_vsla.VslaName ?? "--",
+        //        RegionId = vsla_info.db_regions.RegionName,
+        //        DateRegistered = vsla_info.db_vsla.DateRegistered,
+        //        DateLinked = vsla_info.db_vsla.DateLinked,
+        //        PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
+        //        VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
+        //        GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
+        //        ContactPerson = vsla_info.db_vsla.ContactPerson ?? "--",
+        //        PositionInVsla = vsla_info.db_vsla.PositionInVsla,
+        //        PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
+        //        TechnicalTrainer = vsla_info.db_cbt.Name ?? "--",
+        //        Status = vsla_info.db_status.CurrentStatus ?? "--",
+        //        GroupAccountNumber = "A/C " + vsla_info.db_vsla.GroupAccountNumber ?? "--"
+        //    };
+        //    return View(vslaData);
+        //}
+        ///**
+        // * Edit a given VSLA
+        // * */
+        //[HttpGet]
+        ////public ActionResult EditVslaGroup(int id)
+        ////{
+        ////    VslaInformation vslaData = getGroupEditInformation(id);
+        ////    return View(vslaData);
+        ////}
+        ///**
+        // * Edit details for a particular VSLA
+        // * */
+        //[HttpPost]
+        //public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
+        //{
+        //    if (string.IsNullOrEmpty(vslaGroup.VslaName))
+        //    {
+        //        ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
+        //    }
+        //    else if (RegionId == 0)
+        //    {
+        //        ModelState.AddModelError("RegionName", "Please select a region");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.DateRegistered.ToString()))
+        //    {
+        //        ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.DateLinked.ToString()))
+        //    {
+        //        ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.PhysicalAddress))
+        //    {
+        //        ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.VslaPhoneMsisdn))
+        //    {
+        //        ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.GpsLocation))
+        //    {
+        //        ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.ContactPerson))
+        //    {
+        //        ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.PositionInVsla))
+        //    {
+        //        ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.PhoneNumber))
+        //    {
+        //        ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
+        //    }
+        //    else if (Id == 0)
+        //    {
+        //        ModelState.AddModelError("CbtModel", "Select Responsible CBT");
+        //    }
+        //    else if (Status_Id == 0)
+        //    {
+        //        ModelState.AddModelError("StatusType", "Select Status Type");
+        //    }
+        //    else if (string.IsNullOrEmpty(vslaGroup.GroupAccountNumber))
+        //    {
+        //        ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
+        //    }
+        //    else
+        //    {
+        //        var query = database.Vslas.Find(VslaId);
+        //        query.VslaName = vslaGroup.VslaName;
+        //        query.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn;
+        //        query.GpsLocation = vslaGroup.GpsLocation;
+        //        query.DateRegistered = vslaGroup.DateRegistered;
+        //        query.DateLinked = vslaGroup.DateLinked;
+        //        query.RegionId = (int)RegionId;
+        //        query.ContactPerson = vslaGroup.ContactPerson;
+        //        query.PositionInVsla = vslaGroup.PositionInVsla;
+        //        query.PhoneNumber = vslaGroup.PhoneNumber;
+        //        query.CBT = Id;
+        //        query.Status = Status_Id;
+        //        query.GroupAccountNumber = vslaGroup.GroupAccountNumber;
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("VslaGroupInformation");
+        //    }
+        //    // If one of the validations fails, reload the form and repopulate the dropdown list
+        //    VslaInformation vslaData = getGroupEditInformation(VslaId);
+        //    return View(vslaData);
 
-        }
+        //}
         /**
          * Add a new Village savings and lending association (VSLA) to the system
          **/
         [HttpPost]
-        public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
-        {
-            if (RegionId == 0)
-            {
-                ModelState.AddModelError("RegionName", "Please select a region");
-                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-            }
-            else if (Id == 0)
-            {
-                ModelState.AddModelError("TechnicalTrainer", "Select Trainer in charge");
-                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-            }
-            else if (Status_Id == 0)
-            {
-                ModelState.AddModelError("Status", "Select the VSLA status");
-                return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-            }
-            else
-            { //! All fields are valid
-                /** Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy) */
-                int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
-                string getYear = DateTime.Now.Year.ToString().Substring(2);
-                string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
+        //public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
+        //{
+        //    if (RegionId == 0)
+        //    {
+        //        ModelState.AddModelError("RegionName", "Please select a region");
+        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
+        //    }
+        //    else if (Id == 0)
+        //    {
+        //        ModelState.AddModelError("TechnicalTrainer", "Select Trainer in charge");
+        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
+        //    }
+        //    else if (Status_Id == 0)
+        //    {
+        //        ModelState.AddModelError("Status", "Select the VSLA status");
+        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
+        //    }
+        //    else
+        //    { //! All fields are valid
+        //        /** Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy) */
+        //        int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
+        //        string getYear = DateTime.Now.Year.ToString().Substring(2);
+        //        string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
 
-                Vsla newVsla = new Vsla
-                {
-                    VslaCode = generatedVslaCode,
-                    VslaName = vslaGroup.VslaName,
-                    RegionId = RegionId,
-                    DateRegistered = vslaGroup.DateRegistered.HasValue ? vslaGroup.DateRegistered : System.DateTime.Now,
-                    DateLinked = vslaGroup.DateLinked.HasValue ? vslaGroup.DateLinked : System.DateTime.Now,
-                    PhysicalAddress = vslaGroup.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = vslaGroup.GpsLocation ?? "--",
-                    ContactPerson = vslaGroup.ContactPerson,
-                    PositionInVsla = vslaGroup.PositionInVsla,
-                    PhoneNumber = vslaGroup.PhoneNumber,
-                    CBT = Id,
-                    Status = Status_Id,
-                    GroupAccountNumber = vslaGroup.GroupAccountNumber
-                };
-                database.Vslas.Add(newVsla);
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + generatedVslaCode;
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaGroupInformation");
-            }
-        }
+        //        Vsla newVsla = new Vsla
+        //        {
+        //            VslaCode = generatedVslaCode,
+        //            VslaName = vslaGroup.VslaName,
+        //            RegionId = RegionId,
+        //            DateRegistered = vslaGroup.DateRegistered.HasValue ? vslaGroup.DateRegistered : System.DateTime.Now,
+        //            DateLinked = vslaGroup.DateLinked.HasValue ? vslaGroup.DateLinked : System.DateTime.Now,
+        //            PhysicalAddress = vslaGroup.PhysicalAddress ?? "--",
+        //            VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn ?? "--",
+        //            GpsLocation = vslaGroup.GpsLocation ?? "--",
+        //            ContactPerson = vslaGroup.ContactPerson,
+        //            PositionInVsla = vslaGroup.PositionInVsla,
+        //            PhoneNumber = vslaGroup.PhoneNumber,
+        //            CBT = Id,
+        //            Status = Status_Id,
+        //            GroupAccountNumber = vslaGroup.GroupAccountNumber
+        //        };
+        //        database.Vslas.Add(newVsla);
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + generatedVslaCode;
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("VslaGroupInformation");
+        //    }
+        //}
         /**
          * Get the options for re-populating the edit VSLA form, in case of the forms fails
          **/
-        public VslaInformation getGroupEditInformation(int id)
-        {
-            var vsla = (from tb_vsla in database.Vslas
-                        join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
-                        where tb_vsla.VslaId == id
-                        select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).FirstOrDefault();
+        //public VslaInformation getGroupEditInformation(int id)
+        //{
+        //    var vsla = (from tb_vsla in database.Vslas
+        //                join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
+        //                where tb_vsla.VslaId == id
+        //                select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).FirstOrDefault();
 
-            // Get a list of all vsla regions to populate in the dropdown list
-            List<VslaRegion> regions = new List<VslaRegion>();
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-            foreach (var region in databaseRegions)
-            {
-                regions.Add(new VslaRegion
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
-            // Get the list of all cbts to populate in the dropdown list
-            List<TechnicalTrainer> cbts = new List<TechnicalTrainer>();
-            var database_cbts = database.TechnicalTrainers.OrderBy(a => a.Name).ToList();
-            foreach (var cbt in database_cbts)
-            {
-                cbts.Add(new TechnicalTrainer
-                {
-                    Id = cbt.Id,
-                    Name = cbt.Name
-                });
-            }
-            SelectList allTrainers = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
+        //    // Get a list of all vsla regions to populate in the dropdown list
+        //    List<VslaRegion> regions = new List<VslaRegion>();
+        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
+        //    foreach (var region in databaseRegions)
+        //    {
+        //        regions.Add(new VslaRegion
+        //        {
+        //            RegionId = region.RegionId,
+        //            RegionName = region.RegionName
+        //        });
+        //    }
+        //    SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
+        //    // Get the list of all cbts to populate in the dropdown list
+        //    List<TechnicalTrainer> cbts = new List<TechnicalTrainer>();
+        //    var database_cbts = database.TechnicalTrainers.OrderBy(a => a.Name).ToList();
+        //    foreach (var cbt in database_cbts)
+        //    {
+        //        cbts.Add(new TechnicalTrainer
+        //        {
+        //            Id = cbt.Id,
+        //            Name = cbt.Name
+        //        });
+        //    }
+        //    SelectList allTrainers = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
 
-            // Get the status type ie active/inactive
-            List<StatusType> statusTypes = new List<StatusType>();
-            var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-            foreach (var statusType in databaseStatusTypes)
-            {
-                statusTypes.Add(new StatusType
-                {
-                    Status_Id = statusType.Status_Id,
-                    CurrentStatus = statusType.CurrentStatus
-                });
-            }
-            SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.db_cbt.Status);
+        //    // Get the status type ie active/inactive
+        //    List<StatusType> statusTypes = new List<StatusType>();
+        //    var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
+        //    foreach (var statusType in databaseStatusTypes)
+        //    {
+        //        statusTypes.Add(new StatusType
+        //        {
+        //            Status_Id = statusType.Status_Id,
+        //            CurrentStatus = statusType.CurrentStatus
+        //        });
+        //    }
+        //    SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.db_cbt.Status);
 
-            VslaInformation vslaData = new VslaInformation
-            {
-                VslaId = vsla.db_vsla.VslaId,
-                VslaCode = vsla.db_vsla.VslaCode ?? "--",
-                VslaName = vsla.db_vsla.VslaName ?? "--",
-                VslaRegions = allRegions,
-                DateRegistered = vsla.db_vsla.DateRegistered.HasValue ? vsla.db_vsla.DateRegistered : System.DateTime.Now,
-                DateLinked = vsla.db_vsla.DateLinked.HasValue ? vsla.db_vsla.DateLinked : System.DateTime.Now,
-                PhysicalAddress = vsla.db_vsla.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vsla.db_vsla.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vsla.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vsla.db_vsla.ContactPerson,
-                PositionInVsla = vsla.db_vsla.PositionInVsla,
-                PhoneNumber = vsla.db_vsla.PhoneNumber,
-                AllTechnicalTrainers = allTrainers,
-                StatusType = statusTypesList,
-                GroupAccountNumber = vsla.db_vsla.GroupAccountNumber
-            };
-            return vslaData;
-        }
+        //    VslaInformation vslaData = new VslaInformation
+        //    {
+        //        VslaId = vsla.db_vsla.VslaId,
+        //        VslaCode = vsla.db_vsla.VslaCode ?? "--",
+        //        VslaName = vsla.db_vsla.VslaName ?? "--",
+        //        VslaRegions = allRegions,
+        //        DateRegistered = vsla.db_vsla.DateRegistered.HasValue ? vsla.db_vsla.DateRegistered : System.DateTime.Now,
+        //        DateLinked = vsla.db_vsla.DateLinked.HasValue ? vsla.db_vsla.DateLinked : System.DateTime.Now,
+        //        PhysicalAddress = vsla.db_vsla.PhysicalAddress ?? "--",
+        //        VslaPhoneMsisdn = vsla.db_vsla.VslaPhoneMsisdn ?? "--",
+        //        GpsLocation = vsla.db_vsla.GpsLocation ?? "--",
+        //        ContactPerson = vsla.db_vsla.ContactPerson,
+        //        PositionInVsla = vsla.db_vsla.PositionInVsla,
+        //        PhoneNumber = vsla.db_vsla.PhoneNumber,
+        //        AllTechnicalTrainers = allTrainers,
+        //        StatusType = statusTypesList,
+        //        GroupAccountNumber = vsla.db_vsla.GroupAccountNumber
+        //    };
+        //    return vslaData;
+        //}
         /**
          * Delete a particular VSLA from the system
          * */
@@ -765,20 +777,20 @@ namespace DigitizingDataAdminApp.Controllers
             return View(vslaData);
         }
         [HttpPost]
-        public ActionResult DeleteVslaGroup(Vsla vslaGroup, int id)
-        {
-            if (ModelState.IsValid && vslaGroup != null)
-            {
-                vslaGroup.VslaId = id;
-                database.Vslas.Attach(vslaGroup);
-                database.Vslas.Remove(vslaGroup);
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("VslaGroupInformation");
-            }
-            return View();
-        }
+        //public ActionResult DeleteVslaGroup(Vsla vslaGroup, int id)
+        //{
+        //    if (ModelState.IsValid && vslaGroup != null)
+        //    {
+        //        vslaGroup.VslaId = id;
+        //        database.Vslas.Attach(vslaGroup);
+        //        database.Vslas.Remove(vslaGroup);
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("VslaGroupInformation");
+        //    }
+        //    return View();
+        //}
         /**
          * View all meetings attached to a particular VSLA
          * */
@@ -1137,42 +1149,42 @@ namespace DigitizingDataAdminApp.Controllers
          * Add a new community based trainer (CBT) to the system
          **/
         [HttpPost]
-        public ActionResult AddTechnicalTrainer(TechnicalTrainer new_cbt, int RegionId, int Status_Id)
-        {
-            if (Status_Id == 0)
-            {
-                ModelState.AddModelError("Status", "Please select status");
-                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
-            }
-            else if (RegionId == 0)
-            {
-                ModelState.AddModelError("Region", "Please select Region");
-                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
-            }
-            else
-            { // All are valid
-                string fullName = new_cbt.FirstName + " " + new_cbt.LastName;
-                TechnicalTrainer _cbt = new TechnicalTrainer
-                {
+        //public ActionResult AddTechnicalTrainer(TechnicalTrainer new_cbt, int RegionId, int Status_Id)
+        //{
+        //    if (Status_Id == 0)
+        //    {
+        //        ModelState.AddModelError("Status", "Please select status");
+        //        return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
+        //    }
+        //    else if (RegionId == 0)
+        //    {
+        //        ModelState.AddModelError("Region", "Please select Region");
+        //        return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
+        //    }
+        //    else
+        //    { // All are valid
+        //        string fullName = new_cbt.FirstName + " " + new_cbt.LastName;
+        //        TechnicalTrainer _cbt = new TechnicalTrainer
+        //        {
 
-                    Name = fullName,
-                    FirstName = new_cbt.FirstName,
-                    LastName = new_cbt.LastName,
-                    Region = RegionId,
-                    PhoneNumber = new_cbt.PhoneNumber,
-                    Email = new_cbt.Email,
-                    Status = Status_Id,
-                    Username = new_cbt.Username,
-                    Passkey = new_cbt.Passkey
-                };
+        //            Name = fullName,
+        //            FirstName = new_cbt.FirstName,
+        //            LastName = new_cbt.LastName,
+        //            Region = RegionId,
+        //            PhoneNumber = new_cbt.PhoneNumber,
+        //            Email = new_cbt.Email,
+        //            Status = Status_Id,
+        //            Username = new_cbt.Username,
+        //            Passkey = new_cbt.Passkey
+        //        };
 
-                database.TechnicalTrainers.Add(_cbt);
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("TechnicalTrainers");
-            }
-        }
+        //        database.TechnicalTrainers.Add(_cbt);
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("TechnicalTrainers");
+        //    }
+        //}
 
         /**
          * View all information for a particular CBT
@@ -1187,158 +1199,158 @@ namespace DigitizingDataAdminApp.Controllers
          * Edit information for a particular CBT
          * */
         [HttpGet]
-        public ActionResult EditTrainerDetails(int id)
-        {
-            var allInformation = (from table_cbt in database.TechnicalTrainers
-                                  join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                  where table_cbt.Id == id
-                                  select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+        //public ActionResult EditTrainerDetails(int id)
+        //{
+        //    var allInformation = (from table_cbt in database.TechnicalTrainers
+        //                          join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
+        //                          where table_cbt.Id == id
+        //                          select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
-            // Regions
-            List<VslaRegion> allRegionsList = new List<VslaRegion>();
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-            foreach (var region in databaseRegions)
-            {
-                allRegionsList.Add(new VslaRegion()
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
+        //    // Regions
+        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
+        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+        //    foreach (var region in databaseRegions)
+        //    {
+        //        allRegionsList.Add(new VslaRegion()
+        //        {
+        //            RegionId = region.RegionId,
+        //            RegionName = region.RegionName
+        //        });
+        //    }
+        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
 
-            // Status types
-            List<StatusType> statusOptions = new List<StatusType>();
-            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-            foreach (var status in databaseStatuses)
-            {
-                statusOptions.Add(new StatusType
-                {
-                    Status_Id = status.Status_Id,
-                    CurrentStatus = status.CurrentStatus
-                });
-            }
-            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
+        //    // Status types
+        //    List<StatusType> statusOptions = new List<StatusType>();
+        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
+        //    foreach (var status in databaseStatuses)
+        //    {
+        //        statusOptions.Add(new StatusType
+        //        {
+        //            Status_Id = status.Status_Id,
+        //            CurrentStatus = status.CurrentStatus
+        //        });
+        //    }
+        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
-            // Create a cbt object
-            TrainerInformation cbtData = new TrainerInformation
-            {
-                Id = allInformation.dt_cbt.Id,
-                FirstName = allInformation.dt_cbt.FirstName,
-                LastName = allInformation.dt_cbt.LastName,
-                VslaRegionsModel = regionsList,
-                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-                Email = allInformation.dt_cbt.Email,
-                StatusType = statusTypes,
-                Username = allInformation.dt_cbt.Username,
-                Passkey = allInformation.dt_cbt.Passkey
-            };
-            return View(cbtData);
-        }
+        //    // Create a cbt object
+        //    TrainerInformation cbtData = new TrainerInformation
+        //    {
+        //        Id = allInformation.dt_cbt.Id,
+        //        FirstName = allInformation.dt_cbt.FirstName,
+        //        LastName = allInformation.dt_cbt.LastName,
+        //        VslaRegionsModel = regionsList,
+        //        PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+        //        Email = allInformation.dt_cbt.Email,
+        //        StatusType = statusTypes,
+        //        Username = allInformation.dt_cbt.Username,
+        //        Passkey = allInformation.dt_cbt.Passkey
+        //    };
+        //    return View(cbtData);
+        //}
         [HttpPost]
-        public ActionResult EditTrainerDetails(TechnicalTrainer cbt, int id, int RegionId, int Status_Id)
-        {
-            Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-            if (string.IsNullOrEmpty(cbt.FirstName))
-            {
-                ModelState.AddModelError("FirstName", "Please Enter a valid First Name");
-            }
-            else if (string.IsNullOrEmpty(cbt.LastName))
-            {
-                ModelState.AddModelError("LastName", "Please Enter a valid Last Name");
-            }
-            else if (RegionId == 0)
-            {
-                ModelState.AddModelError("Region", "Please Select a region");
-            }
-            else if (string.IsNullOrEmpty(cbt.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
-            }
-            else if (!phoneRegex.IsMatch(cbt.PhoneNumber))
-            {
-                ModelState.AddModelError("PhoneNumber", "Please Enter only digits");
-            }
-            else if (cbt.PhoneNumber.ToString().Trim().Length > 20)
-            {
-                ModelState.AddModelError("PhoneNumber", "Max : 20 Characters");
-            }
-            else if (cbt.PhoneNumber.ToString().Trim().Length < 10)
-            {
-                ModelState.AddModelError("PhoneNumber", "Min : 10 Characters");
-            }
-            else if (string.IsNullOrEmpty(cbt.Email))
-            {
-                ModelState.AddModelError("Email", "Please Enter Valid Email Address");
-            }
+        //public ActionResult EditTrainerDetails(TechnicalTrainer cbt, int id, int RegionId, int Status_Id)
+        //{
+        //    Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
+        //    if (string.IsNullOrEmpty(cbt.FirstName))
+        //    {
+        //        ModelState.AddModelError("FirstName", "Please Enter a valid First Name");
+        //    }
+        //    else if (string.IsNullOrEmpty(cbt.LastName))
+        //    {
+        //        ModelState.AddModelError("LastName", "Please Enter a valid Last Name");
+        //    }
+        //    else if (RegionId == 0)
+        //    {
+        //        ModelState.AddModelError("Region", "Please Select a region");
+        //    }
+        //    else if (string.IsNullOrEmpty(cbt.PhoneNumber))
+        //    {
+        //        ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
+        //    }
+        //    else if (!phoneRegex.IsMatch(cbt.PhoneNumber))
+        //    {
+        //        ModelState.AddModelError("PhoneNumber", "Please Enter only digits");
+        //    }
+        //    else if (cbt.PhoneNumber.ToString().Trim().Length > 20)
+        //    {
+        //        ModelState.AddModelError("PhoneNumber", "Max : 20 Characters");
+        //    }
+        //    else if (cbt.PhoneNumber.ToString().Trim().Length < 10)
+        //    {
+        //        ModelState.AddModelError("PhoneNumber", "Min : 10 Characters");
+        //    }
+        //    else if (string.IsNullOrEmpty(cbt.Email))
+        //    {
+        //        ModelState.AddModelError("Email", "Please Enter Valid Email Address");
+        //    }
 
-            else if (Status_Id == 0)
-            {
-                ModelState.AddModelError("Status", "Please select status");
-            }
-            else
-            {
-                string fullname = cbt.FirstName + " " + cbt.LastName;
-                var query = database.TechnicalTrainers.Find(id);
-                query.Name = fullname;
-                query.FirstName = cbt.FirstName;
-                query.LastName = cbt.LastName;
-                query.Region = RegionId;
-                query.PhoneNumber = cbt.PhoneNumber;
-                query.Email = cbt.Email;
-                query.Status = Status_Id;
-                query.Username = cbt.Username;
-                query.Passkey = cbt.Passkey;
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Edited CBT called : " + cbt.FirstName + " " + cbt.LastName;
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("TechnicalTrainers");
-            }
+        //    else if (Status_Id == 0)
+        //    {
+        //        ModelState.AddModelError("Status", "Please select status");
+        //    }
+        //    else
+        //    {
+        //        string fullname = cbt.FirstName + " " + cbt.LastName;
+        //        var query = database.TechnicalTrainers.Find(id);
+        //        query.Name = fullname;
+        //        query.FirstName = cbt.FirstName;
+        //        query.LastName = cbt.LastName;
+        //        query.Region = RegionId;
+        //        query.PhoneNumber = cbt.PhoneNumber;
+        //        query.Email = cbt.Email;
+        //        query.Status = Status_Id;
+        //        query.Username = cbt.Username;
+        //        query.Passkey = cbt.Passkey;
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Edited CBT called : " + cbt.FirstName + " " + cbt.LastName;
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("TechnicalTrainers");
+        //    }
 
-            // In case validation fails, recreate the form with pre-populated data
-            var allInformation = (from table_cbt in database.TechnicalTrainers
-                                  join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                  where table_cbt.Id == id
-                                  select new { dt_cbt = table_cbt, db_region = table_region }).Single();
+        //    // In case validation fails, recreate the form with pre-populated data
+        //    var allInformation = (from table_cbt in database.TechnicalTrainers
+        //                          join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
+        //                          where table_cbt.Id == id
+        //                          select new { dt_cbt = table_cbt, db_region = table_region }).Single();
 
-            // Regions
-            List<VslaRegion> allRegionsList = new List<VslaRegion>();
-            var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-            foreach (var region in databaseRegions)
-            {
-                allRegionsList.Add(new VslaRegion()
-                {
-                    RegionId = region.RegionId,
-                    RegionName = region.RegionName
-                });
-            }
-            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
+        //    // Regions
+        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
+        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
+        //    foreach (var region in databaseRegions)
+        //    {
+        //        allRegionsList.Add(new VslaRegion()
+        //        {
+        //            RegionId = region.RegionId,
+        //            RegionName = region.RegionName
+        //        });
+        //    }
+        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
 
-            // Status types
-            List<StatusType> statusOptions = new List<StatusType>();
-            var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-            foreach (var status in databaseStatuses)
-            {
-                statusOptions.Add(new StatusType
-                {
-                    Status_Id = status.Status_Id,
-                    CurrentStatus = status.CurrentStatus
-                });
-            }
-            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
+        //    // Status types
+        //    List<StatusType> statusOptions = new List<StatusType>();
+        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
+        //    foreach (var status in databaseStatuses)
+        //    {
+        //        statusOptions.Add(new StatusType
+        //        {
+        //            Status_Id = status.Status_Id,
+        //            CurrentStatus = status.CurrentStatus
+        //        });
+        //    }
+        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
 
-            // Create a cbt object
-            TrainerInformation cbtData = new TrainerInformation
-            {
-                Id = allInformation.dt_cbt.Id,
-                Name = allInformation.dt_cbt.Name,
-                VslaRegionsModel = regionsList,
-                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-                Email = allInformation.dt_cbt.Email,
-                StatusType = statusTypes
-            };
-            return View(cbtData);
-        }
+        //    // Create a cbt object
+        //    TrainerInformation cbtData = new TrainerInformation
+        //    {
+        //        Id = allInformation.dt_cbt.Id,
+        //        Name = allInformation.dt_cbt.Name,
+        //        VslaRegionsModel = regionsList,
+        //        PhoneNumber = allInformation.dt_cbt.PhoneNumber,
+        //        Email = allInformation.dt_cbt.Email,
+        //        StatusType = statusTypes
+        //    };
+        //    return View(cbtData);
+        //}
 
         /**
          * Function to query the database and get Information related to a particular CBT for editing
@@ -1375,20 +1387,20 @@ namespace DigitizingDataAdminApp.Controllers
             return View(trainerData);
         }
         [HttpPost]
-        public ActionResult DeleteTrainer(TechnicalTrainer trainer, int id)
-        {
-            if (ModelState.IsValid && trainer != null)
-            {
-                trainer.Id = id;
-                database.TechnicalTrainers.Attach(trainer);
-                database.TechnicalTrainers.Remove(trainer);
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("TechnicalTrainers");
-            }
-            return View();
-        }
+        //public ActionResult DeleteTrainer(TechnicalTrainer trainer, int id)
+        //{
+        //    if (ModelState.IsValid && trainer != null)
+        //    {
+        //        trainer.Id = id;
+        //        database.TechnicalTrainers.Attach(trainer);
+        //        database.TechnicalTrainers.Remove(trainer);
+        //        database.SaveChanges();
+        //        String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
+        //        activityLoggingSystem.logActivity(logString, 0);
+        //        return RedirectToAction("TechnicalTrainers");
+        //    }
+        //    return View();
+        //}
 
         /**
          * Helper method to get information for all registered users

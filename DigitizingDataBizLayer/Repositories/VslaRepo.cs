@@ -36,5 +36,12 @@ namespace DigitizingDataBizLayer.Repositories
                         select v).ToList();
             return vsla;
         }
+        // Count the number of VSLAs
+        public long countVslas()
+        {
+            var vslas = (from v in SessionProxy.Query<Vsla>()
+                         select v).Count();
+            return vslas;
+        }
     }
 }
