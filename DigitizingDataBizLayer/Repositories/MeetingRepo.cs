@@ -66,5 +66,15 @@ namespace DigitizingDataBizLayer.Repositories
                                  select m).Count();
             return totalMeetings;
         }
+
+        // Get weekly meetings summary
+        public List<Meeting> findWeeklyMeetings(DateTime startDate)
+        {
+            var allMeetings = (from m in SessionProxy.Query<Meeting>()
+                               where m.DateSent >= startDate
+                               select m).ToList();
+            return allMeetings;
+
+        }
     }
 }

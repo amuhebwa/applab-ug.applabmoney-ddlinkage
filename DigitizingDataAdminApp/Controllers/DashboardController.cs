@@ -63,13 +63,13 @@ namespace DigitizingDataAdminApp.Controllers
                 // Attendance
                 int totalPresent = (int)attendanceRepo.totalMembersPresent();
                 int totalAbsent = (int)attendanceRepo.totalMembersAbsent();
-                
+
                 // Total Meetings
                 int totalMeetings = (int)meetingRepo.totalMeetingsHeld();
-                
+
                 // Total Submission
                 int totalSubmissions = (int)submssionRepo.findTotalSubmissions();
-                
+
                 DashboardData summary = new DashboardData
                 {
                     femaleMembers = femaleMembers,
@@ -100,10 +100,10 @@ namespace DigitizingDataAdminApp.Controllers
 
         // Members by Gender
         public ActionResult showMembersByGender()
-        {       
+        {
             int femaleMembers = (int)memberRepo.countFemaleMembers();
             int maleMembers = (int)memberRepo.countMaleMembers();
-            
+
             new Chart(width: 300, height: 300)
             .AddTitle("Members By Gender")
             .AddSeries(chartType: "pie",
@@ -1566,91 +1566,61 @@ namespace DigitizingDataAdminApp.Controllers
             return cbts;
         }
 
-        // Generating reports
-        public ActionResult VslaReporting()
+        /**
+         * ******** GENERATE REPORTS *********
+         */
+
+        // Get weekly meetings
+        public List<WeeklyMeetingsData> queryWeeklyMeetings()
         {
+            List<WeeklyMeetingsData> meetingsData = new List<WeeklyMeetingsData>();
             string dateString = @"29/07/2014";
             DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
-            var results = (from table_meetings in database.Meetings
-                           join table_cycles in database.VslaCycles
-                               on table_meetings.CycleId equals table_cycles.CycleId
-                           join tables_vsla in database.Vslas on table_cycles.VslaId equals
-                        tables_vsla.VslaId
-                           where table_meetings.MeetingDate >= startDate
-                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.MeetingId);
-            List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
-            AllMeetingsData allMeetingsSummary = new AllMeetingsData();
-            if (null != results)
+            List<DigitizingDataDomain.Model.Meeting> weeklyMeetings = meetingRepo.findWeeklyMeetings(startDate);
+            if (null != weeklyMeetings)
             {
-                foreach (var item in results)
+                foreach (var item in weeklyMeetings)
                 {
-                    summary.Add(new WeeklyMeetingsData
+                    meetingsData.Add(new WeeklyMeetingsData
                     {
-                        meetingId = item.table_meetings.MeetingId,
-                        cashExpenses = (long)item.table_meetings.CashExpenses,
-                        cashFines = (long)item.table_meetings.CashFines,
-                        cashFromBank = (long)item.table_meetings.CashFromBank,
-                        cashFromBox = (long)item.table_meetings.CashFromBox,
-                        cashSavedBank = (long)item.table_meetings.CashSavedBank,
-                        cashSavedBox = (long)item.table_meetings.CashSavedBox,
-                        cashWelfare = (long)item.table_meetings.CashWelfare,
-                        dateSent = item.table_meetings.DateSent,
-                        meetingDate = item.table_meetings.MeetingDate,
-                        countOfMembersPresent = (int)item.table_meetings.CountOfMembersPresent,
-                        sumOfSavings = (long)item.table_meetings.SumOfSavings,
-                        sumOfLoansIssued = (long)item.table_meetings.SumOfLoanIssues,
-                        sumOfLoanRepayments = (long)item.table_meetings.SumOfLoanRepayments,
-                        vslaName = item.tables_vsla.VslaName,
-                        vslaId = (int)item.table_cycles.VslaId,
-                        VslaCode = item.tables_vsla.VslaCode
+                        meetingId = item.MeetingId,
+                        cashExpenses = (long)item.CashExpenses,
+                        cashFines = (long)item.CashFines,
+                        cashFromBank = (long)item.CashFromBank,
+                        cashFromBox = (long)item.CashFromBox,
+                        cashSavedBank = (long)item.CashSavedBank,
+                        cashSavedBox = (long)item.CashSavedBox,
+                        cashWelfare = (long)item.CashWelfare,
+                        dateSent = item.DateSent,
+                        meetingDate = item.MeetingDate,
+                        countOfMembersPresent = (int)item.CountOfMembersPresent,
+                        sumOfSavings = (long)item.SumOfSavings,
+                        sumOfLoansIssued = (long)item.SumOfLoanIssues,
+                        sumOfLoanRepayments = (long)item.SumOfLoanRepayments,
+                        vslaName = item.VslaCycle.Vsla.VslaName,
+                        vslaId = (int)item.VslaCycle.Vsla.VslaId,
+                        VslaCode = item.VslaCycle.Vsla.VslaCode
                     });
 
                 }
             }
-            allMeetingsSummary.meetingsSummary = summary;
+            return meetingsData;
+        }
+
+        // Display weekly meetings summary report
+        public ActionResult VslaReporting()
+        {
+            AllMeetingsData allMeetingsSummary = new AllMeetingsData();
+            allMeetingsSummary.meetingsSummary = queryWeeklyMeetings();
             return View(allMeetingsSummary);
         }
-        /**
-         * Export weekly meetings summary to a csv file
-         */
+
+        // Export weekly meetings summary to a csv file
         public void ExportWeeklySummary()
         {
-            string dateString = @"29/07/2014";
-            DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
-            var results = (from table_meetings in database.Meetings
-                           join table_cycles in database.VslaCycles
-                               on table_meetings.CycleId equals table_cycles.CycleId
-                           join tables_vsla in database.Vslas on table_cycles.VslaId equals
-                        tables_vsla.VslaId
-                           where table_meetings.MeetingDate >= startDate
-                           select new { table_meetings, table_cycles, tables_vsla }).OrderByDescending(id => id.table_meetings.MeetingId);
-            List<WeeklyMeetingsData> summary = new List<WeeklyMeetingsData>();
-            foreach (var item in results)
-            {
-                summary.Add(new WeeklyMeetingsData
-                {
-                    meetingId = item.table_meetings.MeetingId,
-                    cashExpenses = (long)item.table_meetings.CashExpenses,
-                    cashFines = (long)item.table_meetings.CashFines,
-                    cashFromBank = (long)item.table_meetings.CashFromBank,
-                    cashFromBox = (long)item.table_meetings.CashFromBox,
-                    cashSavedBank = (long)item.table_meetings.CashSavedBank,
-                    cashSavedBox = (long)item.table_meetings.CashSavedBox,
-                    cashWelfare = (long)item.table_meetings.CashWelfare,
-                    dateSent = item.table_meetings.DateSent,
-                    meetingDate = item.table_meetings.MeetingDate,
-                    countOfMembersPresent = (int)item.table_meetings.CountOfMembersPresent,
-                    sumOfSavings = (long)item.table_meetings.SumOfSavings,
-                    sumOfLoansIssued = (long)item.table_meetings.SumOfLoanIssues,
-                    sumOfLoanRepayments = (long)item.table_meetings.SumOfLoanRepayments,
-                    vslaName = item.tables_vsla.VslaName,
-                    vslaId = (int)item.table_cycles.VslaId,
-                    VslaCode = item.tables_vsla.VslaCode
-                });
-
-            }
+            List<WeeklyMeetingsData> summary = queryWeeklyMeetings();
             StringWriter stringWriter = new StringWriter();
-            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Meeting Id\",\"Cash Expenses\",\"Cash Fines\",\"Cash From Bank\",\"Cash From Box\",\"Cash Saved Bank\",\"Cash Saved Box\",\"Date Sent\",\"Meeting Date \",\"Members Present\", \"Savings\",\"Loans Issued\", \"Loan Repayment\"");
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Meeting Id\",\"Cash Expenses\",\"Cash Fines\",\"Cash From Bank\",\"Cash From Box\",\"Cash Saved Bank\",\"Cash Saved Box\",\"Date Sent\",\"Meeting Date \",\"Members Present\",\"Savings\",\"Loans Issued\",\"Loan Repayment\"");
 
             Response.ClearContent();
             String attachment = "attachment;filename=Weekly_Summary_Meetings.csv";
