@@ -235,6 +235,64 @@ namespace DigitizingDataAdminApp.Controllers
             return View(userData);
         }
 
+        [HttpPost]
+        public ActionResult AddUser(User user, int Level_Id)
+        {
+            Boolean insertResult = false;
+            PasswordHashing passwordHashing = new PasswordHashing();
+            string _hashedPassword = passwordHashing.hashedPassword(user.Password.Trim());
+            if (Level_Id == 0)
+            {
+                ModelState.AddModelError("AccessLevel", "Please select Access Level");
+                return Redirect(Url.Action("SystemUsers") + "#addusertab");
+            }
+            else
+            { // All fields have been validated
+                DigitizingDataDomain.Model.Users addUser = new DigitizingDataDomain.Model.Users();
+                addUser.Username = Convert.ToString(user.Username);
+                addUser.Password = Convert.ToString(user.Password);
+                addUser.Fullname = Convert.ToString(user.Fullname);
+                addUser.Email = Convert.ToString(user.Email);
+                addUser.DateCreated = System.DateTime.Today;
+                addUser.UserLevel = Convert.ToInt32(Level_Id);
+
+                UserRepo _userRepo = new UserRepo();
+                insertResult = _userRepo.Insert(addUser);
+                if (insertResult)
+                { // TRUE
+                    // log details
+                    String logString = Convert.ToString(Session["Username"]) + " Added a new User";
+                    activityLoggingSystem.logActivity(logString, 0);
+
+                    return RedirectToAction("SystemUsers");
+                }
+                else
+                {// FALSE
+                    return Redirect(Url.Action("SystemUsers") + "#addusertab");
+                }
+
+
+                //User _user = new User
+                //{
+                //    Username = user.Username,
+                //    Fullname = user.Fullname,
+                //    Password = _hashedPassword,
+                //    Email = user.Email,
+                //    DateCreated = System.DateTime.Today,
+                //    UserLevel = Level_Id
+                //};
+                //database.Users.Add(_user);
+                //database.SaveChanges();
+                //ModelState.Clear();
+                //user = null;
+                //String logString = Convert.ToString(Session["Username"]) + " Added a new User";
+                //activityLoggingSystem.logActivity(logString, 0);
+                //return RedirectToAction("SystemUsers");
+            }
+        }
+
+
+
         // Edit a particular user's information.   
         public ActionResult EditUser(int id)
         {
@@ -538,36 +596,7 @@ namespace DigitizingDataAdminApp.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult AddUser(User user, int Level_Id)
-        {
-            PasswordHashing _password = new PasswordHashing();
-            string _hashedPassword = _password.hashedPassword(user.Password.Trim()); // Hash the password
-            if (Level_Id == 0)
-            {
-                ModelState.AddModelError("AccessLevel", "Please select Access Level");
-                return Redirect(Url.Action("SystemUsers") + "#addusertab");
-            }
-            else
-            { // All fields have been validated
-                User _user = new User
-                {
-                    Username = user.Username,
-                    Fullname = user.Fullname,
-                    Password = _hashedPassword,
-                    Email = user.Email,
-                    DateCreated = System.DateTime.Today,
-                    UserLevel = Level_Id
-                };
-                database.Users.Add(_user);
-                database.SaveChanges();
-                ModelState.Clear();
-                user = null;
-                String logString = Convert.ToString(Session["Username"]) + " Added a new User";
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("SystemUsers");
-            }
-        }
+
 
 
 
