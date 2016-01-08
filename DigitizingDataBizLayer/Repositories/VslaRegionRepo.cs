@@ -11,5 +11,11 @@ namespace DigitizingDataBizLayer.Repositories
 {
     public class VslaRegionRepo : RepositoryBase<VslaRegion>
     {
+        public List<VslaRegion> findAllRegions()
+        {
+            var allRegions = (from r in SessionProxy.Query<VslaRegion>()
+                              select r).ToList();
+            return allRegions;
+        }
     }
 }

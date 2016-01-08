@@ -73,6 +73,7 @@
     <Compile Include="Repositories\MemberRepo.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SavingRepo.cs" />
+    <Compile Include="Repositories\StatusTypeRepo.cs" />
     <Compile Include="Repositories\TechnicalTrainerRepo.cs" />
     <Compile Include="Repositories\UserPermissionsRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />

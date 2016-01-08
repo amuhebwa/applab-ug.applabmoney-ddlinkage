@@ -14,9 +14,9 @@ namespace DigitizingDataDomain.Model
         public virtual string Username { get; set; }
         public virtual string LastName { get; set; }
         public virtual string FirstName { get; set; }
-        public virtual string Status { get; set; }
         public virtual string Email { get; set; }
         public virtual string PhoneNumber { get; set; }
         public virtual VslaRegion VslaRegion { get; set; }
+        public virtual string Status { get; set; }
     }
 }

@@ -12,7 +12,6 @@ using System.Web.Helpers;
 using System.IO;
 using System.Text.RegularExpressions;
 using DigitizingDataBizLayer.Repositories;
-using DigitizingDataDomain.Model;
 namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
@@ -172,7 +171,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Session Level 1 : admin
             // Session Level 2 : user               
-            List<Users> userDetails = null;
+            List<DigitizingDataDomain.Model.Users> userDetails = null;
 
             if (sessionUserLevel == 1)
             { // ADMIN
@@ -221,7 +220,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Display all information for a particular user
         public ActionResult UserDetails(int id)
         {
-            Users userDetails = userRepo.findUserDetails(id);
+            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
                 Id = userDetails.Id,
@@ -270,28 +269,8 @@ namespace DigitizingDataAdminApp.Controllers
                 {// FALSE
                     return Redirect(Url.Action("SystemUsers") + "#addusertab");
                 }
-
-
-                //User _user = new User
-                //{
-                //    Username = user.Username,
-                //    Fullname = user.Fullname,
-                //    Password = _hashedPassword,
-                //    Email = user.Email,
-                //    DateCreated = System.DateTime.Today,
-                //    UserLevel = Level_Id
-                //};
-                //database.Users.Add(_user);
-                //database.SaveChanges();
-                //ModelState.Clear();
-                //user = null;
-                //String logString = Convert.ToString(Session["Username"]) + " Added a new User";
-                //activityLoggingSystem.logActivity(logString, 0);
-                //return RedirectToAction("SystemUsers");
             }
         }
-
-
 
         // Edit a particular user's information.   
         public ActionResult EditUser(int id)
@@ -374,7 +353,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Helper function to get a user's information base on their ID
         public UserInformation particularUserData(int id)
         {
-            Users userDetails = userRepo.findUserDetails(id);
+            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             // Get access levels
             List<UserPermission> permissions = new List<UserPermission>();
             List<DigitizingDataDomain.Model.UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
@@ -403,7 +382,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult DeleteUser(int id)
         {
-            Users userDetails = userRepo.findUserDetails(id);
+            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
                 Id = userDetails.Id,
@@ -447,6 +426,334 @@ namespace DigitizingDataAdminApp.Controllers
                 return View();
             }
         }
+
+        /**
+         * ******************  TECHNICAL USERS  *******************
+         */
+
+        // All Technical Trainers
+        public ActionResult TechnicalTrainers()
+        {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
+            AllTrainersInformation allTrainers = new AllTrainersInformation();
+            List<TrainerInformation> allrainersData = new List<TrainerInformation>();
+            allrainersData = allTechTrainerInformation();
+            allTrainers.AllTrainersList = allrainersData;
+            allTrainers.SessionUserLevel = sessionUserLevel;
+            allTrainers.VslaRegionsModel = getVslaRegions();
+            allTrainers.StatusType = getStatusTypes();
+
+            return View(allTrainers);
+        }
+
+        // Helper method to get the list of all Technical Trainers that have been added to a system
+        public List<TrainerInformation> allTechTrainerInformation()
+        {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
+            List<TrainerInformation> trainerList = new List<TrainerInformation>();
+            TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+            List<DigitizingDataDomain.Model.TechnicalTrainer> allTrainers = _technicalTrainerRepo.findAllTechnicalTrainers();
+
+            foreach (var item in allTrainers)
+            {
+                trainerList.Add(new TrainerInformation
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Region = item.VslaRegion.RegionName,
+                    PhoneNumber = item.PhoneNumber,
+                    Email = item.Email,
+                    Status = item.Status == "1" ? "Active" : "Inactive"
+                });
+            }
+
+            return trainerList;
+        }
+        // List Of All Regions
+        public SelectList getVslaRegions()
+        {
+            List<DigitizingDataAdminApp.Models.VslaRegion> regionsList = new List<DigitizingDataAdminApp.Models.VslaRegion>();
+            regionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+            {
+                RegionId = 0,
+                RegionName = "-Select Region-"
+            });
+            VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
+            List<DigitizingDataDomain.Model.VslaRegion> allRegions = _vslaRegionRepo.findAllRegions();
+            foreach (var region in allRegions)
+            {
+                regionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList data = new SelectList(regionsList, "RegionId", "RegionName", 0);
+            return data;
+        }
+
+
+        // List of status types ie active/inactive
+        public SelectList getStatusTypes()
+        {
+            List<DigitizingDataAdminApp.Models.StatusType> statusOptions = new List<DigitizingDataAdminApp.Models.StatusType>();
+
+            statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType()
+            {
+                Status_Id = 0,
+                CurrentStatus = "-Select Status-"
+            });
+
+            StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
+            List<DigitizingDataDomain.Model.StatusType> allStatusTypes = _statusTypeRepo.findAllStatusType();
+            foreach (var status in allStatusTypes)
+            {
+                statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
+            return statusTypes;
+
+        }
+
+
+        // List of all Technical trainers from list selector
+        public SelectList getAllTrainers()
+        {
+            List<DigitizingDataAdminApp.Models.TechnicalTrainer> trainers = new List<DigitizingDataAdminApp.Models.TechnicalTrainer>();
+            trainers.Add(new DigitizingDataAdminApp.Models.TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
+            TechnicalTrainerRepo _technicalTrinerRepo = new TechnicalTrainerRepo();
+            List<DigitizingDataDomain.Model.TechnicalTrainer> allTainers = _technicalTrinerRepo.findAllTechnicalTrainers();
+            foreach (var trainer in allTainers)
+            {
+                trainers.Add(new DigitizingDataAdminApp.Models.TechnicalTrainer
+                {
+                    Id = trainer.Id,
+                    Name = trainer.Name
+                });
+            }
+            SelectList result = new SelectList(trainers, "Id", "Name", 0);
+            return result;
+
+        }
+
+        // View all information for a particular Technical Trainer
+        public ActionResult TrainersDetails(int id)
+        {
+            TrainerInformation trainerData = findParticularTrainerDetails(id);
+            return View(trainerData);
+        }
+
+        // Get all details for a particular trainer
+        public TrainerInformation findParticularTrainerDetails(int id)
+        {
+            TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+            DigitizingDataDomain.Model.TechnicalTrainer trainer = _technicalTrainerRepo.findParticularTrainer(id);
+            TrainerInformation trainerData = new TrainerInformation
+            {
+                Id = trainer.Id,
+                FirstName = trainer.FirstName,
+                LastName = trainer.LastName,
+                Region = trainer.VslaRegion.RegionName,
+                PhoneNumber = trainer.PhoneNumber,
+                Email = trainer.Email,
+                Status = trainer.Status == "1" ? "Active" : "Inactive",
+                Username = trainer.Username,
+                Passkey = trainer.Passkey
+            };
+            return trainerData;
+        }
+
+        /**
+        * Add a new community based trainer (CBT) to the system
+        **/
+        [HttpPost]
+        public ActionResult AddTechnicalTrainer(TechnicalTrainer trainer, int regionId, int Status_Id)
+        {
+            if (Status_Id == 0)
+            {
+                ModelState.AddModelError("Status", "Please select status");
+                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
+            }
+            else if (regionId == 0)
+            {
+                ModelState.AddModelError("Region", "Please select Region");
+                return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
+            }
+            else
+            { // All are valid
+
+                Boolean insertResult = false;
+                TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+
+                DigitizingDataDomain.Model.TechnicalTrainer newTrainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+
+                string fullName = trainer.FirstName + " " + trainer.LastName;
+                newTrainer.Name = Convert.ToString(fullName);
+                newTrainer.FirstName = Convert.ToString(trainer.FirstName);
+                newTrainer.LastName = Convert.ToString(trainer.LastName);
+                // Region
+                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                vslaRegion.RegionId = Convert.ToInt32(regionId);
+                newTrainer.VslaRegion = vslaRegion;
+
+                newTrainer.PhoneNumber = Convert.ToString(trainer.PhoneNumber);
+                newTrainer.Email = Convert.ToString(trainer.Email);
+                newTrainer.Status = Convert.ToString(Status_Id);
+                newTrainer.Username = Convert.ToString(trainer.Username);
+                newTrainer.Passkey = Convert.ToString(trainer.Passkey);
+
+                insertResult = _technicalTrainerRepo.Insert(newTrainer);
+                if (insertResult)
+                { // TRUE
+                    String logString = Convert.ToString(Session["Username"]) + " Added a new Technical Trainer called : " + trainer.FirstName + " " + trainer.LastName;
+                    activityLoggingSystem.logActivity(logString, 0);
+                    return RedirectToAction("TechnicalTrainers");
+                }
+                else
+                { // FALSE
+                    return View();
+                }
+            }
+        }
+
+        // Edit information for a particular Technical Trainer
+        [HttpGet]
+        public ActionResult EditTrainerDetails(int id)
+        {
+            TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+            int _trainerId = Convert.ToInt32(id);
+            DigitizingDataDomain.Model.TechnicalTrainer allInformation = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+
+            // Regions
+            List<DigitizingDataAdminApp.Models.VslaRegion> allRegionsList = new List<DigitizingDataAdminApp.Models.VslaRegion>();
+            VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
+            List<DigitizingDataDomain.Model.VslaRegion> databaseRegions = _vslaRegionRepo.findAllRegions();
+            foreach (var region in databaseRegions)
+            {
+                allRegionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.VslaRegion.RegionId);
+
+            // Status types
+            List<DigitizingDataAdminApp.Models.StatusType> statusOptions = new List<DigitizingDataAdminApp.Models.StatusType>();
+            StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
+            List<DigitizingDataDomain.Model.StatusType> databaseStatuses = _statusTypeRepo.findAllStatusType();
+            foreach (var status in databaseStatuses)
+            {
+                statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType
+                {
+                    Status_Id = status.Status_Id,
+                    CurrentStatus = status.CurrentStatus
+                });
+            }
+            SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.Status);
+
+            // Create a cbt object
+            TrainerInformation trainerData = new TrainerInformation
+            {
+                Id = allInformation.Id,
+                FirstName = allInformation.FirstName,
+                LastName = allInformation.LastName,
+                VslaRegionsModel = regionsList, // Drop down list for regions
+                PhoneNumber = allInformation.PhoneNumber,
+                Email = allInformation.Email,
+                StatusType = statusTypes, // Drop down list for status types
+                Username = allInformation.Username,
+                Passkey = allInformation.Passkey
+            };
+            return View(trainerData);
+        }
+
+        [HttpPost]
+        public ActionResult EditTrainerDetails(TechnicalTrainer trainer, int id, int regionId, int Status_Id)
+        {
+            Boolean updateResult = false;
+            int _trainerId = Convert.ToInt32(trainer.Id);
+            TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+            DigitizingDataDomain.Model.TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+            if (currentTrainer != null)
+            {
+                string fullname = trainer.FirstName + " " + trainer.LastName;
+                currentTrainer.Name = Convert.ToString(fullname);
+                currentTrainer.FirstName = Convert.ToString(trainer.FirstName);
+                currentTrainer.LastName = Convert.ToString(trainer.LastName);
+
+                // region id
+                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                vslaRegion.RegionId = Convert.ToInt32(regionId);
+                currentTrainer.VslaRegion = vslaRegion;
+
+                currentTrainer.PhoneNumber = Convert.ToString(trainer.PhoneNumber);
+                currentTrainer.Email = Convert.ToString(trainer.Email);
+                currentTrainer.Status = Convert.ToString(Status_Id);
+                currentTrainer.Username = Convert.ToString(trainer.Username);
+                currentTrainer.Passkey = Convert.ToString(trainer.Passkey);
+
+                updateResult = _technicalTrainerRepo.Update(currentTrainer);
+            }
+            if (updateResult)
+            { // TRUE
+                return RedirectToAction("TechnicalTrainers");
+            }
+            else
+            { // FALSE
+                return View();
+            }
+        }
+
+        // Delete a particular Technical Trainer from the system
+        [HttpGet]
+        public ActionResult DeleteTrainer(int id)
+        {
+            TrainerInformation trainerData = findParticularTrainerDetails(id);
+            return View(trainerData);
+        }
+        [HttpPost]
+        public ActionResult DeleteTrainer(TechnicalTrainer trainer, int id)
+        {
+            Boolean deleteResult = false;
+            if (ModelState.IsValid && trainer != null)
+            {
+                int _trainerId = Convert.ToInt32(trainer.Id);
+                TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+                DigitizingDataDomain.Model.TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+                if (currentTrainer != null)
+                {
+                    deleteResult = _technicalTrainerRepo.Delete(currentTrainer);
+                }
+            }
+            if (deleteResult)
+            { //TRUE
+                String logString = Convert.ToString(Session["Username"]) + " Deleted Technical Trainer ";
+                activityLoggingSystem.logActivity(logString, 0);
+                return RedirectToAction("TechnicalTrainers");
+            }
+            else
+            { // FALSE
+                return View();
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -503,78 +810,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
 
-        /**
-         * Get all information concerned with CTechnical Trainers
-         * */
-        //public ActionResult TechnicalTrainers()
-        //{
-        //    int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-        //    AllTrainersInformation allTrainers = new AllTrainersInformation();
-        //    List<TrainerInformation> getTrainersData = new List<TrainerInformation>();
-        //    getTrainersData = getCbtInformation();
-        //    allTrainers.AllTrainersList = getTrainersData;
-        //    allTrainers.SessionUserLevel = sessionUserLevel;
-        //    allTrainers.VslaRegionsModel = getVslaRegions();
-        //    allTrainers.StatusType = getStatusTypes();
 
-        //    return View(allTrainers);
-        //}
-
-        // Get the list of regions
-        //public SelectList getVslaRegions()
-        //{
-        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
-        //    allRegionsList.Add(new VslaRegion() { RegionId = 0, RegionName = "-Select Region-" });
-        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-        //    foreach (var region in databaseRegions)
-        //    {
-        //        allRegionsList.Add(new VslaRegion()
-        //        {
-        //            RegionId = region.RegionId,
-        //            RegionName = region.RegionName
-        //        });
-        //    }
-        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", 0);
-        //    return regionsList;
-        //}
-
-
-        // List of status types ie active/inactive
-        //public SelectList getStatusTypes()
-        //{
-        //    List<StatusType> statusOptions = new List<StatusType>();
-        //    statusOptions.Add(new StatusType() { Status_Id = 0, CurrentStatus = "-Select Status-" });
-        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-        //    foreach (var status in databaseStatuses)
-        //    {
-        //        statusOptions.Add(new StatusType
-        //        {
-        //            Status_Id = status.Status_Id,
-        //            CurrentStatus = status.CurrentStatus
-        //        });
-        //    }
-        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", 0);
-        //    return statusTypes;
-
-        //}
-        // list of all Technical trainers
-        //public SelectList getAllTrainers()
-        //{
-        //    List<TechnicalTrainer> trainers = new List<TechnicalTrainer>();
-        //    trainers.Add(new TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
-        //    var database_trainers = database.TechnicalTrainers.OrderBy(a => a.Name);
-        //    foreach (var trainer in database_trainers)
-        //    {
-        //        trainers.Add(new TechnicalTrainer
-        //        {
-        //            Id = trainer.Id,
-        //            Name = trainer.Name
-        //        });
-        //    }
-        //    SelectList allTrainers = new SelectList(trainers, "Id", "Name", 0);
-        //    return allTrainers;
-
-        //}
 
 
 
@@ -1248,264 +1484,6 @@ namespace DigitizingDataAdminApp.Controllers
             };
             return View(memberInfo);
         }
-        /**
-         * Add a new community based trainer (CBT) to the system
-         **/
-        [HttpPost]
-        //public ActionResult AddTechnicalTrainer(TechnicalTrainer new_cbt, int RegionId, int Status_Id)
-        //{
-        //    if (Status_Id == 0)
-        //    {
-        //        ModelState.AddModelError("Status", "Please select status");
-        //        return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
-        //    }
-        //    else if (RegionId == 0)
-        //    {
-        //        ModelState.AddModelError("Region", "Please select Region");
-        //        return Redirect(Url.Action("TechnicalTrainers") + "#addtrainer");
-        //    }
-        //    else
-        //    { // All are valid
-        //        string fullName = new_cbt.FirstName + " " + new_cbt.LastName;
-        //        TechnicalTrainer _cbt = new TechnicalTrainer
-        //        {
-
-        //            Name = fullName,
-        //            FirstName = new_cbt.FirstName,
-        //            LastName = new_cbt.LastName,
-        //            Region = RegionId,
-        //            PhoneNumber = new_cbt.PhoneNumber,
-        //            Email = new_cbt.Email,
-        //            Status = Status_Id,
-        //            Username = new_cbt.Username,
-        //            Passkey = new_cbt.Passkey
-        //        };
-
-        //        database.TechnicalTrainers.Add(_cbt);
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Added a new CBT called : " + new_cbt.FirstName + " " + new_cbt.LastName;
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("TechnicalTrainers");
-        //    }
-        //}
-
-        /**
-         * View all information for a particular CBT
-         * */
-        public ActionResult TrainersDetails(int id)
-        {
-            TrainerInformation cbtData = getCbtInformationForEditing(id);
-            return View(cbtData);
-        }
-
-        /**
-         * Edit information for a particular CBT
-         * */
-        [HttpGet]
-        //public ActionResult EditTrainerDetails(int id)
-        //{
-        //    var allInformation = (from table_cbt in database.TechnicalTrainers
-        //                          join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-        //                          where table_cbt.Id == id
-        //                          select new { dt_cbt = table_cbt, db_region = table_region }).Single();
-
-        //    // Regions
-        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
-        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-        //    foreach (var region in databaseRegions)
-        //    {
-        //        allRegionsList.Add(new VslaRegion()
-        //        {
-        //            RegionId = region.RegionId,
-        //            RegionName = region.RegionName
-        //        });
-        //    }
-        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
-
-        //    // Status types
-        //    List<StatusType> statusOptions = new List<StatusType>();
-        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-        //    foreach (var status in databaseStatuses)
-        //    {
-        //        statusOptions.Add(new StatusType
-        //        {
-        //            Status_Id = status.Status_Id,
-        //            CurrentStatus = status.CurrentStatus
-        //        });
-        //    }
-        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
-
-        //    // Create a cbt object
-        //    TrainerInformation cbtData = new TrainerInformation
-        //    {
-        //        Id = allInformation.dt_cbt.Id,
-        //        FirstName = allInformation.dt_cbt.FirstName,
-        //        LastName = allInformation.dt_cbt.LastName,
-        //        VslaRegionsModel = regionsList,
-        //        PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-        //        Email = allInformation.dt_cbt.Email,
-        //        StatusType = statusTypes,
-        //        Username = allInformation.dt_cbt.Username,
-        //        Passkey = allInformation.dt_cbt.Passkey
-        //    };
-        //    return View(cbtData);
-        //}
-        [HttpPost]
-        //public ActionResult EditTrainerDetails(TechnicalTrainer cbt, int id, int RegionId, int Status_Id)
-        //{
-        //    Regex phoneRegex = new Regex(@"^([0-9\(\)\/\+ \-]*)$");
-        //    if (string.IsNullOrEmpty(cbt.FirstName))
-        //    {
-        //        ModelState.AddModelError("FirstName", "Please Enter a valid First Name");
-        //    }
-        //    else if (string.IsNullOrEmpty(cbt.LastName))
-        //    {
-        //        ModelState.AddModelError("LastName", "Please Enter a valid Last Name");
-        //    }
-        //    else if (RegionId == 0)
-        //    {
-        //        ModelState.AddModelError("Region", "Please Select a region");
-        //    }
-        //    else if (string.IsNullOrEmpty(cbt.PhoneNumber))
-        //    {
-        //        ModelState.AddModelError("PhoneNumber", "Please Enter Valid Phone Number");
-        //    }
-        //    else if (!phoneRegex.IsMatch(cbt.PhoneNumber))
-        //    {
-        //        ModelState.AddModelError("PhoneNumber", "Please Enter only digits");
-        //    }
-        //    else if (cbt.PhoneNumber.ToString().Trim().Length > 20)
-        //    {
-        //        ModelState.AddModelError("PhoneNumber", "Max : 20 Characters");
-        //    }
-        //    else if (cbt.PhoneNumber.ToString().Trim().Length < 10)
-        //    {
-        //        ModelState.AddModelError("PhoneNumber", "Min : 10 Characters");
-        //    }
-        //    else if (string.IsNullOrEmpty(cbt.Email))
-        //    {
-        //        ModelState.AddModelError("Email", "Please Enter Valid Email Address");
-        //    }
-
-        //    else if (Status_Id == 0)
-        //    {
-        //        ModelState.AddModelError("Status", "Please select status");
-        //    }
-        //    else
-        //    {
-        //        string fullname = cbt.FirstName + " " + cbt.LastName;
-        //        var query = database.TechnicalTrainers.Find(id);
-        //        query.Name = fullname;
-        //        query.FirstName = cbt.FirstName;
-        //        query.LastName = cbt.LastName;
-        //        query.Region = RegionId;
-        //        query.PhoneNumber = cbt.PhoneNumber;
-        //        query.Email = cbt.Email;
-        //        query.Status = Status_Id;
-        //        query.Username = cbt.Username;
-        //        query.Passkey = cbt.Passkey;
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Edited CBT called : " + cbt.FirstName + " " + cbt.LastName;
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("TechnicalTrainers");
-        //    }
-
-        //    // In case validation fails, recreate the form with pre-populated data
-        //    var allInformation = (from table_cbt in database.TechnicalTrainers
-        //                          join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-        //                          where table_cbt.Id == id
-        //                          select new { dt_cbt = table_cbt, db_region = table_region }).Single();
-
-        //    // Regions
-        //    List<VslaRegion> allRegionsList = new List<VslaRegion>();
-        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName);
-        //    foreach (var region in databaseRegions)
-        //    {
-        //        allRegionsList.Add(new VslaRegion()
-        //        {
-        //            RegionId = region.RegionId,
-        //            RegionName = region.RegionName
-        //        });
-        //    }
-        //    SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.db_region.RegionId);
-
-        //    // Status types
-        //    List<StatusType> statusOptions = new List<StatusType>();
-        //    var databaseStatuses = database.StatusTypes.OrderBy(a => a.Status_Id);
-        //    foreach (var status in databaseStatuses)
-        //    {
-        //        statusOptions.Add(new StatusType
-        //        {
-        //            Status_Id = status.Status_Id,
-        //            CurrentStatus = status.CurrentStatus
-        //        });
-        //    }
-        //    SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.dt_cbt.Status);
-
-        //    // Create a cbt object
-        //    TrainerInformation cbtData = new TrainerInformation
-        //    {
-        //        Id = allInformation.dt_cbt.Id,
-        //        Name = allInformation.dt_cbt.Name,
-        //        VslaRegionsModel = regionsList,
-        //        PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-        //        Email = allInformation.dt_cbt.Email,
-        //        StatusType = statusTypes
-        //    };
-        //    return View(cbtData);
-        //}
-
-        /**
-         * Function to query the database and get Information related to a particular CBT for editing
-         * */
-        public TrainerInformation getCbtInformationForEditing(int id)
-        {
-            var allInformation = (from table_cbt in database.TechnicalTrainers
-                                  join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-                                  join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
-                                  where table_cbt.Id == id
-                                  select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status }).Single();
-            TrainerInformation cbtData = new TrainerInformation
-            {
-                Id = allInformation.dt_cbt.Id,
-                FirstName = allInformation.dt_cbt.FirstName,
-                LastName = allInformation.dt_cbt.LastName,
-                Region = allInformation.dt_region.RegionName,
-                PhoneNumber = allInformation.dt_cbt.PhoneNumber,
-                Email = allInformation.dt_cbt.Email,
-                Status = allInformation.dt_status.CurrentStatus,
-                Username = allInformation.dt_cbt.Username,
-                Passkey = allInformation.dt_cbt.Passkey
-            };
-            return cbtData;
-        }
-
-        /**
-         * Delete a particular CBT from the system
-         * */
-        [HttpGet]
-        public ActionResult DeleteTrainer(int id)
-        {
-            TrainerInformation trainerData = getCbtInformationForEditing(id);
-            return View(trainerData);
-        }
-        [HttpPost]
-        //public ActionResult DeleteTrainer(TechnicalTrainer trainer, int id)
-        //{
-        //    if (ModelState.IsValid && trainer != null)
-        //    {
-        //        trainer.Id = id;
-        //        database.TechnicalTrainers.Attach(trainer);
-        //        database.TechnicalTrainers.Remove(trainer);
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Deleted CBT ";
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("TechnicalTrainers");
-        //    }
-        //    return View();
-        //}
-
-
 
         /**
          * Helper method to get all information concerning vsla
@@ -1595,35 +1573,6 @@ namespace DigitizingDataAdminApp.Controllers
             Response.End();
         }
 
-        /**
-         * Helper method to get the list of all CBTS that have been added to a system
-         * */
-        public List<TrainerInformation> getCbtInformation()
-        {
-            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
-            List<TrainerInformation> cbts = new List<TrainerInformation>();
-            var data = (from table_cbt in database.TechnicalTrainers
-                        join table_region in database.VslaRegions on table_cbt.Region equals table_region.RegionId
-                        join table_status in database.StatusTypes on table_cbt.Status equals table_status.Status_Id
-                        select new { dt_cbt = table_cbt, dt_region = table_region, dt_status = table_status });
-
-            foreach (var item in data)
-            {
-                cbts.Add(new TrainerInformation
-                {
-                    Id = item.dt_cbt.Id,
-                    Name = item.dt_cbt.Name,
-                    FirstName = item.dt_cbt.FirstName,
-                    LastName = item.dt_cbt.LastName,
-                    Region = item.dt_region.RegionName,
-                    PhoneNumber = item.dt_cbt.PhoneNumber,
-                    Email = item.dt_cbt.Email,
-                    Status = item.dt_status.CurrentStatus
-                });
-            }
-
-            return cbts;
-        }
 
         /**
          * ******** GENERATE REPORTS *********
