@@ -48,7 +48,6 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (Session["UserId"] != null)
             {
-
                 // Total VSLAs
                 long totalVslas = vslaRepo.countVslas();
 
@@ -61,7 +60,6 @@ namespace DigitizingDataAdminApp.Controllers
                 double totalSavings = meetingRepo.findTotalSavings();
                 double totalLoans = meetingRepo.findTotalLoans();
                 double totalLoanRepayment = meetingRepo.findTotalLoanRepayment();
-
 
                 // Attendance
                 int totalPresent = (int)attendanceRepo.totalMembersPresent();
@@ -127,12 +125,12 @@ namespace DigitizingDataAdminApp.Controllers
                 xValue: new[] { "Present", "Absent" },
                yValues: new[] { totalPresent.ToString(), totalAbsent.ToString() }
                ).AddLegend().Write("bmp");
+
             return null;
         }
         // Show total savings, loans given out and loan repayments
         public ActionResult showSavingsLoansAndRepayments()
         {
-
             double totalSavings = meetingRepo.findTotalSavings();
             double totalLoans = meetingRepo.findTotalLoans();
             double totalLoanRepayment = meetingRepo.findTotalLoanRepayment();
@@ -167,7 +165,6 @@ namespace DigitizingDataAdminApp.Controllers
             List<UserInformation> users = new List<UserInformation>();
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             string sessionUsername = Convert.ToString(Session["Username"]);
-
 
             // Session Level 1 : admin
             // Session Level 2 : user               
@@ -336,7 +333,6 @@ namespace DigitizingDataAdminApp.Controllers
                     if (currentUser.Id > 0)
                     {
                         updateResult = _userRepo.Update(currentUser);
-
                     }
                 }
 
@@ -494,7 +490,6 @@ namespace DigitizingDataAdminApp.Controllers
             return data;
         }
 
-
         // List of status types ie active/inactive
         public SelectList getStatusTypes()
         {
@@ -521,7 +516,6 @@ namespace DigitizingDataAdminApp.Controllers
 
         }
 
-
         // List of all Technical trainers from list selector
         public SelectList getAllTrainers()
         {
@@ -539,7 +533,6 @@ namespace DigitizingDataAdminApp.Controllers
             }
             SelectList result = new SelectList(trainers, "Id", "Name", 0);
             return result;
-
         }
 
         // View all information for a particular Technical Trainer
@@ -570,7 +563,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         /**
-        * Add a new community based trainer (CBT) to the system
+        * Add a new Technical Trainer to the system
         **/
         [HttpPost]
         public ActionResult AddTechnicalTrainer(TechnicalTrainer trainer, int regionId, int Status_Id)
@@ -745,6 +738,9 @@ namespace DigitizingDataAdminApp.Controllers
 
         }
 
+        /**
+         *************  VSLA GROUPS ***************
+         */
 
 
 
