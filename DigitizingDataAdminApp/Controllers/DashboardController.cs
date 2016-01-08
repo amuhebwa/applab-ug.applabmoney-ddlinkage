@@ -341,7 +341,54 @@ namespace DigitizingDataAdminApp.Controllers
             return user_data;
         }
 
+        // Delete a particular user form the system
+        [HttpGet]
+        public ActionResult DeleteUser(int id)
+        {
+            Users userDetails = userRepo.findUserDetails(id);
+            UserInformation userData = new UserInformation
+            {
+                Id = userDetails.Id,
+                Username = userDetails.Username,
+                Password = userDetails.Password,
+                Fullname = userDetails.Fullname,
+                Email = userDetails.Email,
+                DateCreated = userDetails.DateCreated,
+                UserLevel = userDetails.UserLevel == 1 ? "Admin" : "User"
+            };
+            return View(userData);
+        }
 
+        [HttpPost]
+        public ActionResult DeleteUser(User user, int id)
+        {
+            Boolean deleteResult = false;
+            String logString = string.Empty;
+            if (ModelState.IsValid && user != null)
+            {
+                int _userId = Convert.ToInt32(user.Id);
+                UserRepo _userRepo = new UserRepo();
+                DigitizingDataDomain.Model.Users currentUser = _userRepo.findUserById(_userId);
+
+                if (currentUser != null)
+                {
+                    deleteResult = _userRepo.Delete(currentUser);
+                }
+            }
+            if (deleteResult)
+            { //TRUE
+                // Data log
+                logString = Convert.ToString(Session["Username"]) + " Deleted User with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 0);
+                return RedirectToAction("SystemUsers");
+            }
+            else
+            {// FALSE
+                logString = Convert.ToString(Session["Username"]) + "Failed to delete User with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 1);
+                return View();
+            }
+        }
 
 
 
@@ -523,47 +570,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
 
-        /**
-         * Delete a particular user form the system
-         * */
-        [HttpGet]
-        public ActionResult DeleteUser(int id)
-        {
-            var userDetails = (from tb_users in database.Users
-                               join table_permissions in database.UserPermissions on tb_users.UserLevel equals table_permissions.Level_Id
-                               where tb_users.Id == id
-                               select new { db_users = tb_users, db_permissions = table_permissions }).Single();
 
-            UserInformation userData = new UserInformation
-            {
-                Id = userDetails.db_users.Id,
-                Username = userDetails.db_users.Username,
-                Password = userDetails.db_users.Password,
-                Fullname = userDetails.db_users.Fullname,
-                Email = userDetails.db_users.Email,
-                DateCreated = userDetails.db_users.DateCreated,
-                UserLevel = userDetails.db_permissions.UserType
-            };
-            return View(userData);
-        }
-
-        [HttpPost]
-        public ActionResult DeleteUser(User user, int id)
-        {
-            if (ModelState.IsValid && user != null)
-            {
-                user.Id = id;
-                database.Users.Attach(user);
-                database.Users.Remove(user);
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Deleted User with ID : " + Convert.ToString(id);
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("SystemUsers");
-            }
-            String logStringError = Convert.ToString(Session["Username"]) + "Failed to delete User with ID : " + Convert.ToString(id);
-            activityLoggingSystem.logActivity(logStringError, 1);
-            return View();
-        }
 
 
         /**
