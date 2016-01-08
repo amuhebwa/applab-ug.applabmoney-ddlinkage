@@ -46,6 +46,6 @@ C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlin
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\bin\Release\Iesi.Collections.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\bin\Release\NHibernate.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\bin\Release\NHibernate.Linq.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Release\DigitizingDataDomain.csprojResolveAssemblyReference.cache
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Release\DigitizingDataDomain.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Release\DigitizingDataDomain.pdb
+C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataDomain\obj\Release\DigitizingDataDomain.csprojResolveAssemblyReference.cache

@@ -82,6 +82,7 @@
     <Compile Include="Mapping\TechnicalTrainerMap.cs" />
     <Compile Include="Mapping\StatusTypeMap.cs" />
     <Compile Include="Mapping\UserMap.cs" />
+    <Compile Include="Mapping\UserPermissionsMap.cs" />
     <Compile Include="Mapping\VslaCycleMap.cs" />
     <Compile Include="Mapping\VslaDdActivationMap.cs" />
     <Compile Include="Mapping\VslaMap.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Model\Saving.cs" />
     <Compile Include="Model\TechnicalTrainer.cs" />
     <Compile Include="Model\StatusType.cs" />
+    <Compile Include="Model\UserPermissions.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\Vsla.cs" />
     <Compile Include="Model\VslaCycle.cs" />

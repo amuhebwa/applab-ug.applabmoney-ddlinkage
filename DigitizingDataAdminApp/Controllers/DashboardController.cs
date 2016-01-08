@@ -25,18 +25,22 @@ namespace DigitizingDataAdminApp.Controllers
         MeetingRepo meetingRepo;
         AttendanceRepo attendanceRepo;
         DataSubmissionRepo submssionRepo;
-
+        UserPermissionsRepo permissionsRepo;
+        UserRepo userRepo;
 
         public DashboardController()
         {
             activityLoggingSystem = new ActivityLoggingSystem();
             database = new ledgerlinkEntities();
 
+            userRepo = new UserRepo();
             vslaRepo = new VslaRepo();
             memberRepo = new MemberRepo();
             meetingRepo = new MeetingRepo();
             attendanceRepo = new AttendanceRepo();
             submssionRepo = new DataSubmissionRepo();
+            permissionsRepo = new UserPermissionsRepo();
+
 
         }
 
@@ -144,28 +148,65 @@ namespace DigitizingDataAdminApp.Controllers
             return null;
         }
         /**
-         * Get all information concerning registered information
-         * */
+         * ************ SYSTEM USERS *****************
+         */
         public ActionResult SystemUsers()
         {
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
+
+            List<UserInformation> singleUser = usersInformation();
             SystemUsersInformation allUsers = new SystemUsersInformation();
-            List<UserInformation> singleUser = new List<UserInformation>();
-            singleUser = usersInformation();
             allUsers.AllUsersList = singleUser;
             allUsers.SessionUserLevel = sessionUserLevel;
             allUsers.AccessLevel = getAccessPermissions();
             return View(allUsers);
         }
-        /**
-         * Get the user level permissions to populate in the drop down list 
-         **/
+
+        // Helper method to get information for all registered users
+        public List<UserInformation> usersInformation()
+        {
+            List<UserInformation> users = new List<UserInformation>();
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
+            string sessionUsername = Convert.ToString(Session["Username"]);
+
+
+            // Session Level 1 : admin
+            // Session Level 2 : user               
+            List<Users> userDetails = null;
+
+            if (sessionUserLevel == 1)
+            { // ADMIN
+                userDetails = userRepo.findAllUsers();
+            }
+            else
+            { // USER
+                userDetails = userRepo.findParticularUser(sessionUserLevel, sessionUsername);
+            }
+
+            foreach (var item in userDetails)
+            {
+                users.Add(
+                    new UserInformation
+                    {
+                        Id = item.Id,
+                        Username = item.Username,
+                        Fullname = item.Fullname,
+                        Email = item.Email,
+                        UserLevel = item.UserLevel == 1 ? "Admin" : "User"
+                    });
+            }
+            return users;
+        }
+
+        // Get the user level permissions to populate in the drop down list 
         public SelectList getAccessPermissions()
         {
             List<UserPermission> permissions = new List<UserPermission>();
             permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
-            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
-            foreach (var permission in databasePermissions)
+
+            List<DigitizingDataDomain.Model.UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
+
+            foreach (var permission in allPermissions)
             {
                 permissions.Add(new UserPermission
                 {
@@ -176,6 +217,143 @@ namespace DigitizingDataAdminApp.Controllers
             SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", 0);
             return acccessPermissions;
         }
+
+        // Display all information for a particular user
+        public ActionResult UserDetails(int id)
+        {
+            Users userDetails = userRepo.findUserDetails(id);
+            UserInformation userData = new UserInformation
+            {
+                Id = userDetails.Id,
+                Username = userDetails.Username,
+                Password = userDetails.Password,
+                Fullname = userDetails.Fullname,
+                Email = userDetails.Email,
+                DateCreated = userDetails.DateCreated,
+                UserLevel = userDetails.UserLevel == 1 ? "Admin" : "User"
+            };
+            return View(userData);
+        }
+
+        // Edit a particular user's information.   
+        public ActionResult EditUser(int id)
+        {
+            UserInformation user_data = particularUserData(id);
+            return View(user_data);
+        }
+
+        [HttpPost]
+        public ActionResult EditUser(UserInformation user, int id, int Level_Id)
+        {
+            // Get the access permissions of the user current logged in 
+            int permissionLevel = Convert.ToInt32(Session["UserLevel"]);
+            if (string.IsNullOrEmpty(user.Username))
+            {
+                ModelState.AddModelError("Username", "Username cannot be empty");
+                UserInformation user_data = particularUserData(id);
+                return View(user_data);
+            }
+            if (string.IsNullOrEmpty(user.Fullname))
+            {
+                ModelState.AddModelError("Fullname", "Fullname cannot be empty");
+                UserInformation user_data = particularUserData(id);
+                return View(user_data);
+            }
+            else if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Email cannot be empty");
+                UserInformation user_data = particularUserData(id);
+                return View(user_data);
+            }
+            else if (Level_Id == 0)
+            {
+                ModelState.AddModelError("AccessLevel", "Please select Access Level");
+                UserInformation user_data = particularUserData(id);
+                return View(user_data);
+            }
+            else
+            {
+                // Hash the password, if there's a need to change one
+                PasswordHashing passwordHashing = new PasswordHashing();
+                string hashedPassword = string.Empty;
+                if (user.Password != null)
+                {
+                    hashedPassword = passwordHashing.hashedPassword(user.Password);
+                }
+                // Get access to the user repo and checkif the user exists
+                UserRepo _userRepo = new UserRepo();
+                int _userId = Convert.ToInt32(user.Id);
+                DigitizingDataDomain.Model.Users currentUser = _userRepo.findUserById(_userId);
+                Boolean updateResult = false;
+                if (currentUser != null)
+                {
+                    currentUser.Username = user.Username;
+
+                    if (user.Password != null)
+                    {
+                        currentUser.Password = hashedPassword;
+                    }
+                    currentUser.Fullname = user.Fullname;
+                    currentUser.Email = user.Email;
+                    currentUser.UserLevel = permissionLevel == 1 ? Level_Id : 2;
+                    if (currentUser.Id > 0)
+                    {
+                        updateResult = _userRepo.Update(currentUser);
+
+                    }
+                }
+
+                if (updateResult)
+                {
+                    return RedirectToAction("SystemUsers");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+        }
+        // Helper function to get a user's information base on their ID
+        public UserInformation particularUserData(int id)
+        {
+            Users userDetails = userRepo.findUserDetails(id);
+            // Get access levels
+            List<UserPermission> permissions = new List<UserPermission>();
+            List<DigitizingDataDomain.Model.UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
+            foreach (var permission in allPermissions)
+            {
+                permissions.Add(new UserPermission
+                {
+                    Level_Id = permission.Level_Id,
+                    UserType = permission.UserType
+                });
+            }
+            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", userDetails.UserLevel);
+            UserInformation user_data = new UserInformation
+            {
+                Id = userDetails.Id,
+                Username = userDetails.Username,
+                Fullname = userDetails.Fullname,
+                Email = userDetails.Email,
+                DateCreated = userDetails.DateCreated,
+                AccessLevel = acccessPermissions,
+            };
+            return user_data;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * Get all information concerning VSLA Groups
          * */
@@ -344,96 +522,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
         }
 
-        /**
-         * Edit a particular user's information.
-         * */
-        [HttpGet]
-        public ActionResult EditUser(int id)
-        {
-            var userDetails = (from table_users in database.Users
-                               join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                               where table_users.Id == id
-                               select new { db_user = table_users, db_permissions = table_permissions }).Single();
 
-            // Get access levels
-            List<UserPermission> permissions = new List<UserPermission>();
-            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
-            foreach (var permission in databasePermissions)
-            {
-                permissions.Add(new UserPermission
-                {
-                    Level_Id = permission.Level_Id,
-                    UserType = permission.UserType
-                });
-            }
-            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", userDetails.db_permissions.Level_Id);
-            UserInformation user_data = new UserInformation
-            {
-                Id = userDetails.db_user.Id,
-                Username = userDetails.db_user.Username,
-                // Password = userDetails.db_user.Password,
-                Fullname = userDetails.db_user.Fullname,
-                Email = userDetails.db_user.Email,
-                DateCreated = userDetails.db_user.DateCreated,
-                AccessLevel = acccessPermissions,
-            };
-            return View(user_data);
-
-        }
-        [HttpPost]
-        public ActionResult EditUser(UserInformation user, int id, int Level_Id)
-        {
-            PasswordHashing passwordHashing = new PasswordHashing();
-            if (string.IsNullOrEmpty(user.Fullname))
-            {
-                ModelState.AddModelError("Fullname", "Fullname cannot be empty");
-            }
-            else if (string.IsNullOrEmpty(user.Email))
-            {
-                ModelState.AddModelError("Email", "Email cannot be empty");
-            }
-            else if (Level_Id == 0)
-            {
-                ModelState.AddModelError("AccessLevel", "Please select Access Level");
-            }
-            else
-            {
-                string hashedPassword = passwordHashing.hashedPassword(user.Password);
-                int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
-                var query = database.Users.Find(id);
-
-                if (user.Password != null) { query.Password = hashedPassword; }
-                query.UserLevel = sessionUserLevel == 1 ? Level_Id : 2; // If the user level == 2, don't allow them to change it
-                query.Username = user.Username;
-                query.Fullname = user.Fullname;
-                query.Email = user.Email;
-                database.SaveChanges();
-                String logString = Convert.ToString(Session["Username"]) + " Edited User with ID : " + Convert.ToString(id);
-                activityLoggingSystem.logActivity(logString, 0);
-                return RedirectToAction("SystemUsers");
-            }
-            List<UserPermission> permissions = new List<UserPermission>();
-            var databasePermissions = database.UserPermissions.OrderBy(a => a.Level_Id);
-            foreach (var permission in databasePermissions)
-            {
-                permissions.Add(new UserPermission
-                {
-                    Level_Id = permission.Level_Id,
-                    UserType = permission.UserType
-                });
-            }
-            SelectList acccessPermissions = new SelectList(permissions, "Level_Id", "UserType", Level_Id);
-            UserInformation user_data = new UserInformation
-            {
-                Id = id,
-                Username = user.Username,
-                Password = user.Password,
-                Fullname = user.Fullname,
-                Email = user.Email,
-                AccessLevel = acccessPermissions,
-            };
-            return View(user_data);
-        }
         /**
          * Delete a particular user form the system
          * */
@@ -476,29 +565,7 @@ namespace DigitizingDataAdminApp.Controllers
             return View();
         }
 
-        /**
-         * Display all information for a particular user
-         * */
-        public ActionResult UserDetails(int id)
-        {
-            var user_details = (from tb_users in database.Users
-                                join tb_permissions in database.UserPermissions on tb_users.UserLevel equals tb_permissions.Level_Id
-                                where tb_users.Id == id
-                                select new { db_users = tb_users, db_permissions = tb_permissions }).Single();
 
-
-            UserInformation userData = new UserInformation
-            {
-                Id = user_details.db_users.Id,
-                Username = user_details.db_users.Username,
-                Password = user_details.db_users.Password,
-                Fullname = user_details.db_users.Fullname,
-                Email = user_details.db_users.Email,
-                DateCreated = user_details.db_users.DateCreated,
-                UserLevel = user_details.db_permissions.UserType
-            };
-            return View(userData);
-        }
         /**
          * Display information for a particular VSLA
          * */
@@ -1402,51 +1469,7 @@ namespace DigitizingDataAdminApp.Controllers
         //    return View();
         //}
 
-        /**
-         * Helper method to get information for all registered users
-         * */
-        public List<UserInformation> usersInformation()
-        {
-            List<UserInformation> users = new List<UserInformation>();
 
-            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
-            string sessionUsername = Convert.ToString(Session["Username"]);
-
-            dynamic user_details = null;
-            /**
-             * Session Level 1 : admin
-             * Session Level 2 : user               
-             */
-            if (sessionUserLevel == 1)
-            {
-
-                user_details = (from table_users in database.Users
-                                join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                                select new { db_user = table_users, db_permissions = table_permissions });
-            }
-            else
-            {
-                user_details = (from table_users in database.Users
-                                join table_permissions in database.UserPermissions on table_users.UserLevel equals table_permissions.Level_Id
-                                where table_users.UserLevel == sessionUserLevel && table_users.Username == sessionUsername
-                                select new { db_user = table_users, db_permissions = table_permissions });
-            }
-            foreach (var item in user_details)
-            {
-                users.Add(
-                    new UserInformation
-                    {
-                        Id = item.db_user.Id,
-                        Username = item.db_user.Username,
-                        Fullname = item.db_user.Fullname,
-                        Email = item.db_user.Email,
-                        UserLevel = item.db_permissions.UserType
-                    });
-            }
-
-            return users;
-
-        }
 
         /**
          * Helper method to get all information concerning vsla

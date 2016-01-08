@@ -13,7 +13,7 @@ namespace DigitizingDataDomain.Model
         public virtual string Password { get; set; }
         public virtual string Fullname { get; set; }
         public virtual string Email { get; set; }
-        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime? DateCreated { get; set; }
         public virtual int UserLevel { get; set; }
     }
 }

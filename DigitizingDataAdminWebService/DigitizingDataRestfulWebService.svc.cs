@@ -192,7 +192,7 @@ namespace DigitizingDataAdminWebService
 
                 if (vslaData != null)
                 {
-                    DigitizingDataDomain.Model.Vsla vsla = new DigitizingDataDomain.Model.Vsla();
+                    DigitizingDataDomain.Model.Vsla vsla = new DigitizingDataDomain.Model.Vsla(); // NOT NECCESSARY
                     vslaData.VslaName = Convert.ToString(request.VslaName);
                     vslaData.PhoneNumber = Convert.ToString(request.repPhoneNumber);
                     vslaData.ContactPerson = Convert.ToString(request.representativeName);
