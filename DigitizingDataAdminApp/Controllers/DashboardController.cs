@@ -834,51 +834,65 @@ namespace DigitizingDataAdminApp.Controllers
             return View(vslaData);
         }
 
+        // Add a new VSLA Group
+        [HttpPost]
+        public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
+        {
+            string _vslaCode = generateVslaCode();
+
+            // Create new VSLA group object
+            DigitizingDataDomain.Model.Vsla newVsla = new DigitizingDataDomain.Model.Vsla();
+            newVsla.VslaCode = generateVslaCode();
+            newVsla.VslaName = vslaGroup.VslaName;
+
+            // region
+            DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+            vslaRegion.RegionId = Convert.ToInt32(RegionId);
+            newVsla.VslaRegion = vslaRegion;
+
+            newVsla.DateRegistered = vslaGroup.DateRegistered.HasValue ? vslaGroup.DateRegistered : System.DateTime.Now;
+            newVsla.DateLinked = vslaGroup.DateLinked.HasValue ? vslaGroup.DateLinked : System.DateTime.Now;
+            newVsla.PhysicalAddress = vslaGroup.PhysicalAddress ?? "--";
+            newVsla.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn ?? "--";
+            newVsla.GpsLocation = vslaGroup.GpsLocation ?? "--";
+            newVsla.ContactPerson = vslaGroup.ContactPerson;
+            newVsla.PositionInVsla = vslaGroup.PositionInVsla;
+            newVsla.PhoneNumber = vslaGroup.PhoneNumber;
+
+            // technical trainer
+            DigitizingDataDomain.Model.TechnicalTrainer _trainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+            _trainer.Id = Convert.ToInt32(Id);
+            newVsla.CBT = _trainer;
+
+            newVsla.Status = Status_Id;
+            newVsla.GroupAccountNumber = vslaGroup.GroupAccountNumber;
+
+            VslaRepo _vslaRepo = new VslaRepo();
+            Boolean insertResult = false;
+            insertResult = _vslaRepo.Insert(newVsla);
+            if (insertResult)
+            { // TRUE
+                String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + _vslaCode;
+                activityLoggingSystem.logActivity(logString, 0);
+                return RedirectToAction("VslaGroupInformation");
+            }
+            else
+            { // FALSE 
+                return View();
+            }
+        }
+
+        // Helper method to generate VSLA Code of the new Group being added
+        public string generateVslaCode()
+        {
+            string year = DateTime.Now.Year.ToString().Substring(2);
+            Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            string unixTimeStamp = Convert.ToString(unixTimestamp).Substring(4);
+            string vslaCode = "VS" + year + unixTimeStamp;
+            return vslaCode;
+        }
 
 
-
-
-
-
-
-
-
-
-
-
-
-        /**
-         * Display information for a particular VSLA
-         * */
-        //public ActionResult VslaGroupDetails(int id)
-        //{
-        //    var vsla_info = (from tb_vsla in database.Vslas
-        //                     join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
-        //                     join tb_regions in database.VslaRegions on tb_vsla.RegionId equals tb_regions.RegionId
-        //                     join tb_status in database.StatusTypes on tb_vsla.Status equals tb_status.Status_Id
-        //                     where tb_vsla.VslaId == id
-        //                     select new { db_vsla = tb_vsla, db_cbt = tb_cbt, db_regions = tb_regions, db_status = tb_status }).Single();
-
-        //    VslaInformation vslaData = new VslaInformation
-        //    {
-        //        VslaId = vsla_info.db_vsla.VslaId,
-        //        VslaCode = vsla_info.db_vsla.VslaCode ?? "--",
-        //        VslaName = vsla_info.db_vsla.VslaName ?? "--",
-        //        RegionId = vsla_info.db_regions.RegionName,
-        //        DateRegistered = vsla_info.db_vsla.DateRegistered,
-        //        DateLinked = vsla_info.db_vsla.DateLinked,
-        //        PhysicalAddress = vsla_info.db_vsla.PhysicalAddress ?? "--",
-        //        VslaPhoneMsisdn = vsla_info.db_vsla.VslaPhoneMsisdn ?? "--",
-        //        GpsLocation = vsla_info.db_vsla.GpsLocation ?? "--",
-        //        ContactPerson = vsla_info.db_vsla.ContactPerson ?? "--",
-        //        PositionInVsla = vsla_info.db_vsla.PositionInVsla,
-        //        PhoneNumber = vsla_info.db_vsla.PhoneNumber ?? "--",
-        //        TechnicalTrainer = vsla_info.db_cbt.Name ?? "--",
-        //        Status = vsla_info.db_status.CurrentStatus ?? "--",
-        //        GroupAccountNumber = "A/C " + vsla_info.db_vsla.GroupAccountNumber ?? "--"
-        //    };
-        //    return View(vslaData);
-        //}
         ///**
         // * Edit a given VSLA
         // * */
@@ -974,55 +988,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Add a new Village savings and lending association (VSLA) to the system
          **/
-        [HttpPost]
-        //public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
-        //{
-        //    if (RegionId == 0)
-        //    {
-        //        ModelState.AddModelError("RegionName", "Please select a region");
-        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-        //    }
-        //    else if (Id == 0)
-        //    {
-        //        ModelState.AddModelError("TechnicalTrainer", "Select Trainer in charge");
-        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-        //    }
-        //    else if (Status_Id == 0)
-        //    {
-        //        ModelState.AddModelError("Status", "Select the VSLA status");
-        //        return Redirect(Url.Action("VslaGroupInformation") + "#addnewgroup");
-        //    }
-        //    else
-        //    { //! All fields are valid
-        //        /** Generate he VSLA code based on new  VSLA to be created abd the current year(yyyy) */
-        //        int getMaxId = database.Vslas.Max(x => x.VslaId) + 1;
-        //        string getYear = DateTime.Now.Year.ToString().Substring(2);
-        //        string generatedVslaCode = "VS" + getYear + getMaxId.ToString();
 
-        //        Vsla newVsla = new Vsla
-        //        {
-        //            VslaCode = generatedVslaCode,
-        //            VslaName = vslaGroup.VslaName,
-        //            RegionId = RegionId,
-        //            DateRegistered = vslaGroup.DateRegistered.HasValue ? vslaGroup.DateRegistered : System.DateTime.Now,
-        //            DateLinked = vslaGroup.DateLinked.HasValue ? vslaGroup.DateLinked : System.DateTime.Now,
-        //            PhysicalAddress = vslaGroup.PhysicalAddress ?? "--",
-        //            VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn ?? "--",
-        //            GpsLocation = vslaGroup.GpsLocation ?? "--",
-        //            ContactPerson = vslaGroup.ContactPerson,
-        //            PositionInVsla = vslaGroup.PositionInVsla,
-        //            PhoneNumber = vslaGroup.PhoneNumber,
-        //            CBT = Id,
-        //            Status = Status_Id,
-        //            GroupAccountNumber = vslaGroup.GroupAccountNumber
-        //        };
-        //        database.Vslas.Add(newVsla);
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Added VSLA with ID : " + generatedVslaCode;
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("VslaGroupInformation");
-        //    }
-        //}
         /**
          * Get the options for re-populating the edit VSLA form, in case of the forms fails
          **/
