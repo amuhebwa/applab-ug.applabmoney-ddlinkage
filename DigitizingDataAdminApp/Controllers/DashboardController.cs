@@ -807,7 +807,32 @@ namespace DigitizingDataAdminApp.Controllers
 
         }
 
-
+        // VSLA Group details for a particular group queried based on the group id
+        public ActionResult VslaGroupDetails(int id)
+        {
+            int vslaId = Convert.ToInt32(id);
+            VslaRepo _vslaRepo = new VslaRepo();
+            DigitizingDataDomain.Model.Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
+            VslaInformation vslaData = new VslaInformation
+            {
+                VslaId = vslaDetails.VslaId,
+                VslaCode = vslaDetails.VslaCode ?? "--",
+                VslaName = vslaDetails.VslaName ?? "--",
+                RegionId = vslaDetails.VslaRegion.RegionName,
+                DateRegistered = vslaDetails.DateRegistered,
+                DateLinked = vslaDetails.DateLinked,
+                PhysicalAddress = vslaDetails.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vslaDetails.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vslaDetails.GpsLocation ?? "--",
+                ContactPerson = vslaDetails.ContactPerson ?? "--",
+                PositionInVsla = vslaDetails.PositionInVsla,
+                PhoneNumber = vslaDetails.PhoneNumber ?? "--",
+                TechnicalTrainer = vslaDetails.CBT.Name ?? "--",
+                Status = vslaDetails.Status == 1 ? "Active" : "Inactive",
+                GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--"
+            };
+            return View(vslaData);
+        }
 
 
 
