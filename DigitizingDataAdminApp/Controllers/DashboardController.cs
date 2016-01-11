@@ -651,7 +651,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             SelectList statusTypes = new SelectList(statusOptions, "Status_Id", "CurrentStatus", allInformation.Status);
 
-            // Create a cbt object
+            // Create a a technical trainer object
             TrainerInformation trainerData = new TrainerInformation
             {
                 Id = allInformation.Id,
@@ -810,6 +810,12 @@ namespace DigitizingDataAdminApp.Controllers
         // VSLA Group details for a particular group queried based on the group id
         public ActionResult VslaGroupDetails(int id)
         {
+            VslaInformation vslaDetails = findVslaDetails(id);
+            return View(vslaDetails);
+        }
+        // Helper function to find VSLA details
+        public VslaInformation findVslaDetails(int id)
+        {
             int vslaId = Convert.ToInt32(id);
             VslaRepo _vslaRepo = new VslaRepo();
             DigitizingDataDomain.Model.Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
@@ -831,7 +837,7 @@ namespace DigitizingDataAdminApp.Controllers
                 Status = vslaDetails.Status == 1 ? "Active" : "Inactive",
                 GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--"
             };
-            return View(vslaData);
+            return vslaData;
         }
 
         // Add a new VSLA Group
@@ -892,219 +898,168 @@ namespace DigitizingDataAdminApp.Controllers
             return vslaCode;
         }
 
-
-        ///**
-        // * Edit a given VSLA
-        // * */
-        //[HttpGet]
-        ////public ActionResult EditVslaGroup(int id)
-        ////{
-        ////    VslaInformation vslaData = getGroupEditInformation(id);
-        ////    return View(vslaData);
-        ////}
-        ///**
-        // * Edit details for a particular VSLA
-        // * */
-        //[HttpPost]
-        //public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
-        //{
-        //    if (string.IsNullOrEmpty(vslaGroup.VslaName))
-        //    {
-        //        ModelState.AddModelError("VslaName", "Please add a valid VSLA Name");
-        //    }
-        //    else if (RegionId == 0)
-        //    {
-        //        ModelState.AddModelError("RegionName", "Please select a region");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.DateRegistered.ToString()))
-        //    {
-        //        ModelState.AddModelError("DateRegistered", "Please Enter Valid Date Registered");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.DateLinked.ToString()))
-        //    {
-        //        ModelState.AddModelError("DateLinked", "ADate Linked cannot be null");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.PhysicalAddress))
-        //    {
-        //        ModelState.AddModelError("PhysicalAddress", " Please add a physical address");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.VslaPhoneMsisdn))
-        //    {
-        //        ModelState.AddModelError("VslaPhoneMsisdn", "Phone MSISDN cannot be empty");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.GpsLocation))
-        //    {
-        //        ModelState.AddModelError("GpsLocation", "Your GPS Location cannot be empty");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.ContactPerson))
-        //    {
-        //        ModelState.AddModelError("ContactPerson", "Please add a valid contact person");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.PositionInVsla))
-        //    {
-        //        ModelState.AddModelError("PositionInVsla", "Position cannot be left Empty");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.PhoneNumber))
-        //    {
-        //        ModelState.AddModelError("PhoneNumber", "Contact Person's Number is Empty");
-        //    }
-        //    else if (Id == 0)
-        //    {
-        //        ModelState.AddModelError("CbtModel", "Select Responsible CBT");
-        //    }
-        //    else if (Status_Id == 0)
-        //    {
-        //        ModelState.AddModelError("StatusType", "Select Status Type");
-        //    }
-        //    else if (string.IsNullOrEmpty(vslaGroup.GroupAccountNumber))
-        //    {
-        //        ModelState.AddModelError("GroupAccountNumber", "Add Group Account Number");
-        //    }
-        //    else
-        //    {
-        //        var query = database.Vslas.Find(VslaId);
-        //        query.VslaName = vslaGroup.VslaName;
-        //        query.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn;
-        //        query.GpsLocation = vslaGroup.GpsLocation;
-        //        query.DateRegistered = vslaGroup.DateRegistered;
-        //        query.DateLinked = vslaGroup.DateLinked;
-        //        query.RegionId = (int)RegionId;
-        //        query.ContactPerson = vslaGroup.ContactPerson;
-        //        query.PositionInVsla = vslaGroup.PositionInVsla;
-        //        query.PhoneNumber = vslaGroup.PhoneNumber;
-        //        query.CBT = Id;
-        //        query.Status = Status_Id;
-        //        query.GroupAccountNumber = vslaGroup.GroupAccountNumber;
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("VslaGroupInformation");
-        //    }
-        //    // If one of the validations fails, reload the form and repopulate the dropdown list
-        //    VslaInformation vslaData = getGroupEditInformation(VslaId);
-        //    return View(vslaData);
-
-        //}
-        /**
-         * Add a new Village savings and lending association (VSLA) to the system
-         **/
-
-        /**
-         * Get the options for re-populating the edit VSLA form, in case of the forms fails
-         **/
-        //public VslaInformation getGroupEditInformation(int id)
-        //{
-        //    var vsla = (from tb_vsla in database.Vslas
-        //                join tb_cbt in database.TechnicalTrainers on tb_vsla.CBT equals tb_cbt.Id
-        //                where tb_vsla.VslaId == id
-        //                select new { db_vsla = tb_vsla, db_cbt = tb_cbt }).FirstOrDefault();
-
-        //    // Get a list of all vsla regions to populate in the dropdown list
-        //    List<VslaRegion> regions = new List<VslaRegion>();
-        //    var databaseRegions = database.VslaRegions.OrderBy(a => a.RegionName).ToList();
-        //    foreach (var region in databaseRegions)
-        //    {
-        //        regions.Add(new VslaRegion
-        //        {
-        //            RegionId = region.RegionId,
-        //            RegionName = region.RegionName
-        //        });
-        //    }
-        //    SelectList allRegions = new SelectList(regions, "RegionId", "RegionName", vsla.db_vsla.RegionId);
-        //    // Get the list of all cbts to populate in the dropdown list
-        //    List<TechnicalTrainer> cbts = new List<TechnicalTrainer>();
-        //    var database_cbts = database.TechnicalTrainers.OrderBy(a => a.Name).ToList();
-        //    foreach (var cbt in database_cbts)
-        //    {
-        //        cbts.Add(new TechnicalTrainer
-        //        {
-        //            Id = cbt.Id,
-        //            Name = cbt.Name
-        //        });
-        //    }
-        //    SelectList allTrainers = new SelectList(cbts, "Id", "Name", (int)vsla.db_vsla.CBT);
-
-        //    // Get the status type ie active/inactive
-        //    List<StatusType> statusTypes = new List<StatusType>();
-        //    var databaseStatusTypes = database.StatusTypes.OrderBy(a => a.Status_Id).ToList();
-        //    foreach (var statusType in databaseStatusTypes)
-        //    {
-        //        statusTypes.Add(new StatusType
-        //        {
-        //            Status_Id = statusType.Status_Id,
-        //            CurrentStatus = statusType.CurrentStatus
-        //        });
-        //    }
-        //    SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.db_cbt.Status);
-
-        //    VslaInformation vslaData = new VslaInformation
-        //    {
-        //        VslaId = vsla.db_vsla.VslaId,
-        //        VslaCode = vsla.db_vsla.VslaCode ?? "--",
-        //        VslaName = vsla.db_vsla.VslaName ?? "--",
-        //        VslaRegions = allRegions,
-        //        DateRegistered = vsla.db_vsla.DateRegistered.HasValue ? vsla.db_vsla.DateRegistered : System.DateTime.Now,
-        //        DateLinked = vsla.db_vsla.DateLinked.HasValue ? vsla.db_vsla.DateLinked : System.DateTime.Now,
-        //        PhysicalAddress = vsla.db_vsla.PhysicalAddress ?? "--",
-        //        VslaPhoneMsisdn = vsla.db_vsla.VslaPhoneMsisdn ?? "--",
-        //        GpsLocation = vsla.db_vsla.GpsLocation ?? "--",
-        //        ContactPerson = vsla.db_vsla.ContactPerson,
-        //        PositionInVsla = vsla.db_vsla.PositionInVsla,
-        //        PhoneNumber = vsla.db_vsla.PhoneNumber,
-        //        AllTechnicalTrainers = allTrainers,
-        //        StatusType = statusTypesList,
-        //        GroupAccountNumber = vsla.db_vsla.GroupAccountNumber
-        //    };
-        //    return vslaData;
-        //}
-        /**
-         * Delete a particular VSLA from the system
-         * */
+        // Edit a given VSLA Group
         [HttpGet]
-        public ActionResult DeleteVslaGroup(int id)
+        public ActionResult EditVslaGroup(int id)
         {
-            var vslaInformation = (from table_vsla in database.Vslas
-                                   join table_cbt in database.TechnicalTrainers on table_vsla.CBT equals table_cbt.Id
-                                   join table_regions in database.VslaRegions on table_vsla.RegionId equals table_regions.RegionId
-                                   join table_status in database.StatusTypes on table_vsla.Status equals table_status.Status_Id
-                                   where table_vsla.VslaId == id
-                                   select new { db_vsla = table_vsla, db_cbt = table_cbt, db_regions = table_regions, db_status = table_status }).SingleOrDefault();
+            VslaInformation vslaData = vslaEditInformation(id);
+            return View(vslaData);
+        }
+
+        [HttpPost]
+        public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
+        {
+            int _vslaId = Convert.ToInt32(vslaGroup.VslaId);
+            VslaRepo _vslaRepo = new VslaRepo();
+            DigitizingDataDomain.Model.Vsla currentVsla = _vslaRepo.FindVslaById(_vslaId);
+            Boolean updateResult = false;
+            if (currentVsla != null)
+            {
+                currentVsla.VslaName = vslaGroup.VslaName;
+                currentVsla.VslaPhoneMsisdn = vslaGroup.VslaPhoneMsisdn;
+                currentVsla.GpsLocation = vslaGroup.GpsLocation;
+                currentVsla.DateRegistered = vslaGroup.DateRegistered;
+                currentVsla.DateLinked = vslaGroup.DateLinked;
+                currentVsla.PhysicalAddress = vslaGroup.PhysicalAddress;
+
+                // region
+                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                vslaRegion.RegionId = Convert.ToInt32(RegionId);
+                currentVsla.VslaRegion = vslaRegion;
+
+                currentVsla.ContactPerson = vslaGroup.ContactPerson;
+                currentVsla.PositionInVsla = vslaGroup.PositionInVsla;
+                currentVsla.PhoneNumber = vslaGroup.PhoneNumber;
+
+                DigitizingDataDomain.Model.TechnicalTrainer _trainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+                _trainer.Id = Convert.ToInt32(Id);
+                currentVsla.CBT = _trainer;
+
+                currentVsla.Status = Status_Id;
+                currentVsla.GroupAccountNumber = vslaGroup.GroupAccountNumber;
+                if (currentVsla.VslaId > 0)
+                {
+                    updateResult = _vslaRepo.Update(currentVsla);
+                }
+            }
+            if (updateResult)
+            { // TRUE
+                String logString = Convert.ToString(Session["Username"]) + " Edited VSLA with ID : " + Convert.ToString(VslaId);
+                activityLoggingSystem.logActivity(logString, 0);
+                return RedirectToAction("VslaGroupInformation");
+            }
+            else
+            { // FALSE
+                return View();
+            }
+        }
+
+        // Helper function for getting vsla details for editing, including select options
+        public VslaInformation vslaEditInformation(int id)
+        {
+            VslaRepo _vslaRepo = new VslaRepo();
+            int _vslaId = Convert.ToInt32(id);
+            DigitizingDataDomain.Model.Vsla vsla = _vslaRepo.FindVslaById(_vslaId);
+
+            // Get a list of all vsla regions to populate in the dropdown list
+            VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
+            List<VslaRegion> regions = new List<VslaRegion>();
+            List<DigitizingDataDomain.Model.VslaRegion> regionsData = _vslaRegionRepo.findAllRegions();
+            foreach (var region in regionsData)
+            {
+                regions.Add(new VslaRegion
+                {
+                    RegionId = region.RegionId,
+                    RegionName = region.RegionName
+                });
+            }
+            SelectList regionsList = new SelectList(regions, "RegionId", "RegionName", vsla.VslaRegion.RegionId);
+
+            // Get the list of all technical trainers to populate in the dropdown list
+            TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
+            List<TechnicalTrainer> _trainers = new List<TechnicalTrainer>();
+            List<DigitizingDataDomain.Model.TechnicalTrainer> trainerData = _technicalTrainerRepo.findAllTechnicalTrainers();
+            foreach (var item in trainerData)
+            {
+                _trainers.Add(new TechnicalTrainer
+                {
+                    Id = item.Id,
+                    Name = item.Name
+                });
+            }
+            SelectList allTrainersList = new SelectList(_trainers, "Id", "Name", (int)vsla.CBT.Id);
+
+            // Get the status type ie active/inactive
+            StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
+            List<StatusType> statusTypes = new List<StatusType>();
+            List<DigitizingDataDomain.Model.StatusType> alltatusTypes = _statusTypeRepo.findAllStatusType();
+            foreach (var statusType in alltatusTypes)
+            {
+                statusTypes.Add(new StatusType
+                {
+                    Status_Id = statusType.Status_Id,
+                    CurrentStatus = statusType.CurrentStatus
+                });
+            }
+            SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.Status);
 
             VslaInformation vslaData = new VslaInformation
             {
-                VslaId = vslaInformation.db_vsla.VslaId,
-                VslaCode = vslaInformation.db_vsla.VslaCode ?? "--",
-                VslaName = vslaInformation.db_vsla.VslaName ?? "--",
-                RegionId = vslaInformation.db_regions.RegionName,
-                DateRegistered = vslaInformation.db_vsla.DateRegistered,
-                DateLinked = vslaInformation.db_vsla.DateLinked,
-                PhysicalAddress = vslaInformation.db_vsla.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vslaInformation.db_vsla.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vslaInformation.db_vsla.GpsLocation ?? "--",
-                ContactPerson = vslaInformation.db_vsla.ContactPerson,
-                PositionInVsla = vslaInformation.db_vsla.PositionInVsla,
-                PhoneNumber = vslaInformation.db_vsla.PhoneNumber,
-                TechnicalTrainer = vslaInformation.db_cbt.Name ?? "--",
-                Status = vslaInformation.db_status.CurrentStatus,
-                GroupAccountNumber = "A/C " + vslaInformation.db_vsla.GroupAccountNumber
+                VslaId = vsla.VslaId,
+                VslaCode = vsla.VslaCode ?? "--",
+                VslaName = vsla.VslaName ?? "--",
+                VslaRegions = regionsList,
+                DateRegistered = vsla.DateRegistered.HasValue ? vsla.DateRegistered : System.DateTime.Now,
+                DateLinked = vsla.DateLinked.HasValue ? vsla.DateLinked : System.DateTime.Now,
+                PhysicalAddress = vsla.PhysicalAddress ?? "--",
+                VslaPhoneMsisdn = vsla.VslaPhoneMsisdn ?? "--",
+                GpsLocation = vsla.GpsLocation ?? "--",
+                ContactPerson = vsla.ContactPerson,
+                PositionInVsla = vsla.PositionInVsla,
+                PhoneNumber = vsla.PhoneNumber,
+                AllTechnicalTrainers = allTrainersList,
+                StatusType = statusTypesList,
+                GroupAccountNumber = vsla.GroupAccountNumber
             };
+            return vslaData;
+        }
+
+        // Delete a particular VSLA from the system
+        [HttpGet]
+        public ActionResult DeleteVslaGroup(int id)
+        {
+            VslaInformation vslaData = findVslaDetails(id);
             return View(vslaData);
         }
+
         [HttpPost]
-        //public ActionResult DeleteVslaGroup(Vsla vslaGroup, int id)
-        //{
-        //    if (ModelState.IsValid && vslaGroup != null)
-        //    {
-        //        vslaGroup.VslaId = id;
-        //        database.Vslas.Attach(vslaGroup);
-        //        database.Vslas.Remove(vslaGroup);
-        //        database.SaveChanges();
-        //        String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
-        //        activityLoggingSystem.logActivity(logString, 0);
-        //        return RedirectToAction("VslaGroupInformation");
-        //    }
-        //    return View();
-        //}
+        public ActionResult DeleteVslaGroup(Vsla vslaGroup, int id)
+        {
+            Boolean deleteResult = false;
+            int _vslaId = Convert.ToInt32(id);
+            if (ModelState.IsValid && vslaGroup != null)
+            {
+                VslaRepo _vslaRepo = new VslaRepo();
+                DigitizingDataDomain.Model.Vsla deleteVsla = _vslaRepo.FindVslaById(_vslaId);
+
+                if (deleteVsla != null)
+                {
+                    deleteResult = _vslaRepo.Delete(deleteVsla);
+                }
+            }
+            if (deleteResult)
+            { // TRUE 
+                String logString = Convert.ToString(Session["Username"]) + " Deleted VSLA with ID : " + Convert.ToString(id);
+                activityLoggingSystem.logActivity(logString, 0);
+                return RedirectToAction("VslaGroupInformation");
+            }
+            else
+            { // FALSE 
+                return View();
+            }
+        }
+
+
         /**
          * View all meetings attached to a particular VSLA
          * */
