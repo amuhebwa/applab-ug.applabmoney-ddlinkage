@@ -742,63 +742,65 @@ namespace DigitizingDataAdminApp.Controllers
          *************  VSLA GROUPS ***************
          */
 
+        // Display All VSLA Groups in a list
+        public ActionResult VslaGroupInformation()
+        {
+            int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
+            VslaGroupsInformation allGroups = new VslaGroupsInformation();
+            List<VslaInformation> getVslaData = getVslaInformation();
 
+            allGroups.AllGroupsList = getVslaData;
+            allGroups.sessionUserLevel = sessionUserLevel;
+            allGroups.AllTechnicalTrainers = getAllTrainers();
+            allGroups.VslaRegions = getVslaRegions();
+            allGroups.StatusType = getStatusTypes();
+            allGroups.groupSupportProvided = getSupportType();
+            return View(allGroups);
+        }
 
+        // Helper method to get all information concerning vsla
+        public List<VslaInformation> getVslaInformation()
+        {
+            VslaRepo _vslaRepo = new VslaRepo();
+            List<DigitizingDataDomain.Model.Vsla> vslaDetails = _vslaRepo.findAllVslas();
+            List<VslaInformation> vslaData = new List<VslaInformation>();
+            foreach (var item in vslaDetails)
+            {
+                vslaData.Add(new VslaInformation
+                {
+                    VslaId = item.VslaId,
+                    VslaCode = item.VslaCode ?? "--",
+                    VslaName = item.VslaName ?? "--",
+                    RegionId = item.VslaRegion.RegionName != null ? item.VslaRegion.RegionName : "--",
+                    DateRegistered = item.DateRegistered,
+                    DateLinked = item.DateLinked,
+                    PhysicalAddress = item.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = item.GpsLocation ?? "--",
+                    ContactPerson = item.ContactPerson ?? "--",
+                    PositionInVsla = item.PositionInVsla ?? "--",
+                    PhoneNumber = item.PhoneNumber ?? "--",
+                    TechnicalTrainer = "--",
+                    Status = item.Status.ToString() ?? "--"
+                });
+            }
+            return vslaData;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /**
-         * Get all information concerning VSLA Groups
-         * */
-        //public ActionResult VslaGroupInformation()
-        //{
-        //    int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]); // Get the user level of the current session
-        //    VslaGroupsInformation allGroups = new VslaGroupsInformation();
-        //    List<VslaInformation> getVslaData = new List<VslaInformation>();
-        //    getVslaData = getVslaInformation();
-        //    allGroups.AllGroupsList = getVslaData;
-        //    allGroups.sessionUserLevel = sessionUserLevel;
-        //    allGroups.AllTechnicalTrainers = getAllTrainers();
-        //    allGroups.VslaRegions = getVslaRegions();
-        //    allGroups.StatusType = getStatusTypes();
-        //    allGroups.groupSupportProvided = getSupportType();
-
-
-        //    return View(allGroups);
-        //}
         // Get the group support modules that have been provided to the group by technical trainers
         public List<GroupSupportInfo> getSupportType()
         {
-            var support = (from tb_support in database.GroupSupports
-                           join tb_vsla in database.Vslas
-                               on tb_support.VslaId equals tb_vsla.VslaId
-                           join tb_trainers in database.TechnicalTrainers on
-                               tb_support.TrainerId equals tb_trainers.Id
-                           select new { tb_support, tb_vsla, tb_trainers });
+            GroupSupportRepo _groupSupportRepo = new GroupSupportRepo();
+            List<DigitizingDataDomain.Model.GroupSupport> support = _groupSupportRepo.findAllGroupSupport();
             List<GroupSupportInfo> supportGiven = new List<GroupSupportInfo>();
             foreach (var sp in support)
             {
                 supportGiven.Add(new GroupSupportInfo()
                 {
-                    GroupName = sp.tb_vsla.VslaName,
-                    TrainerName = sp.tb_trainers.Name,
-                    SupportType = sp.tb_support.SupportType,
-                    supportDate = sp.tb_support.SupportDate
+                    GroupName = sp.VslaId.VslaName,
+                    TrainerName = sp.TrainerId.Name,
+                    SupportType = sp.SupportType,
+                    supportDate = sp.SupportDate
                 });
             }
             return supportGiven;
@@ -812,21 +814,7 @@ namespace DigitizingDataAdminApp.Controllers
 
 
 
-        /**
-         * Logout
-         * Note : The user-activity logging function should be called
-         * before logging FormAutentication.SignOut() ie before the user
-         * session is destroyed
-         * 
-         **/
-        public ActionResult Logout()
-        {
-            String logString = Convert.ToString(Session["Username"]) + " Logged out";
-            activityLoggingSystem.logActivity(logString, 0);
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index");
 
-        }
 
 
 
@@ -1481,35 +1469,7 @@ namespace DigitizingDataAdminApp.Controllers
             return View(memberInfo);
         }
 
-        /**
-         * Helper method to get all information concerning vsla
-         * */
-        public List<VslaInformation> getVslaInformation()
-        {
-            List<VslaInformation> vslaList = new List<VslaInformation>();
-            var vslaDetails = (from data in database.Vslas select data);
-            foreach (var item in vslaDetails)
-            {
-                vslaList.Add(new VslaInformation
-                {
-                    VslaId = item.VslaId,
-                    VslaCode = item.VslaCode ?? "--",
-                    VslaName = item.VslaName ?? "--",
-                    RegionId = item.RegionId.ToString(),
-                    DateRegistered = item.DateRegistered,
-                    DateLinked = item.DateLinked,
-                    PhysicalAddress = item.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = item.GpsLocation ?? "--",
-                    ContactPerson = item.ContactPerson ?? "--",
-                    PositionInVsla = item.PositionInVsla ?? "--",
-                    PhoneNumber = item.PhoneNumber ?? "--",
-                    TechnicalTrainer = "--",
-                    Status = item.Status.ToString() ?? "--"
-                });
-            }
-            return vslaList;
-        }
+
         /**
         * Export all VSLA data to a csv file
         * 
@@ -1568,6 +1528,16 @@ namespace DigitizingDataAdminApp.Controllers
 
             Response.End();
         }
+
+
+
+
+
+
+
+
+
+
 
 
         /**
@@ -1656,6 +1626,21 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(stringWriter.ToString());
 
             Response.End();
+        }
+
+        /**
+         * Logout
+         * Note : The user-activity logging function should be called
+         * before logging FormAutentication.SignOut() ie before the user
+         * session is destroyed
+         **/
+        public ActionResult Logout()
+        {
+            String logString = Convert.ToString(Session["Username"]) + " Logged out";
+            activityLoggingSystem.logActivity(logString, 0);
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index");
+
         }
     }
 }
