@@ -1059,46 +1059,42 @@ namespace DigitizingDataAdminApp.Controllers
             }
         }
 
-
-        /**
-         * View all meetings attached to a particular VSLA
-         * */
+        // View all meetings attached to a particular VSLA
         public ActionResult VslaGroupMeetings(int id)
         {
             AllVslaMeetingInformation totalMeetings = new AllVslaMeetingInformation();
-            List<VslaMeetingInformation> singleMeeting = new List<VslaMeetingInformation>();
-            var vslaName = database.Vslas.Find(id);
-            singleMeeting = getMeetingData(id);
+            List<VslaMeetingInformation> singleMeeting = findMeetingDataByVslaId(id);
+
+            VslaRepo _vslaRepo = new VslaRepo();
+            DigitizingDataDomain.Model.Vsla _vsla = _vslaRepo.FindVslaById(Convert.ToInt32(id));
+
             totalMeetings.allVslaMeetings = singleMeeting;
-            totalMeetings.vslaName = vslaName.VslaName;
+            totalMeetings.vslaName = _vsla.VslaName;
             totalMeetings.vslaId = id;
             return View(totalMeetings);
         }
 
-        /**
-         * Helper method to query the database all information for all meetings
-         * */
-        public List<VslaMeetingInformation> getMeetingData(int Id)
+        // Helper method
+        public List<VslaMeetingInformation> findMeetingDataByVslaId(int Id)
         {
             List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
+            MeetingRepo _meetingRepo = null;
+            int _vslaId = Convert.ToInt32(Id);
             try
             {
-                var meetings = (from db_meetings in database.Meetings
-                                join db_cycles in database.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
-                                join db_vsla in database.Vslas on db_cycles.VslaId equals db_vsla.VslaId
-                                where db_vsla.VslaId == Id
-                                select new { dt_meetings = db_meetings, dt_cycles = db_cycles, dt_vsla = db_vsla });
-                foreach (var item in meetings)
+                _meetingRepo = new MeetingRepo();
+                List<DigitizingDataDomain.Model.Meeting> meetingData = _meetingRepo.findMeetingByVslaId(_vslaId);
+                foreach (var item in meetingData)
                 {
                     allMeetings.Add(new VslaMeetingInformation
                     {
-                        MeetingId = item.dt_meetings.MeetingId,
-                        cashFines = (long)item.dt_meetings.CashFines,
-                        meetingDate = item.dt_meetings.MeetingDate,
-                        membersPresent = int.Parse(item.dt_meetings.CountOfMembersPresent.ToString()),
-                        totalSavings = (long)item.dt_meetings.SumOfSavings,
-                        totalLoans = (long)item.dt_meetings.SumOfLoanIssues,
-                        totalLoanRepayment = (long)item.dt_meetings.SumOfLoanRepayments
+                        MeetingId = item.MeetingId,
+                        cashFines = (long)item.CashFines,
+                        meetingDate = item.MeetingDate,
+                        membersPresent = int.Parse(item.CountOfMembersPresent.ToString()),
+                        totalSavings = (long)item.SumOfSavings,
+                        totalLoans = (long)item.SumOfLoanIssues,
+                        totalLoanRepayment = (long)item.SumOfLoanRepayments
                     });
                 }
             }
@@ -1109,38 +1105,16 @@ namespace DigitizingDataAdminApp.Controllers
             }
             return allMeetings;
         }
-        /**
-         * Export all VSLA meetings attached to a particular VSLA to CSV
-         * */
+
+        // Export all VSLA meetings attached to a particular VSLA to CSV
         public void ExportVSLAMeetingsToCSV(int id, string fileName)
         {
-            List<VslaMeetingInformation> allMeetings = new List<VslaMeetingInformation>();
-            var meetings = (from db_meetings in database.Meetings
-                            join db_cycles in database.VslaCycles on db_meetings.CycleId equals db_cycles.CycleId
-                            join db_vsla in database.Vslas on db_cycles.VslaId equals db_vsla.VslaId
-                            where db_vsla.VslaId == id
-                            select new { dt_meetings = db_meetings, dt_cycles = db_cycles, dt_vsla = db_vsla });
-            foreach (var item in meetings)
-            {
-                allMeetings.Add(new VslaMeetingInformation
-                {
-                    MeetingId = item.dt_meetings.MeetingId,
-                    cashFines = (long)item.dt_meetings.CashFines,
-                    meetingDate = item.dt_meetings.MeetingDate,
-                    membersPresent = int.Parse(item.dt_meetings.CountOfMembersPresent.ToString()),
-                    totalSavings = (long)item.dt_meetings.SumOfSavings,
-                    totalLoans = (long)item.dt_meetings.SumOfLoanIssues,
-                    totalLoanRepayment = (long)item.dt_meetings.SumOfLoanRepayments
-                });
-            }
+            List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
 
             sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\"");
-
             Response.ClearContent();
-
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
-
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in allMeetings)
@@ -1160,21 +1134,60 @@ namespace DigitizingDataAdminApp.Controllers
             Response.End();
         }
 
-        /**
-         * Get details for a particular meeting held on a partuclar day by a VSLA
-         * */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /****
+         * 
+         * 
+         * 
+         * This still need fixing.....
+         * 
+         * 
+         */
+
+
+
+
+
+        // Get details for a particular meeting held on a partuclar day 
         public ActionResult SingleMeetingDetails(int id)
         {
             AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
             List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
 
             // Get the date when the meeting was held
-            var meetingDate = database.Meetings.Find(id);
+            MeetingRepo _meetingRepo = new MeetingRepo();
+            int _meetingId = Convert.ToInt32(id);
+            DigitizingDataDomain.Model.Meeting meeting = _meetingRepo.findMeetingByMeetingId(_meetingId);
 
             // Get the all the meeting details
-            meetingsList = groupMeetingDetails(id);
+            meetingsList = groupMeetingDetails(_meetingId);
             allInformation.allMeetingData = meetingsList;
-            allInformation.meetingDate = meetingDate.MeetingDate;
+            allInformation.meetingDate = meeting.MeetingDate;
             allInformation.vslaId = id;
             return View(allInformation);
         }
@@ -1206,8 +1219,9 @@ namespace DigitizingDataAdminApp.Controllers
                                loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
                                remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
 
-
                            });
+            AttendanceRepo _attendanceRepo = new AttendanceRepo();
+            List<DigitizingDataDomain.Model.Attendance> attendanceDetails = _attendanceRepo.findAllAttendanceDetails(id);
             foreach (var item in meeting)
             {
                 meetings.Add(new SingleMeetingInfo
@@ -1302,68 +1316,34 @@ namespace DigitizingDataAdminApp.Controllers
 
         }
 
-        /**
-         *  View all members attached to a given vsla
-         * */
+
+
+
+
+
+
+        // View all members attached to a given vsla
         public ActionResult VslaGroupMembers(int id)
         {
             AllVslaMemberInformation memberData = new AllVslaMemberInformation();
-            List<VslaMembersInformation> membersList = new List<VslaMembersInformation>();
+            int _vslaId = Convert.ToInt32(id);
+            List<VslaMembersInformation> membersList = getMembersData(_vslaId);
+
             // Get the name of vsla
-            var vslaName = database.Vslas.Find(id);
+            VslaRepo _vslaRepo = new VslaRepo();
+            DigitizingDataDomain.Model.Vsla VslaData = _vslaRepo.FindVslaById(_vslaId);
+
             // Get the list of all members
-            membersList = getMembersData(id);
             memberData.allVslaMembers = membersList;
-            memberData.vslaName = vslaName.VslaName;
+            memberData.vslaName = VslaData.VslaName;
             memberData.vslaId = id; // passing the id of the vsla on whch members are attached
             return View(memberData);
         }
 
-        /**
-         * Helper method to query the database and get a list of all members attached to a 
-         * particular vsla
-         * */
-        public List<VslaMembersInformation> getMembersData(int id)
-        {
-            List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
-            var members = (from db_members in database.Members where db_members.VslaId == id select new { dt_members = db_members });
-            foreach (var item in members)
-            {
-                allMembers.Add(new VslaMembersInformation
-                {
-                    memberId = item.dt_members.MemberId,
-                    memberNumber = int.Parse(item.dt_members.MemberNo.ToString()),
-                    cyclesCompleted = int.Parse(item.dt_members.CyclesCompleted.ToString()),
-                    surname = item.dt_members.Surname,
-                    otherNames = item.dt_members.OtherNames,
-                    gender = item.dt_members.Gender,
-                    occupation = item.dt_members.Occupation,
-                });
-            }
-
-            return allMembers;
-        }
-
-        /**
-         * Export the list of members to a csv file
-         * */
+        // Export the list of members attached to a particular VSLA to a csv file
         public void ExportMembersToCSV(int id, string fileName)
         {
-            List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
-            var members = (from db_members in database.Members where db_members.VslaId == id select new { dt_members = db_members });
-            foreach (var item in members)
-            {
-                allMembers.Add(new VslaMembersInformation
-                {
-                    memberId = item.dt_members.MemberId,
-                    memberNumber = int.Parse(item.dt_members.MemberNo.ToString()),
-                    cyclesCompleted = int.Parse(item.dt_members.CyclesCompleted.ToString()),
-                    surname = item.dt_members.Surname,
-                    otherNames = item.dt_members.OtherNames,
-                    gender = item.dt_members.Gender,
-                    occupation = item.dt_members.Occupation,
-                });
-            }
+            List<VslaMembersInformation> allMembers = getMembersData(Convert.ToInt32(id));
             StringWriter sw = new StringWriter();
 
             sw.WriteLine("\"Member Number\",\"Cycles Completed\",\"Surname\",\"Other Names\",\"Gender\",\"Occupation\"");
@@ -1385,10 +1365,32 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.occupation
                                            ));
             }
-
             Response.Write(sw.ToString());
             Response.End();
         }
+
+        // Helper method to get members attached to a particular VSLA Group
+        public List<VslaMembersInformation> getMembersData(int id)
+        {
+            MemberRepo _memberRepo = new MemberRepo();
+            List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
+            List<DigitizingDataDomain.Model.Member> membersList = _memberRepo.findAllMembersByVslaId(id);
+            foreach (var item in membersList)
+            {
+                allMembers.Add(new VslaMembersInformation
+                {
+                    memberId = item.MemberId,
+                    memberNumber = int.Parse(item.MemberNo.ToString()),
+                    cyclesCompleted = int.Parse(item.CyclesCompleted.ToString()),
+                    surname = item.Surname,
+                    otherNames = item.OtherNames,
+                    gender = item.Gender,
+                    occupation = item.Occupation
+                });
+            }
+            return allMembers;
+        }
+
 
         /**
          * Get all information for a given user attached to a particular vsla

@@ -54,5 +54,15 @@ namespace DigitizingDataBizLayer.Repositories
                                  select m).Count();
             return femaleMembers;
         }
+
+        // Find all members attached to a given VSLA
+        public List<Member> findAllMembersByVslaId(int vslaId)
+        {
+            var members = (from m in SessionProxy.Query<Member>()
+                           where m.Vsla.VslaId == vslaId
+                           select m).ToList();
+            return members;
+        }
+
     }
 }
