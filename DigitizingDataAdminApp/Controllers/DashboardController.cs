@@ -18,29 +18,10 @@ namespace DigitizingDataAdminApp.Controllers
     {
         ActivityLoggingSystem activityLoggingSystem;
         ledgerlinkEntities database;
-
-        VslaRepo vslaRepo;
-        MemberRepo memberRepo;
-        MeetingRepo meetingRepo;
-        AttendanceRepo attendanceRepo;
-        DataSubmissionRepo submssionRepo;
-        UserPermissionsRepo permissionsRepo;
-        UserRepo userRepo;
-
         public DashboardController()
         {
             activityLoggingSystem = new ActivityLoggingSystem();
             database = new ledgerlinkEntities();
-
-            userRepo = new UserRepo();
-            vslaRepo = new VslaRepo();
-            memberRepo = new MemberRepo();
-            meetingRepo = new MeetingRepo();
-            attendanceRepo = new AttendanceRepo();
-            submssionRepo = new DataSubmissionRepo();
-            permissionsRepo = new UserPermissionsRepo();
-
-
         }
 
         [Authorize]
@@ -48,6 +29,11 @@ namespace DigitizingDataAdminApp.Controllers
         {
             if (Session["UserId"] != null)
             {
+                VslaRepo vslaRepo = new VslaRepo();
+                MemberRepo memberRepo = new MemberRepo();
+                MeetingRepo meetingRepo = new MeetingRepo();
+                AttendanceRepo attendanceRepo = new AttendanceRepo();
+                DataSubmissionRepo dataSubmisssionRepo = new DataSubmissionRepo();
                 // Total VSLAs
                 long totalVslas = vslaRepo.countVslas();
 
@@ -69,7 +55,7 @@ namespace DigitizingDataAdminApp.Controllers
                 int totalMeetings = (int)meetingRepo.totalMeetingsHeld();
 
                 // Total Submission
-                int totalSubmissions = (int)submssionRepo.findTotalSubmissions();
+                int totalSubmissions = (int)dataSubmisssionRepo.findTotalSubmissions();
 
                 DashboardData summary = new DashboardData
                 {
@@ -84,8 +70,6 @@ namespace DigitizingDataAdminApp.Controllers
                     totalSubmissions = totalSubmissions,
                     totalMeeetings = totalMeetings,
                     totalVslas = totalVslas
-
-
                 };
                 return View(summary);
             }
@@ -102,6 +86,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Members by Gender
         public ActionResult showMembersByGender()
         {
+            MemberRepo memberRepo = new MemberRepo();
             int femaleMembers = (int)memberRepo.countFemaleMembers();
             int maleMembers = (int)memberRepo.countMaleMembers();
 
@@ -116,6 +101,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Attendance (Absent/Present)
         public ActionResult showAttendance()
         {
+            AttendanceRepo attendanceRepo = new AttendanceRepo();
             int totalPresent = (int)attendanceRepo.totalMembersPresent();
             int totalAbsent = (int)attendanceRepo.totalMembersAbsent();
 
@@ -131,6 +117,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Show total savings, loans given out and loan repayments
         public ActionResult showSavingsLoansAndRepayments()
         {
+            MeetingRepo meetingRepo = new MeetingRepo();
             double totalSavings = meetingRepo.findTotalSavings();
             double totalLoans = meetingRepo.findTotalLoans();
             double totalLoanRepayment = meetingRepo.findTotalLoanRepayment();
@@ -162,6 +149,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Helper method to get information for all registered users
         public List<UserInformation> usersInformation()
         {
+            UserRepo userRepo = new UserRepo();
             List<UserInformation> users = new List<UserInformation>();
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             string sessionUsername = Convert.ToString(Session["Username"]);
@@ -197,6 +185,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Get the user level permissions to populate in the drop down list 
         public SelectList getAccessPermissions()
         {
+            UserPermissionsRepo permissionsRepo = new UserPermissionsRepo();
             List<UserPermission> permissions = new List<UserPermission>();
             permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
 
@@ -217,6 +206,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Display all information for a particular user
         public ActionResult UserDetails(int id)
         {
+            UserRepo userRepo = new UserRepo();
             DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
@@ -349,6 +339,8 @@ namespace DigitizingDataAdminApp.Controllers
         // Helper function to get a user's information base on their ID
         public UserInformation particularUserData(int id)
         {
+            UserRepo userRepo = new UserRepo();
+            UserPermissionsRepo permissionsRepo = new UserPermissionsRepo();
             DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             // Get access levels
             List<UserPermission> permissions = new List<UserPermission>();
@@ -378,6 +370,7 @@ namespace DigitizingDataAdminApp.Controllers
         [HttpGet]
         public ActionResult DeleteUser(int id)
         {
+            UserRepo userRepo = new UserRepo();
             DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
@@ -780,7 +773,7 @@ namespace DigitizingDataAdminApp.Controllers
                     ContactPerson = item.ContactPerson ?? "--",
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
-                    TechnicalTrainer = "--",
+                    TechnicalTrainer = item.CBT.Name,
                     Status = item.Status.ToString() ?? "--"
                 });
             }
@@ -988,7 +981,6 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList allTrainersList = new SelectList(_trainers, "Id", "Name", (int)vsla.CBT.Id);
-
             // Get the status type ie active/inactive
             StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
             List<StatusType> statusTypes = new List<StatusType>();
@@ -1002,7 +994,6 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.Status);
-
             VslaInformation vslaData = new VslaInformation
             {
                 VslaId = vsla.VslaId,
@@ -1059,6 +1050,59 @@ namespace DigitizingDataAdminApp.Controllers
             }
         }
 
+        // Export all VSLA data to a csv file
+        public void Export_Vslas()
+        {
+            VslaRepo _vslaRepo = new VslaRepo();
+            List<DigitizingDataDomain.Model.Vsla> vslaDetails = _vslaRepo.findAllVslas();
+            List<VslaInformation> vslaList = new List<VslaInformation>();
+            foreach (var item in vslaDetails)
+            {
+                vslaList.Add(new VslaInformation
+                {
+                    VslaId = item.VslaId,
+                    VslaCode = item.VslaCode ?? "--",
+                    VslaName = item.VslaName ?? "--",
+                    RegionId = item.VslaRegion.RegionName,
+                    DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
+                    DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
+                    PhysicalAddress = item.PhysicalAddress ?? "--",
+                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
+                    GpsLocation = item.GpsLocation ?? "--",
+                    ContactPerson = item.ContactPerson ?? "--",
+                    PositionInVsla = item.PositionInVsla ?? "--",
+                    PhoneNumber = item.PhoneNumber ?? "--",
+                    TechnicalTrainer = item.CBT.Name,
+                    Status = item.Status.ToString() ?? "--"
+                });
+            }
+            StringWriter stringWriter = new StringWriter();
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\"");
+            Response.ClearContent();
+            String attachment = "attachment;filename=all_VSLAs.csv";
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "text/csv";
+            foreach (var line in vslaList)
+            {
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\"",
+                                           line.VslaCode,
+                                           line.VslaName,
+                                           line.RegionId,
+                                           line.DateRegistered.Value.ToShortDateString(),
+                                           line.DateLinked.Value.ToShortDateString(),
+                                           line.PhysicalAddress,
+                                           line.VslaPhoneMsisdn,
+                                           line.ContactPerson,
+                                           line.PositionInVsla,
+                                           line.PhoneNumber,
+                                           line.TechnicalTrainer,
+                                           line.Status.Equals("1") ? "Active" : "Inactive"
+                                           ));
+            }
+            Response.Write(stringWriter.ToString());
+            Response.End();
+        }
+
         // View all meetings attached to a particular VSLA
         public ActionResult VslaGroupMeetings(int id)
         {
@@ -1107,11 +1151,10 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         // Export all VSLA meetings attached to a particular VSLA to CSV
-        public void ExportVSLAMeetingsToCSV(int id, string fileName)
+        public void Export_VSLAMeetings(int id, string fileName)
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-
             sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
@@ -1130,7 +1173,6 @@ namespace DigitizingDataAdminApp.Controllers
             }
 
             Response.Write(sw.ToString());
-
             Response.End();
         }
 
@@ -1220,6 +1262,7 @@ namespace DigitizingDataAdminApp.Controllers
                                remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
 
                            });
+
             AttendanceRepo _attendanceRepo = new AttendanceRepo();
             List<DigitizingDataDomain.Model.Attendance> attendanceDetails = _attendanceRepo.findAllAttendanceDetails(id);
             foreach (var item in meeting)
@@ -1236,7 +1279,6 @@ namespace DigitizingDataAdminApp.Controllers
                     finedAmount = (long)item.amountInFines,
                     loanRepaymentAmount = (long)item.loanRepaymentAmount,
                     remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
-
                 });
             }
             return meetings;
@@ -1245,7 +1287,7 @@ namespace DigitizingDataAdminApp.Controllers
         /**
          * Export details of a single meeting to a csv file
          * */
-        public void ExportSingleMeetingDetailsCSV(int id)
+        public void Export_MeetingDetails(int id)
         {
             List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
             var meeting = (from db_attendance in database.Attendances
@@ -1268,8 +1310,6 @@ namespace DigitizingDataAdminApp.Controllers
                                amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
                                loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
                                remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
-
-
                            });
             foreach (var item in meeting)
             {
@@ -1294,7 +1334,6 @@ namespace DigitizingDataAdminApp.Controllers
             Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
             Response.ContentType = "text/csv";
 
-
             foreach (var line in meetings)
             {
                 sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
@@ -1310,17 +1349,8 @@ namespace DigitizingDataAdminApp.Controllers
             }
 
             Response.Write(sw.ToString());
-
             Response.End();
-
-
         }
-
-
-
-
-
-
 
         // View all members attached to a given vsla
         public ActionResult VslaGroupMembers(int id)
@@ -1341,11 +1371,10 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         // Export the list of members attached to a particular VSLA to a csv file
-        public void ExportMembersToCSV(int id, string fileName)
+        public void Export_MembersDetails(int id, string fileName)
         {
             List<VslaMembersInformation> allMembers = getMembersData(Convert.ToInt32(id));
             StringWriter sw = new StringWriter();
-
             sw.WriteLine("\"Member Number\",\"Cycles Completed\",\"Surname\",\"Other Names\",\"Gender\",\"Occupation\"");
 
             Response.ClearContent();
@@ -1391,102 +1420,29 @@ namespace DigitizingDataAdminApp.Controllers
             return allMembers;
         }
 
-
-        /**
-         * Get all information for a given user attached to a particular vsla
-         * */
+        // Get details for a particualar member attached to a particular vsla
         public ActionResult GroupMemberDetails(int id, int vslaId)
         {
-            var member = (from db_members in database.Members where db_members.MemberId == id select new { dt_members = db_members }).Single();
+            MemberRepo _memberRepo = new MemberRepo();
+            DigitizingDataDomain.Model.Member memberDetails = _memberRepo.FindMemberById(Convert.ToInt32(id));
+
             VslaMembersInformation memberInfo = new VslaMembersInformation
             {
-                memberNumber = int.Parse(member.dt_members.MemberNo.ToString()),
-                cyclesCompleted = int.Parse(member.dt_members.CyclesCompleted.ToString()),
-                surname = member.dt_members.Surname,
-                otherNames = member.dt_members.OtherNames,
-                gender = member.dt_members.Gender,
-                occupation = member.dt_members.Occupation,
-                dateArchived = member.dt_members.DateArchived,
-                DateOfBirth = member.dt_members.DateOfBirth,
-                isActive = member.dt_members.IsActive.ToString(),
-                isArchive = member.dt_members.IsArchived.ToString(),
-                phoneNumber = member.dt_members.PhoneNo,
+                memberNumber = int.Parse(memberDetails.MemberNo.ToString()),
+                cyclesCompleted = int.Parse(memberDetails.CyclesCompleted.ToString()),
+                surname = memberDetails.Surname,
+                otherNames = memberDetails.OtherNames,
+                gender = memberDetails.Gender,
+                occupation = memberDetails.Occupation,
+                dateArchived = memberDetails.DateArchived,
+                DateOfBirth = memberDetails.DateOfBirth,
+                isActive = memberDetails.IsActive.ToString(),
+                isArchive = memberDetails.IsArchived.ToString(),
+                phoneNumber = memberDetails.PhoneNo,
                 vslaId = (int)vslaId
-
             };
             return View(memberInfo);
         }
-
-
-        /**
-        * Export all VSLA data to a csv file
-        * 
-        * */
-        public void ExportVSLAsToCSV()
-        {
-            List<VslaInformation> vslaList = new List<VslaInformation>();
-            var vslaDetails = (from data in database.Vslas select data);
-            foreach (var item in vslaDetails)
-            {
-                vslaList.Add(new VslaInformation
-                {
-                    VslaId = item.VslaId,
-                    VslaCode = item.VslaCode ?? "--",
-                    VslaName = item.VslaName ?? "--",
-                    RegionId = item.RegionId.ToString(),
-                    DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
-                    DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
-                    PhysicalAddress = item.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = item.GpsLocation ?? "--",
-                    ContactPerson = item.ContactPerson ?? "--",
-                    PositionInVsla = item.PositionInVsla ?? "--",
-                    PhoneNumber = item.PhoneNumber ?? "--",
-                    TechnicalTrainer = "--",
-                    Status = item.Status.ToString() ?? "--"
-                });
-            }
-            StringWriter stringWriter = new StringWriter();
-            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"CBT\",\"Status\"");
-
-            Response.ClearContent();
-            String attachment = "attachment;filename=all_VSLAs.csv";
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "text/csv";
-            foreach (var line in vslaList)
-            {
-
-                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\"",
-                                           line.VslaCode,
-                                           line.VslaName,
-                                           line.RegionId,
-                                           line.DateRegistered.Value.ToShortDateString(),
-                                           line.DateLinked.Value.ToShortDateString(),
-                                           line.PhysicalAddress,
-                                           line.VslaPhoneMsisdn,
-                                           line.ContactPerson,
-                                           line.PositionInVsla,
-                                           line.PhoneNumber,
-                                           line.TechnicalTrainer,
-                                           line.Status.Equals("1") ? "Active" : "Inactive"
-                                           ));
-
-            }
-            Response.Write(stringWriter.ToString());
-
-            Response.End();
-        }
-
-
-
-
-
-
-
-
-
-
-
 
         /**
          * ******** GENERATE REPORTS *********
@@ -1495,6 +1451,7 @@ namespace DigitizingDataAdminApp.Controllers
         // Get weekly meetings
         public List<WeeklyMeetingsData> queryWeeklyMeetings()
         {
+            MeetingRepo meetingRepo = new MeetingRepo();
             List<WeeklyMeetingsData> meetingsData = new List<WeeklyMeetingsData>();
             string dateString = @"29/07/2014";
             DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
@@ -1523,7 +1480,6 @@ namespace DigitizingDataAdminApp.Controllers
                         vslaId = (int)item.VslaCycle.Vsla.VslaId,
                         VslaCode = item.VslaCycle.Vsla.VslaCode
                     });
-
                 }
             }
             return meetingsData;
@@ -1551,7 +1507,6 @@ namespace DigitizingDataAdminApp.Controllers
 
             foreach (var line in summary)
             {
-
                 stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\",\"{13}\",\"{14}\"",
                                            line.VslaCode,
                                            line.vslaName,
@@ -1569,10 +1524,9 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.sumOfLoansIssued,
                                            line.sumOfLoanRepayments
                                            ));
-
             }
-            Response.Write(stringWriter.ToString());
 
+            Response.Write(stringWriter.ToString());
             Response.End();
         }
 
@@ -1588,7 +1542,6 @@ namespace DigitizingDataAdminApp.Controllers
             activityLoggingSystem.logActivity(logString, 0);
             FormsAuthentication.SignOut();
             return RedirectToAction("Index");
-
         }
     }
 }

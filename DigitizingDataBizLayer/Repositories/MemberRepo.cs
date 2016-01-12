@@ -63,6 +63,5 @@ namespace DigitizingDataBizLayer.Repositories
                            select m).ToList();
             return members;
         }
-
     }
 }

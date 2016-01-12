@@ -12,7 +12,7 @@
 
     <div id="meetings">
         <p style="text-align: right;">
-            <a href="@Url.Action("ExportVSLAMeetingsToCSV", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
+            <a href="@Url.Action("Export_VSLAMeetings", "Dashboard", new { id = @Model.vslaId, fileName = @Model.vslaName })">
                 <strong>Export to CSV</strong>
             </a>
             |
