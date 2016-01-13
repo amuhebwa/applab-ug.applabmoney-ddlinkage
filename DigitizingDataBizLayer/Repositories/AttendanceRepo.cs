@@ -44,12 +44,6 @@ namespace DigitizingDataBizLayer.Repositories
                           select a).Count();
             return absent;
         }
-        // Find all attendance details attached to a specific meeting
-        public List<Attendance> findAllAttendanceDetails(int meetingId) { 
-           var details = (from a in SessionProxy.Query<Attendance>()
-                              where a.Meeting.MeetingId == meetingId
-                              select a).ToList();
-            return details;
-        }
+        
     }
 }

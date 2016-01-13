@@ -12,16 +12,15 @@ using System.Web.Helpers;
 using System.IO;
 using System.Text.RegularExpressions;
 using DigitizingDataBizLayer.Repositories;
+using DigitizingDataDomain.Model;
 namespace DigitizingDataAdminApp.Controllers
 {
     public class DashboardController : Controller
     {
         ActivityLoggingSystem activityLoggingSystem;
-        ledgerlinkEntities database;
         public DashboardController()
         {
             activityLoggingSystem = new ActivityLoggingSystem();
-            database = new ledgerlinkEntities();
         }
 
         [Authorize]
@@ -156,7 +155,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Session Level 1 : admin
             // Session Level 2 : user               
-            List<DigitizingDataDomain.Model.Users> userDetails = null;
+            List<Users> userDetails = null;
 
             if (sessionUserLevel == 1)
             { // ADMIN
@@ -186,14 +185,14 @@ namespace DigitizingDataAdminApp.Controllers
         public SelectList getAccessPermissions()
         {
             UserPermissionsRepo permissionsRepo = new UserPermissionsRepo();
-            List<UserPermission> permissions = new List<UserPermission>();
-            permissions.Add(new UserPermission { Level_Id = 0, UserType = "- Select Access Level -" });
+            List<UserPermissions> permissions = new List<UserPermissions>();
+            permissions.Add(new UserPermissions { Level_Id = 0, UserType = "- Select Access Level -" });
 
-            List<DigitizingDataDomain.Model.UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
+            List<UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
 
             foreach (var permission in allPermissions)
             {
-                permissions.Add(new UserPermission
+                permissions.Add(new UserPermissions
                 {
                     Level_Id = permission.Level_Id,
                     UserType = permission.UserType
@@ -207,7 +206,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult UserDetails(int id)
         {
             UserRepo userRepo = new UserRepo();
-            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
+            Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
                 Id = userDetails.Id,
@@ -222,7 +221,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddUser(User user, int Level_Id)
+        public ActionResult AddUser(Users user, int Level_Id)
         {
             Boolean insertResult = false;
             PasswordHashing passwordHashing = new PasswordHashing();
@@ -234,7 +233,7 @@ namespace DigitizingDataAdminApp.Controllers
             }
             else
             { // All fields have been validated
-                DigitizingDataDomain.Model.Users addUser = new DigitizingDataDomain.Model.Users();
+                Users addUser = new Users();
                 addUser.Username = Convert.ToString(user.Username);
                 addUser.Password = Convert.ToString(user.Password);
                 addUser.Fullname = Convert.ToString(user.Fullname);
@@ -307,7 +306,7 @@ namespace DigitizingDataAdminApp.Controllers
                 // Get access to the user repo and checkif the user exists
                 UserRepo _userRepo = new UserRepo();
                 int _userId = Convert.ToInt32(user.Id);
-                DigitizingDataDomain.Model.Users currentUser = _userRepo.findUserById(_userId);
+                Users currentUser = _userRepo.findUserById(_userId);
                 Boolean updateResult = false;
                 if (currentUser != null)
                 {
@@ -341,13 +340,13 @@ namespace DigitizingDataAdminApp.Controllers
         {
             UserRepo userRepo = new UserRepo();
             UserPermissionsRepo permissionsRepo = new UserPermissionsRepo();
-            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
+            Users userDetails = userRepo.findUserDetails(id);
             // Get access levels
-            List<UserPermission> permissions = new List<UserPermission>();
-            List<DigitizingDataDomain.Model.UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
+            List<UserPermissions> permissions = new List<UserPermissions>();
+            List<UserPermissions> allPermissions = permissionsRepo.allUserPermissions();
             foreach (var permission in allPermissions)
             {
-                permissions.Add(new UserPermission
+                permissions.Add(new UserPermissions
                 {
                     Level_Id = permission.Level_Id,
                     UserType = permission.UserType
@@ -371,7 +370,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult DeleteUser(int id)
         {
             UserRepo userRepo = new UserRepo();
-            DigitizingDataDomain.Model.Users userDetails = userRepo.findUserDetails(id);
+            Users userDetails = userRepo.findUserDetails(id);
             UserInformation userData = new UserInformation
             {
                 Id = userDetails.Id,
@@ -386,7 +385,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteUser(User user, int id)
+        public ActionResult DeleteUser(Users user, int id)
         {
             Boolean deleteResult = false;
             String logString = string.Empty;
@@ -394,7 +393,7 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 int _userId = Convert.ToInt32(user.Id);
                 UserRepo _userRepo = new UserRepo();
-                DigitizingDataDomain.Model.Users currentUser = _userRepo.findUserById(_userId);
+                Users currentUser = _userRepo.findUserById(_userId);
 
                 if (currentUser != null)
                 {
@@ -441,7 +440,7 @@ namespace DigitizingDataAdminApp.Controllers
             int sessionUserLevel = Convert.ToInt32(Session["UserLevel"]);
             List<TrainerInformation> trainerList = new List<TrainerInformation>();
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
-            List<DigitizingDataDomain.Model.TechnicalTrainer> allTrainers = _technicalTrainerRepo.findAllTechnicalTrainers();
+            List<TechnicalTrainer> allTrainers = _technicalTrainerRepo.findAllTechnicalTrainers();
 
             foreach (var item in allTrainers)
             {
@@ -463,17 +462,17 @@ namespace DigitizingDataAdminApp.Controllers
         // List Of All Regions
         public SelectList getVslaRegions()
         {
-            List<DigitizingDataAdminApp.Models.VslaRegion> regionsList = new List<DigitizingDataAdminApp.Models.VslaRegion>();
-            regionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+            List<VslaRegion> regionsList = new List<VslaRegion>();
+            regionsList.Add(new VslaRegion()
             {
                 RegionId = 0,
                 RegionName = "-Select Region-"
             });
             VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
-            List<DigitizingDataDomain.Model.VslaRegion> allRegions = _vslaRegionRepo.findAllRegions();
+            List<VslaRegion> allRegions = _vslaRegionRepo.findAllRegions();
             foreach (var region in allRegions)
             {
-                regionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+                regionsList.Add(new VslaRegion()
                 {
                     RegionId = region.RegionId,
                     RegionName = region.RegionName
@@ -486,19 +485,19 @@ namespace DigitizingDataAdminApp.Controllers
         // List of status types ie active/inactive
         public SelectList getStatusTypes()
         {
-            List<DigitizingDataAdminApp.Models.StatusType> statusOptions = new List<DigitizingDataAdminApp.Models.StatusType>();
+            List<StatusType> statusOptions = new List<StatusType>();
 
-            statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType()
+            statusOptions.Add(new StatusType()
             {
                 Status_Id = 0,
                 CurrentStatus = "-Select Status-"
             });
 
             StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
-            List<DigitizingDataDomain.Model.StatusType> allStatusTypes = _statusTypeRepo.findAllStatusType();
+            List<StatusType> allStatusTypes = _statusTypeRepo.findAllStatusType();
             foreach (var status in allStatusTypes)
             {
-                statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType
+                statusOptions.Add(new StatusType
                 {
                     Status_Id = status.Status_Id,
                     CurrentStatus = status.CurrentStatus
@@ -512,13 +511,13 @@ namespace DigitizingDataAdminApp.Controllers
         // List of all Technical trainers from list selector
         public SelectList getAllTrainers()
         {
-            List<DigitizingDataAdminApp.Models.TechnicalTrainer> trainers = new List<DigitizingDataAdminApp.Models.TechnicalTrainer>();
-            trainers.Add(new DigitizingDataAdminApp.Models.TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
+            List<TechnicalTrainer> trainers = new List<TechnicalTrainer>();
+            trainers.Add(new TechnicalTrainer { Id = 0, Name = "-Select Trainer" });
             TechnicalTrainerRepo _technicalTrinerRepo = new TechnicalTrainerRepo();
-            List<DigitizingDataDomain.Model.TechnicalTrainer> allTainers = _technicalTrinerRepo.findAllTechnicalTrainers();
+            List<TechnicalTrainer> allTainers = _technicalTrinerRepo.findAllTechnicalTrainers();
             foreach (var trainer in allTainers)
             {
-                trainers.Add(new DigitizingDataAdminApp.Models.TechnicalTrainer
+                trainers.Add(new TechnicalTrainer
                 {
                     Id = trainer.Id,
                     Name = trainer.Name
@@ -539,7 +538,7 @@ namespace DigitizingDataAdminApp.Controllers
         public TrainerInformation findParticularTrainerDetails(int id)
         {
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
-            DigitizingDataDomain.Model.TechnicalTrainer trainer = _technicalTrainerRepo.findParticularTrainer(id);
+            TechnicalTrainer trainer = _technicalTrainerRepo.findParticularTrainer(id);
             TrainerInformation trainerData = new TrainerInformation
             {
                 Id = trainer.Id,
@@ -577,14 +576,14 @@ namespace DigitizingDataAdminApp.Controllers
                 Boolean insertResult = false;
                 TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
 
-                DigitizingDataDomain.Model.TechnicalTrainer newTrainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+                TechnicalTrainer newTrainer = new TechnicalTrainer();
 
                 string fullName = trainer.FirstName + " " + trainer.LastName;
                 newTrainer.Name = Convert.ToString(fullName);
                 newTrainer.FirstName = Convert.ToString(trainer.FirstName);
                 newTrainer.LastName = Convert.ToString(trainer.LastName);
                 // Region
-                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                VslaRegion vslaRegion = new VslaRegion();
                 vslaRegion.RegionId = Convert.ToInt32(regionId);
                 newTrainer.VslaRegion = vslaRegion;
 
@@ -614,15 +613,15 @@ namespace DigitizingDataAdminApp.Controllers
         {
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
             int _trainerId = Convert.ToInt32(id);
-            DigitizingDataDomain.Model.TechnicalTrainer allInformation = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+            TechnicalTrainer allInformation = _technicalTrainerRepo.findParticularTrainer(_trainerId);
 
             // Regions
-            List<DigitizingDataAdminApp.Models.VslaRegion> allRegionsList = new List<DigitizingDataAdminApp.Models.VslaRegion>();
+            List<VslaRegion> allRegionsList = new List<VslaRegion>();
             VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
-            List<DigitizingDataDomain.Model.VslaRegion> databaseRegions = _vslaRegionRepo.findAllRegions();
+            List<VslaRegion> databaseRegions = _vslaRegionRepo.findAllRegions();
             foreach (var region in databaseRegions)
             {
-                allRegionsList.Add(new DigitizingDataAdminApp.Models.VslaRegion()
+                allRegionsList.Add(new VslaRegion()
                 {
                     RegionId = region.RegionId,
                     RegionName = region.RegionName
@@ -631,12 +630,12 @@ namespace DigitizingDataAdminApp.Controllers
             SelectList regionsList = new SelectList(allRegionsList, "RegionId", "RegionName", allInformation.VslaRegion.RegionId);
 
             // Status types
-            List<DigitizingDataAdminApp.Models.StatusType> statusOptions = new List<DigitizingDataAdminApp.Models.StatusType>();
+            List<StatusType> statusOptions = new List<StatusType>();
             StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
-            List<DigitizingDataDomain.Model.StatusType> databaseStatuses = _statusTypeRepo.findAllStatusType();
+            List<StatusType> databaseStatuses = _statusTypeRepo.findAllStatusType();
             foreach (var status in databaseStatuses)
             {
-                statusOptions.Add(new DigitizingDataAdminApp.Models.StatusType
+                statusOptions.Add(new StatusType
                 {
                     Status_Id = status.Status_Id,
                     CurrentStatus = status.CurrentStatus
@@ -666,7 +665,7 @@ namespace DigitizingDataAdminApp.Controllers
             Boolean updateResult = false;
             int _trainerId = Convert.ToInt32(trainer.Id);
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
-            DigitizingDataDomain.Model.TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+            TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
             if (currentTrainer != null)
             {
                 string fullname = trainer.FirstName + " " + trainer.LastName;
@@ -675,7 +674,7 @@ namespace DigitizingDataAdminApp.Controllers
                 currentTrainer.LastName = Convert.ToString(trainer.LastName);
 
                 // region id
-                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                VslaRegion vslaRegion = new VslaRegion();
                 vslaRegion.RegionId = Convert.ToInt32(regionId);
                 currentTrainer.VslaRegion = vslaRegion;
 
@@ -712,7 +711,7 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 int _trainerId = Convert.ToInt32(trainer.Id);
                 TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
-                DigitizingDataDomain.Model.TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
+                TechnicalTrainer currentTrainer = _technicalTrainerRepo.findParticularTrainer(_trainerId);
                 if (currentTrainer != null)
                 {
                     deleteResult = _technicalTrainerRepo.Delete(currentTrainer);
@@ -755,7 +754,7 @@ namespace DigitizingDataAdminApp.Controllers
         public List<VslaInformation> getVslaInformation()
         {
             VslaRepo _vslaRepo = new VslaRepo();
-            List<DigitizingDataDomain.Model.Vsla> vslaDetails = _vslaRepo.findAllVslas();
+            List<Vsla> vslaDetails = _vslaRepo.findAllVslas();
             List<VslaInformation> vslaData = new List<VslaInformation>();
             foreach (var item in vslaDetails)
             {
@@ -784,7 +783,7 @@ namespace DigitizingDataAdminApp.Controllers
         public List<GroupSupportInfo> getSupportType()
         {
             GroupSupportRepo _groupSupportRepo = new GroupSupportRepo();
-            List<DigitizingDataDomain.Model.GroupSupport> support = _groupSupportRepo.findAllGroupSupport();
+            List<GroupSupport> support = _groupSupportRepo.findAllGroupSupport();
             List<GroupSupportInfo> supportGiven = new List<GroupSupportInfo>();
             foreach (var sp in support)
             {
@@ -811,7 +810,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             int vslaId = Convert.ToInt32(id);
             VslaRepo _vslaRepo = new VslaRepo();
-            DigitizingDataDomain.Model.Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
+            Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
             VslaInformation vslaData = new VslaInformation
             {
                 VslaId = vslaDetails.VslaId,
@@ -840,12 +839,12 @@ namespace DigitizingDataAdminApp.Controllers
             string _vslaCode = generateVslaCode();
 
             // Create new VSLA group object
-            DigitizingDataDomain.Model.Vsla newVsla = new DigitizingDataDomain.Model.Vsla();
+            Vsla newVsla = new Vsla();
             newVsla.VslaCode = generateVslaCode();
             newVsla.VslaName = vslaGroup.VslaName;
 
             // region
-            DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+            VslaRegion vslaRegion = new VslaRegion();
             vslaRegion.RegionId = Convert.ToInt32(RegionId);
             newVsla.VslaRegion = vslaRegion;
 
@@ -859,7 +858,7 @@ namespace DigitizingDataAdminApp.Controllers
             newVsla.PhoneNumber = vslaGroup.PhoneNumber;
 
             // technical trainer
-            DigitizingDataDomain.Model.TechnicalTrainer _trainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+            TechnicalTrainer _trainer = new TechnicalTrainer();
             _trainer.Id = Convert.ToInt32(Id);
             newVsla.CBT = _trainer;
 
@@ -904,7 +903,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             int _vslaId = Convert.ToInt32(vslaGroup.VslaId);
             VslaRepo _vslaRepo = new VslaRepo();
-            DigitizingDataDomain.Model.Vsla currentVsla = _vslaRepo.FindVslaById(_vslaId);
+            Vsla currentVsla = _vslaRepo.FindVslaById(_vslaId);
             Boolean updateResult = false;
             if (currentVsla != null)
             {
@@ -916,7 +915,7 @@ namespace DigitizingDataAdminApp.Controllers
                 currentVsla.PhysicalAddress = vslaGroup.PhysicalAddress;
 
                 // region
-                DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
+                VslaRegion vslaRegion = new VslaRegion();
                 vslaRegion.RegionId = Convert.ToInt32(RegionId);
                 currentVsla.VslaRegion = vslaRegion;
 
@@ -924,7 +923,7 @@ namespace DigitizingDataAdminApp.Controllers
                 currentVsla.PositionInVsla = vslaGroup.PositionInVsla;
                 currentVsla.PhoneNumber = vslaGroup.PhoneNumber;
 
-                DigitizingDataDomain.Model.TechnicalTrainer _trainer = new DigitizingDataDomain.Model.TechnicalTrainer();
+                TechnicalTrainer _trainer = new TechnicalTrainer();
                 _trainer.Id = Convert.ToInt32(Id);
                 currentVsla.CBT = _trainer;
 
@@ -952,12 +951,12 @@ namespace DigitizingDataAdminApp.Controllers
         {
             VslaRepo _vslaRepo = new VslaRepo();
             int _vslaId = Convert.ToInt32(id);
-            DigitizingDataDomain.Model.Vsla vsla = _vslaRepo.FindVslaById(_vslaId);
+            Vsla vsla = _vslaRepo.FindVslaById(_vslaId);
 
             // Get a list of all vsla regions to populate in the dropdown list
             VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
             List<VslaRegion> regions = new List<VslaRegion>();
-            List<DigitizingDataDomain.Model.VslaRegion> regionsData = _vslaRegionRepo.findAllRegions();
+            List<VslaRegion> regionsData = _vslaRegionRepo.findAllRegions();
             foreach (var region in regionsData)
             {
                 regions.Add(new VslaRegion
@@ -971,7 +970,7 @@ namespace DigitizingDataAdminApp.Controllers
             // Get the list of all technical trainers to populate in the dropdown list
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
             List<TechnicalTrainer> _trainers = new List<TechnicalTrainer>();
-            List<DigitizingDataDomain.Model.TechnicalTrainer> trainerData = _technicalTrainerRepo.findAllTechnicalTrainers();
+            List<TechnicalTrainer> trainerData = _technicalTrainerRepo.findAllTechnicalTrainers();
             foreach (var item in trainerData)
             {
                 _trainers.Add(new TechnicalTrainer
@@ -984,7 +983,7 @@ namespace DigitizingDataAdminApp.Controllers
             // Get the status type ie active/inactive
             StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
             List<StatusType> statusTypes = new List<StatusType>();
-            List<DigitizingDataDomain.Model.StatusType> alltatusTypes = _statusTypeRepo.findAllStatusType();
+            List<StatusType> alltatusTypes = _statusTypeRepo.findAllStatusType();
             foreach (var statusType in alltatusTypes)
             {
                 statusTypes.Add(new StatusType
@@ -1031,7 +1030,7 @@ namespace DigitizingDataAdminApp.Controllers
             if (ModelState.IsValid && vslaGroup != null)
             {
                 VslaRepo _vslaRepo = new VslaRepo();
-                DigitizingDataDomain.Model.Vsla deleteVsla = _vslaRepo.FindVslaById(_vslaId);
+                Vsla deleteVsla = _vslaRepo.FindVslaById(_vslaId);
 
                 if (deleteVsla != null)
                 {
@@ -1054,7 +1053,7 @@ namespace DigitizingDataAdminApp.Controllers
         public void Export_Vslas()
         {
             VslaRepo _vslaRepo = new VslaRepo();
-            List<DigitizingDataDomain.Model.Vsla> vslaDetails = _vslaRepo.findAllVslas();
+            List<Vsla> vslaDetails = _vslaRepo.findAllVslas();
             List<VslaInformation> vslaList = new List<VslaInformation>();
             foreach (var item in vslaDetails)
             {
@@ -1110,7 +1109,7 @@ namespace DigitizingDataAdminApp.Controllers
             List<VslaMeetingInformation> singleMeeting = findMeetingDataByVslaId(id);
 
             VslaRepo _vslaRepo = new VslaRepo();
-            DigitizingDataDomain.Model.Vsla _vsla = _vslaRepo.FindVslaById(Convert.ToInt32(id));
+            Vsla _vsla = _vslaRepo.FindVslaById(Convert.ToInt32(id));
 
             totalMeetings.allVslaMeetings = singleMeeting;
             totalMeetings.vslaName = _vsla.VslaName;
@@ -1127,7 +1126,7 @@ namespace DigitizingDataAdminApp.Controllers
             try
             {
                 _meetingRepo = new MeetingRepo();
-                List<DigitizingDataDomain.Model.Meeting> meetingData = _meetingRepo.findMeetingByVslaId(_vslaId);
+                List<Meeting> meetingData = _meetingRepo.findMeetingByVslaId(_vslaId);
                 foreach (var item in meetingData)
                 {
                     allMeetings.Add(new VslaMeetingInformation
@@ -1175,182 +1174,139 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(sw.ToString());
             Response.End();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /****
-         * 
-         * 
-         * 
-         * This still need fixing.....
-         * 
-         * 
-         */
-
-
-
-
-
         // Get details for a particular meeting held on a partuclar day 
-        public ActionResult SingleMeetingDetails(int id)
-        {
-            AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
-            List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
+        //public ActionResult SingleMeetingDetails(int id)
+        //{
+        //    AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
+        //    List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
 
-            // Get the date when the meeting was held
-            MeetingRepo _meetingRepo = new MeetingRepo();
-            int _meetingId = Convert.ToInt32(id);
-            DigitizingDataDomain.Model.Meeting meeting = _meetingRepo.findMeetingByMeetingId(_meetingId);
+        //    // Get the date when the meeting was held
+        //    MeetingRepo _meetingRepo = new MeetingRepo();
+        //    int _meetingId = Convert.ToInt32(id);
+        //    Meeting meeting = _meetingRepo.findMeetingByMeetingId(_meetingId);
 
-            // Get the all the meeting details
-            meetingsList = groupMeetingDetails(_meetingId);
-            allInformation.allMeetingData = meetingsList;
-            allInformation.meetingDate = meeting.MeetingDate;
-            allInformation.vslaId = id;
-            return View(allInformation);
-        }
+        //    // Get the all the meeting details
+        //    meetingsList = groupMeetingDetails(_meetingId);
+        //    allInformation.allMeetingData = meetingsList;
+        //    allInformation.meetingDate = meeting.MeetingDate;
+        //    allInformation.vslaId = id;
+        //    return View(allInformation);
+        //}
 
-        /**
-         * Helper class for getting information concerned with all meetings in the whole system
-         * */
-        public List<SingleMeetingInfo> groupMeetingDetails(int id)
-        {
-            List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
-            var meeting = (from db_attendance in database.Attendances
-                           join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
-                           join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
-                           join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-                           join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-                           join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
-                           where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
-                           from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
-                           from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
-                           from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
-                           select new
-                           {
-                               db_attendance,
-                               db_member,
-                               db_savings,
-                               loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
-                               loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-                               amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
-                               loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
-                               remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+        //// Helper class for getting information concerned with all meetings in the whole system
+        //public List<SingleMeetingInfo> groupMeetingDetails(int id)
+        //{
 
-                           });
+        //    List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
+        //    var meeting = (from db_attendance in database.Attendances
+        //                   join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
+        //                   join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
+        //                   join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
+        //                   join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
+        //                   join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
+        //                   where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
+        //                   from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
+        //                   from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+        //                   from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
+        //                   select new
+        //                   {
+        //                       db_attendance,
+        //                       db_member,
+        //                       db_savings,
+        //                       loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
+        //                       loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
+        //                       amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
+        //                       loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
+        //                       remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
 
-            AttendanceRepo _attendanceRepo = new AttendanceRepo();
-            List<DigitizingDataDomain.Model.Attendance> attendanceDetails = _attendanceRepo.findAllAttendanceDetails(id);
-            foreach (var item in meeting)
-            {
-                meetings.Add(new SingleMeetingInfo
-                {
-                    Id = item.db_attendance.AttendanceId,
-                    memberId = item.db_member.MemberId,
-                    memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
-                    isPresent = item.db_attendance.IsPresent.ToString(),
-                    amountSaved = (long)item.db_savings.Amount,
-                    loanNumber = (int)item.loanNo,
-                    principleAmount = (long)item.loanAmount,
-                    finedAmount = (long)item.amountInFines,
-                    loanRepaymentAmount = (long)item.loanRepaymentAmount,
-                    remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
-                });
-            }
-            return meetings;
-        }
+        //                   });
+        //    foreach (var item in meeting)
+        //    {
+        //        meetings.Add(new SingleMeetingInfo
+        //        {
+        //            Id = item.db_attendance.AttendanceId,
+        //            memberId = item.db_member.MemberId,
+        //            memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
+        //            isPresent = item.db_attendance.IsPresent.ToString(),
+        //            amountSaved = (long)item.db_savings.Amount,
+        //            loanNumber = (int)item.loanNo,
+        //            principleAmount = (long)item.loanAmount,
+        //            finedAmount = (long)item.amountInFines,
+        //            loanRepaymentAmount = (long)item.loanRepaymentAmount,
+        //            remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan,
 
-        /**
-         * Export details of a single meeting to a csv file
-         * */
-        public void Export_MeetingDetails(int id)
-        {
-            List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
-            var meeting = (from db_attendance in database.Attendances
-                           join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
-                           join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
-                           join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-                           join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-                           join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
-                           where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
-                           from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
-                           from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
-                           from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
-                           select new
-                           {
-                               db_attendance,
-                               db_member,
-                               db_savings,
-                               loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
-                               loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-                               amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
-                               loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
-                               remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
-                           });
-            foreach (var item in meeting)
-            {
-                meetings.Add(new SingleMeetingInfo
-                {
-                    Id = item.db_attendance.AttendanceId,
-                    memberId = item.db_member.MemberId,
-                    memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
-                    isPresent = item.db_attendance.IsPresent.ToString(),
-                    amountSaved = (long)item.db_savings.Amount,
-                    loanNumber = (int)item.loanNo,
-                    principleAmount = (long)item.loanAmount,
-                    finedAmount = (long)item.amountInFines,
-                    loanRepaymentAmount = (long)item.loanRepaymentAmount,
-                    remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
+        //        });
+        //    }
+        //    return meetings;
+        //}
 
-                });
-            }
-            StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Member Name\",\"Attendance\",\"Amount Saved\",\"Loan Number\",\"Loan Taken\",\"Fines\",\"Loan Cleared\",\"Loan Outstanding\"");
-            Response.ClearContent();
-            Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
-            Response.ContentType = "text/csv";
+        ///**
+        // * Export details of a single meeting to a csv file
+        // * */
+        //public void Export_MeetingDetails(int id)
+        //{
+        //    List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
+        //    var meeting = (from db_attendance in database.Attendances
+        //                   join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
+        //                   join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
+        //                   join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
+        //                   join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
+        //                   join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
+        //                   where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
+        //                   from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
+        //                   from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
+        //                   from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
+        //                   select new
+        //                   {
+        //                       db_attendance,
+        //                       db_member,
+        //                       db_savings,
+        //                       loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
+        //                       loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
+        //                       amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
+        //                       loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
+        //                       remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+        //                   });
+        //    foreach (var item in meeting)
+        //    {
+        //        meetings.Add(new SingleMeetingInfo
+        //        {
+        //            Id = item.db_attendance.AttendanceId,
+        //            memberId = item.db_member.MemberId,
+        //            memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
+        //            isPresent = item.db_attendance.IsPresent.ToString(),
+        //            amountSaved = (long)item.db_savings.Amount,
+        //            loanNumber = (int)item.loanNo,
+        //            principleAmount = (long)item.loanAmount,
+        //            finedAmount = (long)item.amountInFines,
+        //            loanRepaymentAmount = (long)item.loanRepaymentAmount,
+        //            remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
 
-            foreach (var line in meetings)
-            {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
-                                           line.memberName,
-                                           line.isPresent,
-                                           line.amountSaved,
-                                           line.loanNumber,
-                                           line.principleAmount,
-                                           line.finedAmount,
-                                           line.loanRepaymentAmount,
-                                           line.remainingBalanceOnLoan
-                                           ));
-            }
+        //        });
+        //    }
+        //    StringWriter sw = new StringWriter();
+        //    sw.WriteLine("\"Member Name\",\"Attendance\",\"Amount Saved\",\"Loan Number\",\"Loan Taken\",\"Fines\",\"Loan Cleared\",\"Loan Outstanding\"");
+        //    Response.ClearContent();
+        //    Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
+        //    Response.ContentType = "text/csv";
 
-            Response.Write(sw.ToString());
-            Response.End();
-        }
+        //    foreach (var line in meetings)
+        //    {
+        //        sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
+        //                                   line.memberName,
+        //                                   line.isPresent,
+        //                                   line.amountSaved,
+        //                                   line.loanNumber,
+        //                                   line.principleAmount,
+        //                                   line.finedAmount,
+        //                                   line.loanRepaymentAmount,
+        //                                   line.remainingBalanceOnLoan
+        //                                   ));
+        //    }
+
+        //    Response.Write(sw.ToString());
+        //    Response.End();
+        //}
 
         // View all members attached to a given vsla
         public ActionResult VslaGroupMembers(int id)
@@ -1361,7 +1317,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Get the name of vsla
             VslaRepo _vslaRepo = new VslaRepo();
-            DigitizingDataDomain.Model.Vsla VslaData = _vslaRepo.FindVslaById(_vslaId);
+            Vsla VslaData = _vslaRepo.FindVslaById(_vslaId);
 
             // Get the list of all members
             memberData.allVslaMembers = membersList;
@@ -1403,7 +1359,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             MemberRepo _memberRepo = new MemberRepo();
             List<VslaMembersInformation> allMembers = new List<VslaMembersInformation>();
-            List<DigitizingDataDomain.Model.Member> membersList = _memberRepo.findAllMembersByVslaId(id);
+            List<Member> membersList = _memberRepo.findAllMembersByVslaId(id);
             foreach (var item in membersList)
             {
                 allMembers.Add(new VslaMembersInformation
@@ -1424,7 +1380,7 @@ namespace DigitizingDataAdminApp.Controllers
         public ActionResult GroupMemberDetails(int id, int vslaId)
         {
             MemberRepo _memberRepo = new MemberRepo();
-            DigitizingDataDomain.Model.Member memberDetails = _memberRepo.FindMemberById(Convert.ToInt32(id));
+            Member memberDetails = _memberRepo.FindMemberById(Convert.ToInt32(id));
 
             VslaMembersInformation memberInfo = new VslaMembersInformation
             {
@@ -1455,7 +1411,7 @@ namespace DigitizingDataAdminApp.Controllers
             List<WeeklyMeetingsData> meetingsData = new List<WeeklyMeetingsData>();
             string dateString = @"29/07/2014";
             DateTime startDate = Convert.ToDateTime(dateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
-            List<DigitizingDataDomain.Model.Meeting> weeklyMeetings = meetingRepo.findWeeklyMeetings(startDate);
+            List<Meeting> weeklyMeetings = meetingRepo.findWeeklyMeetings(startDate);
             if (null != weeklyMeetings)
             {
                 foreach (var item in weeklyMeetings)

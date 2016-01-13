@@ -1,0 +1,46 @@
+﻿@model DigitizingDataAdminApp.Models.AllMeetingsData
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "VSLA Reporting";
+}
+
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
+    <ul>
+        <li><a href="#meetings-tabs">Weekly Meetings</a></li>
+    </ul>
+    <div id="meetings-tabs">
+        <div>
+            <a href="@Url.Action("ExportWeeklySummary", "Dashboard")"><strong>Export to CSV</strong></a>
+        </div>
+        <div style="width: 100%; min-width: 900px; margin: 0 auto;">
+            <table class="display" style="width: 100%;" id="data-table">
+                <thead>
+                    <tr>
+                        <th>VSLA Code</th>
+                        <th>Fines</th>
+                        <th>Date Sent</th>
+                        <th>Meeting Date</th>
+                        <th>Savings</th>
+                        <th>Loans</th>
+                        <th>Loan Repayment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.meetingsSummary)
+                    { 
+                        <tr>
+                            <td>@item.VslaCode</td>
+                            <td>@item.fCashFines</td>
+                            <td>@item.formattedDateSent</td>
+                            <td>@item.formattedMeetingDate</td>
+                            <td>@item.fSumOfSavings</td>
+                            <td>@item.fSumOfLoansIssued</td>
+                            <td>@item.fLoanRepayment</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

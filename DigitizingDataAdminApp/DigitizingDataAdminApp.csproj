@@ -207,91 +207,16 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ActivityLogging.cs" />
-    <Compile Include="Models\Attendance.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataSubmission.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataSubmission_20140113.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataSubmission_20140113_2.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Fine.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GroupSupport.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ledgerlink.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ledgerlink.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ledgerlink.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LoanIssue.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LoanRepayment.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Meeting.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Member.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\PasswordHashing.cs" />
-    <Compile Include="Models\PhoneDelivery.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Saving.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\StatusType.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TechnicalTrainer.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TrainerInformation.cs" />
     <Compile Include="Models\DashboardData.cs" />
     <Compile Include="Models\LogsInformation.cs" />
     <Compile Include="Models\SingleMeetingInfo.cs" />
-    <Compile Include="Models\User.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\UserLogin.cs" />
-    <Compile Include="Models\UserPermission.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Vsla.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VslaCycle.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VslaDdActivation.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\VslaInformation.cs" />
     <Compile Include="Models\VslaMeetingInformation.cs" />
     <Compile Include="Models\VslaMembersInformation.cs" />
-    <Compile Include="Models\VslaRegion.cs">
-      <DependentUpon>ledgerlink.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WeeklyMeetings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -416,23 +341,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
-    <EntityDeploy Include="Models\ledgerlink.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ledgerlink.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ledgerlink.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-      <LastGenOutput>ledgerlink.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ledgerlink.edmx.diagram">
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\ledgerlink.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ledgerlink.edmx</DependentUpon>
-      <LastGenOutput>ledgerlink.cs</LastGenOutput>
-    </Content>
     <None Include="Properties\PublishProfiles\ledgerlink-manager.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
