@@ -811,25 +811,34 @@ namespace DigitizingDataAdminApp.Controllers
             int vslaId = Convert.ToInt32(id);
             VslaRepo _vslaRepo = new VslaRepo();
             Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
-            VslaInformation vslaData = new VslaInformation
-            {
-                VslaId = vslaDetails.VslaId,
-                VslaCode = vslaDetails.VslaCode ?? "--",
-                VslaName = vslaDetails.VslaName ?? "--",
-                RegionId = vslaDetails.VslaRegion.RegionName,
-                DateRegistered = vslaDetails.DateRegistered,
-                DateLinked = vslaDetails.DateLinked,
-                PhysicalAddress = vslaDetails.PhysicalAddress ?? "--",
-                VslaPhoneMsisdn = vslaDetails.VslaPhoneMsisdn ?? "--",
-                GpsLocation = vslaDetails.GpsLocation ?? "--",
-                ContactPerson = vslaDetails.ContactPerson ?? "--",
-                PositionInVsla = vslaDetails.PositionInVsla,
-                PhoneNumber = vslaDetails.PhoneNumber ?? "--",
-                TechnicalTrainer = vslaDetails.CBT.Name ?? "--",
-                Status = vslaDetails.Status == 1 ? "Active" : "Inactive",
-                GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--",
-                NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles)
-            };
+
+            VslaInformation vslaData = new VslaInformation();
+            vslaData.VslaId = vslaDetails.VslaId;
+            vslaData.VslaCode = vslaDetails.VslaCode;
+            vslaData.VslaName = vslaDetails.VslaName;
+
+            // Region
+            VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
+            VslaRegion _vslaRegion = _vslaRegionRepo.findVslaRegionById(Convert.ToInt32(vslaDetails.VslaRegion.RegionId));
+            vslaData.RegionId = _vslaRegion.RegionName;
+
+            vslaData.DateRegistered = vslaDetails.DateRegistered.HasValue ? vslaDetails.DateRegistered : DateTime.Today;
+            vslaData.DateLinked = vslaDetails.DateLinked.HasValue ? vslaDetails.DateLinked : DateTime.Today;
+            vslaData.PhysicalAddress = vslaDetails.PhysicalAddress != null ? vslaDetails.PhysicalAddress : " --";
+            vslaData.VslaPhoneMsisdn = vslaDetails.VslaPhoneMsisdn != null ? vslaDetails.VslaPhoneMsisdn : "--";
+            vslaData.GpsLocation = vslaDetails.GpsLocation != null ? vslaDetails.GpsLocation : "--";
+            vslaData.ContactPerson = vslaDetails.ContactPerson != null ? vslaDetails.ContactPerson : "--";
+            vslaData.PositionInVsla = vslaDetails.PositionInVsla != null ? vslaDetails.PositionInVsla : "--";
+            vslaData.PhoneNumber = vslaDetails.PhoneNumber != null ? vslaDetails.PhoneNumber : "--";
+
+            // Technical Trainer
+            TechnicalTrainerRepo _trainerRepo = new TechnicalTrainerRepo();
+            TechnicalTrainer _trainer = _trainerRepo.findParticularTrainer(Convert.ToInt32(vslaDetails.CBT.Id));
+            vslaData.TechnicalTrainer = _trainer.Name != null ? _trainer.Name : "--";
+
+            vslaData.Status = vslaDetails.Status == 1 ? "Active" : "Inactive";
+            vslaData.GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--";
+            vslaData.NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles);
             return vslaData;
         }
 
@@ -918,7 +927,7 @@ namespace DigitizingDataAdminApp.Controllers
 
                 // region
                 VslaRegion vslaRegion = new VslaRegion();
-                vslaRegion.RegionId = Convert.ToInt32(RegionId);
+                vslaRegion.RegionId = Convert.ToInt32(vslaGroup.RegionId);
                 currentVsla.VslaRegion = vslaRegion;
 
                 currentVsla.ContactPerson = vslaGroup.ContactPerson;

@@ -17,5 +17,14 @@ namespace DigitizingDataBizLayer.Repositories
                               select r).ToList();
             return allRegions;
         }
+
+        // Find region by Id
+        public VslaRegion findVslaRegionById(int regionId)
+        {
+            var region = (from r in SessionProxy.Query<VslaRegion>()
+                          where r.RegionId == regionId
+                          select r).FirstOrDefault();
+            return region;
+        }
     }
 }
