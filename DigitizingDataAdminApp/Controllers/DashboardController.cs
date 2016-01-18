@@ -539,18 +539,22 @@ namespace DigitizingDataAdminApp.Controllers
         {
             TechnicalTrainerRepo _technicalTrainerRepo = new TechnicalTrainerRepo();
             TechnicalTrainer trainer = _technicalTrainerRepo.findParticularTrainer(id);
-            TrainerInformation trainerData = new TrainerInformation
-            {
-                Id = trainer.Id,
-                FirstName = trainer.FirstName,
-                LastName = trainer.LastName,
-                Region = trainer.VslaRegion.RegionName,
-                PhoneNumber = trainer.PhoneNumber,
-                Email = trainer.Email,
-                Status = trainer.Status == "1" ? "Active" : "Inactive",
-                Username = trainer.Username,
-                Passkey = trainer.Passkey
-            };
+            TrainerInformation trainerData = new TrainerInformation();
+            trainerData.Id = trainer.Id;
+            trainerData.FirstName = trainer.FirstName;
+            trainerData.LastName = trainer.LastName;
+
+            // Region
+            VslaRegionRepo _vslaRegionRepo = new VslaRegionRepo();
+            VslaRegion _vslaRegion = _vslaRegionRepo.findVslaRegionById(Convert.ToInt32(trainer.VslaRegion.RegionId));
+
+            trainerData.Region = _vslaRegion.RegionName;
+            trainerData.PhoneNumber = trainer.PhoneNumber;
+            trainerData.Email = trainer.Email;
+            trainerData.Status = trainer.Status == "1" ? "Active" : "Inactive";
+            trainerData.Username = trainer.Username;
+            trainerData.Passkey = trainer.Passkey;
+
             return trainerData;
         }
 
