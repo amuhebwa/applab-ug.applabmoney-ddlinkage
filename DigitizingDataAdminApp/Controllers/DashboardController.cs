@@ -1089,18 +1089,19 @@ namespace DigitizingDataAdminApp.Controllers
                     PositionInVsla = item.PositionInVsla ?? "--",
                     PhoneNumber = item.PhoneNumber ?? "--",
                     TechnicalTrainer = item.CBT.Name,
-                    Status = item.Status.ToString() ?? "--"
+                    Status = item.Status.ToString() ?? "--",
+                    GroupAccountNumber = item.GroupAccountNumber != null ? item.GroupAccountNumber : "--"
                 });
             }
             StringWriter stringWriter = new StringWriter();
-            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\"");
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\",\"Account Number\"");
             Response.ClearContent();
             String attachment = "attachment;filename=all_VSLAs.csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in vslaList)
             {
-                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\"",
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\"",
                                            line.VslaCode,
                                            line.VslaName,
                                            line.RegionId,
@@ -1112,7 +1113,8 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.PositionInVsla,
                                            line.PhoneNumber,
                                            line.TechnicalTrainer,
-                                           line.Status.Equals("1") ? "Active" : "Inactive"
+                                           line.Status.Equals("1") ? "Active" : "Inactive",
+                                           line.GroupAccountNumber
                                            ));
             }
             Response.Write(stringWriter.ToString());
@@ -1411,7 +1413,7 @@ namespace DigitizingDataAdminApp.Controllers
                 DateOfBirth = memberDetails.DateOfBirth,
                 isActive = memberDetails.IsActive.ToString(),
                 isArchive = memberDetails.IsArchived.ToString(),
-                phoneNumber = memberDetails.PhoneNo,
+                phoneNumber = memberDetails.PhoneNo == null ? memberDetails.PhoneNo : " -- ",
                 vslaId = (int)vslaId
             };
             return View(memberInfo);
