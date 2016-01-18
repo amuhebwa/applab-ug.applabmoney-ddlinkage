@@ -80,6 +80,10 @@
                     <td><strong>@Html.DisplayName("Group Acount Number")</strong></td>
                     <td>@Html.TextBoxFor(model => model.GroupAccountNumber, new { @placeholder = " e.g 1234567890" })</td>
                 </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Number Of Cycles With LedgerLink")</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NumberOfCycles, new { @placeholder = " e.g 1234567890" })</td>
+                </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />
@@ -121,6 +125,9 @@
                     </tr>
                     <tr>
                         <td>@Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+                    </tr>
+                     <tr>
+                        <td>@Html.ValidationMessageFor(model => model.NumberOfCycles)</td>
                     </tr>
                 </table>
             </div>

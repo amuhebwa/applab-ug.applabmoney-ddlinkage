@@ -177,6 +177,10 @@
                     <td><strong>@Html.DisplayName("Group Account Number")</strong></td>
                     <td>@Html.TextBoxFor(model => model.GroupAccountNumber, new { @placeholder = "e.g 1234567890" })</td>
                 </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Number Of Cycles with LedgerLink")</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NumberOfCycles, new { @placeholder = "e.g 2" })</td>
+                </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" name="AddVslaGroup" value=" Create " style="width: 100px;" />
@@ -221,6 +225,9 @@
                     </tr>
                     <tr>
                         <td>@Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.NumberOfCycles)</td>
                     </tr>
                 </table>
             </div>

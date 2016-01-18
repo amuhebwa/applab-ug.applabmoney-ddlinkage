@@ -75,6 +75,10 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
         [RegularExpression(@"^[0-9]{10,10}$", ErrorMessage = "A/C is 10 characters ")]
         public string GroupAccountNumber { get; set; }
+
+        [Required(ErrorMessage = "Number Of Cycles is a required field", AllowEmptyStrings = false)]
+        [RegularExpression(@"^[0-9]{1,3}$", ErrorMessage = "Max : 100 years ")]
+        public string NumberOfCycles { get; set; }
     }
 
     public class GroupSupportInfo {

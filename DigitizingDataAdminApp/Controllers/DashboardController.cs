@@ -827,7 +827,8 @@ namespace DigitizingDataAdminApp.Controllers
                 PhoneNumber = vslaDetails.PhoneNumber ?? "--",
                 TechnicalTrainer = vslaDetails.CBT.Name ?? "--",
                 Status = vslaDetails.Status == 1 ? "Active" : "Inactive",
-                GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--"
+                GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--",
+                NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles)
             };
             return vslaData;
         }
@@ -864,6 +865,7 @@ namespace DigitizingDataAdminApp.Controllers
 
             newVsla.Status = Status_Id;
             newVsla.GroupAccountNumber = vslaGroup.GroupAccountNumber;
+            newVsla.NumberOfCycles = vslaGroup.NumberOfCycles;
 
             VslaRepo _vslaRepo = new VslaRepo();
             Boolean insertResult = false;
@@ -929,6 +931,7 @@ namespace DigitizingDataAdminApp.Controllers
 
                 currentVsla.Status = Status_Id;
                 currentVsla.GroupAccountNumber = vslaGroup.GroupAccountNumber;
+                currentVsla.NumberOfCycles = Convert.ToInt32(vslaGroup.NumberOfCycles);
                 if (currentVsla.VslaId > 0)
                 {
                     updateResult = _vslaRepo.Update(currentVsla);
@@ -1009,7 +1012,8 @@ namespace DigitizingDataAdminApp.Controllers
                 PhoneNumber = vsla.PhoneNumber,
                 AllTechnicalTrainers = allTrainersList,
                 StatusType = statusTypesList,
-                GroupAccountNumber = vsla.GroupAccountNumber
+                GroupAccountNumber = vsla.GroupAccountNumber,
+                NumberOfCycles = Convert.ToString(vsla.NumberOfCycles)
             };
             return vslaData;
         }
