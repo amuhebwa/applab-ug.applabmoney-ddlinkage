@@ -60,5 +60,8 @@ namespace DigitizingDataAdminApp.Models
 
         public long totalLoanRepayment { get; set; }
         public string formattedLoanRepayment { get { return totalLoanRepayment.ToString("#,##0"); } }
+
+        // Difference between meeting date and date of submission
+        public int diffInDaysBtnHeld_Submit { get; set; }
     }
 }

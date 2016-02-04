@@ -1161,16 +1161,17 @@ namespace DigitizingDataAdminApp.Controllers
                 List<Meeting> meetingData = _meetingRepo.findMeetingByVslaId(_vslaId);
                 foreach (var item in meetingData)
                 {
-                    allMeetings.Add(new VslaMeetingInformation
-                    {
-                        MeetingId = item.MeetingId,
-                        cashFines = (long)item.CashFines,
-                        meetingDate = item.MeetingDate,
-                        membersPresent = int.Parse(item.CountOfMembersPresent.ToString()),
-                        totalSavings = (long)item.SumOfSavings,
-                        totalLoans = (long)item.SumOfLoanIssues,
-                        totalLoanRepayment = (long)item.SumOfLoanRepayments
-                    });
+
+                    VslaMeetingInformation _meetingInfo = new VslaMeetingInformation();
+                    _meetingInfo.MeetingId = item.MeetingId;
+                    _meetingInfo.cashFines = (long)item.CashFines;
+                    _meetingInfo.meetingDate = item.MeetingDate;
+                    _meetingInfo.membersPresent = int.Parse(item.CountOfMembersPresent.ToString());
+                    _meetingInfo.totalSavings = (long)item.SumOfSavings;
+                    _meetingInfo.totalLoans = (long)item.SumOfLoanIssues;
+                    _meetingInfo.totalLoanRepayment = (long)item.SumOfLoanRepayments;
+                    _meetingInfo.diffInDaysBtnHeld_Submit = diffInDates(Convert.ToDateTime(item.MeetingDate), Convert.ToDateTime(item.DateSent));
+                    allMeetings.Add(_meetingInfo);
                 }
             }
             catch (Exception)
@@ -1181,25 +1182,34 @@ namespace DigitizingDataAdminApp.Controllers
             return allMeetings;
         }
 
+        // Calculate the difference between meeting date and date submitted
+        public int diffInDates(DateTime meetingDate, DateTime dateSent)
+        {
+            TimeSpan diff = meetingDate.Subtract(dateSent);
+            double diffInDays = Math.Abs(diff.TotalDays);
+            return Convert.ToInt32(diffInDays);
+        }
+
         // Export all VSLA meetings attached to a particular VSLA to CSV
         public void Export_VSLAMeetings(int id, string fileName)
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\"");
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Diff. btn Meeting Date and Date sent\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in allMeetings)
             {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"",
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\"",
                                            line.meetingDate.Value.ToShortDateString(),
                                            line.membersPresent,
                                            line.cashFines,
                                            line.totalSavings,
                                            line.totalLoans,
-                                           line.totalLoanRepayment
+                                           line.totalLoanRepayment,
+                                           line.diffInDaysBtnHeld_Submit
                                            ));
             }
 
