@@ -812,11 +812,15 @@ namespace DigitizingDataAdminApp.Controllers
         // Helper function to find VSLA details
         public VslaInformation findVslaDetails(int id)
         {
+            VslaInformation vslaData = new VslaInformation();
             int vslaId = Convert.ToInt32(id);
             VslaRepo _vslaRepo = new VslaRepo();
             Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
 
-            VslaInformation vslaData = new VslaInformation();
+            // percentage of females
+            MemberRepo _memberRepo = new MemberRepo();
+            vslaData.percentageOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId) + "%";
+
             vslaData.VslaId = vslaDetails.VslaId;
             vslaData.VslaCode = vslaDetails.VslaCode;
             vslaData.VslaName = vslaDetails.VslaName;
@@ -839,6 +843,9 @@ namespace DigitizingDataAdminApp.Controllers
             TechnicalTrainerRepo _trainerRepo = new TechnicalTrainerRepo();
             TechnicalTrainer _trainer = _trainerRepo.findParticularTrainer(Convert.ToInt32(vslaDetails.CBT.Id));
             vslaData.TechnicalTrainer = _trainer.Name != null ? _trainer.Name : "--";
+
+            // Number of registered members
+
 
             vslaData.Status = vslaDetails.Status == 1 ? "Active" : "Inactive";
             vslaData.GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--";
@@ -1072,36 +1079,41 @@ namespace DigitizingDataAdminApp.Controllers
             VslaRepo _vslaRepo = new VslaRepo();
             List<Vsla> vslaDetails = _vslaRepo.findAllVslas();
             List<VslaInformation> vslaList = new List<VslaInformation>();
+            MemberRepo _memberRepo = new MemberRepo();
             foreach (var item in vslaDetails)
             {
-                vslaList.Add(new VslaInformation
-                {
-                    VslaId = item.VslaId,
-                    VslaCode = item.VslaCode ?? "--",
-                    VslaName = item.VslaName ?? "--",
-                    RegionId = item.VslaRegion.RegionName,
-                    DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today,
-                    DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today,
-                    PhysicalAddress = item.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = item.GpsLocation ?? "--",
-                    ContactPerson = item.ContactPerson ?? "--",
-                    PositionInVsla = item.PositionInVsla ?? "--",
-                    PhoneNumber = item.PhoneNumber ?? "--",
-                    TechnicalTrainer = item.CBT.Name,
-                    Status = item.Status.ToString() ?? "--",
-                    GroupAccountNumber = item.GroupAccountNumber != null ? item.GroupAccountNumber : "--"
-                });
+                VslaInformation _vslaInformation = new VslaInformation();
+
+                int vslaId = Convert.ToInt32(item.VslaId);
+                String percentOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId);
+                _vslaInformation.percentageOfWomen = percentOfWomen != null ? percentOfWomen : "0 %";
+
+                _vslaInformation.VslaId = item.VslaId;
+                _vslaInformation.VslaCode = item.VslaCode != null ? item.VslaCode : "-NA-";
+                _vslaInformation.VslaName = item.VslaName != null ? item.VslaName : "-NA-";
+                _vslaInformation.RegionId = item.VslaRegion.RegionName;
+                _vslaInformation.DateRegistered = item.DateRegistered.HasValue ? item.DateRegistered : System.DateTime.Today;
+                _vslaInformation.DateLinked = item.DateLinked.HasValue ? item.DateLinked : System.DateTime.Today;
+                _vslaInformation.PhysicalAddress = item.PhysicalAddress != null ? item.PhysicalAddress : "-NA-";
+                _vslaInformation.VslaPhoneMsisdn = item.VslaPhoneMsisdn != null ? item.VslaPhoneMsisdn : "-NA-";
+                _vslaInformation.GpsLocation = item.GpsLocation != null ? item.GpsLocation : "-NA-";
+                _vslaInformation.ContactPerson = item.ContactPerson != null ? item.ContactPerson : "-NA-";
+                _vslaInformation.PositionInVsla = item.PositionInVsla != null ? item.PositionInVsla : "-NA-";
+                _vslaInformation.PhoneNumber = item.PhoneNumber != null ? item.PhoneNumber : "-NA-";
+                _vslaInformation.TechnicalTrainer = item.CBT.Name != null ? item.CBT.Name : "-NA";
+                _vslaInformation.Status = item.Status.ToString() != null ? item.Status.ToString() : "-NA";
+                _vslaInformation.GroupAccountNumber = item.GroupAccountNumber != null ? item.GroupAccountNumber : "-NA-";
+                vslaList.Add(_vslaInformation);
             }
             StringWriter stringWriter = new StringWriter();
-            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\",\"Account Number\"");
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\",\"Account Number\",\"Percent Of Women\"");
             Response.ClearContent();
             String attachment = "attachment;filename=all_VSLAs.csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in vslaList)
             {
-                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\"",
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\",\"{13}\"",
                                            line.VslaCode,
                                            line.VslaName,
                                            line.RegionId,
@@ -1114,7 +1126,8 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.PhoneNumber,
                                            line.TechnicalTrainer,
                                            line.Status.Equals("1") ? "Active" : "Inactive",
-                                           line.GroupAccountNumber
+                                           line.GroupAccountNumber,
+                                           line.percentageOfWomen
                                            ));
             }
             Response.Write(stringWriter.ToString());

@@ -14,10 +14,7 @@ C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlin
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Microsoft.Web.WebPages.OAuth.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Net.Http.Formatting.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Helpers.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Http.dll
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Http.WebHost.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Mvc.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Optimization.dll
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Razor.dll
@@ -37,10 +34,7 @@ C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlin
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\log4net.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\EntityFramework.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\Newtonsoft.Json.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Net.Http.Formatting.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Helpers.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Http.xml
-C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Http.WebHost.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Mvc.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.Razor.xml
 C:\Users\AGGREY\Documents\GitHub\GF_Web_Applications\applab-ug.applabmoney-ddlinkage\DigitizingDataAdminApp\bin\System.Web.WebPages.xml

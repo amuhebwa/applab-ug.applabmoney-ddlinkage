@@ -79,6 +79,8 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage = "Number Of Cycles is a required field", AllowEmptyStrings = false)]
         [RegularExpression(@"^[0-9]{1,3}$", ErrorMessage = "Max : 100 years ")]
         public string NumberOfCycles { get; set; }
+
+        public string percentageOfWomen { get; set; }
     }
 
     public class GroupSupportInfo {
