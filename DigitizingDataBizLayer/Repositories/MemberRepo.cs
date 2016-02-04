@@ -64,7 +64,7 @@ namespace DigitizingDataBizLayer.Repositories
             return members;
         }
 
-        // /find the total number of females attached to a particular group
+        // /find the total number of members attached to a particular group
         public int totalGroupMembers(int vslaId)
         {
             int total = (from m in SessionProxy.Query<Member>()

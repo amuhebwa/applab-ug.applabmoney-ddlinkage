@@ -63,5 +63,8 @@ namespace DigitizingDataAdminApp.Models
 
         // Difference between meeting date and date of submission
         public int diffInDaysBtnHeld_Submit { get; set; }
+
+        // Percentage of attendence
+        public string percentageOfAttendence { get; set; }
     }
 }

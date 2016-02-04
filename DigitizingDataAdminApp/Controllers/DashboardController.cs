@@ -1171,6 +1171,7 @@ namespace DigitizingDataAdminApp.Controllers
                     _meetingInfo.totalLoans = (long)item.SumOfLoanIssues;
                     _meetingInfo.totalLoanRepayment = (long)item.SumOfLoanRepayments;
                     _meetingInfo.diffInDaysBtnHeld_Submit = diffInDates(Convert.ToDateTime(item.MeetingDate), Convert.ToDateTime(item.DateSent));
+                    _meetingInfo.percentageOfAttendence = attendanceRatePerMeeting(item.MeetingId, Id);
                     allMeetings.Add(_meetingInfo);
                 }
             }
@@ -1190,25 +1191,42 @@ namespace DigitizingDataAdminApp.Controllers
             return Convert.ToInt32(diffInDays);
         }
 
+        // Calculate the group attendance rate per meeting
+        public String attendanceRatePerMeeting(int meetingId, int vslaId)
+        {
+            // Number of people present in a given meeting
+            AttendanceRepo _attendanceRepo = new AttendanceRepo();
+            int present = _attendanceRepo.totalAttendancePerMeeting(Convert.ToInt32(meetingId));
+
+            // Total number of people in that VSLA
+            MemberRepo _memberRepo = new MemberRepo();
+            int total = _memberRepo.totalGroupMembers(Convert.ToInt32(vslaId));
+
+            double res = ((double)present / (double)total) * 100;
+            String perc = Convert.ToString(Math.Round(res, 1)) + "%";
+            return perc;
+        }
+
         // Export all VSLA meetings attached to a particular VSLA to CSV
         public void Export_VSLAMeetings(int id, string fileName)
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Diff. btn Meeting Date and Date sent\"");
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Diff. btn Meeting Date and Date sent\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in allMeetings)
             {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\"",
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
                                            line.meetingDate.Value.ToShortDateString(),
                                            line.membersPresent,
                                            line.cashFines,
                                            line.totalSavings,
                                            line.totalLoans,
                                            line.totalLoanRepayment,
+                                           line.percentageOfAttendence,
                                            line.diffInDaysBtnHeld_Submit
                                            ));
             }

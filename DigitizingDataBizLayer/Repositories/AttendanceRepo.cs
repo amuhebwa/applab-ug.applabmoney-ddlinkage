@@ -44,6 +44,17 @@ namespace DigitizingDataBizLayer.Repositories
                           select a).Count();
             return absent;
         }
-        
+
+        // Total attendance per meeting
+        public int totalAttendancePerMeeting(int meetingId)
+        {
+            int count = (from a in SessionProxy.Query<Attendance>()
+                         where a.Meeting.MeetingId == meetingId
+                         && a.IsPresent == true
+                         select a).Count();
+            return count;
+
+        }
+
     }
 }
