@@ -81,6 +81,8 @@ namespace DigitizingDataAdminApp.Models
         public string NumberOfCycles { get; set; }
 
         public string percentageOfWomen { get; set; }
+
+        public string groupMaturity { get; set; }
     }
 
     public class GroupSupportInfo {

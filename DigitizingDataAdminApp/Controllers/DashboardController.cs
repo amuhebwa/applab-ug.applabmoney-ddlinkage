@@ -846,11 +846,34 @@ namespace DigitizingDataAdminApp.Controllers
 
             // Number of registered members
 
-
             vslaData.Status = vslaDetails.Status == 1 ? "Active" : "Inactive";
             vslaData.GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--";
             vslaData.NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles);
+
+            vslaData.groupMaturity = calculateGroupMturity(vslaDetails.NumberOfCycles, id);
             return vslaData;
+        }
+
+        // Calculate the maturity of the group
+        public string calculateGroupMturity(int numberOfCycles, int vslaId)
+        {
+            MemberRepo _memberRepo = new MemberRepo();
+            List<Member> members = _memberRepo.findAllMembersByVslaId(Convert.ToInt32(vslaId));
+            int count = 0;
+            int total = 0;
+            int avg = Convert.ToInt32((double)numberOfCycles / 2.0);
+            foreach (var item in members)
+            {
+                total++;
+                int cycles = item.CyclesCompleted;
+                if (cycles == avg || cycles > avg)
+                {
+                    count++;
+                }
+            }
+            String res = string.Format("{0} out of {1}", count, total);
+            return res;
+
         }
 
         // Add a new VSLA Group
@@ -1212,7 +1235,7 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Diff. btn Meeting Date and Date sent\"");
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Submission Date\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
