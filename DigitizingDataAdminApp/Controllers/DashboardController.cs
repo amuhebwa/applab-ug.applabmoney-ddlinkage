@@ -1195,6 +1195,7 @@ namespace DigitizingDataAdminApp.Controllers
                     _meetingInfo.totalLoanRepayment = (long)item.SumOfLoanRepayments;
                     _meetingInfo.diffInDaysBtnHeld_Submit = diffInDates(Convert.ToDateTime(item.MeetingDate), Convert.ToDateTime(item.DateSent));
                     _meetingInfo.percentageOfAttendence = attendanceRatePerMeeting(item.MeetingId, Id);
+                    _meetingInfo.cycleId = Convert.ToInt32(item.VslaCycle.CycleId);
                     allMeetings.Add(_meetingInfo);
                 }
             }
@@ -1235,23 +1236,24 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Submission Date\"");
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Submission Duration\",\"Cycle Id\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in allMeetings)
             {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
-                                           line.meetingDate.Value.ToShortDateString(),
-                                           line.membersPresent,
-                                           line.cashFines,
-                                           line.totalSavings,
-                                           line.totalLoans,
-                                           line.totalLoanRepayment,
-                                           line.percentageOfAttendence,
-                                           line.diffInDaysBtnHeld_Submit
-                                           ));
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\"",
+                    line.meetingDate.Value.ToShortDateString(),
+                    line.membersPresent,
+                    line.cashFines,
+                    line.totalSavings,
+                    line.totalLoans,
+                    line.totalLoanRepayment,
+                    line.percentageOfAttendence,
+                    line.diffInDaysBtnHeld_Submit,
+                    line.cycleId
+                    ));
             }
 
             Response.Write(sw.ToString());
