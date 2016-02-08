@@ -40,5 +40,13 @@ namespace DigitizingDataBizLayer.Repositories
 
             return (cycle != null);
         }
+
+        // get the maximum share quantity and share price for each group in a given cycle
+        public VslaCycle vslaCycleDetails(int vslaId, int cycleId) {
+            var details = (from c in SessionProxy.Query<VslaCycle>()
+                           where c.CycleId == cycleId && c.Vsla.VslaId == vslaId
+                           select c).FirstOrDefault();
+            return details;
+        }
     }
 }

@@ -818,8 +818,8 @@ namespace DigitizingDataAdminApp.Controllers
             Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
 
             // percentage of females
-            MemberRepo _memberRepo = new MemberRepo();
-            vslaData.percentageOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId) + "%";
+            // MemberRepo _memberRepo = new MemberRepo();
+            //  vslaData.percentageOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId) + "%";
 
             vslaData.VslaId = vslaDetails.VslaId;
             vslaData.VslaCode = vslaDetails.VslaCode;
@@ -850,7 +850,7 @@ namespace DigitizingDataAdminApp.Controllers
             vslaData.GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--";
             vslaData.NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles);
 
-            vslaData.groupMaturity = calculateGroupMturity(vslaDetails.NumberOfCycles, id);
+            // vslaData.groupMaturity = calculateGroupMturity(vslaDetails.NumberOfCycles, id);
             return vslaData;
         }
 
@@ -1108,8 +1108,8 @@ namespace DigitizingDataAdminApp.Controllers
                 VslaInformation _vslaInformation = new VslaInformation();
 
                 int vslaId = Convert.ToInt32(item.VslaId);
-                String percentOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId);
-                _vslaInformation.percentageOfWomen = percentOfWomen != null ? percentOfWomen : "0 %";
+                //  String percentOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId);
+                //  _vslaInformation.percentageOfWomen = percentOfWomen != null ? percentOfWomen : "0 %";
 
                 _vslaInformation.VslaId = item.VslaId;
                 _vslaInformation.VslaCode = item.VslaCode != null ? item.VslaCode : "-NA-";
@@ -1129,14 +1129,14 @@ namespace DigitizingDataAdminApp.Controllers
                 vslaList.Add(_vslaInformation);
             }
             StringWriter stringWriter = new StringWriter();
-            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\",\"Account Number\",\"Percent Of Women\"");
+            stringWriter.WriteLine("\"VSLA Code\",\"VSLA Name\",\"Region\",\"Date Registered\",\"Date Linked\",\"Physical Address\",\"Phone MSISDN\",\"Contact Person\",\"Position in VSLA\",\"Phone Number\",\"Technical Trainer\",\"Status\",\"Account Number\"");
             Response.ClearContent();
             String attachment = "attachment;filename=all_VSLAs.csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in vslaList)
             {
-                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\",\"{13}\"",
+                stringWriter.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\"",
                                            line.VslaCode,
                                            line.VslaName,
                                            line.RegionId,
@@ -1149,8 +1149,7 @@ namespace DigitizingDataAdminApp.Controllers
                                            line.PhoneNumber,
                                            line.TechnicalTrainer,
                                            line.Status.Equals("1") ? "Active" : "Inactive",
-                                           line.GroupAccountNumber,
-                                           line.percentageOfWomen
+                                           line.GroupAccountNumber
                                            ));
             }
             Response.Write(stringWriter.ToString());
@@ -1184,7 +1183,6 @@ namespace DigitizingDataAdminApp.Controllers
                 List<Meeting> meetingData = _meetingRepo.findMeetingByVslaId(_vslaId);
                 foreach (var item in meetingData)
                 {
-
                     VslaMeetingInformation _meetingInfo = new VslaMeetingInformation();
                     _meetingInfo.MeetingId = item.MeetingId;
                     _meetingInfo.cashFines = (long)item.CashFines;
@@ -1193,9 +1191,18 @@ namespace DigitizingDataAdminApp.Controllers
                     _meetingInfo.totalSavings = (long)item.SumOfSavings;
                     _meetingInfo.totalLoans = (long)item.SumOfLoanIssues;
                     _meetingInfo.totalLoanRepayment = (long)item.SumOfLoanRepayments;
-                    _meetingInfo.diffInDaysBtnHeld_Submit = diffInDates(Convert.ToDateTime(item.MeetingDate), Convert.ToDateTime(item.DateSent));
-                    _meetingInfo.percentageOfAttendence = attendanceRatePerMeeting(item.MeetingId, Id);
+
+                    // int submitDuration = diffInDates(Convert.ToDateTime(item.MeetingDate), Convert.ToDateTime(item.DateSent));
+                    // _meetingInfo.diffInDaysBtnHeld_Submit = submitDuration;
+
+                    //  String attendancePercent = attendanceRatePerMeeting(item.MeetingId, Id);
+                    // _meetingInfo.percentageOfAttendence = attendancePercent;
+
                     _meetingInfo.cycleId = Convert.ToInt32(item.VslaCycle.CycleId);
+
+                    // MinMaxShares shareSavingsRatio = rateOfBuyingShares(_vslaId, item.VslaCycle.CycleId, item.MeetingId);
+                    //  _meetingInfo.minimumStarsBuyers = Convert.ToInt32(shareSavingsRatio.minSharesCount);
+                    // _meetingInfo.maximumStarsBuyers = Convert.ToInt32(shareSavingsRatio.maxSharesCount);
                     allMeetings.Add(_meetingInfo);
                 }
             }
@@ -1205,6 +1212,40 @@ namespace DigitizingDataAdminApp.Controllers
                 throw;
             }
             return allMeetings;
+        }
+
+        // Calculate the rate of the number of members buying minumum and maximum shares
+        public MinMaxShares rateOfBuyingShares(int vslaId, int cycleId, int meetingId)
+        {
+            int _vslaId = Convert.ToInt32(vslaId);
+            int _cycleId = Convert.ToInt32(cycleId);
+            int _meetingId = Convert.ToInt32(meetingId);
+
+            VslaCycleRepo _vslaCycleRepo = new VslaCycleRepo();
+            VslaCycle details = _vslaCycleRepo.vslaCycleDetails(_vslaId, _cycleId);
+            int maximumShares = details.MaxShareQuantity;
+            double sharePrice = details.SharePrice;
+            double maximumAmountSaved = maximumShares * sharePrice;
+
+            SavingRepo _savingsRepo = new SavingRepo();
+            int minCount = 0, maxCount = 0;
+            List<Saving> meetingSavings = _savingsRepo.FindMeetingSavings(_meetingId);
+            foreach (var item in meetingSavings)
+            {
+                double amountSaved = item.Amount;
+                if (amountSaved == maximumAmountSaved)
+                {
+                    maxCount++;
+                }
+                else if (amountSaved == sharePrice)
+                {
+                    minCount++;
+                }
+            }
+            MinMaxShares shareRation = new MinMaxShares();
+            shareRation.minSharesCount = minCount;
+            shareRation.maxSharesCount = maxCount;
+            return shareRation;
         }
 
         // Calculate the difference between meeting date and date submitted
@@ -1236,22 +1277,20 @@ namespace DigitizingDataAdminApp.Controllers
         {
             List<VslaMeetingInformation> allMeetings = findMeetingDataByVslaId(id);
             StringWriter sw = new StringWriter();
-            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Attendance Rate\",\"Submission Duration\",\"Cycle Id\"");
+            sw.WriteLine("\"Meeting Date\",\"Members Present\",\"Fines\",\"Amount Saved\",\"Total Loans\",\"Loan Outstanding\",\"Cycle Id\"");
             Response.ClearContent();
             String attachment = "attachment;filename=" + fileName.Replace(" ", "_") + ".csv";
             Response.AddHeader("content-disposition", attachment);
             Response.ContentType = "text/csv";
             foreach (var line in allMeetings)
             {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\"",
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\"",
                     line.meetingDate.Value.ToShortDateString(),
                     line.membersPresent,
                     line.cashFines,
                     line.totalSavings,
                     line.totalLoans,
                     line.totalLoanRepayment,
-                    line.percentageOfAttendence,
-                    line.diffInDaysBtnHeld_Submit,
                     line.cycleId
                     ));
             }

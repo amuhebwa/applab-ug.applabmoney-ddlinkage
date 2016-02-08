@@ -84,18 +84,18 @@ namespace DigitizingDataBizLayer.Repositories
         }
 
         // Percentage of women in the group
-        public string percentageOfWomenPerGroup(int vslaId)
-        {
-            int females = (from m in SessionProxy.Query<Member>()
-                           where m.Vsla.VslaId == vslaId && m.Gender == "Female"
-                           select m).Count();
+        //public string percentageOfWomenPerGroup(int vslaId)
+        //{
+        //    int females = (from m in SessionProxy.Query<Member>()
+        //                   where m.Vsla.VslaId == vslaId && m.Gender == "Female"
+        //                   select m).Count();
 
-            int total = (from m in SessionProxy.Query<Member>()
-                         where m.Vsla.VslaId == vslaId
-                         select m).Count();
+        //    int total = (from m in SessionProxy.Query<Member>()
+        //                 where m.Vsla.VslaId == vslaId
+        //                 select m).Count();
 
-            double result = ((double)females / (double)total) * 100;
-            return Convert.ToString(Math.Round(result, 2));
-        }
+        //    double result = ((double)females / (double)total) * 100;
+        //    return Convert.ToString(Math.Round(result, 2));
+        //}
     }
 }
