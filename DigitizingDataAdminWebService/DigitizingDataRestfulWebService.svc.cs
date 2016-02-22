@@ -129,6 +129,7 @@ namespace DigitizingDataAdminWebService
                 vsla.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
                 vsla.Status = 1;
                 vsla.NumberOfCycles = Convert.ToInt32(request.numberOfCycles);
+                vsla.Implementer = Convert.ToString(request.Implementer);
                 // cbt 
                 DigitizingDataDomain.Model.TechnicalTrainer cbt = new DigitizingDataDomain.Model.TechnicalTrainer();
                 cbt.Id = Convert.ToInt32(request.tTrainerId);
@@ -202,6 +203,7 @@ namespace DigitizingDataAdminWebService
                     vslaData.GpsLocation = Convert.ToString(request.GpsLocation);
                     vslaData.GroupAccountNumber = Convert.ToString(request.GroupAccountNumber);
                     vslaData.NumberOfCycles = Convert.ToInt32(request.numberOfCycles);
+                    vslaData.Implementer = Convert.ToString(request.Implementer);
                     // region id
                     DigitizingDataDomain.Model.VslaRegion vslaRegion = new DigitizingDataDomain.Model.VslaRegion();
                     vslaRegion.RegionId = Convert.ToInt32(request.RegionName);

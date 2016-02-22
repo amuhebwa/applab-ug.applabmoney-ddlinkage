@@ -25,6 +25,7 @@ namespace DigitizingDataDomain.Model
         public virtual int Status { get; set; }
         public virtual string GroupAccountNumber { get; set; }
         public virtual int NumberOfCycles { get; set; }
+        public virtual string Implementer { get; set; }
 
         //Collections: Hacked to allow for reporting
         public virtual IList<VslaDdActivation> VslaDdActivationList { get; set; }
