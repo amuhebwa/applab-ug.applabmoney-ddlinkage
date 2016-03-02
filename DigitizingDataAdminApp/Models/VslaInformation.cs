@@ -83,6 +83,11 @@ namespace DigitizingDataAdminApp.Models
         public string percentageOfWomen { get; set; }
 
         public string groupMaturity { get; set; }
+
+        public SelectList Implementers { get; set; }
+
+        public string ImplementerId { get; set; }
+        public string ImplementerName { get; set; }
     }
 
     public class GroupSupportInfo {

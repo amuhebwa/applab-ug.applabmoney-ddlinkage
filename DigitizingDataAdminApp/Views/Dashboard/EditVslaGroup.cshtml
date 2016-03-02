@@ -84,6 +84,10 @@
                     <td><strong>@Html.DisplayName("Number Of Cycles With LedgerLink")</strong></td>
                     <td>@Html.TextBoxFor(model => model.NumberOfCycles, new { @placeholder = " e.g 1234567890" })</td>
                 </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Project Implementer")</strong></td>
+                    <td>@Html.DropDownList("ImplementerId", Model.Implementers, new { @style = "width:185px;" })</td>
+                </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" value=" Update " style="width: 100px;" />

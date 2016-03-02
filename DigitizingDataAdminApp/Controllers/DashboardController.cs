@@ -527,6 +527,25 @@ namespace DigitizingDataAdminApp.Controllers
             return result;
         }
 
+        // List of all Implemeters ie CARE, PLAN, etc
+        public SelectList getAllImplementers()
+        {
+            List<Implementers> implementers = new List<Implementers>();
+            implementers.Add(new Implementers { ImplementerId = 0, ImplementerName = "-Select Implementer-" });
+            ImplementersRepo _implementersRepo = new ImplementersRepo();
+            List<Implementers> allImplementers = _implementersRepo.findAllImplementers();
+            foreach (var implementer in allImplementers)
+            {
+                implementers.Add(new Implementers
+                {
+                    ImplementerId = implementer.ImplementerId,
+                    ImplementerName = implementer.ImplementerName
+                });
+            }
+            SelectList result = new SelectList(implementers, "ImplementerId", "ImplementerName", 0);
+            return result;
+        }
+
         // View all information for a particular Technical Trainer
         public ActionResult TrainersDetails(int id)
         {
@@ -751,6 +770,7 @@ namespace DigitizingDataAdminApp.Controllers
             allGroups.VslaRegions = getVslaRegions();
             allGroups.StatusType = getStatusTypes();
             allGroups.groupSupportProvided = getSupportType();
+            allGroups.Implementers = getAllImplementers();
             return View(allGroups);
         }
 
@@ -850,6 +870,17 @@ namespace DigitizingDataAdminApp.Controllers
             vslaData.GroupAccountNumber = "A/C " + vslaDetails.GroupAccountNumber ?? "--";
             vslaData.NumberOfCycles = Convert.ToString(vslaDetails.NumberOfCycles);
 
+            // Implementer
+            ImplementersRepo _implementerRepo = new ImplementersRepo();
+            if (!string.IsNullOrEmpty(Convert.ToString(vslaDetails.Implementer)))
+            {
+                Implementers _implementer = _implementerRepo.findImplementerById(Convert.ToInt32(vslaDetails.Implementer));
+                vslaData.ImplementerName = _implementer.ImplementerName != null ? _implementer.ImplementerName : "-NA-";
+            }
+            else {
+                vslaData.ImplementerName = "-NA-";
+            }
+
             // vslaData.groupMaturity = calculateGroupMturity(vslaDetails.NumberOfCycles, id);
             return vslaData;
         }
@@ -878,7 +909,7 @@ namespace DigitizingDataAdminApp.Controllers
 
         // Add a new VSLA Group
         [HttpPost]
-        public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id)
+        public ActionResult AddVslaGroup(Vsla vslaGroup, int RegionId, int Id, int Status_Id, int ImplementerId)
         {
             string _vslaCode = generateVslaCode();
 
@@ -900,6 +931,7 @@ namespace DigitizingDataAdminApp.Controllers
             newVsla.ContactPerson = vslaGroup.ContactPerson;
             newVsla.PositionInVsla = vslaGroup.PositionInVsla;
             newVsla.PhoneNumber = vslaGroup.PhoneNumber;
+            newVsla.Implementer = Convert.ToString(ImplementerId);
 
             // technical trainer
             TechnicalTrainer _trainer = new TechnicalTrainer();
@@ -944,7 +976,7 @@ namespace DigitizingDataAdminApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id)
+        public ActionResult EditVslaGroup(VslaInformation vslaGroup, int VslaId, int Id, int RegionId, int Status_Id, int ImplementerId)
         {
             int _vslaId = Convert.ToInt32(vslaGroup.VslaId);
             VslaRepo _vslaRepo = new VslaRepo();
@@ -968,6 +1000,7 @@ namespace DigitizingDataAdminApp.Controllers
                 currentVsla.PositionInVsla = vslaGroup.PositionInVsla;
                 currentVsla.PhoneNumber = vslaGroup.PhoneNumber;
 
+                // Technical trainer
                 TechnicalTrainer _trainer = new TechnicalTrainer();
                 _trainer.Id = Convert.ToInt32(Id);
                 currentVsla.CBT = _trainer;
@@ -975,6 +1008,8 @@ namespace DigitizingDataAdminApp.Controllers
                 currentVsla.Status = Status_Id;
                 currentVsla.GroupAccountNumber = vslaGroup.GroupAccountNumber;
                 currentVsla.NumberOfCycles = Convert.ToInt32(vslaGroup.NumberOfCycles);
+                currentVsla.Implementer = Convert.ToString(ImplementerId);
+
                 if (currentVsla.VslaId > 0)
                 {
                     updateResult = _vslaRepo.Update(currentVsla);
@@ -1026,6 +1061,7 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList allTrainersList = new SelectList(_trainers, "Id", "Name", (int)vsla.CBT.Id);
+
             // Get the status type ie active/inactive
             StatusTypeRepo _statusTypeRepo = new StatusTypeRepo();
             List<StatusType> statusTypes = new List<StatusType>();
@@ -1039,6 +1075,26 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.Status);
+            
+            // List of implementers
+            ImplementersRepo _implementerRepo = new ImplementersRepo();
+            List<Implementers> implementers = new List<Implementers>();
+            List<Implementers> allImplementers = _implementerRepo.findAllImplementers();
+            foreach (var implementer in allImplementers) {
+                implementers.Add(new Implementers { 
+                 ImplementerId = implementer.ImplementerId,
+                 ImplementerName = implementer.ImplementerName
+                });
+            }
+            SelectList implementersList = null;
+            if (!string.IsNullOrEmpty(Convert.ToString(vsla.Implementer)))
+            {
+                implementersList = new SelectList(implementers, "ImplementerId", "ImplementerName", Convert.ToInt32(vsla.Implementer));
+            }
+            else {
+                implementersList = new SelectList(implementers, "ImplementerId", "ImplementerName");
+            }
+
             VslaInformation vslaData = new VslaInformation
             {
                 VslaId = vsla.VslaId,
@@ -1056,7 +1112,8 @@ namespace DigitizingDataAdminApp.Controllers
                 AllTechnicalTrainers = allTrainersList,
                 StatusType = statusTypesList,
                 GroupAccountNumber = vsla.GroupAccountNumber,
-                NumberOfCycles = Convert.ToString(vsla.NumberOfCycles)
+                NumberOfCycles = Convert.ToString(vsla.NumberOfCycles),
+                Implementers = implementersList
             };
             return vslaData;
         }

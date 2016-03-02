@@ -74,6 +74,7 @@
     <Compile Include="Mapping\DataSubmissionMap.cs" />
     <Compile Include="Mapping\FineMap.cs" />
     <Compile Include="Mapping\GroupSupportMap.cs" />
+    <Compile Include="Mapping\ImplementersMap.cs" />
     <Compile Include="Mapping\LoanIssueMap.cs" />
     <Compile Include="Mapping\LoanRepaymentMap.cs" />
     <Compile Include="Mapping\MeetingMap.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Model\DataSubmission.cs" />
     <Compile Include="Model\Fine.cs" />
     <Compile Include="Model\GroupSupport.cs" />
+    <Compile Include="Model\Implementers.cs" />
     <Compile Include="Model\LoanIssue.cs" />
     <Compile Include="Model\LoanRepayment.cs" />
     <Compile Include="Model\Meeting.cs" />
