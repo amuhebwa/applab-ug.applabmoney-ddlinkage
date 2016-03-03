@@ -84,6 +84,8 @@ namespace DigitizingDataAdminWebService
         public string numberOfCycles { get; set; } // Number of cycles with LedgerLink
         [DataMember]
         public string Implementer { get; set; }
+        [DataMember]
+        public string RegionId { get; set; }
 
     }
 

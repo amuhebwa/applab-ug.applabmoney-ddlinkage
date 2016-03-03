@@ -61,7 +61,9 @@ namespace DigitizingDataAdminWebService
                         tTrainerId = data.CBT.Id,
                         tTrainerName = data.CBT.Username,
                         GroupAccountNumber = data.GroupAccountNumber,
-                        numberOfCycles = Convert.ToString(data.NumberOfCycles)
+                        numberOfCycles = Convert.ToString(data.NumberOfCycles),
+                        Implementer = data.Implementer != null ? data.Implementer : "--",
+                        RegionId = Convert.ToString(data.VslaRegion.RegionId)
                     });
                 }
             }
@@ -95,7 +97,9 @@ namespace DigitizingDataAdminWebService
                      tTrainerId = vslaData.CBT.Id,
                      tTrainerName = vslaData.CBT.Username,
                      GroupAccountNumber = vslaData.GroupAccountNumber,
-                     numberOfCycles = Convert.ToString(vslaData.NumberOfCycles)
+                     numberOfCycles = Convert.ToString(vslaData.NumberOfCycles),
+                     Implementer = vslaData.Implementer != null ? vslaData.Implementer : "--",
+                     RegionId = Convert.ToString(vslaData.VslaRegion.RegionId)
                  };
                 return result;
             }
