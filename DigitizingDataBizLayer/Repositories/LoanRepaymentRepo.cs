@@ -26,5 +26,12 @@ namespace DigitizingDataBizLayer.Repositories
                               select m).ToList();
             return loanRepayments;
         }
+
+        public LoanRepayment findMemberMeetingRepayment(int meetingId, int memberId) {
+            var repayment = (from r in SessionProxy.Query<LoanRepayment>()
+                             where r.Meeting.MeetingId == meetingId && r.Member.MemberId == memberId
+                             select r).FirstOrDefault();
+            return repayment;
+        }
     }
 }

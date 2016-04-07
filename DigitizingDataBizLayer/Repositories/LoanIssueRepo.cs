@@ -9,13 +9,13 @@ using DigitizingDataDomain.Model;
 
 namespace DigitizingDataBizLayer.Repositories
 {
-    public class LoanIssueRepo:RepositoryBase<LoanIssue>
+    public class LoanIssueRepo : RepositoryBase<LoanIssue>
     {
         public LoanIssue FindLoanIssueByIdEx(int meetingId, int loanIdEx)
         {
             var loanIssue = (from m in SessionProxy.Query<LoanIssue>()
-                              where m.LoanIdEx == loanIdEx && m.Meeting.MeetingId == meetingId
-                              select m).FirstOrDefault();
+                             where m.LoanIdEx == loanIdEx && m.Meeting.MeetingId == meetingId
+                             select m).FirstOrDefault();
             return loanIssue;
         }
 
@@ -32,9 +32,18 @@ namespace DigitizingDataBizLayer.Repositories
         public List<LoanIssue> FindMeetingLoanIssues(int meetingId)
         {
             var loanIssues = (from m in SessionProxy.Query<LoanIssue>()
-                               where m.Meeting.MeetingId == meetingId
-                               select m).ToList();
+                              where m.Meeting.MeetingId == meetingId
+                              select m).ToList();
             return loanIssues;
+        }
+
+        // Find loan attached to single meeting and single member
+        public LoanIssue findLoanIssueByMemberInMeeting(int meetingId, int memberId)
+        {
+            var loan = (from l in SessionProxy.Query<LoanIssue>()
+                        where l.Meeting.MeetingId == meetingId && l.Member.MemberId == memberId
+                        select l).FirstOrDefault();
+            return loan;
         }
     }
 }

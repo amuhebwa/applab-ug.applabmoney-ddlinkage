@@ -877,7 +877,8 @@ namespace DigitizingDataAdminApp.Controllers
                 Implementers _implementer = _implementerRepo.findImplementerById(Convert.ToInt32(vslaDetails.Implementer));
                 vslaData.ImplementerName = _implementer.ImplementerName != null ? _implementer.ImplementerName : "-NA-";
             }
-            else {
+            else
+            {
                 vslaData.ImplementerName = "-NA-";
             }
 
@@ -1075,15 +1076,17 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             SelectList statusTypesList = new SelectList(statusTypes, "Status_Id", "CurrentStatus", vsla.Status);
-            
+
             // List of implementers
             ImplementersRepo _implementerRepo = new ImplementersRepo();
             List<Implementers> implementers = new List<Implementers>();
             List<Implementers> allImplementers = _implementerRepo.findAllImplementers();
-            foreach (var implementer in allImplementers) {
-                implementers.Add(new Implementers { 
-                 ImplementerId = implementer.ImplementerId,
-                 ImplementerName = implementer.ImplementerName
+            foreach (var implementer in allImplementers)
+            {
+                implementers.Add(new Implementers
+                {
+                    ImplementerId = implementer.ImplementerId,
+                    ImplementerName = implementer.ImplementerName
                 });
             }
             SelectList implementersList = null;
@@ -1091,7 +1094,8 @@ namespace DigitizingDataAdminApp.Controllers
             {
                 implementersList = new SelectList(implementers, "ImplementerId", "ImplementerName", Convert.ToInt32(vsla.Implementer));
             }
-            else {
+            else
+            {
                 implementersList = new SelectList(implementers, "ImplementerId", "ImplementerName");
             }
 
@@ -1355,7 +1359,65 @@ namespace DigitizingDataAdminApp.Controllers
             Response.Write(sw.ToString());
             Response.End();
         }
+
+
+
+
         // Get details for a particular meeting held on a partuclar day 
+
+        public ActionResult SingleMeetingDetails(int id)
+        {
+            AllSingleMeetingInfo meetingDetails = new AllSingleMeetingInfo();
+            List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
+
+            MeetingRepo _meetingRepo = new MeetingRepo();
+            int meetingId = Convert.ToInt32(id);
+            Meeting singleMeeting = _meetingRepo.findMeetingByMeetingId(meetingId);
+
+            meetingDetails.meetingDate = singleMeeting.MeetingDate;
+
+            AttendanceRepo _attendanceRepo = new AttendanceRepo();
+            List<Attendance> attendanceList = _attendanceRepo.FindMeetingAttendances(meetingId);
+            foreach (var a in attendanceList)
+            {
+
+                SingleMeetingInfo singleMeetingInfo = new SingleMeetingInfo();
+
+                singleMeetingInfo.memberId = a.Member.MemberId;
+                singleMeetingInfo.memberName = a.Member.Surname + " " + a.Member.OtherNames;
+                singleMeetingInfo.isPresent = Convert.ToString(a.IsPresent);
+
+                SavingRepo _savingsRepo = new SavingRepo();
+                Saving savingsInformation = _savingsRepo.findMemberSavings(a.Meeting.MeetingId, a.Member.MemberId);
+                if (savingsInformation != null)
+                {
+                    singleMeetingInfo.amountSaved = (long)(savingsInformation.Amount);
+                }
+                LoanIssueRepo _loansRepo = new LoanIssueRepo();
+                LoanIssue loanTaken = _loansRepo.findLoanIssueByMemberInMeeting(a.Meeting.MeetingId, a.Member.MemberId);
+                if (loanTaken != null)
+                {
+                    singleMeetingInfo.principleAmount = (long)(loanTaken.PrincipalAmount);
+                    singleMeetingInfo.loanNumber = loanTaken.LoanNo;
+                }
+                LoanRepaymentRepo _loanRepaymentRepo = new LoanRepaymentRepo();
+                LoanRepayment loanRepaid = _loanRepaymentRepo.findMemberMeetingRepayment(a.Meeting.MeetingId, a.Member.MemberId);
+                if (loanRepaid != null)
+                {
+                    singleMeetingInfo.loanRepaymentAmount = (long)(loanRepaid.Amount);
+                    singleMeetingInfo.remainingBalanceOnLoan = (long)(loanRepaid.BalanceAfter);
+                }
+                // Fines. make it a zero for now for testing purposes
+                singleMeetingInfo.finedAmount = 00;
+                meetingsList.Add(singleMeetingInfo);
+            }
+            meetingDetails.allMeetingData = meetingsList;
+            meetingDetails.vslaId = id;
+            return View(meetingDetails);
+        }
+
+
+
         //public ActionResult SingleMeetingDetails(int id)
         //{
         //    AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
@@ -1488,6 +1550,24 @@ namespace DigitizingDataAdminApp.Controllers
         //    Response.Write(sw.ToString());
         //    Response.End();
         //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // View all members attached to a given vsla
         public ActionResult VslaGroupMembers(int id)

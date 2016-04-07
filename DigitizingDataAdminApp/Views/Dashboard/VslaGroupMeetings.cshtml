@@ -29,7 +29,7 @@
                         <th>Amount Saved</th>
                         <th>Total Loans</th>
                         <th>Loan Outstanding</th>
-                        @*<th>Details</th>*@
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,8 +43,8 @@
                             <td>@item.formattedTotalSavings</td>
                             <td>@item.formattedTotalLoans</td>
                             <td>@item.formattedLoanRepayment</td>
-                            @*<td><a href="@Url.Action("SingleMeetingDetails", "Dashboard", new { id = item.MeetingId })">
-                                <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>*@
+                            <td><a href="@Url.Action("SingleMeetingDetails", "Dashboard", new { id = item.MeetingId })">
+                                <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
                         </tr>
                     }
                 </tbody>
