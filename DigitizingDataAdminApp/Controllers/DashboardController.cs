@@ -1407,8 +1407,17 @@ namespace DigitizingDataAdminApp.Controllers
                     singleMeetingInfo.loanRepaymentAmount = (long)(loanRepaid.Amount);
                     singleMeetingInfo.remainingBalanceOnLoan = (long)(loanRepaid.BalanceAfter);
                 }
-                // Fines. make it a zero for now for testing purposes
-                singleMeetingInfo.finedAmount = 00;
+
+                FineRepo _fineRepo = new FineRepo();
+                Fine memberFine = _fineRepo.findFinesByMemberInMeeting(a.Meeting.MeetingId, a.Member.MemberId);
+                if (memberFine != null)
+                {
+                    singleMeetingInfo.finedAmount = (long)(memberFine.Amount);
+                }
+                else
+                {
+                    singleMeetingInfo.finedAmount = 0;
+                }
                 meetingsList.Add(singleMeetingInfo);
             }
             meetingDetails.allMeetingData = meetingsList;
@@ -1416,158 +1425,88 @@ namespace DigitizingDataAdminApp.Controllers
             return View(meetingDetails);
         }
 
+        // Export single meeting details to a csv file
+        public void Export_MeetingDetails(int id)
+        {
 
+            AllSingleMeetingInfo meetingDetails = new AllSingleMeetingInfo();
+            List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
 
-        //public ActionResult SingleMeetingDetails(int id)
-        //{
-        //    AllSingleMeetingInfo allInformation = new AllSingleMeetingInfo();
-        //    List<SingleMeetingInfo> meetingsList = new List<SingleMeetingInfo>();
+            MeetingRepo _meetingRepo = new MeetingRepo();
+            int meetingId = Convert.ToInt32(id);
+            Meeting singleMeeting = _meetingRepo.findMeetingByMeetingId(meetingId);
 
-        //    // Get the date when the meeting was held
-        //    MeetingRepo _meetingRepo = new MeetingRepo();
-        //    int _meetingId = Convert.ToInt32(id);
-        //    Meeting meeting = _meetingRepo.findMeetingByMeetingId(_meetingId);
+            meetingDetails.meetingDate = singleMeeting.MeetingDate;
 
-        //    // Get the all the meeting details
-        //    meetingsList = groupMeetingDetails(_meetingId);
-        //    allInformation.allMeetingData = meetingsList;
-        //    allInformation.meetingDate = meeting.MeetingDate;
-        //    allInformation.vslaId = id;
-        //    return View(allInformation);
-        //}
+            AttendanceRepo _attendanceRepo = new AttendanceRepo();
+            List<Attendance> attendanceList = _attendanceRepo.FindMeetingAttendances(meetingId);
+            foreach (var a in attendanceList)
+            {
 
-        //// Helper class for getting information concerned with all meetings in the whole system
-        //public List<SingleMeetingInfo> groupMeetingDetails(int id)
-        //{
+                SingleMeetingInfo singleMeetingInfo = new SingleMeetingInfo();
 
-        //    List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
-        //    var meeting = (from db_attendance in database.Attendances
-        //                   join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
-        //                   join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
-        //                   join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-        //                   join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-        //                   join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
-        //                   where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
-        //                   from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
-        //                   from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
-        //                   from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
-        //                   select new
-        //                   {
-        //                       db_attendance,
-        //                       db_member,
-        //                       db_savings,
-        //                       loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
-        //                       loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-        //                       amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
-        //                       loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
-        //                       remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
+                singleMeetingInfo.memberId = a.Member.MemberId;
+                singleMeetingInfo.memberName = a.Member.Surname + " " + a.Member.OtherNames;
+                singleMeetingInfo.isPresent = Convert.ToString(a.IsPresent);
 
-        //                   });
-        //    foreach (var item in meeting)
-        //    {
-        //        meetings.Add(new SingleMeetingInfo
-        //        {
-        //            Id = item.db_attendance.AttendanceId,
-        //            memberId = item.db_member.MemberId,
-        //            memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
-        //            isPresent = item.db_attendance.IsPresent.ToString(),
-        //            amountSaved = (long)item.db_savings.Amount,
-        //            loanNumber = (int)item.loanNo,
-        //            principleAmount = (long)item.loanAmount,
-        //            finedAmount = (long)item.amountInFines,
-        //            loanRepaymentAmount = (long)item.loanRepaymentAmount,
-        //            remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan,
+                SavingRepo _savingsRepo = new SavingRepo();
+                Saving savingsInformation = _savingsRepo.findMemberSavings(a.Meeting.MeetingId, a.Member.MemberId);
+                if (savingsInformation != null)
+                {
+                    singleMeetingInfo.amountSaved = (long)(savingsInformation.Amount);
+                }
+                LoanIssueRepo _loansRepo = new LoanIssueRepo();
+                LoanIssue loanTaken = _loansRepo.findLoanIssueByMemberInMeeting(a.Meeting.MeetingId, a.Member.MemberId);
+                if (loanTaken != null)
+                {
+                    singleMeetingInfo.principleAmount = (long)(loanTaken.PrincipalAmount);
+                    singleMeetingInfo.loanNumber = loanTaken.LoanNo;
+                }
+                LoanRepaymentRepo _loanRepaymentRepo = new LoanRepaymentRepo();
+                LoanRepayment loanRepaid = _loanRepaymentRepo.findMemberMeetingRepayment(a.Meeting.MeetingId, a.Member.MemberId);
+                if (loanRepaid != null)
+                {
+                    singleMeetingInfo.loanRepaymentAmount = (long)(loanRepaid.Amount);
+                    singleMeetingInfo.remainingBalanceOnLoan = (long)(loanRepaid.BalanceAfter);
+                }
 
-        //        });
-        //    }
-        //    return meetings;
-        //}
+                FineRepo _fineRepo = new FineRepo();
+                Fine memberFine = _fineRepo.findFinesByMemberInMeeting(a.Meeting.MeetingId, a.Member.MemberId);
+                if (memberFine != null)
+                {
+                    singleMeetingInfo.finedAmount = (long)(memberFine.Amount);
+                }
+                else
+                {
+                    singleMeetingInfo.finedAmount = 0;
+                }
+                meetingsList.Add(singleMeetingInfo);
+            }
 
-        ///**
-        // * Export details of a single meeting to a csv file
-        // * */
-        //public void Export_MeetingDetails(int id)
-        //{
-        //    List<SingleMeetingInfo> meetings = new List<SingleMeetingInfo>();
-        //    var meeting = (from db_attendance in database.Attendances
-        //                   join db_member in database.Members on db_attendance.MemberId equals db_member.MemberId
-        //                   join db_savings in database.Savings on db_attendance.MemberId equals db_savings.MemberId
-        //                   join db_loan in database.LoanIssues on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loan.MeetingId, db_loan.MemberId } into joinedLoansAttendance
-        //                   join db_fines in database.Fines on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_fines.MeetingId, db_fines.MemberId } into joinedFinesAttendance
-        //                   join db_loanRepayment in database.LoanRepayments on new { db_attendance.MeetingId, db_attendance.MemberId } equals new { db_loanRepayment.MeetingId, db_loanRepayment.MemberId } into joinedRepaymentAttendance
-        //                   where (db_attendance.MeetingId == id && db_savings.MeetingId == id)
-        //                   from db_loansAttendance in joinedLoansAttendance.DefaultIfEmpty()
-        //                   from db_finesAttendance in joinedFinesAttendance.DefaultIfEmpty()
-        //                   from db_repaymentAttendance in joinedRepaymentAttendance.DefaultIfEmpty()
-        //                   select new
-        //                   {
-        //                       db_attendance,
-        //                       db_member,
-        //                       db_savings,
-        //                       loanNo = (db_loansAttendance.LoanId == null) ? 00 : db_loansAttendance.LoanNo,
-        //                       loanAmount = (db_loansAttendance.PrincipalAmount == null) ? (decimal)0.00 : db_loansAttendance.PrincipalAmount,
-        //                       amountInFines = (db_finesAttendance.Amount == null) ? (decimal)0.00 : db_finesAttendance.Amount,
-        //                       loanRepaymentAmount = (db_repaymentAttendance.Amount == null) ? (decimal)0.00 : db_repaymentAttendance.Amount,
-        //                       remainingBalanceOnLoan = (db_repaymentAttendance.BalanceAfter == null) ? (decimal)0.00 : db_repaymentAttendance.BalanceAfter
-        //                   });
-        //    foreach (var item in meeting)
-        //    {
-        //        meetings.Add(new SingleMeetingInfo
-        //        {
-        //            Id = item.db_attendance.AttendanceId,
-        //            memberId = item.db_member.MemberId,
-        //            memberName = item.db_member.Surname + " " + item.db_member.OtherNames,
-        //            isPresent = item.db_attendance.IsPresent.ToString(),
-        //            amountSaved = (long)item.db_savings.Amount,
-        //            loanNumber = (int)item.loanNo,
-        //            principleAmount = (long)item.loanAmount,
-        //            finedAmount = (long)item.amountInFines,
-        //            loanRepaymentAmount = (long)item.loanRepaymentAmount,
-        //            remainingBalanceOnLoan = (long)item.remainingBalanceOnLoan
+            StringWriter sw = new StringWriter();
+            sw.WriteLine("\"Member Name\",\"Attendance\",\"Amount Saved\",\"Loan Number\",\"Loan Taken\",\"Fines\",\"Loan Cleared\",\"Loan Outstanding\"");
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
+            Response.ContentType = "text/csv";
 
-        //        });
-        //    }
-        //    StringWriter sw = new StringWriter();
-        //    sw.WriteLine("\"Member Name\",\"Attendance\",\"Amount Saved\",\"Loan Number\",\"Loan Taken\",\"Fines\",\"Loan Cleared\",\"Loan Outstanding\"");
-        //    Response.ClearContent();
-        //    Response.AddHeader("content-disposition", "attachment;filename=meeting_details.csv");
-        //    Response.ContentType = "text/csv";
+            foreach (var line in meetingsList)
+            {
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
+                                           line.memberName,
+                                           line.isPresent,
+                                           line.amountSaved,
+                                           line.loanNumber,
+                                           line.principleAmount,
+                                           line.finedAmount,
+                                           line.loanRepaymentAmount,
+                                           line.remainingBalanceOnLoan
+                                           ));
+            }
 
-        //    foreach (var line in meetings)
-        //    {
-        //        sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
-        //                                   line.memberName,
-        //                                   line.isPresent,
-        //                                   line.amountSaved,
-        //                                   line.loanNumber,
-        //                                   line.principleAmount,
-        //                                   line.finedAmount,
-        //                                   line.loanRepaymentAmount,
-        //                                   line.remainingBalanceOnLoan
-        //                                   ));
-        //    }
+            Response.Write(sw.ToString());
+            Response.End();
 
-        //    Response.Write(sw.ToString());
-        //    Response.End();
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
         // View all members attached to a given vsla
         public ActionResult VslaGroupMembers(int id)

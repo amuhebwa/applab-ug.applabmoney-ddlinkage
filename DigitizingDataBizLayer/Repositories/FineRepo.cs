@@ -15,8 +15,16 @@ namespace DigitizingDataBizLayer.Repositories
         public object FindFineByIdEx(int issuedMeetingId, int fineIdEx)
         {
             var fine = (from m in SessionProxy.Query<Fine>()
-                             where m.FineIdEx == fineIdEx && m.IssuedInMeeting.MeetingId == issuedMeetingId
-                             select m).FirstOrDefault();
+                        where m.FineIdEx == fineIdEx && m.IssuedInMeeting.MeetingId == issuedMeetingId
+                        select m).FirstOrDefault();
+            return fine;
+        }
+
+        public Fine findFinesByMemberInMeeting(int meetingId, int memberId)
+        {
+            var fine = (from f in SessionProxy.Query<Fine>()
+                        where f.IssuedInMeeting.MeetingId == meetingId && f.Member.MemberId == memberId
+                        select f).FirstOrDefault();
             return fine;
         }
     }
