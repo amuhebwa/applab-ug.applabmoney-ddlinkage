@@ -94,5 +94,17 @@ namespace DigitizingDataBizLayer.Repositories
             return meeting;
         }
 
+        // Last date that a group submitted group information
+        public string lastDateOfSubmission(int vslaId)
+        {
+            var y = (from m in SessionProxy.Query<Meeting>()
+                     where m.VslaCycle.Vsla.VslaId == vslaId
+                     orderby m.DateSent descending
+                     select m.DateSent).FirstOrDefault();
+            //var x = (from m in SessionProxy.Query<Meeting>()
+            //         where m.VslaCycle.Vsla.VslaId == vslaId
+            //         select m.DateSent).OrderByDescending(t => t.Value).FirstOrDefault();
+            return Convert.ToString(y);
+        }
     }
 }

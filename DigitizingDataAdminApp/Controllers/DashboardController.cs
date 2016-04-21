@@ -787,6 +787,7 @@ namespace DigitizingDataAdminApp.Controllers
                     VslaId = item.VslaId,
                     VslaCode = item.VslaCode ?? "--",
                     VslaName = item.VslaName ?? "--",
+                    lastDateSubmittedData = lastDateOfSubmission(item.VslaId),
                     RegionId = item.VslaRegion.RegionName != null ? item.VslaRegion.RegionName : "--",
                     DateRegistered = item.DateRegistered,
                     DateLinked = item.DateLinked,
@@ -801,6 +802,20 @@ namespace DigitizingDataAdminApp.Controllers
                 });
             }
             return vslaData;
+        }
+        
+        // Calculate the last date the group submitted meeting information
+        public string lastDateOfSubmission(int vslaId) {
+            MeetingRepo _meetingRepo = new MeetingRepo();
+            int days  = 0; // Num
+            string lastDate = _meetingRepo.lastDateOfSubmission(Convert.ToInt32(vslaId));
+            if (lastDate != null) {
+                DateTime currentDate = DateTime.Today;
+                DateTime prevDate = Convert.ToDateTime(lastDate);
+                TimeSpan difference = currentDate.Subtract(prevDate);
+                days = (int)difference.TotalDays;
+            }
+            return Convert.ToString(days);
         }
 
         // Get the group support modules that have been provided to the group by technical trainers
@@ -836,11 +851,6 @@ namespace DigitizingDataAdminApp.Controllers
             int vslaId = Convert.ToInt32(id);
             VslaRepo _vslaRepo = new VslaRepo();
             Vsla vslaDetails = _vslaRepo.FindVslaById(vslaId);
-
-            // percentage of females
-            // MemberRepo _memberRepo = new MemberRepo();
-            //  vslaData.percentageOfWomen = _memberRepo.percentageOfWomenPerGroup(vslaId) + "%";
-
             vslaData.VslaId = vslaDetails.VslaId;
             vslaData.VslaCode = vslaDetails.VslaCode;
             vslaData.VslaName = vslaDetails.VslaName;

@@ -88,6 +88,7 @@ namespace DigitizingDataAdminApp.Models
 
         public string ImplementerId { get; set; }
         public string ImplementerName { get; set; }
+        public string lastDateSubmittedData { get; set; }
     }
 
     public class GroupSupportInfo {
