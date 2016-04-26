@@ -750,7 +750,6 @@ namespace DigitizingDataAdminApp.Controllers
             { // FALSE
                 return View();
             }
-
         }
 
         /**
@@ -782,40 +781,40 @@ namespace DigitizingDataAdminApp.Controllers
             List<VslaInformation> vslaData = new List<VslaInformation>();
             foreach (var item in vslaDetails)
             {
-                vslaData.Add(new VslaInformation
-                {
-                    VslaId = item.VslaId,
-                    VslaCode = item.VslaCode ?? "--",
-                    VslaName = item.VslaName ?? "--",
-                    lastDateSubmittedData = lastDateOfSubmission(item.VslaId),
-                    RegionId = item.VslaRegion.RegionName != null ? item.VslaRegion.RegionName : "--",
-                    DateRegistered = item.DateRegistered,
-                    DateLinked = item.DateLinked,
-                    PhysicalAddress = item.PhysicalAddress ?? "--",
-                    VslaPhoneMsisdn = item.VslaPhoneMsisdn ?? "--",
-                    GpsLocation = item.GpsLocation ?? "--",
-                    ContactPerson = item.ContactPerson ?? "--",
-                    PositionInVsla = item.PositionInVsla ?? "--",
-                    PhoneNumber = item.PhoneNumber ?? "--",
-                    TechnicalTrainer = item.CBT.Name,
-                    Status = item.Status.ToString() ?? "--"
-                });
+                VslaInformation vsla = new VslaInformation();
+                vsla.VslaId = item.VslaId;
+                vsla.VslaCode = item.VslaCode;
+                vsla.VslaName = item.VslaName;
+                vsla.RegionId = item.VslaRegion.RegionName != null ? item.VslaRegion.RegionName : "--";
+                vsla.DateRegistered = item.DateRegistered;
+                vsla.DateLinked = item.DateLinked;
+                vsla.PhysicalAddress = item.PhysicalAddress;
+                vsla.VslaPhoneMsisdn = item.VslaPhoneMsisdn;
+                vsla.GpsLocation = item.GpsLocation;
+                vsla.ContactPerson = item.ContactPerson;
+                vsla.PositionInVsla = item.PositionInVsla;
+                vsla.PhoneNumber = item.PhoneNumber;
+                vsla.TechnicalTrainer = item.CBT.Name;
+                vsla.Status = item.Status.ToString() ?? "--";
+                vsla.lastDateSubmittedData = lastDateOfSubmission(Convert.ToInt32(item.VslaId));
+                vslaData.Add(vsla);
             }
             return vslaData;
         }
-        
+
         // Calculate the last date the group submitted meeting information
-        public string lastDateOfSubmission(int vslaId) {
+        public int lastDateOfSubmission(int vslaId)
+        {
             MeetingRepo _meetingRepo = new MeetingRepo();
-            int days  = 0; // Num
             string lastDate = _meetingRepo.lastDateOfSubmission(Convert.ToInt32(vslaId));
-            if (lastDate != null) {
+            if (!string.IsNullOrEmpty(lastDate.Trim()) || !string.IsNullOrWhiteSpace(lastDate.Trim()))
+            {
                 DateTime currentDate = DateTime.Today;
                 DateTime prevDate = Convert.ToDateTime(lastDate);
-                TimeSpan difference = currentDate.Subtract(prevDate);
-                days = (int)difference.TotalDays;
+                TimeSpan span = currentDate.Subtract(prevDate);
+                return (int)span.Days;
             }
-            return Convert.ToString(days);
+            return 0;
         }
 
         // Get the group support modules that have been provided to the group by technical trainers

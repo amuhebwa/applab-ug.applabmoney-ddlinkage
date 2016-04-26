@@ -101,9 +101,6 @@ namespace DigitizingDataBizLayer.Repositories
                      where m.VslaCycle.Vsla.VslaId == vslaId
                      orderby m.DateSent descending
                      select m.DateSent).FirstOrDefault();
-            //var x = (from m in SessionProxy.Query<Meeting>()
-            //         where m.VslaCycle.Vsla.VslaId == vslaId
-            //         select m.DateSent).OrderByDescending(t => t.Value).FirstOrDefault();
             return Convert.ToString(y);
         }
     }

@@ -88,7 +88,7 @@ namespace DigitizingDataAdminApp.Models
 
         public string ImplementerId { get; set; }
         public string ImplementerName { get; set; }
-        public string lastDateSubmittedData { get; set; }
+        public int lastDateSubmittedData { get; set; }
     }
 
     public class GroupSupportInfo {
@@ -98,4 +98,5 @@ namespace DigitizingDataAdminApp.Models
         public DateTime? supportDate { get; set; }
         public string fSupportDate { get { return supportDate.Value.ToString("MMM-dd-yyyy"); } }
     }
+
 }
