@@ -49,7 +49,7 @@ namespace DigitizingDataAdminWebService
                         VslaId = data.VslaId,
                         VslaCode = data.VslaCode,
                         VslaName = data.VslaName,
-                        grpPhoneNumber = data.GroupAccountNumber,
+                        grpPhoneNumber = data.VslaPhoneMsisdn,
                         PhysicalAddress = data.PhysicalAddress,
                         GpsLocation = data.GpsLocation,
                         DateRegistered = string.IsNullOrEmpty(data.DateRegistered.ToString()) ? "--" : data.DateRegistered.ToString(),
