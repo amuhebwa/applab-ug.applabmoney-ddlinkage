@@ -1,0 +1,48 @@
+﻿@model DigitizingDataAdminApp.Models.DashboardData
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Dashboard";
+}
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
+
+    <ul>
+        <li><a href="#dashboard"><strong>Dashboard | Summary</strong></a></li>
+    </ul>
+
+    <div id="dashboard">
+        <table>
+            <tr style="margin-bottom: 10px;">
+                <td><strong>VSLAs : @Html.DisplayFor(model => model.fTotalVslas)<br />
+                    Total Submissions : @Html.DisplayFor(model => model.fTotalSubmissions)<br />
+                    Total Meetings Held : @Html.DisplayFor(model => model.fTotalMeetings)
+                </strong>
+                </td>
+                <td><strong>Total Members : @Html.DisplayFor(model => model.fMembers)
+                    <br />
+                    MALES : @Html.DisplayFor(model => model.fMales)
+                    <br />
+                    FEMALES : @Html.DisplayFor(model => model.fFemales)
+                </strong>
+                </td>
+                <td>
+                    <strong>Total Savings : UGX @Html.DisplayFor(model => model.fTotalSavings)<br />
+                        Total Loans given : UGX @Html.DisplayFor(model => model.fLoans)<br />
+                        Loan Repayments : UGX @Html.DisplayFor(model => model.fLoanRepayment)
+                    </strong>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <img src="~/Dashboard/showMembersByGender" />
+                </td>
+                <td>
+                    <img src="~/Dashboard/showAttendance" />
+                </td>
+                <td>
+                    <img src="~/Dashboard/showSavingsLoansAndRepayments" />
+                </td>
+                </tr>
+        </table>
+    </div>
+</div>

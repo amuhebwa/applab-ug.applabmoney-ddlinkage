@@ -1,0 +1,61 @@
+﻿@model DigitizingDataAdminApp.Models.UserInformation
+
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Edit System User";
+}
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
+
+    <ul>
+        <li><a href="#edit"><strong>Edit @Html.DisplayFor(model => model.Fullname)</strong></a></li>
+    </ul>
+
+    <div id="edit">
+        <p style="text-align:right;"><strong>@Html.ActionLink("Back", "SystemUsers")</strong></p>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <table class="table table-bordered">
+
+                <thead>
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.DateCreated)
+                </thead>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Username")</strong></td>
+                    <td>@Html.EditorFor(model => model.Username)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Fullname")</strong></td>
+                    <td>@Html.EditorFor(model => model.Fullname)
+                        @Html.ValidationMessageFor(model => model.Fullname)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Email")</strong></td>
+                    <td>@Html.EditorFor(model => model.Email)
+                        @Html.ValidationMessageFor(model => model.Email)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Password")</strong></td>
+                    <td>@Html.EditorFor(model => model.Password)
+                        @Html.ValidationMessageFor(model => model.Password)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.DisplayName("Access Level")</strong></td>
+                    <td>@Html.DropDownList("Level_Id", Model.AccessLevel, new { @style = "width:185px;" })</td>
+                </tr>
+
+            </table>
+            <p><input class="btn btn-small btn-primary" type="submit" value="Update" style="width: 100px;" /></p>
+        }
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+    </div>
+</div>

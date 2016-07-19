@@ -1,0 +1,51 @@
+﻿@model DigitizingDataAdminApp.Models.TrainerInformation
+
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Technical Trainer Details";
+}
+<div id="tabs" style="width: 100%; min-width: 1000px; margin: 0 auto; font-size: small;">
+
+    <ul>
+        <li><a href="#details"><strong>Details for @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</strong></a></li>
+    </ul>
+
+    <div id="details">
+        <p style="text-align: right;"><strong>@Html.ActionLink("Back", "TechnicalTrainers")</strong></p>
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>@Html.DisplayName("First Name")</strong></td>
+                <td>@Html.DisplayFor(model => model.FirstName)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("Last Name")</strong></td>
+                <td>@Html.DisplayFor(model => model.LastName)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("Username")</strong></td>
+                <td>@Html.DisplayFor(model => model.Username)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("Pass Key")</strong></td>
+                <td>@Html.DisplayFor(model => model.Passkey)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("District")</strong></td>
+                <td>@Html.DisplayFor(model => model.Region)</td>
+            </tr>
+
+            <tr>
+                <td><strong>@Html.DisplayName("Phone Number")</strong></td>
+                <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("Email")</strong></td>
+                <td>@Html.DisplayFor(model => model.Email)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.DisplayName("Status")</strong></td>
+                <td>@Html.DisplayFor(model => model.Status)</td>
+            </tr>
+        </table>
+    </div>
+</div>
