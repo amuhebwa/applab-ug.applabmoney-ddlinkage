@@ -31,9 +31,17 @@ namespace DigitizingDataBizLayer.Repositories
         public DataSubmission GetMostRecentDataSubmission()
         {
             var dataSubmission = (from s in SessionProxy.Query<DataSubmission>()
-                              orderby s.SubmissionId descending
-                              select s).First();            
+                                  orderby s.SubmissionId descending
+                                  select s).First();
             return dataSubmission;
-        }        
+        }
+
+        // Total submissions
+        public long findTotalSubmissions()
+        {
+            var totalSubmissions = (from s in SessionProxy.Query<DataSubmission>()
+                                    select s).Count();
+            return totalSubmissions;
+        }
     }
 }

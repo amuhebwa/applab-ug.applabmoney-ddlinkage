@@ -67,13 +67,17 @@
     <Compile Include="Repositories\DataSubmissionRepo.cs" />
     <Compile Include="Repositories\FineRepo.cs" />
     <Compile Include="Repositories\GroupSupportRepo.cs" />
+    <Compile Include="Repositories\ImplementersRepo.cs" />
     <Compile Include="Repositories\LoanIssueRepo.cs" />
     <Compile Include="Repositories\LoanRepaymentRepo.cs" />
     <Compile Include="Repositories\MeetingRepo.cs" />
     <Compile Include="Repositories\MemberRepo.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SavingRepo.cs" />
+    <Compile Include="Repositories\StatusTypeRepo.cs" />
     <Compile Include="Repositories\TechnicalTrainerRepo.cs" />
+    <Compile Include="Repositories\UserPermissionsRepo.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Repositories\VslaCycleRepo.cs" />
     <Compile Include="Repositories\VslaDdActivationRepo.cs" />
     <Compile Include="Repositories\VslaRegionRepo.cs" />

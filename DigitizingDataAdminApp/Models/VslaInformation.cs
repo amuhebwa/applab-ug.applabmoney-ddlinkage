@@ -75,6 +75,20 @@ namespace DigitizingDataAdminApp.Models
         [Required(ErrorMessage = "Account Number is a required Field", AllowEmptyStrings = false)]
         [RegularExpression(@"^[0-9]{10,10}$", ErrorMessage = "A/C is 10 characters ")]
         public string GroupAccountNumber { get; set; }
+
+        [Required(ErrorMessage = "Number Of Cycles is a required field", AllowEmptyStrings = false)]
+        [RegularExpression(@"^[0-9]{1,3}$", ErrorMessage = "Max : 100 years ")]
+        public string NumberOfCycles { get; set; }
+
+        public string percentageOfWomen { get; set; }
+
+        public string groupMaturity { get; set; }
+
+        public SelectList Implementers { get; set; }
+
+        public string ImplementerId { get; set; }
+        public string ImplementerName { get; set; }
+        public int lastDateSubmittedData { get; set; }
     }
 
     public class GroupSupportInfo {
@@ -84,4 +98,5 @@ namespace DigitizingDataAdminApp.Models
         public DateTime? supportDate { get; set; }
         public string fSupportDate { get { return supportDate.Value.ToString("MMM-dd-yyyy"); } }
     }
+
 }

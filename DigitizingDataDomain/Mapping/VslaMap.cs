@@ -25,6 +25,7 @@ namespace DigitizingDataDomain.Mapping
             Map(v => v.PhoneNumber);
             Map(v => v.GroupAccountNumber);
             Map(v => v.NumberOfCycles);
+            Map(v => v.Implementer);
 
             // Reference for technical trainer
             References(v => v.CBT)

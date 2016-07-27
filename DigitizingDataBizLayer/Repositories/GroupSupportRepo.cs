@@ -12,8 +12,11 @@ namespace DigitizingDataBizLayer.Repositories
 {
     public class GroupSupportRepo : RepositoryBase<GroupSupport>
     {
-        public GroupSupportRepo() { 
-        
+        public List<GroupSupport> findAllGroupSupport()
+        {
+            var groupSupport = (from gs in SessionProxy.Query<GroupSupport>()
+                                select gs).ToList();
+            return groupSupport;
         }
     }
 }

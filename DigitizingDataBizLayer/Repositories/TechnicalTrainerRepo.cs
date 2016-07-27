@@ -19,5 +19,22 @@ namespace DigitizingDataBizLayer.Repositories
             return trainer;
 
         }
+
+        // All Technical Trainers
+        public List<TechnicalTrainer> findAllTechnicalTrainers()
+        {
+            var trainers = (from t in SessionProxy.Query<TechnicalTrainer>()
+                            select t).ToList();
+            return trainers;
+        }
+
+        // Details for a particular technical trainer
+        public TechnicalTrainer findParticularTrainer(int id)
+        {
+            var trainer = (from t in SessionProxy.Query<TechnicalTrainer>()
+                           where t.Id == id
+                           select t).FirstOrDefault();
+            return trainer;
+        }
     }
 }

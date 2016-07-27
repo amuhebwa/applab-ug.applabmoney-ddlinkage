@@ -7,13 +7,14 @@
 
     <ul>
         <li><a href="#allgroups">VSLA Groups</a></li>
+        <li><a href="#flaggedgroups">Flagged Groups</a></li>
         <li><a href="#groupsuppport">Group Support</a></li>
         <li><a href="#addnewgroup">Add New VSLA Group</a></li>
     </ul>
 
     <div id="allgroups">
         <p style="text-align: right;">
-            <a href="@Url.Action("ExportVSLAsToCSV", "Dashboard")"><strong>Export to CSV</strong></a>
+            <a href="@Url.Action("Export_Vslas", "Dashboard")"><strong>Export to CSV</strong></a>
         </p>
 
         <div style="width: auto; min-width: 900px; margin: 0 auto;">
@@ -84,9 +85,42 @@
             </table>
         </div>
     </div>
+    <div id="flaggedgroups">
+        <div style="width: auto; min-width: 900px; margin: 0 auto;">
+            <table class="display" style="width: 100%; font-size: small;" id="data-table2">
+                <thead>
 
+                    <tr>
+                        <th>ID</th>
+                        <th>VSLA Name</th>
+                        <th>VSLACode</th>
+                        <th>Overdue days</th>
+                        <th>Details</th>
+                    </tr>
+
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllGroupsList)
+                    {
+                        if (item.lastDateSubmittedData > 90)
+                        {
+                        <tr>
+                            <td>@item.VslaId </td>
+                            <td>@item.VslaName </td>
+                            <td>@item.VslaCode </td>
+                            <td>@item.lastDateSubmittedData</td>
+                            <td><a href="@Url.Action("VslaGroupDetails", "Dashboard", new { id = item.VslaId })">
+                                <img  src="@Url.Content("~/Content/Images/details.png")"/></a></td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div id="groupsuppport">
-        <h6 style="text-align:center;"><strong>Support Modules Offered to the Groups</strong></h6>
+        <h6 style="text-align: center;"><strong>Support Modules Offered to the Groups</strong></h6>
         <div style="width: auto; min-width: 900px; margin: 0 auto;">
             <table class="display" style="width: 100%; font-size: small;" id="data-table1">
                 <thead>
@@ -177,6 +211,14 @@
                     <td><strong>@Html.DisplayName("Group Account Number")</strong></td>
                     <td>@Html.TextBoxFor(model => model.GroupAccountNumber, new { @placeholder = "e.g 1234567890" })</td>
                 </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Number Of Cycles with LedgerLink")</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NumberOfCycles, new { @placeholder = "e.g 2" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.DisplayName("Project Implementer")</strong></td>
+                    <td>@Html.DropDownList("ImplementerId", Model.Implementers, new { @style = "width:185px;" }) </td>
+                </tr>
             </table>
             <p>
                 <input class="btn btn-small btn-primary" type="submit" name="AddVslaGroup" value=" Create " style="width: 100px;" />
@@ -221,6 +263,9 @@
                     </tr>
                     <tr>
                         <td>@Html.ValidationMessageFor(model => model.GroupAccountNumber)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ValidationMessageFor(model => model.NumberOfCycles)</td>
                     </tr>
                 </table>
             </div>

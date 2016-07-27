@@ -60,5 +60,23 @@ namespace DigitizingDataAdminApp.Models
 
         public long totalLoanRepayment { get; set; }
         public string formattedLoanRepayment { get { return totalLoanRepayment.ToString("#,##0"); } }
+
+        // Difference between meeting date and date of submission
+        public int diffInDaysBtnHeld_Submit { get; set; }
+
+        // Percentage of attendence
+        public string percentageOfAttendence { get; set; }
+
+        // number of people buying maximum stars
+        public int maximumStarsBuyers { get; set; }
+        
+        // number of people buying minimum stars
+        public int minimumStarsBuyers { get; set; }
+    }
+
+    // class object for for members saving minimum or maximum shares
+    public class MinMaxShares {
+        public int minSharesCount { get; set; }
+        public int maxSharesCount { get; set; }
     }
 }
